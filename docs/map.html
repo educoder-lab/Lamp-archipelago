@@ -7,6 +7,14 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="lamp-world.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
 <title>Lumina Code — ワールドマップ</title>
 <style>
 :root {
@@ -555,7 +563,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-import('./lamp-world.js?v=15').then(mod => {
+import('./lamp-world.js?v=16').then(mod => {
   const mount = mod.mountLampWorld || (window.LampWorld && window.LampWorld.mountLampWorld);
   if (!mount) { console.error('LampWorld mount failed'); return; }
   worldApi = mount(document.getElementById('world'), {
@@ -614,7 +622,9 @@ import('./lamp-world.js?v=15').then(mod => {
   }
 }).catch(err => {
   console.error(err);
-  document.getElementById('world').appendChild(el('div', { class: 'warn', style: 'margin:16px' }, '3Dマップを読み込めませんでした。回線またはキャッシュを確認してください。'));
+  const msg = (err && err.message) ? String(err.message) : 'unknown';
+  document.getElementById('world').appendChild(el('div', { class: 'warn', style: 'margin:16px' },
+    '3Dマップを読み込めませんでした。回線またはキャッシュを確認し、ページを再読み込みしてください。（' + msg + '）'));
 });
 </script>
 </body>
