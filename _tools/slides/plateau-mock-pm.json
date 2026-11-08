@@ -30,8 +30,12 @@
         {
           "emoji": "🛡️", "title": "セキュリティは必須",
           "blocks": [
-            { "t": "big", "text": "まず ==何を守るか==",
-              "sub": "守るもの → 脅威 → 弱点 → 対策" }
+            { "t": "anim", "caption": "▶ 4 ステップ",
+              "frames": [
+                { "visual": "💎 資産", "text": "何を守る？" },
+                { "visual": "👿 脅威", "text": "何が危ない？" },
+                { "visual": "🧰 対策", "text": "弱点に効くものを" }
+              ] }
           ]
         },
         {
@@ -48,8 +52,10 @@
         {
           "emoji": "📈", "title": "稼働率の式",
           "blocks": [
-            { "t": "big", "text": "稼働率 = MTBF ÷ (MTBF+MTTR)",
-              "sub": "動く時間 ÷ 動く＋直す" }
+            { "t": "example", "label": "具体例", "title": "MTBF 380・MTTR 20",
+              "before": "380 ÷ (380+20)",
+              "after": "==0.95==",
+              "why": "動く ÷（動く＋直す）。" }
           ]
         },
         {
@@ -152,8 +158,12 @@
         {
           "emoji": "🫧", "title": "バブルソートとは",
           "blocks": [
-            { "t": "big", "text": "**隣どうし**を比べて入れ替え",
-              "sub": "1 パスで最大が右端に来る" }
+            { "t": "anim", "caption": "▶ 3, 1, 4 を整える",
+              "frames": [
+                { "visual": "[3,1,4]", "text": "1 と 3 を入れ替え" },
+                { "visual": "[1,3,4]", "text": "隣比較を続ける" },
+                { "visual": "最大が右へ", "text": "1 パスで大きい方が ==端==" }
+              ] }
           ]
         },
         {
@@ -232,46 +242,45 @@
         {
           "emoji": "🔢", "title": "COUNT とは",
           "blocks": [
-            { "t": "big", "text": "**COUNT(*)** = 行の数",
-              "sub": "条件に合う行を数える" }
+            { "t": "table", "head": ["支店", "売上"],
+              "rows": [["東", "100"], ["東", "120"], ["西", "90"]],
+              "caption": "東だけ 2 行 → COUNT = **2**" }
           ]
         },
         {
-          "emoji": "🖼️", "title": "表を想像する",
+          "emoji": "🖼️", "title": "WHERE の前後",
           "blocks": [
-            { "t": "callout", "kind": "tip",
-              "text": "行に印を付けてから数える。\n**頭の中の表**がミスを減らす。" }
+            { "t": "example", "label": "具体例", "title": "東支店だけ",
+              "before": "3 行すべて",
+              "after": "印 2 行 → **2**",
+              "why": "印を付けてから ==数える==。" }
           ]
         },
         {
-          "emoji": "🔗", "title": "INNER JOIN",
+          "emoji": "🔗", "title": "JOIN の前後",
           "blocks": [
-            { "t": "big", "text": "**INNER** = 両方に一致する行だけ",
-              "sub": "片方にしかない行は消える" }
+            { "t": "table", "head": ["JOIN", "残る行"],
+              "rows": [["INNER", "両方にあるだけ"], ["LEFT", "左は全部・右なしは NULL"]],
+              "caption": "頭の中で **2 表** を並べる" }
           ]
         },
         {
-          "emoji": "🔗", "title": "LEFT OUTER JOIN",
+          "emoji": "🧮", "title": "/26 のホスト数",
           "blocks": [
-            { "t": "big", "text": "**LEFT OUTER** = 左は全部残す",
-              "sub": "右にない所は NULL" }
+            { "t": "trace", "vars": ["式", "値"],
+              "rows": [["32−26", "6"], ["2⁶", "64"], ["64−2", "==62=="]],
+              "notes": ["ホスト部", "総数", "使える数"] }
           ]
         },
         {
           "emoji": "🌐", "title": "IP の切れ目",
           "blocks": [
-            { "t": "big", "text": "**/n** = ネットワーク部のビット数",
-              "sub": "残りがホスト部（機器の番号）" }
-          ]
-        },
-        {
-          "emoji": "🧮", "title": "使えるホスト数",
-          "blocks": [
-            { "t": "flow", "steps": [
-              { "label": "32 − n", "sub": "ホスト部" },
-              { "label": "2 の累乗", "sub": "個数" },
-              { "label": "− 2", "sub": "使える数" }
-            ] }
+            { "t": "example", "label": "具体例", "title": "/26",
+              "rows": [
+                { "label": "ネット", "value": "26 ビット" },
+                { "label": "ホスト", "value": "==6== ビット" }
+              ],
+              "why": "残りが機器の番号。" }
           ]
         },
         {

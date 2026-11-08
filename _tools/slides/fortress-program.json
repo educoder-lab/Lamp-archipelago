@@ -27,9 +27,14 @@
           "title": "代入は ←",
           "blocks": [
             {
-              "t": "big",
-              "text": "x ← 5 は「x に 5 を入れる」",
-              "sub": "比較の = とは別物"
+              "t": "example",
+              "label": "具体例",
+              "title": "x ← 5",
+              "rows": [
+                { "label": "前", "value": "x = 未定" },
+                { "label": "後", "value": "x = ==5==", "hl": true }
+              ],
+              "why": "← は **入れる**。= は比較。"
             }
           ]
         },
@@ -106,12 +111,12 @@
           "title": "if と else",
           "blocks": [
             {
-              "t": "flow",
-              "direction": "v",
-              "steps": [
-                { "label": "条件", "sub": "真？偽？" },
-                { "label": "真 → then", "sub": "上側" },
-                { "label": "偽 → else", "sub": "下側" }
+              "t": "anim",
+              "caption": "▶ x=3 で if (x>2)",
+              "frames": [
+                { "visual": "x = 3", "text": "条件 x>2 を調べる" },
+                { "visual": "3 > 2 → **真**", "text": "then 側へ" },
+                { "visual": "else は飛ばす", "text": "偽なら下側へ" }
               ]
             }
           ]
@@ -279,9 +284,14 @@
           "title": "整数に実数を入れると",
           "blocks": [
             {
-              "t": "callout",
-              "kind": "warn",
-              "text": "小数部が ==切り捨て==\nされることがある。"
+              "t": "example",
+              "label": "具体例",
+              "title": "実数 → 整数",
+              "before": "a ← 3.9",
+              "after": "a = **3**",
+              "afterLabel": "整数に入れると",
+              "surprise": true,
+              "why": "小数部が ==切り捨て== されることが多い。"
             }
           ]
         },
@@ -377,9 +387,13 @@
           "title": "順次",
           "blocks": [
             {
-              "t": "big",
-              "text": "**順次** = 上から順に実行",
-              "sub": "いちばんシンプルな流れ"
+              "t": "anim",
+              "caption": "▶ 上から 1 行ずつ",
+              "frames": [
+                { "visual": "① 行目", "text": "最初に実行" },
+                { "visual": "② 行目", "text": "次に実行" },
+                { "visual": "③ 行目", "text": "==飛ばさない==" }
+              ]
             }
           ]
         },
@@ -402,9 +416,11 @@
           "title": "繰返し",
           "blocks": [
             {
-              "t": "big",
-              "text": "**繰返し** = 条件が続く間まわす",
-              "sub": "for / while など"
+              "t": "trace",
+              "vars": ["i", "表示"],
+              "rows": [["1", "1回目"], ["2", "2回目"], ["3", "終了"]],
+              "notes": ["条件 真", "また真", "偽で抜ける"],
+              "caption": "i=1〜2 の while の例"
             }
           ]
         },
@@ -560,9 +576,13 @@
           "title": "最初にやること",
           "blocks": [
             {
-              "t": "big",
-              "text": "まず **再現** → 原因特定",
-              "sub": "いきなり全部書き直さない"
+              "t": "flow",
+              "steps": [
+                { "label": "同じ操作", "sub": "**再現**" },
+                { "label": "想定と比較", "sub": "どこでズレ？" },
+                { "label": "直す", "sub": "原因から" }
+              ],
+              "caption": "いきなり全部書き直さない"
             }
           ]
         },

@@ -23,21 +23,36 @@
           ]
         },
         {
-          "emoji": "📝", "title": "擬似言語とは？",
+          "emoji": "📝", "title": "擬似言語の見た目",
           "blocks": [
-            { "t": "big", "text": "午後問題用の ==疑似コード==", "sub": "本物の言語に近い書き方" }
+            { "t": "example", "label": "具体例", "title": "午後でよく見る形",
+              "rows": [
+                { "label": "代入", "value": "x ← 5" },
+                { "label": "分岐", "value": "if x > 0 then …" }
+              ],
+              "why": "言語名より、**記号の意味**を読む。" }
           ]
         },
         {
           "emoji": "⬅️", "title": "矢印の意味",
           "blocks": [
-            { "t": "big", "text": "x ← 5 は **代入**", "sub": "x に 5 を入れる（比較ではない）" }
+            { "t": "example", "label": "具体例", "title": "x ← 5",
+              "rows": [
+                { "label": "前", "value": "x = ？" },
+                { "label": "後", "value": "x = ==5==", "hl": true }
+              ],
+              "why": "← は **入れる**。比較の = とは別。" }
           ]
         },
         {
           "emoji": "➕", "title": "自分を使う代入",
           "blocks": [
-            { "t": "big", "text": "x ← x + 1", "sub": "今の x に 1 を足して、また x へ" }
+            { "t": "anim", "caption": "▶ x ← x + 1 の流れ",
+              "frames": [
+                { "visual": "x = **4**", "text": "いまの x を見る" },
+                { "visual": "4 + 1 = 5", "text": "右辺を計算" },
+                { "visual": "x = **5**", "text": "また x に入れる" }
+              ] }
           ]
         },
         {
@@ -116,7 +131,13 @@
         {
           "emoji": "🔢", "title": "ループカウンタ",
           "blocks": [
-            { "t": "big", "text": "**カウンタ** = 回数を数える変数", "sub": "i や n などによく使う" }
+            { "t": "example", "label": "具体例", "title": "i が 1 → 2 → 3",
+              "rows": [
+                { "label": "1 周目", "value": "i = 1" },
+                { "label": "2 周目", "value": "i = 2" },
+                { "label": "3 周目", "value": "i = ==3==", "hl": true }
+              ],
+              "why": "**i** が条件を満たすたびに進む。" }
           ]
         },
         {
@@ -130,7 +151,12 @@
         {
           "emoji": "🛑", "title": "while が終わるとき",
           "blocks": [
-            { "t": "big", "text": "条件が ==偽== で終了", "sub": "真のあいだだけ回り続ける" }
+            { "t": "anim", "caption": "▶ i ≤ 3 を追う",
+              "frames": [
+                { "visual": "i=1 … 真", "text": "中を実行して i++" },
+                { "visual": "i=3 … 真", "text": "最後の 1 回" },
+                { "visual": "i=4 … **偽**", "text": "ここで ==終了==" }
+              ] }
           ]
         },
         {
@@ -144,7 +170,9 @@
         {
           "emoji": "✖️", "title": "回数の計算",
           "blocks": [
-            { "t": "big", "text": "外側 2 × 内側 3 = ==6== 回", "sub": "内側の処理の実行回数" }
+            { "t": "array", "cells": ["①", "②", "③", "④", "⑤", "⑥"],
+              "start": 1, "highlight": [0, 1, 2, 3, 4, 5],
+              "caption": "外 **2** × 内 **3** = ==6== 回（内側処理）" }
           ]
         },
         {
@@ -217,17 +245,20 @@
         {
           "emoji": "🚶", "title": "走査の流れ",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "label": "i ← 1" },
-              { "label": "A[i] を処理" },
-              { "label": "i を増やす" }
-            ] }
+            { "t": "anim", "caption": "▶ i で左から見る",
+              "frames": [
+                { "visual": "A[1]=10", "text": "i=1 を処理" },
+                { "visual": "A[2]=20", "text": "i=2 へ" },
+                { "visual": "A[3]=30", "text": "最後まで ==走査==" }
+              ] }
           ]
         },
         {
           "emoji": "📈", "title": "最大値を探す",
           "blocks": [
-            { "t": "big", "text": "全部見て比べる → ==O(n)==", "sub": "要素数に比例" }
+            { "t": "array", "cells": ["4", "9", "7"], "start": 1,
+              "highlight": [2], "pointers": { "2": "max=9" },
+              "caption": "3 要素なら最大 **3** 回比べる（O(n)）" }
           ]
         },
         {
@@ -312,7 +343,10 @@
         {
           "emoji": "📐", "title": "階乗のイメージ",
           "blocks": [
-            { "t": "p", "text": "f(n)=n×f(n-1)。\nn≦1 なら ==1 を返す==。" }
+            { "t": "example", "label": "具体例", "title": "f(3) の式",
+              "before": "3 × f(2)",
+              "after": "3 × 2 × 1 = **6**",
+              "why": "n≤1 で ==1==（基底）に止まる。" }
           ]
         },
         {
@@ -337,7 +371,12 @@
         {
           "emoji": "📚", "title": "履歴はどこに？",
           "blocks": [
-            { "t": "big", "text": "履歴は **スタック**（コールスタック）", "sub": "呼んだ順に積み、戻りで下ろす" }
+            { "t": "anim", "caption": "▶ 呼び出しの積み上げ",
+              "frames": [
+                { "visual": "f(3)", "text": "いちばん上" },
+                { "visual": "f(2)", "text": "その下に f(2)" },
+                { "visual": "f(1)=1", "text": "底で止まり、==下から戻る==" }
+              ] }
           ]
         },
         {

@@ -1,301 +1,235 @@
 {
-    "domain":  "island-service",
-    "lessons":  {
-                    "83":  {
-                               "slides":  [
-                                              {
-                                                  "layout":  "title",
-                                                  "emoji":  "🛎️",
-                                                  "title":  "IT サービスマネジメント",
-                                                  "subtitle":  "止まらないサービスを届けるための管理。",
-                                                  "blocks":  [
-
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🏪",
-                                                  "title":  "まず、たとえ話から",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "analogy",
-                                                                     "icon":  "🏪",
-                                                                     "real":  "お店は商品だけでなく、\n**対応・修理・約束**も大事。",
-                                                                     "tech":  "IT でも、サービスを安定して\n届ける管理があります。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "📘",
-                                                  "title":  "ITIL とは？",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "big",
-                                                                     "text":  "IT サービス管理の **ベストプラクティス集**",
-                                                                     "sub":  "法律や国際規格そのものではない"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🤝",
-                                                  "title":  "SLA",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "analogy",
-                                                                     "icon":  "📝",
-                                                                     "real":  "「何時までに届ける」の約束。",
-                                                                     "tech":  "**SLA** = 提供者と利用者の\n==品質水準の合意==。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🚨",
-                                                  "title":  "インシデント管理",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "big",
-                                                                     "text":  "サービスの中断を **すぐ復旧**",
-                                                                     "sub":  "まずは平常どおり使えるように"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🔍",
-                                                  "title":  "問題管理",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "big",
-                                                                     "text":  "**根本原因**を特定・解消",
-                                                                     "sub":  "同じインシデントをくり返さない"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "⚖️",
-                                                  "title":  "インシデントと問題",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "compare",
-                                                                     "left":  {
-                                                                                  "icon":  "🚨",
-                                                                                  "title":  "インシデント",
-                                                                                  "items":  [
-                                                                                                "まず ==復旧=="
-                                                                                            ]
-                                                                              },
-                                                                     "right":  {
-                                                                                   "icon":  "🔍",
-                                                                                   "title":  "問題",
-                                                                                   "items":  [
-                                                                                                 "原因を ==直す=="
-                                                                                             ]
-                                                                               },
-                                                                     "vs":  "ちがい"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🔄",
-                                                  "title":  "変更管理",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "p",
-                                                                     "text":  "**変更管理** = 変更によるリスクを\n==最小化== する管理プロセス。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "📝",
-                                                  "title":  "試験ではここ",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "callout",
-                                                                     "kind":  "exam",
-                                                                     "text":  "「すぐ復旧」→ インシデント。\n「根本原因」→ 問題。ITIL はベストプラクティス集。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "✅",
-                                                  "title":  "確認",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "check",
-                                                                     "q":  "提供者と利用者で品質水準を合意した文書・約束は？",
-                                                                     "choices":  [
-                                                                                     "BCP",
-                                                                                     "SLA",
-                                                                                     "UPS",
-                                                                                     "WBS"
-                                                                                 ],
-                                                                     "answer":  1,
-                                                                     "explain":  "品質の合意＝**SLA**。",
-                                                                     "hint":  "Service Level。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🏁",
-                                                  "title":  "まとめ",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "bullets",
-                                                                     "items":  [
-                                                                                   "**ITIL** … ベストプラクティス集",
-                                                                                   "**インシデント** … すぐ復旧",
-                                                                                   "**問題** … 根本原因／**SLA** … 品質の合意"
-                                                                               ]
-                                                                 }
-                                                             ]
-                                              }
-                                          ]
-                           },
-                    "84":  {
-                               "slides":  [
-                                              {
-                                                  "layout":  "title",
-                                                  "emoji":  "🏢",
-                                                  "title":  "ファシリティマネジメント",
-                                                  "subtitle":  "コンピュータを守る「建物と設備」の管理。",
-                                                  "blocks":  [
-
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🏠",
-                                                  "title":  "まず、たとえ話から",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "analogy",
-                                                                     "icon":  "🏠",
-                                                                     "real":  "家の **電気・エアコン・鍵**が\n壊れたら生活が止まる。",
-                                                                     "tech":  "サーバルームも同じ。\n設備の管理が必要です。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🏗️",
-                                                  "title":  "ファシリティマネジメント",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "big",
-                                                                     "text":  "電算室・電源・空調などの **設備管理**",
-                                                                     "sub":  "ソフト開発そのものではない"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🔋",
-                                                  "title":  "UPS",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "analogy",
-                                                                     "icon":  "🔋",
-                                                                     "real":  "停電しても、しばらく電気が残る。",
-                                                                     "tech":  "**UPS** = 停電時に\n==一時的に電力を供給== する装置。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "❄️",
-                                                  "title":  "サーバルーム",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "big",
-                                                                     "text":  "**温度・湿度**を管理した部屋",
-                                                                     "sub":  "サーバを安定して動かす場所"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "📋",
-                                                  "title":  "BCP",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "p",
-                                                                     "text":  "**BCP** = 災害時に事業を\n継続・早期復旧する ==事業継続計画==。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🛠️",
-                                                  "title":  "DR（ディザスタリカバリ）",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "big",
-                                                                     "text":  "災害からの **IT システム復旧策**",
-                                                                     "sub":  "バックアップ拠点などもここに入る"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🔍",
-                                                  "title":  "BCP と DR のちがい",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "compare",
-                                                                     "left":  {
-                                                                                  "icon":  "🏢",
-                                                                                  "title":  "BCP",
-                                                                                  "items":  [
-                                                                                                "事業全体の ==継続=="
-                                                                                            ]
-                                                                              },
-                                                                     "right":  {
-                                                                                   "icon":  "💻",
-                                                                                   "title":  "DR",
-                                                                                   "items":  [
-                                                                                                 "IT の ==復旧=="
-                                                                                             ]
-                                                                               },
-                                                                     "vs":  "範囲"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "⚠️",
-                                                  "title":  "対象外に注意",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "callout",
-                                                                     "kind":  "warn",
-                                                                     "text":  "ファシリティは **設備側**。\nソフトウェア開発は対象外です。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "✅",
-                                                  "title":  "確認",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "check",
-                                                                     "q":  "災害から IT システムを復旧する策は？",
-                                                                     "choices":  [
-                                                                                     "SLA",
-                                                                                     "DR",
-                                                                                     "RAD",
-                                                                                     "UML"
-                                                                                 ],
-                                                                     "answer":  1,
-                                                                     "explain":  "IT 復旧＝**DR**。",
-                                                                     "hint":  "Disaster Recovery。"
-                                                                 }
-                                                             ]
-                                              },
-                                              {
-                                                  "emoji":  "🏁",
-                                                  "title":  "まとめ",
-                                                  "blocks":  [
-                                                                 {
-                                                                     "t":  "bullets",
-                                                                     "items":  [
-                                                                                   "**ファシリティ** … 電源・空調・入退室など",
-                                                                                   "**UPS** … 停電時の一時電力",
-                                                                                   "**BCP** … 事業継続／**DR** … IT 復旧"
-                                                                               ]
-                                                                 }
-                                                             ]
-                                              }
-                                          ]
-                           }
-                }
+  "domain": "island-service",
+  "lessons": {
+    "83": {
+      "slides": [
+        {
+          "layout": "title", "emoji": "🛎️", "title": "IT サービスマネジメント",
+          "subtitle": "学校の Wi‑Fi も、\n止まらないよう守る管理。",
+          "blocks": []
+        },
+        {
+          "emoji": "🏪", "title": "まず、たとえ話から",
+          "blocks": [
+            { "t": "analogy", "icon": "🏪",
+              "real": "学食は、料理だけでなく\n**待ち時間・直し方・約束**も大事。",
+              "tech": "IT サービスも、\n安定して届ける管理がある。" }
+          ]
+        },
+        {
+          "emoji": "📘", "title": "ITIL とは？",
+          "blocks": [
+            { "t": "big", "text": "**ITIL** = よい運用の教科書集", "sub": "法律そのものではない" }
+          ]
+        },
+        {
+          "emoji": "🤝", "title": "SLA のたとえ",
+          "blocks": [
+            { "t": "analogy", "icon": "📝",
+              "real": "「障害は 4 時間以内に直す」と\n**最初に書いておく約束**。",
+              "tech": "**SLA** = 提供者と利用者の\n==品質水準の合意==。" }
+          ]
+        },
+        {
+          "emoji": "🧮", "title": "SLA の具体例",
+          "blocks": [
+            { "t": "example", "label": "具体例", "title": "校内ポータルの SLA",
+              "rows": [
+                { "label": "稼働率", "value": "平日 8:00〜18:00 は 99%" },
+                { "label": "復旧目標", "value": "障害から ==4 時間以内==", "hl": true }
+              ],
+              "why": "数字で約束すると、後から揉めにくい。" }
+          ]
+        },
+        {
+          "emoji": "🚨", "title": "インシデント管理",
+          "blocks": [
+            { "t": "big", "text": "**インシデント** = まず復旧", "sub": "止まったサービスをすぐ元に戻す" }
+          ]
+        },
+        {
+          "emoji": "🔍", "title": "問題管理",
+          "blocks": [
+            { "t": "big", "text": "**問題管理** = 根本原因", "sub": "同じトラブルをくり返さない" }
+          ]
+        },
+        {
+          "emoji": "🔄", "title": "障害対応の流れ",
+          "blocks": [
+            { "t": "anim", "caption": "▶ を押して 2 段階を見る",
+              "frames": [
+                { "visual": "🚨 Wi‑Fi が落ちた", "text": "まず接続を **復旧**（インシデント）" },
+                { "visual": "🔧 直った", "text": "とりあえず使える状態に戻す" },
+                { "visual": "🔍 原因を調査", "text": "なぜ落ちたかを直す（==問題管理==）" }
+              ] }
+          ]
+        },
+        {
+          "emoji": "⚖️", "title": "インシデントと問題",
+          "blocks": [
+            { "t": "compare",
+              "left": { "icon": "🚨", "title": "インシデント", "items": ["まず ==復旧==", "急ぎ"] },
+              "right": { "icon": "🔍", "title": "問題", "items": ["原因を ==直す==", "再発防止"] },
+              "vs": "VS" }
+          ]
+        },
+        {
+          "emoji": "🔄", "title": "変更管理",
+          "blocks": [
+            { "t": "flow", "stepwise": true, "steps": [
+              { "label": "変更を申請", "sub": "いつ・何を変えるか" },
+              { "label": "影響を確認", "sub": "リスクを見る" },
+              { "label": "承認して実施", "sub": "==最小のリスク== で" }
+            ], "caption": "いきなり直さず手順を踏む" }
+          ]
+        },
+        {
+          "emoji": "📝", "title": "試験ではここ",
+          "blocks": [
+            { "t": "callout", "kind": "exam",
+              "text": "「すぐ復旧」→ インシデント。\n「根本原因」→ 問題。ITIL はベストプラクティス集。" }
+          ]
+        },
+        {
+          "emoji": "✅", "title": "確認①",
+          "blocks": [
+            { "t": "check", "q": "提供者と利用者で品質水準を合意したものは？",
+              "choices": ["BCP", "SLA", "UPS", "WBS"],
+              "answer": 1,
+              "explain": "品質の合意＝**SLA**。",
+              "hint": "Service Level。" }
+          ]
+        },
+        {
+          "emoji": "✅", "title": "確認②",
+          "blocks": [
+            { "t": "check", "q": "サービスが止まったとき、いちばん先にすることに近いのは？",
+              "choices": ["根本原因の永久対策だけ", "まずサービスを復旧", "広告を出す", "仕様を全部書き換える"],
+              "answer": 1,
+              "explain": "先に **復旧**（インシデント管理）。",
+              "hint": "使える状態に戻す。" }
+          ]
+        },
+        {
+          "emoji": "🏁", "title": "まとめ",
+          "blocks": [
+            { "t": "bullets", "items": ["**ITIL** … ベストプラクティス集", "**インシデント** … すぐ復旧", "**問題** … 根本原因／**SLA** … 品質の合意"] }
+          ]
+        }
+      ]
+    },
+    "84": {
+      "slides": [
+        {
+          "layout": "title", "emoji": "🏢", "title": "ファシリティマネジメント",
+          "subtitle": "サーバを入れる部屋と、\n電気・空調を守る話。",
+          "blocks": []
+        },
+        {
+          "emoji": "🏠", "title": "まず、たとえ話から",
+          "blocks": [
+            { "t": "analogy", "icon": "🏠",
+              "real": "自宅の **ブレーカー・エアコン** が\n止まると、PC も使えない。",
+              "tech": "データセンターも\n設備の管理が必要です。" }
+          ]
+        },
+        {
+          "emoji": "🏗️", "title": "ファシリティとは？",
+          "blocks": [
+            { "t": "big", "text": "**ファシリティ** = 設備の管理", "sub": "電算室・電源・空調・入退室など" }
+          ]
+        },
+        {
+          "emoji": "🔋", "title": "UPS のたとえ",
+          "blocks": [
+            { "t": "analogy", "icon": "🔋",
+              "real": "停電でも、ランプが\n**しばらく点いている**電源。",
+              "tech": "**UPS** = 停電時に\n==一時的に電力== を供給。" }
+          ]
+        },
+        {
+          "emoji": "⚡", "title": "停電時の流れ",
+          "blocks": [
+            { "t": "anim", "caption": "▶ を押して UPS を見る",
+              "frames": [
+                { "visual": "🔌 通常は市電", "text": "サーバは安定供給で動く" },
+                { "visual": "⚡ 停電！", "text": "すぐには真っ暗にならない" },
+                { "visual": "🔋 UPS が数分供給", "text": "安全にシャットダウンする時間を確保" }
+              ] }
+          ]
+        },
+        {
+          "emoji": "❄️", "title": "サーバルーム",
+          "blocks": [
+            { "t": "big", "text": "**温度・湿度**を管理した部屋", "sub": "サーバを熱から守る" }
+          ]
+        },
+        {
+          "emoji": "🌡️", "title": "室温の目安",
+          "blocks": [
+            { "t": "example", "label": "具体例", "title": "暑すぎるとどうなる？",
+              "rows": [
+                { "label": "室温", "value": "35℃ 超え" },
+                { "label": "サーバ", "value": "誤動作・停止のリスク", "hl": true }
+              ],
+              "why": "空調は「快適」だけでなく、機器を守るため。" }
+          ]
+        },
+        {
+          "emoji": "📋", "title": "BCP とは？",
+          "blocks": [
+            { "t": "big", "text": "**BCP** = 事業継続計画", "sub": "災害時も事業を続ける・早く戻す" }
+          ]
+        },
+        {
+          "emoji": "🛠️", "title": "DR とは？",
+          "blocks": [
+            { "t": "big", "text": "**DR** = IT の復旧策", "sub": "災害からシステムを戻す手順" }
+          ]
+        },
+        {
+          "emoji": "🔍", "title": "BCP と DR",
+          "blocks": [
+            { "t": "compare",
+              "left": { "icon": "🏢", "title": "BCP", "items": ["事業全体の ==継続=="] },
+              "right": { "icon": "💻", "title": "DR", "items": ["IT の ==復旧=="] },
+              "vs": "範囲" }
+          ]
+        },
+        {
+          "emoji": "⚠️", "title": "対象外に注意",
+          "blocks": [
+            { "t": "callout", "kind": "warn",
+              "text": "ファシリティは **設備側**。\nアプリのプログラミングは対象外です。" }
+          ]
+        },
+        {
+          "emoji": "✅", "title": "確認①",
+          "blocks": [
+            { "t": "check", "q": "停電のあいだ、しばらく電力を供給する装置は？",
+              "choices": ["SLA", "UPS", "SEO", "GUI"],
+              "answer": 1,
+              "explain": "一時電源＝**UPS**。",
+              "hint": "Uninterruptible。" }
+          ]
+        },
+        {
+          "emoji": "✅", "title": "確認②",
+          "blocks": [
+            { "t": "check", "q": "災害から IT システムを復旧する策は？",
+              "choices": ["SLA", "DR", "RAD", "4P"],
+              "answer": 1,
+              "explain": "IT 復旧＝**DR**。",
+              "hint": "Disaster Recovery。" }
+          ]
+        },
+        {
+          "emoji": "🏁", "title": "まとめ",
+          "blocks": [
+            { "t": "bullets", "items": ["**ファシリティ** … 電源・空調・入退室", "**UPS** … 停電時の一時電力", "**BCP** … 事業継続／**DR** … IT 復旧"] }
+          ]
+        }
+      ]
+    }
+  }
 }

@@ -47,10 +47,21 @@
         {
           "emoji": "🧩", "title": "2 つの表をつなぐ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "label": "顧客表", "sub": "主キー: 顧客ID" },
               { "label": "注文表", "sub": "外部キー: 顧客ID" }
             ], "caption": "参照整合性を保つ" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "注文 1001 号",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 外部キーでつなぐ",
+              "frames": [
+                { "visual": "顧客 1001=山田", "text": "主キーで人を特定" },
+                { "visual": "注文 5001", "text": "顧客ID=1001 を書く" },
+                { "visual": "参照OK", "text": "存在しない ID は ==エラー==" }
+              ] }
           ]
         },
         {
@@ -126,23 +137,43 @@
         {
           "emoji": "2️⃣", "title": "第2正規形",
           "blocks": [
-            { "t": "p", "text": "**第2正規形**は、\n==部分関数従属== を取り除く。\n主キー全体に従属させる。" }
+            { "t": "example", "label": "具体例", "title": "複合キー",
+              "before": "（学籍,科目）→担任名",
+              "after": "科目だけでは？→担任が決まる",
+              "afterLabel": "部分従属",
+              "why": "主キーの ==一部だけ== に従う情報を分離。" }
           ]
         },
         {
           "emoji": "3️⃣", "title": "第3正規形",
           "blocks": [
-            { "t": "p", "text": "**第3正規形**は、\n==推移的関数従属== を取り除く。" }
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "学籍→学部", "value": "OK" },
+                { "label": "学部→学部長", "value": "推移従属 → ==表を分ける==", "hl": true }
+              ],
+              "why": "間接的に決まる情報を別テーブルへ。" }
           ]
         },
         {
           "emoji": "➡️", "title": "段階の流れ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "label": "1NF", "sub": "繰返し除去" },
               { "label": "2NF", "sub": "部分従属除去" },
               { "label": "3NF", "sub": "推移従属除去" }
             ] }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "電話番号の列",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 1NF へ",
+              "frames": [
+                { "visual": "電話1|電話2", "text": "繰返し列 … 非正規" },
+                { "visual": "別テーブルへ", "text": "1 行 1 電話に分割" },
+                { "visual": "1NF 達成", "text": "各マスは ==1 つの値==" }
+              ] }
           ]
         },
         {
@@ -226,8 +257,12 @@
         {
           "emoji": "🔤", "title": "LIKE の書き方",
           "blocks": [
-            { "t": "code", "lang": "sql", "text": "WHERE 名前 LIKE '田%';" },
-            { "t": "p", "text": "`%` は任意の文字列。\n**「田」で始まる**。" }
+            { "t": "example", "label": "具体例", "title": "パターン",
+              "rows": [
+                { "label": "'田%'", "value": "田で ==始まる==" },
+                { "label": "'%木'", "value": "木で ==終わる==", "hl": true }
+              ],
+              "why": "`%` は任意の長さの文字列。" }
           ]
         },
         {
@@ -240,6 +275,17 @@
           "emoji": "✨", "title": "DISTINCT",
           "blocks": [
             { "t": "big", "text": "**DISTINCT** = 重複行を除外", "sub": "同じ行は 1 回だけ" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "WHERE で絞る",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 点数 80 以上",
+              "frames": [
+                { "visual": "全行", "text": "FROM で表を開く" },
+                { "visual": "WHERE 点数>=80", "text": "条件に合う行だけ残る" },
+                { "visual": "SELECT 列", "text": "必要な列だけ返す" }
+              ] }
           ]
         },
         {
@@ -319,6 +365,17 @@
           "emoji": "🪆", "title": "副問合せ",
           "blocks": [
             { "t": "big", "text": "**副問合せ** = SELECT の入れ子", "sub": "SQL の中に別の SELECT" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "JOIN の結果",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 一致行だけ",
+              "frames": [
+                { "visual": "顧客|注文", "text": "2 つの表を用意" },
+                { "visual": "ON 顧客.ID=…", "text": "キーが一致する行を結ぶ" },
+                { "visual": "INNER", "text": "片方にだけある行は ==出ない==" }
+              ] }
           ]
         },
         {
@@ -417,6 +474,16 @@
           "emoji": "🗑️", "title": "DELETE",
           "blocks": [
             { "t": "big", "text": "**DELETE** = 行を削除する", "sub": "WHERE なしは全行削除に注意" }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "UPDATE の例",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "before": "山田 80点",
+              "after": "山田 85点",
+              "afterLabel": "WHERE 名前='山田'",
+              "why": "==WHERE== がないと全行が変わる危険。" }
           ]
         },
         {
@@ -527,6 +594,17 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "振込トランザクション",
+          "blocks": [
+            { "t": "anim", "caption": "▶ A→B へ 1000円",
+              "frames": [
+                { "visual": "A を 1000 減", "text": "1 つ目の更新" },
+                { "visual": "B を 1000 増", "text": "2 つ目の更新" },
+                { "visual": "コミット", "text": "両方成功で ==確定==。失敗ならロールバック" }
+              ] }
+          ]
+        },
+        {
           "emoji": "✅", "title": "確認①",
           "blocks": [
             { "t": "check", "q": "原子性の意味に近いのは？",
@@ -592,7 +670,12 @@
         {
           "emoji": "🔗", "title": "リレーションシップ",
           "blocks": [
-            { "t": "p", "text": "**関連**はエンティティ同士のつながり。\n例: 顧客 **が** 注文 **する**。" }
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "顧客", "value": "エンティティ（四角）" },
+                { "label": "注文する", "value": "関連（ひし形）", "hl": true }
+              ],
+              "why": "「もの」と「関係」を図に分けて書く。" }
           ]
         },
         {
@@ -604,10 +687,21 @@
         {
           "emoji": "👀", "title": "1対多の例",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "label": "顧客 1 人", "sub": "親" },
               { "label": "注文 複数", "sub": "子" }
             ], "caption": "==1対多== の典型" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "1対多を数える",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 山田さん",
+              "frames": [
+                { "visual": "顧客:山田", "text": "1 人の顧客" },
+                { "visual": "注文A,B,C", "text": "注文は ==複数== 持てる" },
+                { "visual": "1 : N", "text": "これが **1対多**" }
+              ] }
           ]
         },
         {

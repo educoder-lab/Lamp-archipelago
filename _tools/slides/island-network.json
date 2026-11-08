@@ -58,6 +58,18 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "封筒が下に降りる",
+          "blocks": [
+            { "t": "anim", "caption": "▶ Web ページを送る",
+              "frames": [
+                { "visual": "⑦ HTTP", "text": "アプリ層のデータ" },
+                { "visual": "+④ TCP", "text": "トランスポートで包む" },
+                { "visual": "+③ IP", "text": "ネットワーク層で住所" },
+                { "visual": "① ケーブル", "text": "物理層で ==電気/光==" }
+              ] }
+          ]
+        },
+        {
           "emoji": "🏷️", "title": "MAC と IP のちがい",
           "blocks": [
             { "t": "compare",
@@ -165,6 +177,17 @@
           ]
         },
         {
+          "emoji": "📊", "title": "/24 で分ける",
+          "blocks": [
+            { "t": "example", "label": "具体例", "title": "192.168.0.10",
+              "rows": [
+                { "label": "ネット部", "value": "192.168.0.0（24 ビット）" },
+                { "label": "ホスト部", "value": "末尾 8 ビット → .10", "hl": true }
+              ],
+              "why": "マスクの 1 が ==町==、0 が ==番地==。" }
+          ]
+        },
+        {
           "emoji": "⚠️", "title": "まちがえやすい点",
           "blocks": [
             { "t": "callout", "kind": "warn",
@@ -230,7 +253,29 @@
               { "icon": "🙋", "label": "SYN", "sub": "つないでいい？" },
               { "icon": "🙆", "label": "SYN+ACK", "sub": "いいよ" },
               { "icon": "👍", "label": "ACK", "sub": "始めよう" }
-            ], "caption": "TCP が接続を始める手順" }
+            ], "stepwise": true, "caption": "TCP が接続を始める手順" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "3 回握手",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 接続の始め方",
+              "frames": [
+                { "visual": "SYN", "text": "「つなげていい？」" },
+                { "visual": "SYN+ACK", "text": "「いいよ、君も？」" },
+                { "visual": "ACK", "text": "「始めよう」→ ==接続完了==" }
+              ] }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "TCP と UDP",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "Web", "value": "TCP（確実）" },
+                { "label": "ライブ配信", "value": "==UDP==（少し落ちても速さ）", "hl": true }
+              ],
+              "why": "届けたいか／速さかで選ぶ。" }
           ]
         },
         {
@@ -304,11 +349,22 @@
         {
           "emoji": "🔎", "title": "DNS の流れ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "icon": "⌨️", "label": "名前を入力", "sub": "www.…" },
               { "icon": "📖", "label": "DNS", "sub": "調べる" },
               { "icon": "🔢", "label": "IP へ接続", "sub": "" }
             ] }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "DNS の具体例",
+          "blocks": [
+            { "t": "anim", "caption": "▶ example.com",
+              "frames": [
+                { "visual": "example.com", "text": "名前を入力" },
+                { "visual": "DNS 問合せ", "text": "サーバが IP を返す" },
+                { "visual": "93.184.x.x", "text": "その IP へ接続" }
+              ] }
           ]
         },
         {
@@ -434,11 +490,22 @@
         {
           "emoji": "🎯", "title": "外へ出す流れ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "icon": "💻", "label": "PC", "sub": "外の宛先" },
               { "icon": "🚪", "label": "ゲートウェイ", "sub": "出口" },
               { "icon": "🌍", "label": "外のネット", "sub": "" }
             ] }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "誰が転送する？",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "同じ LAN", "value": "L2 スイッチ（MAC）" },
+                { "label": "別ネット", "value": "==ルータ（IP）==", "hl": true }
+              ],
+              "why": "届け先が同じ町かで装置が変わる。" }
           ]
         },
         {
@@ -515,10 +582,21 @@
         {
           "emoji": "↔️", "title": "HTTP の流れ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "icon": "🌐", "label": "ブラウザ", "sub": "ください" },
               { "icon": "🖥️", "label": "Web サーバ", "sub": "返します" }
             ] }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "GET の一連",
+          "blocks": [
+            { "t": "anim", "caption": "▶ ページ取得",
+              "frames": [
+                { "visual": "GET /index", "text": "ブラウザが **リクエスト**" },
+                { "visual": "200 OK", "text": "サーバが HTML を返す" },
+                { "visual": "画面表示", "text": "ブラウザが描画" }
+              ] }
           ]
         },
         {
@@ -602,11 +680,12 @@
         {
           "emoji": "🍪", "title": "Cookie の流れ",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "icon": "🔑", "label": "ログイン", "sub": "" },
-              { "icon": "🍪", "label": "Cookie を渡す", "sub": "" },
-              { "icon": "🔁", "label": "次から一緒に送る", "sub": "" }
-            ] }
+            { "t": "anim", "caption": "▶ ログインを覚える",
+              "frames": [
+                { "visual": "ログイン成功", "text": "サーバが Cookie を発行" },
+                { "visual": "ブラウザ保存", "text": "小さなデータを端末へ" },
+                { "visual": "次回アクセス", "text": "Cookie を付けて ==再ログイン省略==" }
+              ] }
           ]
         },
         {

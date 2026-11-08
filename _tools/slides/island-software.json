@@ -66,6 +66,28 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "切り替えのイメージ",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 2 つの仕事",
+              "frames": [
+                { "visual": "A を少し", "text": "プロセス A に CPU" },
+                { "visual": "B を少し", "text": "すぐ **切り替え** → B" },
+                { "visual": "A に戻る", "text": "速いので ==同時== に見える" }
+              ] }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "起動の数",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "メモ帳を 2 回起動", "value": "プロセス ==2 個==" },
+                { "label": "1 つ終了", "value": "1 個に減る", "hl": true }
+              ],
+              "why": "起動のたびに実行中の単位が増える。" }
+          ]
+        },
+        {
           "emoji": "⚠️", "title": "まちがえやすい点",
           "blocks": [
             { "t": "callout", "kind": "warn",
@@ -153,6 +175,27 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "ラウンドロビン",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 3 人が 1 つずつ",
+              "frames": [
+                { "visual": "A: 100ms", "text": "一定時間だけ CPU" },
+                { "visual": "B: 100ms", "text": "次の人へ **交代**" },
+                { "visual": "C: 100ms", "text": "また A へ … 公平に回る" }
+              ] }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "セマフォの例",
+          "blocks": [
+            { "t": "example", "label": "具体例", "title": "プリンタ 1 台",
+              "before": "カウンタ = 1",
+              "after": "0 まで使うと待ち",
+              "afterLabel": "利用可能数",
+              "why": "==同時に 1 人だけ== が使えるイメージ。" }
+          ]
+        },
+        {
           "emoji": "⚠️", "title": "注意",
           "blocks": [
             { "t": "callout", "kind": "warn",
@@ -227,7 +270,7 @@
         {
           "emoji": "🔄", "title": "置き換えの流れ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "label": "必要ページ", "sub": "アクセス" },
               { "label": "ない？", "sub": "フォールト" },
               { "label": "補助記憶から", "sub": "読み込み" }
@@ -245,6 +288,28 @@
           "blocks": [
             { "t": "callout", "kind": "warn",
               "text": "置き換えが**頻発**して\n仕事が進まない現象 = ==スラッシング==" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "ページフォールト",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 机にないページ",
+              "frames": [
+                { "visual": "CPUが参照", "text": "主記憶にない → **割込み**" },
+                { "visual": "HDDから読込", "text": "補助記憶からページを運ぶ" },
+                { "visual": "机に載る", "text": "ようやく使える（遅い 1 回）" }
+              ] }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "LRU の例",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "机 3 枚", "value": "A,B,C を使用中" },
+                { "label": "D が必要", "value": "最長未使用の ==B== を追い出す", "hl": true }
+              ],
+              "why": "LRU = いちばん長く使っていないものから入替。" }
           ]
         },
         {
@@ -335,6 +400,17 @@
           "emoji": "👣", "title": "相対パス",
           "blocks": [
             { "t": "big", "text": "**相対パス** = いまいる場所から", "sub": "例: ./memo.txt や ../img" }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "パスの例",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "絶対", "value": "/home/user/a.txt" },
+                { "label": "相対（1 つ上）", "value": "==../img/logo.png==", "hl": true }
+              ],
+              "why": "`..` は ==親フォルダ== へ戻る。" }
           ]
         },
         {
@@ -440,7 +516,18 @@
               { "label": "ソース", "sub": "人間が書く" },
               { "label": "オブジェクト", "sub": "翻訳後" },
               { "label": "実行ファイル", "sub": "結合後" }
-            ], "caption": "コンパイラ → リンカ の順" }
+            ], "stepwise": true, "caption": "コンパイラ → リンカ の順" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "実行まで",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 3 段",
+              "frames": [
+                { "visual": "hello.c", "text": "**コンパイラ** → .o" },
+                { "visual": ".o + lib", "text": "**リンカ** → .exe" },
+                { "visual": "メモリへ", "text": "**ローダ** が読み込んで開始" }
+              ] }
           ]
         },
         {
@@ -537,6 +624,17 @@
           "emoji": "🐧", "title": "Linux は？",
           "blocks": [
             { "t": "big", "text": "**Linux** = Unix 系の OSS カーネル", "sub": "オープンソースの代表例" }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "GPL と Apache",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "GPL で改変公開", "value": "同じ GPL を付ける必要" },
+                { "label": "Apache で改変", "value": "==別ライセンス== も選びやすい", "hl": true }
+              ],
+              "why": "約束の強さのちがい。" }
           ]
         },
         {

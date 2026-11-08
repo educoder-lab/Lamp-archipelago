@@ -59,6 +59,17 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "攻撃の見分け",
+          "blocks": [
+            { "t": "anim", "caption": "▶ ふるまいで選ぶ",
+              "frames": [
+                { "visual": "自分で増殖", "text": "→ **ワーム**" },
+                { "visual": "偽の窓口", "text": "→ **フィッシング**" },
+                { "visual": "大量アクセス", "text": "→ **DoS / DDoS**" }
+              ] }
+          ]
+        },
+        {
           "emoji": "📝", "title": "試験の型",
           "blocks": [
             { "t": "callout", "kind": "exam",
@@ -123,6 +134,17 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "共通鍵の流れ",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 同じ K",
+              "frames": [
+                { "visual": "平文", "text": "送信者が鍵 K で暗号化" },
+                { "visual": "暗号文", "text": "途中は読めない" },
+                { "visual": "平文", "text": "受信者も ==同じ K== で復号" }
+              ] }
+          ]
+        },
+        {
           "emoji": "📬", "title": "公開鍵暗号方式",
           "blocks": [
             { "t": "analogy", "icon": "📬",
@@ -154,6 +176,17 @@
           "emoji": "✍️", "title": "デジタル署名",
           "blocks": [
             { "t": "big", "text": "署名＝送信者の**秘密鍵**", "sub": "検証＝送信者の公開鍵" }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "暗号化 vs 署名",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "B だけに読ませる", "value": "B の ==公開鍵== で暗号化" },
+                { "label": "A が送った証明", "value": "A の ==秘密鍵== で署名", "hl": true }
+              ],
+              "why": "向きが逆になるのでセットで覚える。" }
           ]
         },
         {
@@ -230,6 +263,17 @@
           "emoji": "🔍", "title": "証明書の確認（2）",
           "blocks": [
             { "t": "big", "text": "ブラウザが **CA の署名**を検証", "sub": "期限・サイト名も確認" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "https の握手",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 信頼できるサイト？",
+              "frames": [
+                { "visual": "証明書を受信", "text": "サーバが証明書を送る" },
+                { "visual": "CA 署名チェック", "text": "ブラウザが ==CA の公開鍵== で検証" },
+                { "visual": "鍵交換", "text": "OK なら暗号化通信開始" }
+              ] }
           ]
         },
         {
@@ -313,11 +357,22 @@
         {
           "emoji": "🧱", "title": "置き方のイメージ",
           "blocks": [
-            { "t": "flow", "steps": [
+            { "t": "flow", "stepwise": true, "steps": [
               { "icon": "🌐", "label": "インターネット" },
               { "icon": "🏨", "label": "DMZ", "sub": "公開サーバ" },
               { "icon": "🏢", "label": "内部 LAN" }
             ], "caption": "公開サーバが落ちても内部を守る" }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "IDS と IPS",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "IDS", "value": "怪しい … ==通知だけ==" },
+                { "label": "IPS", "value": "怪しい … **遮断まで**", "hl": true }
+              ],
+              "why": "カメラ vs 警備員のイメージ。" }
           ]
         },
         {
@@ -426,6 +481,17 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "SQL 注入の流れ",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 入力欄の罠",
+              "frames": [
+                { "visual": "名前欄", "text": "悪い文字列を入力" },
+                { "visual": "SQL 結合", "text": "命令の一部と解釈される" },
+                { "visual": "プレースホルダ", "text": "対策 … ==データだけ== として渡す" }
+              ] }
+          ]
+        },
+        {
           "emoji": "📝", "title": "試験の型",
           "blocks": [
             { "t": "callout", "kind": "exam",
@@ -507,6 +573,18 @@
           "emoji": "🎯", "title": "リスクアセスメント",
           "blocks": [
             { "t": "big", "text": "リスクの**特定・分析・評価**", "sub": "見積もりまで。対策実行は次の段階" }
+          ]
+        },
+        {
+          "emoji": "📊", "title": "CIA の例",
+          "blocks": [
+            { "t": "example", "label": "具体例",
+              "rows": [
+                { "label": "成績が漏れた", "value": "==機密性==" },
+                { "label": "成績が改ざん", "value": "==完全性==", "hl": true },
+                { "label": "サーバ停止", "value": "可用性" }
+              ],
+              "why": "何が起きたかで 3 要素を選ぶ。" }
           ]
         },
         {
@@ -600,6 +678,17 @@
           ]
         },
         {
+          "emoji": "🎬", "title": "RBAC の例",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 先生と生徒",
+              "frames": [
+                { "visual": "ロール:先生", "text": "成績入力 OK" },
+                { "visual": "ロール:生徒", "text": "自分の成績だけ閲覧" },
+                { "visual": "同じ人でも", "text": "役割で ==権限が変わる==" }
+              ] }
+          ]
+        },
+        {
           "emoji": "📝", "title": "試験の型",
           "blocks": [
             { "t": "callout", "kind": "exam",
@@ -681,6 +770,17 @@
           "emoji": "🚫", "title": "不正アクセス禁止法",
           "blocks": [
             { "t": "big", "text": "他人の ID・PW で**不正ログイン**禁止", "sub": "取得・提供も対象になる" }
+          ]
+        },
+        {
+          "emoji": "🎬", "title": "インシデント初動",
+          "blocks": [
+            { "t": "anim", "caption": "▶ 感染の疑い",
+              "frames": [
+                { "visual": "検知", "text": "まず気づく・記録" },
+                { "visual": "LAN 切断", "text": "被害を ==広げない==" },
+                { "visual": "CSIRT へ報告", "text": "決めた窓口へ連絡" }
+              ] }
           ]
         },
         {

@@ -69,10 +69,10 @@
           "title": "M:N の例",
           "blocks": [
             {
-              "t": "analogy",
-              "icon": "👥",
-              "real": "1 人が複数部署、\n1 部署に複数人。",
-              "tech": "これは ==M:N==（多対多）。"
+              "t": "table",
+              "head": ["社員", "部署"],
+              "rows": [["太郎", "営業"], ["太郎", "企画"], ["花子", "営業"]],
+              "caption": "1 人が複数・1 部署に複数 → ==M:N=="
             }
           ]
         },
@@ -194,20 +194,25 @@
           "title": "相関の特徴",
           "blocks": [
             {
-              "t": "big",
-              "text": "内側が外側の値を見る",
-              "sub": "行ごとに内側が動くイメージ"
+              "t": "anim",
+              "caption": "▶ 行ごとに内側が動く",
+              "frames": [
+                { "visual": "外側 1 行目", "text": "cat=A を内側へ" },
+                { "visual": "内側 … A の平均", "text": "その平均と比較" },
+                { "visual": "外側 2 行目", "text": "また ==別の cat==" }
+              ]
             }
           ]
         },
         {
           "emoji": "💻",
-          "title": "相関の短い例",
+          "title": "相関の結果イメージ",
           "blocks": [
             {
-              "t": "code",
-              "text": "WHERE price >\n  (SELECT AVG(price)\n   FROM T t2\n   WHERE t2.cat = t1.cat)",
-              "caption": "外側の cat を内側が参照"
+              "t": "table",
+              "head": ["商品", "価格", "判定"],
+              "rows": [["Aさ", "120", "平均超"], ["Aみ", "80", "平均以下"]],
+              "caption": "同じカテゴリ内で平均と比べる"
             }
           ]
         },
@@ -216,20 +221,24 @@
           "title": "EXISTS とは",
           "blocks": [
             {
-              "t": "big",
-              "text": "**EXISTS** = あるか？ だけ見る",
-              "sub": "返りは TRUE / FALSE"
+              "t": "example",
+              "label": "具体例",
+              "title": "注文がある顧客だけ",
+              "before": "注文 0 件",
+              "after": "==FALSE==（選ばれない）",
+              "why": "内側に **1 行でも** あれば TRUE。"
             }
           ]
         },
         {
           "emoji": "💻",
-          "title": "EXISTS の短い例",
+          "title": "EXISTS の前後",
           "blocks": [
             {
-              "t": "code",
-              "text": "WHERE EXISTS (\n  SELECT 1 FROM 注文 o\n  WHERE o.顧客ID = c.ID)",
-              "caption": "注文が1件でもあれば真"
+              "t": "table",
+              "head": ["顧客", "注文", "残る？"],
+              "rows": [["C001", "あり", "○"], ["C002", "なし", "×"]],
+              "caption": "EXISTS … 注文が **ある** 行だけ"
             }
           ]
         },
@@ -247,12 +256,15 @@
         },
         {
           "emoji": "💻",
-          "title": "CASE の短い例",
+          "title": "CASE の前後",
           "blocks": [
             {
-              "t": "code",
-              "text": "CASE\n  WHEN 点 >= 80 THEN 'A'\n  ELSE 'B'\nEND",
-              "caption": "当てはまらない時は **ELSE**"
+              "t": "example",
+              "label": "具体例",
+              "title": "点 ≥ 80 なら A",
+              "before": "点: 75, 85, 92",
+              "after": "評価: B, A, A",
+              "why": "どれにも当たらない行は ==ELSE==。"
             }
           ]
         },
@@ -348,9 +360,13 @@
           "title": "排他ロック",
           "blocks": [
             {
-              "t": "big",
-              "text": "**排他** = 読も書もできない",
-              "sub": "他のトランザクションは待つ"
+              "t": "anim",
+              "caption": "▶ トイレの鍵のたとえ",
+              "frames": [
+                { "visual": "🔒 鍵を取得", "text": "A が排他ロック" },
+                { "visual": "B は待ち", "text": "読みも書きも不可" },
+                { "visual": "A が解放", "text": "次の人が入れる" }
+              ]
             }
           ]
         },
@@ -416,12 +432,12 @@
           "title": "バージョン番号",
           "blocks": [
             {
-              "t": "steps",
-              "items": [
-                { "title": "読む", "text": "データと版番号を取る" },
-                { "title": "書く前", "text": "版が同じか確認" },
-                { "title": "違う", "text": "競合 → やり直し" }
-              ]
+              "t": "example",
+              "label": "具体例",
+              "title": "版番号がずれたら",
+              "before": "読んだとき 版=**3**",
+              "after": "書くとき 版=**4** → やり直し",
+              "why": "競合を ==検出== して再実行。"
             }
           ]
         },
@@ -517,9 +533,14 @@
           "title": "チェックポイント",
           "blocks": [
             {
-              "t": "big",
-              "text": "メモリ上のデータをディスクへ",
-              "sub": "復旧の出発点になる"
+              "t": "example",
+              "label": "具体例",
+              "title": "時刻 10:00 のセーブ",
+              "rows": [
+                { "label": "メモリ", "value": "いまのDB状態" },
+                { "label": "ディスク", "value": "==10:00== に書き出し" }
+              ],
+              "why": "ここから **ログで進める**。"
             }
           ]
         },
