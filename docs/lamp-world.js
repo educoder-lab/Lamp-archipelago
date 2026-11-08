@@ -8,17 +8,356 @@ const STATE_COLOR = {
   open: 0x6b7ab8,
   fog: 0x3a3f62
 };
-const REALM_DECK = {
-  sky: 0x2a4a7a,
-  underground: 0x3d2a55,
-  land: 0x2a5538
-};
 
-function hashHue(id) {
-  let h = 0;
-  const s = String(id || '');
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-  return (h % 360) / 360;
+function matStd(color, opts) {
+  return new THREE.MeshStandardMaterial(Object.assign({
+    color, roughness: 0.55, metalness: 0.15
+  }, opts || {}));
+}
+
+/** テーマ別ローポリ小物 */
+function addThemeProps(group, theme, R, deckY, foggy) {
+  const accent = theme.accent || 0xf5c451;
+  const props = theme.props || [];
+  const op = foggy ? 0.35 : 1;
+
+  function place(mesh, x, z, yOff) {
+    mesh.position.set(x, deckY + (yOff || 0), z);
+    mesh.traverse(o => {
+      if (o.isMesh && o.material && 'opacity' in o.material) {
+        o.material.transparent = foggy || o.material.transparent;
+        if (foggy) o.material.opacity = Math.min(o.material.opacity ?? 1, op);
+      }
+    });
+    group.add(mesh);
+  }
+
+  const makers = {
+    lighthouse_s() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.28, 1.1, 8), matStd(0xe8eef5)));
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.2, 12, 12), matStd(accent, { emissive: accent, emissiveIntensity: 1.2 }));
+      lamp.position.y = 0.7;
+      g.add(lamp);
+      place(g, 0, -R * 0.45, 0.55);
+    },
+    lighthouse_l() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.42, 2.2, 10), matStd(0xf0f4fa)));
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.32, 14, 14), matStd(accent, { emissive: accent, emissiveIntensity: 1.5 }));
+      lamp.position.y = 1.35;
+      g.add(lamp);
+      place(g, 0, -R * 0.5, 1.1);
+      group.userData.flame = lamp;
+    },
+    pier() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.12, 0.7), matStd(0x6a5030)));
+      place(g, 0, R * 0.55, 0.1);
+    },
+    crate() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.45, 0.45), matStd(0x8a6230)), R * 0.35, R * 0.35, 0.28);
+    },
+    board() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.55, 0.08), matStd(0x3a3048, { emissive: accent, emissiveIntensity: 0.2 })), -R * 0.4, R * 0.25, 0.45);
+    },
+    core_crystal() {
+      const m = new THREE.Mesh(new THREE.OctahedronGeometry(0.7, 0), matStd(accent, { emissive: accent, emissiveIntensity: 1.4, metalness: 0.4 }));
+      place(m, 0, 0, 0.9);
+      group.userData.flame = m;
+    },
+    ring_rail() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(R * 0.55, 0.06, 8, 32), matStd(0xb8b0d0, { metalness: 0.7 })), 0, 0, 0.2);
+    },
+    dawn_gate() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(0.25, 1.6, 0.25), matStd(0xe8d5a0)));
+      const r = g.children[0].clone(); r.position.x = 1.2; g.add(r);
+      g.children[0].position.x = -0.6;
+      place(g, 0, -R * 0.4, 0.85);
+    },
+    cliff_pillar() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.45, 1.8, 6), matStd(0xd0d8e0, { flatShading: true })), -R * 0.55, -R * 0.2, 0.9);
+    },
+    bit_stone() {
+      const a = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.5, 0.2), matStd(accent, { emissive: accent, emissiveIntensity: 0.5 }));
+      place(a, R * 0.4, R * 0.15, 0.35);
+    },
+    clock_tower() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(0.7, 2.0, 0.7), matStd(0x8a7040)));
+      const face = new THREE.Mesh(new THREE.CircleGeometry(0.28, 16), matStd(0xf5e6c0, { emissive: accent, emissiveIntensity: 0.3 }));
+      face.position.set(0, 0.55, 0.36);
+      g.add(face);
+      place(g, 0, -R * 0.45, 1.05);
+    },
+    gear() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.15, 12), matStd(0xc9a24a, { metalness: 0.75, roughness: 0.35 })), R * 0.35, 0.2, 0.2);
+    },
+    hourglass() {
+      place(new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.5, 6), matStd(0xa09070)), -R * 0.35, R * 0.2, 0.4);
+    },
+    chimney() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.28, 1.6, 8), matStd(0x4a3030)), -R * 0.4, -R * 0.35, 0.85);
+    },
+    copper_pipe() {
+      const p = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.08, 6, 16, Math.PI), matStd(0xb87333, { metalness: 0.8 }));
+      p.rotation.y = Math.PI / 2;
+      place(p, R * 0.25, -R * 0.2, 0.45);
+    },
+    boiler() {
+      place(new THREE.Mesh(new THREE.SphereGeometry(0.45, 10, 10), matStd(0x6a5040, { metalness: 0.5 })), R * 0.15, R * 0.35, 0.45);
+    },
+    bookshelf() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.2, 0.35), matStd(0x5a4030)), -R * 0.35, -R * 0.35, 0.7);
+    },
+    globe() {
+      place(new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 12), matStd(0x4a80a0, { metalness: 0.3 })), R * 0.35, -R * 0.15, 0.45);
+    },
+    thread() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.03, 6, 24), matStd(accent, { emissive: accent, emissiveIntensity: 0.4 })), 0, R * 0.25, 0.35);
+    },
+    layer_floor() {
+      for (let i = 0; i < 3; i++) {
+        const f = new THREE.Mesh(new THREE.CylinderGeometry(0.7 - i * 0.12, 0.7 - i * 0.12, 0.12, 10), matStd(0x3a5850));
+        place(f, -R * 0.3, -R * 0.3, 0.25 + i * 0.35);
+      }
+    },
+    stack_box() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.7, 0.5), matStd(0x486858)), R * 0.4, 0.1, 0.45);
+    },
+    process_flag() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.1, 6), matStd(0xaaaaaa)));
+      const flag = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.28, 0.04), matStd(accent, { emissive: accent, emissiveIntensity: 0.35 }));
+      flag.position.set(0.22, 0.35, 0);
+      g.add(flag);
+      place(g, R * 0.2, -R * 0.4, 0.55);
+    },
+    spring() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 0.25, 20), matStd(0x3a90c0, { transparent: true, opacity: 0.75, metalness: 0.4, roughness: 0.2 })), 0, R * 0.15, 0.12);
+    },
+    crystal() {
+      const c = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 0), matStd(accent, { emissive: accent, emissiveIntensity: 0.9, flatShading: true }));
+      place(c, -R * 0.4, -R * 0.25, 0.55);
+      group.userData.flame = c;
+    },
+    grid() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.08, 1.0), matStd(0x80c0e0, { wireframe: false, metalness: 0.3 })), R * 0.35, -R * 0.2, 0.1);
+    },
+    chain() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.05, 6, 14), matStd(0xc0c8d0, { metalness: 0.8 })), R * 0.15, R * 0.4, 0.35);
+    },
+    beacon() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.2, 1.3, 8), matStd(0xe8eef8)));
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 12), matStd(accent, { emissive: accent, emissiveIntensity: 1.3 }));
+      lamp.position.y = 0.8;
+      g.add(lamp);
+      place(g, -R * 0.35, -R * 0.4, 0.7);
+      group.userData.flame = lamp;
+    },
+    bridge() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.1, 0.45), matStd(0x8a7048)), 0, R * 0.5, 0.12);
+    },
+    sail() {
+      place(new THREE.Mesh(new THREE.ConeGeometry(0.5, 1.2, 3), matStd(0xf0f4ff)), R * 0.35, -R * 0.15, 0.7);
+    },
+    gate() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.5, 0.3), matStd(0x4a5050)));
+      const r = g.children[0].clone(); r.position.x = 1.1; g.add(r);
+      g.children[0].position.x = -0.55;
+      const lintel = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.25, 0.3), matStd(0x4a5050));
+      lintel.position.set(0, 0.75, 0);
+      g.add(lintel);
+      place(g, 0, -R * 0.45, 0.8);
+    },
+    shield() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 0.12, 5), matStd(accent, { metalness: 0.6 })), R * 0.35, 0.15, 0.35);
+    },
+    keyhole() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.3, 1.0, 8), matStd(0x3a4040)), -R * 0.4, R * 0.1, 0.55);
+    },
+    easel() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.9, 0.12), matStd(0xf5f0e8)), -R * 0.25, -R * 0.3, 0.55);
+    },
+    paint() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.35, 10), matStd(accent, { emissive: accent, emissiveIntensity: 0.4 })), R * 0.3, -R * 0.2, 0.25);
+    },
+    canvas() {
+      place(new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.7), matStd(0xffffff)), R * 0.1, R * 0.35, 0.55);
+    },
+    seal_tower() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 1.3, 8), matStd(0xc04040, { emissive: 0x801010, emissiveIntensity: 0.3 })), 0, -R * 0.4, 0.7);
+    },
+    desk() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.35, 0.55), matStd(0x6a5030)), R * 0.25, 0.2, 0.25);
+    },
+    compass() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.12, 24), matStd(0xd4af37, { metalness: 0.7, emissive: accent, emissiveIntensity: 0.25 })), 0, -R * 0.2, 0.15);
+    },
+    round_table() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.2, 16), matStd(0x5a4030)), R * 0.3, R * 0.25, 0.18);
+    },
+    star_arch() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.06, 6, 20, Math.PI), matStd(accent, { emissive: accent, emissiveIntensity: 0.5 })), -R * 0.25, -R * 0.35, 0.7);
+    },
+    draft_table() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.15, 0.8), matStd(0xa0c4e8)), 0, R * 0.2, 0.2);
+    },
+    ruler_arch() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.08, 0.12), matStd(0xe8eef5)), 0, -R * 0.35, 0.55);
+    },
+    model_block() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.4), matStd(accent)), R * 0.4, -R * 0.15, 0.3);
+    },
+    scaffold() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.15), matStd(0x888890, { wireframe: false, metalness: 0.5 })), -R * 0.35, -R * 0.3, 0.75);
+    },
+    formwork() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.7, 0.2), matStd(0xc0a070)), R * 0.25, 0.2, 0.45);
+    },
+    proto_lamp() {
+      const m = new THREE.Mesh(new THREE.SphereGeometry(0.25, 12, 12), matStd(accent, { emissive: accent, emissiveIntensity: 1.2 }));
+      place(m, 0, -R * 0.35, 0.45);
+      group.userData.flame = m;
+    },
+    wbs_sign() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.6, 0.1), matStd(0xf5f0d0)), -R * 0.3, R * 0.25, 0.5);
+    },
+    arrow_stone() {
+      place(new THREE.Mesh(new THREE.ConeGeometry(0.25, 0.7, 4), matStd(accent)), R * 0.35, -R * 0.2, 0.45);
+    },
+    cabin() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.8, 0.9), matStd(0x6a4530)), -R * 0.25, -R * 0.3, 0.5);
+    },
+    bell() {
+      place(new THREE.Mesh(new THREE.SphereGeometry(0.28, 10, 10), matStd(0xd4af37, { metalness: 0.8 })), R * 0.3, -R * 0.25, 0.7);
+    },
+    lantern_row() {
+      for (let i = 0; i < 3; i++) {
+        const lan = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), matStd(accent, { emissive: accent, emissiveIntensity: 1.0 }));
+        place(lan, -0.5 + i * 0.5, R * 0.4, 0.35);
+      }
+    },
+    archive() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.1, 0.4), matStd(0x3a3848)), -R * 0.3, -R * 0.35, 0.65);
+    },
+    stamp() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.35, 10), matStd(0xc04040)), R * 0.35, 0.1, 0.3);
+    },
+    evidence_box() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.35, 0.4), matStd(0x5a5040)), R * 0.15, R * 0.35, 0.25);
+    },
+    triple_gate() {
+      for (let i = 0; i < 3; i++) {
+        const p = new THREE.Mesh(new THREE.BoxGeometry(0.35, 1.8, 0.2), matStd(0xd0d0e8));
+        place(p, -0.9 + i * 0.9, -R * 0.4, 0.95);
+      }
+    },
+    storm_pillar() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.28, 2.0, 8), matStd(0x6a58a0, { emissive: accent, emissiveIntensity: 0.35 })), R * 0.45, 0.1, 1.05);
+    },
+    trial_flame() {
+      const m = new THREE.Mesh(new THREE.SphereGeometry(0.3, 12, 12), matStd(accent, { emissive: accent, emissiveIntensity: 1.6 }));
+      place(m, 0, R * 0.2, 0.5);
+      group.userData.flame = m;
+    },
+    slab() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.0, 0.2), matStd(0x4a5850, { emissive: accent, emissiveIntensity: 0.15 })), 0, -R * 0.35, 0.6);
+    },
+    trace_line() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.05, 0.15), matStd(accent, { emissive: accent, emissiveIntensity: 0.6 })), 0, R * 0.25, 0.08);
+    },
+    spear() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.4, 6), matStd(0xa0a8a0)), R * 0.4, -R * 0.1, 0.75);
+    },
+    blackboard() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.85, 0.1), matStd(0x1a2a20)), 0, -R * 0.4, 0.6);
+    },
+    workbench() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 0.6), matStd(0x5a4830)), R * 0.2, R * 0.25, 0.28);
+    },
+    vault() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.2, 0.8), matStd(0x3a6080, { metalness: 0.4 })), -R * 0.25, -R * 0.3, 0.7);
+    },
+    er_board() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.6, 0.08), matStd(0xe8f0ff)), R * 0.35, 0.15, 0.5);
+    },
+    lock() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.45, 0.25), matStd(0xd4af37, { metalness: 0.8 })), R * 0.1, R * 0.4, 0.35);
+    },
+    cable_wall() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.0, 0.15), matStd(0x3a5040)), 0, -R * 0.4, 0.6);
+    },
+    switch_box() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.4, 0.35), matStd(0xc07040, { metalness: 0.5 })), R * 0.35, 0.2, 0.3);
+    },
+    packet_crate() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.35, 0.45), matStd(0x7fd1ff, { emissive: 0x306080, emissiveIntensity: 0.3 })), -R * 0.35, R * 0.25, 0.25);
+    },
+    shield_wall() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.1, 0.2), matStd(0x4a4040)), 0, -R * 0.4, 0.65);
+    },
+    risk_board() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.65, 0.08), matStd(0xf0e0c0)), R * 0.35, 0.1, 0.5);
+    },
+    keys() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.05, 6, 12), matStd(0xd4af37, { metalness: 0.85 })), -R * 0.35, R * 0.25, 0.35);
+    },
+    giant_book() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.35, 1.0), matStd(0x3a2040, { emissive: accent, emissiveIntensity: 0.2 })), 0, -R * 0.2, 0.3);
+    },
+    long_table() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.25, 0.7), matStd(0x4a4030)), 0, R * 0.3, 0.2);
+    },
+    gold_arch() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.07, 6, 20, Math.PI), matStd(0xf5c451, { metalness: 0.75, emissive: accent, emissiveIntensity: 0.4 })), 0, -R * 0.45, 0.9);
+    },
+    union_flag() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.5, 6), matStd(0xcccccc)));
+      const f = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.35, 0.05), matStd(accent, { emissive: accent, emissiveIntensity: 0.35 }));
+      f.position.set(0.28, 0.45, 0);
+      g.add(f);
+      place(g, -R * 0.4, -R * 0.3, 0.75);
+    },
+    long_desk() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.3, 0.6), matStd(0x6a5a40)), 0, R * 0.2, 0.22);
+    },
+    sundial() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.1, 20), matStd(0xd4af37, { metalness: 0.6 })), R * 0.35, -R * 0.15, 0.12);
+    },
+    war_table() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.25, 8), matStd(0x4a4840)), 0, 0.1, 0.2);
+    },
+    slab_stack() {
+      for (let i = 0; i < 3; i++) {
+        place(new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.12, 0.5), matStd(0x6a6a68)), R * 0.35, -R * 0.25, 0.15 + i * 0.14);
+      }
+    },
+    bonfire() {
+      const m = new THREE.Mesh(new THREE.SphereGeometry(0.28, 10, 10), matStd(accent, { emissive: accent, emissiveIntensity: 1.4 }));
+      place(m, -R * 0.35, R * 0.3, 0.4);
+      group.userData.flame = m;
+    },
+    lamp_ring() {
+      place(new THREE.Mesh(new THREE.TorusGeometry(R * 0.45, 0.08, 8, 28), matStd(accent, { emissive: accent, emissiveIntensity: 0.8 })), 0, 0, 0.25);
+    },
+    horizon_pillar() {
+      place(new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.35, 2.2, 8), matStd(0xe8d5a0)), 0, -R * 0.4, 1.15);
+    },
+    final_line() {
+      place(new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.08, 0.2), matStd(accent, { emissive: accent, emissiveIntensity: 0.7 })), 0, R * 0.45, 0.1);
+    }
+  };
+
+  props.forEach(name => {
+    if (makers[name]) {
+      try { makers[name](); } catch (e) { /* ignore prop errors */ }
+    }
+  });
 }
 
 function easeInOut(t) {
@@ -166,13 +505,19 @@ function createAvatar(level) {
 function createIslandMesh(node) {
   const group = new THREE.Group();
   const R = islandRadius(node);
-  const hue = hashHue(node.d ? node.d.id : node.kind);
   const foggy = node.state === 'fog';
-  const cliffCol = new THREE.Color().setHSL(hue, foggy ? 0.12 : 0.38, foggy ? 0.18 : 0.28);
-  const deckCol = new THREE.Color(REALM_DECK[node.realm] || 0x2a3a5a);
-  if (foggy) deckCol.multiplyScalar(0.55);
+  const themes = globalThis.LampIslandThemes;
+  const theme = (themes && themes.themeFor)
+    ? themes.themeFor(node)
+    : { deck: 0x2a3a5a, cliff: 0x1a2a3a, accent: 0xf5c451, props: [] };
 
-  // cliff body
+  const cliffCol = new THREE.Color(theme.cliff);
+  const deckCol = new THREE.Color(theme.deck);
+  if (foggy) {
+    cliffCol.multiplyScalar(0.55);
+    deckCol.multiplyScalar(0.55);
+  }
+
   const cliff = new THREE.Mesh(
     new THREE.CylinderGeometry(R * 0.92, R * 1.08, 1.6, 24),
     new THREE.MeshStandardMaterial({
@@ -187,7 +532,6 @@ function createIslandMesh(node) {
   cliff.position.y = 0.1;
   group.add(cliff);
 
-  // flat deck (stages sit here)
   const deckY = 0.95;
   const deck = new THREE.Mesh(
     new THREE.CylinderGeometry(R * 0.98, R * 0.98, 0.22, 32),
@@ -202,12 +546,11 @@ function createIslandMesh(node) {
   deck.position.y = deckY;
   group.add(deck);
 
-  // rim glow
   const rim = new THREE.Mesh(
     new THREE.TorusGeometry(R * 0.98, 0.07, 10, 48),
     new THREE.MeshStandardMaterial({
-      color: STATE_COLOR[node.state] || 0x5a6aa8,
-      emissive: STATE_COLOR[node.state] || 0x5a6aa8,
+      color: STATE_COLOR[node.state] || theme.accent,
+      emissive: STATE_COLOR[node.state] || theme.accent,
       emissiveIntensity: node.state === 'current' ? 1.1 : node.state === 'cleared' ? 0.75 : 0.2,
       roughness: 0.35,
       metalness: 0.4
@@ -217,46 +560,40 @@ function createIslandMesh(node) {
   rim.position.y = deckY + 0.12;
   group.add(rim);
 
-  // beacon tower at back of island
-  const beacon = new THREE.Group();
-  const tower = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.22, 0.32, 1.4, 8),
-    new THREE.MeshStandardMaterial({ color: 0xd8dde8, roughness: 0.45, metalness: 0.25 })
-  );
-  tower.position.y = deckY + 0.85;
-  const flame = new THREE.Mesh(
-    new THREE.SphereGeometry(0.28, 14, 14),
-    new THREE.MeshStandardMaterial({
-      color: 0xf5c451,
-      emissive: 0xf5c451,
-      emissiveIntensity: node.state === 'cleared' || node.state === 'current' ? 1.5 : 0.35,
-      transparent: foggy,
-      opacity: foggy ? 0.3 : 1
-    })
-  );
-  flame.position.y = deckY + 1.7;
-  beacon.add(tower, flame);
-  beacon.position.set(0, 0, -R * 0.55);
-  group.add(beacon);
-  group.userData.flame = flame;
+  // theme props (lighthouse / gear / crystal / etc.)
+  addThemeProps(group, theme, R, deckY, foggy);
 
-  // progress arc on deck edge
+  if (!group.userData.flame && (node.state === 'cleared' || node.state === 'current')) {
+    const flame = new THREE.Mesh(
+      new THREE.SphereGeometry(0.22, 12, 12),
+      new THREE.MeshStandardMaterial({
+        color: theme.accent,
+        emissive: theme.accent,
+        emissiveIntensity: 1.3,
+        transparent: foggy,
+        opacity: foggy ? 0.3 : 1
+      })
+    );
+    flame.position.set(0, deckY + 1.5, -R * 0.5);
+    group.add(flame);
+    group.userData.flame = flame;
+  }
+
   if (node.kind === 'domain' && node.d && node.d.total > 0 && !foggy) {
     const frac = Math.max(0.02, node.d.done / node.d.total);
     const prog = new THREE.Mesh(
       new THREE.RingGeometry(R * 0.72, R * 0.82, 48, 1, 0, Math.PI * 2 * frac),
-      new THREE.MeshBasicMaterial({ color: 0xf5c451, side: THREE.DoubleSide, transparent: true, opacity: 0.9 })
+      new THREE.MeshBasicMaterial({ color: theme.accent, side: THREE.DoubleSide, transparent: true, opacity: 0.9 })
     );
     prog.rotation.x = -Math.PI / 2;
     prog.position.y = deckY + 0.13;
     group.add(prog);
   }
 
-  // soft under-glow plate
   const glow = new THREE.Mesh(
     new THREE.CircleGeometry(R * 1.15, 32),
     new THREE.MeshBasicMaterial({
-      color: STATE_COLOR[node.state] || 0x5a6aa8,
+      color: STATE_COLOR[node.state] || theme.accent,
       transparent: true,
       opacity: node.state === 'fog' ? 0.05 : 0.18,
       side: THREE.DoubleSide
@@ -270,6 +607,7 @@ function createIslandMesh(node) {
   group.userData.pick = true;
   group.userData.radius = R;
   group.userData.deckY = deckY;
+  group.userData.themeName = theme.theme || '';
   return group;
 }
 

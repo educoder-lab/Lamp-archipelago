@@ -48,7 +48,8 @@
 4. **プレイヤー** … 二人称は「あなた」。性格和設定の強制はしない（`Show-Status.ps1 -Name` で名前だけ可）。
 5. **トーン** … 厳しすぎないファンタジー。ギャグは控えめ。
 
-詳細の実装計画: [RPG-PLAN.md](./RPG-PLAN.md)
+詳細の実装計画: [RPG-PLAN.md](./RPG-PLAN.md)  
+島の見た目テーマとオブジェクト: [_tools/Island-Themes.md](./_tools/Island-Themes.md)
 
 ## 冒険の操作
 

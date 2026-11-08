@@ -6,6 +6,7 @@
 |----------|------|
 | [map.html](./map.html) | Three.js 航路マップ・アバター進行・迂回 |
 | `lamp-world.js` · `lamp-world.css` | 3D航路（島・ステージ台・歩行） |
+| `island-themes.js` | 島ごとのテーマ色・代表オブジェクト |
 | [lesson.html](./lesson.html) | 121 講座プレイヤー |
 | [ref.html](./ref.html) | 世界 / 用語 / カリキュラム / 称号 |
 | [data/quests.json](./data/quests.json) | 講座 UI 用（ビルド生成） |
