@@ -25,19 +25,20 @@ SQL Editor で [`supabase/lamp_progress.sql`](./supabase/lamp_progress.sql) を�
 
 ## 4. フロントの設定
 
-1. Project Settings → API から **Project URL** と **anon public** キーをコピーする。
+1. Project Settings → API から **Project URL**（末尾に `/rest/v1/` は付けない）と **Publishable / anon public** キーをコピーする。
 2. [`docs/supabase-config.example.js`](../docs/supabase-config.example.js) を参考に [`docs/supabase-config.js`](../docs/supabase-config.js) を編集する。
 
 ```js
 window.LAMP_SUPABASE = {
   url: 'https://xxxx.supabase.co',
-  anonKey: 'eyJ...'
+  anonKey: 'sb_publishable_...' // または従来の eyJ... anon JWT
 };
 ```
 
-- **anon key のみ**を入れる（`service_role` は絶対に入れない）。
-- 友人配布のため anon key をリポジトリにコミットしてよい（RLS で自分の行だけ読書き）。
+- **Publishable / anon key のみ**を入れる（`service_role` / secret は絶対に入れない）。
+- 友人配布のため publishable key をリポジトリにコミットしてよい（RLS で自分の行だけ読書き）。
 - `url` が空、またはプレースホルダのままだとログインボタンは出ず、従来どおりローカルのみで動く。
+- 本リポジトリの公開 Pages 用設定はすでに投入済みです。
 
 ## 5. 動作確認
 
