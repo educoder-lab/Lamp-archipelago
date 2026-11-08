@@ -1,5 +1,6 @@
 /* Lumina Code — Three.js 航路ワールド（大型島・人型アバター） */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import { themeFor as islandThemeFor } from './island-themes.js';
 
 const REALM_Y = { sky: 3.5, underground: -2.2, land: 0.6 };
 const STATE_COLOR = {
@@ -15,14 +16,16 @@ function matStd(color, opts) {
   }, opts || {}));
 }
 
-/** テーマ別ローポリ小物 */
+/** テーマ別ローポリ小物（島半径に合わせて拡大） */
 function addThemeProps(group, theme, R, deckY, foggy) {
   const accent = theme.accent || 0xf5c451;
   const props = theme.props || [];
   const op = foggy ? 0.35 : 1;
+  const S = Math.max(1.35, R / 3.2); // 遠景でもシルエットが分かるサイズ
 
   function place(mesh, x, z, yOff) {
-    mesh.position.set(x, deckY + (yOff || 0), z);
+    mesh.scale.multiplyScalar(S);
+    mesh.position.set(x, deckY + (yOff || 0) * S, z);
     mesh.traverse(o => {
       if (o.isMesh && o.material && 'opacity' in o.material) {
         o.material.transparent = foggy || o.material.transparent;
@@ -355,7 +358,10 @@ function addThemeProps(group, theme, R, deckY, foggy) {
 
   props.forEach(name => {
     if (makers[name]) {
-      try { makers[name](); } catch (e) { /* ignore prop errors */ }
+      try { makers[name](); }
+      catch (e) { console.warn('[lamp-world] prop failed:', name, e); }
+    } else {
+      console.warn('[lamp-world] unknown prop:', name);
     }
   });
 }
@@ -506,10 +512,7 @@ function createIslandMesh(node) {
   const group = new THREE.Group();
   const R = islandRadius(node);
   const foggy = node.state === 'fog';
-  const themes = globalThis.LampIslandThemes;
-  const theme = (themes && themes.themeFor)
-    ? themes.themeFor(node)
-    : { deck: 0x2a3a5a, cliff: 0x1a2a3a, accent: 0xf5c451, props: [] };
+  const theme = islandThemeFor(node) || { deck: 0x2a3a5a, cliff: 0x1a2a3a, accent: 0xf5c451, props: [] };
 
   const cliffCol = new THREE.Color(theme.cliff);
   const deckCol = new THREE.Color(theme.deck);

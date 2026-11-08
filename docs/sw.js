@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v12';
+const CACHE = 'lamp-archipelago-v13';
 const PRECACHE = [
   './',
   './index.html',
@@ -39,6 +39,20 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+  // HTML/JS/CSS はネットワーク優先（テーマ更新がすぐ見える）
+  const netFirst = /\.(?:html?|js|css|webmanifest)$/i.test(url.pathname) || url.pathname.endsWith('/');
+  if (netFirst) {
+    event.respondWith(
+      fetch(event.request).then((res) => {
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(event.request, copy));
+        }
+        return res;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const network = fetch(event.request).then((res) => {
