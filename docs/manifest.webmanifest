@@ -1,7 +1,7 @@
 {
-  "name": "ランプ諸島 — 基本情報網羅コース",
-  "short_name": "ランプ諸島",
-  "description": "基本情報技術者試験の出題範囲を121講座で学ぶ冒険型コース",
+  "name": "Lumina Code — 基本情報網羅コース",
+  "short_name": "Lumina Code",
+  "description": "基本情報技術者試験の出題範囲を121講座で学ぶ冒険型コース（舞台：ランプ諸島）",
   "start_url": "./map.html",
   "scope": "./",
   "display": "standalone",

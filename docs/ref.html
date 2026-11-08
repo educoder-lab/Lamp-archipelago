@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#171b36">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<title>ランプ諸島 — 参照</title>
+<title>Lumina Code — 参照</title>
 <style>
 :root {
   --bg: #0f1226; --panel: #171b36; --panel2: #1f2447; --ink: #ece9f5; --muted: #9aa0c4; --open: #7fd1ff; --gold: #f5c451;
@@ -98,7 +98,7 @@ async function main() {
     document.getElementById('err').textContent = 'ページが見つかりません: ' + p;
     return;
   }
-  document.title = 'ランプ諸島 — ' + page.title;
+  document.title = 'Lumina Code — ' + page.title;
   document.getElementById('page-title').textContent = page.title;
   const root = document.getElementById('content');
   root.innerHTML = LampMarkdown.render(page.markdown);

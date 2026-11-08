@@ -1,4 +1,4 @@
-# docs（GitHub Pages）
+# docs（GitHub Pages）— Lumina Code
 
 公開サイト: https://educoder-lab.github.io/Lamp-archipelago/
 

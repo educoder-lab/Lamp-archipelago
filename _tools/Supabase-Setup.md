@@ -1,5 +1,6 @@
 # Supabase セットアップ（Google ログイン＋進捗同期）
 
+アプリ名（OAuth 同意画面）: **Lumina Code**  
 ログインは**任意**です。未ログインでも localStorage で学習できます。ログインすると別端末でも同じ灯が復元されます。
 
 ## 1. Google OAuth
