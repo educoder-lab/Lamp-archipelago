@@ -13,11 +13,15 @@
   return ($rel -join '/')
 }
 
-function Get-WorldRelPath {
-  param([string]$LessonPath)
-  $depth = ($LessonPath -split '\\').Count
-  if ($depth -eq 3) { return '../../../WORLD.md' }
-  return ('../' * ($depth + 1)).TrimEnd('/') + '/WORLD.md'
+function Get-LampRepoRelPath {
+  param(
+    [string]$LessonPath,
+    [string]$RepoRelativeFile
+  )
+  $depth = @(($LessonPath -replace '\\', '/') -split '/' | Where-Object { $_ }).Count
+  if ($depth -le 0) { return $RepoRelativeFile }
+  $up = 1..$depth | ForEach-Object { '..' }
+  return (($up -join '/') + '/' + ($RepoRelativeFile -replace '^/', ''))
 }
 
 function Get-LampTravelAdvisory {
@@ -46,13 +50,12 @@ function Format-LessonNav {
     $Next,
     [string]$RepoRoot
   )
-  $depth = ($Lesson.Path -split '\\').Count
   $curRoot = Join-Path $RepoRoot $Lesson.Path
-  $curriculumRel = if ($depth -eq 3) { '../../../CURRICULUM.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/CURRICULUM.md' }
-  $worldRel = Get-WorldRelPath -LessonPath $Lesson.Path
-  $glossaryRel = if ($depth -eq 3) { '../../../GLOSSARY.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/GLOSSARY.md' }
-  $titlesRel = if ($depth -eq 3) { '../../../TITLES.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/TITLES.md' }
-  $mapRel = if ($depth -eq 3) { '../../../docs/map.html' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/docs/map.html' }
+  $curriculumRel = Get-LampRepoRelPath -LessonPath $Lesson.Path -RepoRelativeFile 'CURRICULUM.md'
+  $worldRel = Get-LampRepoRelPath -LessonPath $Lesson.Path -RepoRelativeFile 'WORLD.md'
+  $glossaryRel = Get-LampRepoRelPath -LessonPath $Lesson.Path -RepoRelativeFile 'GLOSSARY.md'
+  $titlesRel = Get-LampRepoRelPath -LessonPath $Lesson.Path -RepoRelativeFile 'TITLES.md'
+  $mapRel = Get-LampRepoRelPath -LessonPath $Lesson.Path -RepoRelativeFile 'docs/map.html'
   $islandRel = '../README.md'
   $advisory = Get-LampTravelAdvisory -Lesson $Lesson
   $prevLine = '—'

@@ -14,6 +14,16 @@
 **講座数・順番**: [CURRICULUM.md](./CURRICULUM.md)（自動生成。README/PROBLEMS からも **ナビ** で次へ進めます）  
 **RPG**: [WORLD.md](./WORLD.md) · [GLOSSARY.md](./GLOSSARY.md) · [TITLES.md](./TITLES.md)
 
+## ワールドマップ（HTML）
+
+| 開き方 | 説明 |
+|--------|------|
+| [GitHub Pages で開く](https://educoder-lab.github.io/Lamp-archipelago/map.html) | ブラウザだけ。講座リンクは GitHub 上の README / PROBLEMS へ飛びます（**main** に push 後、リポジトリの **Settings → Pages** で GitHub Actions が有効なこと）。 |
+| ローカル `.\Show-Map.ps1` | `.adventure-save.json` を `docs/save-data.js` に同期してから `docs/map.html` を開きます。**灯・迂回・称号**が地図に反映されます。 |
+| ファイル `docs/map.html` | クローン先でダブルクリックでも動きます（記録なし）。 |
+
+初回のみ: GitHub で **Pages** の Source が **GitHub Actions** になっているか確認してください（`.github/workflows/pages.yml` が `docs/` を公開します）。
+
 ## はじめ方
 
 ```powershell

@@ -13,6 +13,8 @@ if (-not (Test-Path -LiteralPath $map)) {
 
 Write-AdventureMapData -Save (Get-AdventureSave)
 Write-Host "ワールドマップに冒険の記録を同期しました: docs\save-data.js" -ForegroundColor Green
+Write-Host "ブラウザ公開: https://educoder-lab.github.io/Lamp-archipelago/map.html" -ForegroundColor DarkCyan
+Write-Host "（Pages は進捗を見られません。ローカルで Show-Map すると自分の灯が付きます）"
 
 if (-not $NoOpen) {
   Start-Process $map

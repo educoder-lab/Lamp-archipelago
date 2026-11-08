@@ -1,4 +1,15 @@
-﻿function Write-WorldMapFile {
+﻿function Get-LampGithubRepoSlug {
+  param([string]$RepoRoot)
+  try {
+    $url = (git -C $RepoRoot remote get-url origin 2>$null | Out-String).Trim()
+    if ($url -match 'github\.com[:/](.+?)(?:\.git)?\s*$') {
+      return $Matches[1] -replace '\\', '/'
+    }
+  } catch { }
+  return 'educoder-lab/Lamp-archipelago'
+}
+
+function Write-WorldMapFile {
   param([string]$RepoRoot, $Lessons, [hashtable]$DomainLastCourseNo)
   . (Join-Path $PSScriptRoot 'Story-Entries.ps1')
   . (Join-Path $PSScriptRoot 'Story-Titles.ps1')
@@ -36,10 +47,14 @@
     }
   }
 
+  $gh = Get-LampGithubRepoSlug -RepoRoot $RepoRoot
+  $pagesUrl = "https://$($gh.Split('/')[0]).github.io/$($gh.Split('/')[1])/map.html"
   $data = [ordered]@{
-    prologue = '雲と海の上に浮かぶランプ諸島。拠点の港から道をたどり、島・砦・台地の灯を一つずつ点けていきます。道は推奨順に開きますが、霧の中の土地にも入ることはできます。'
-    domains  = @($domains)
-    lessons  = @($lessonData)
+    prologue   = '雲と海の上に浮かぶランプ諸島。拠点の港から道をたどり、島・砦・台地の灯を一つずつ点けていきます。道は推奨順に開きますが、霧の中の土地にも入ることはできます。'
+    githubRepo = $gh
+    pagesUrl   = $pagesUrl
+    domains    = @($domains)
+    lessons    = @($lessonData)
   }
   $json = $data | ConvertTo-Json -Depth 6 -Compress
 

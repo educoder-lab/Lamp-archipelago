@@ -118,6 +118,20 @@ function copyText(text, btn) {
     try { document.execCommand('copy'); done(); } finally { t.remove(); }
   }
 }
+const ON_GITHUB_PAGES = /github\.io$/i.test(location.hostname);
+function repoLessonHref(path, file) {
+  if (ON_GITHUB_PAGES && DATA.githubRepo) {
+    return 'https://github.com/' + DATA.githubRepo + '/blob/main/' + path + '/' + file;
+  }
+  return '../' + path + '/' + file;
+}
+function repoRootHref(file) {
+  if (ON_GITHUB_PAGES && DATA.githubRepo) {
+    return 'https://github.com/' + DATA.githubRepo + '/blob/main/' + file;
+  }
+  return '../' + file;
+}
+
 function cmdBox(text) {
   const box = el('div', { class: 'cmd' });
   box.appendChild(el('code', null, text));
@@ -231,9 +245,14 @@ document.getElementById('h-name').textContent = SAVE.displayName;
 document.getElementById('h-lamps').textContent = cleared.size + ' / ' + lessons.length;
 document.getElementById('h-bar').style.width = (lessons.length ? cleared.size / lessons.length * 100 : 0) + '%';
 document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
-document.getElementById('h-sync').textContent = window.LAMP_SAVE
-  ? '記録: ' + (SAVE.updatedAt ? new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '読み込み済')
-  : '記録なし（.\\Show-Map.ps1 で同期）';
+const syncEl = document.getElementById('h-sync');
+if (window.LAMP_SAVE) {
+  syncEl.textContent = '記録: ' + (SAVE.updatedAt ? new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '読み込み済');
+} else if (ON_GITHUB_PAGES) {
+  syncEl.textContent = 'ブラウザ表示のみ（進捗はローカルで .\\Show-Map.ps1）';
+} else {
+  syncEl.textContent = '記録なし（.\\Show-Map.ps1 で同期）';
+}
 
 // ---- side panel -----------------------------------------------------------
 const panel = document.getElementById('panel');
@@ -282,9 +301,8 @@ function lessonRow(l) {
   const name = el('span', null, pad(l.no) + '　' + l.title);
   li.appendChild(name);
   const links = el('span');
-  const base = '../' + l.path + '/';
-  links.appendChild(el('a', { href: base + 'README.md', target: '_blank' }, '用語'));
-  links.appendChild(el('a', { href: base + 'PROBLEMS.md', target: '_blank' }, '問題'));
+  links.appendChild(el('a', { href: repoLessonHref(l.path, 'README.md'), target: '_blank' }, '用語'));
+  links.appendChild(el('a', { href: repoLessonHref(l.path, 'PROBLEMS.md'), target: '_blank' }, '問題'));
   li.appendChild(links);
   return li;
 }
@@ -319,7 +337,7 @@ function showDomain(d) {
     panel.appendChild(cmdBox(lessonCmd(target)));
   }
   panel.appendChild(el('h3', null, '島・砦の案内'));
-  const a = el('a', { href: '../' + d.realm + '/' + d.id + '/README.md', target: '_blank', style: 'color:var(--open)' }, d.title + ' の README');
+  const a = el('a', { href: repoLessonHref(d.realm + '/' + d.id, 'README.md'), target: '_blank', style: 'color:var(--open)' }, d.title + ' の README');
   panel.appendChild(a);
 }
 
