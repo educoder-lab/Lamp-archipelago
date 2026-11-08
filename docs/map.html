@@ -118,15 +118,15 @@ function copyText(text, btn) {
     try { document.execCommand('copy'); done(); } finally { t.remove(); }
   }
 }
-const ON_GITHUB_PAGES = /github\.io$/i.test(location.hostname);
+const ON_HOSTED_SITE = /(?:github\.io|vercel\.app)$/i.test(location.hostname);
 function repoLessonHref(path, file) {
-  if (ON_GITHUB_PAGES && DATA.githubRepo) {
+  if (ON_HOSTED_SITE && DATA.githubRepo) {
     return 'https://github.com/' + DATA.githubRepo + '/blob/main/' + path + '/' + file;
   }
   return '../' + path + '/' + file;
 }
 function repoRootHref(file) {
-  if (ON_GITHUB_PAGES && DATA.githubRepo) {
+  if (ON_HOSTED_SITE && DATA.githubRepo) {
     return 'https://github.com/' + DATA.githubRepo + '/blob/main/' + file;
   }
   return '../' + file;
@@ -248,7 +248,7 @@ document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
 const syncEl = document.getElementById('h-sync');
 if (window.LAMP_SAVE) {
   syncEl.textContent = '記録: ' + (SAVE.updatedAt ? new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '読み込み済');
-} else if (ON_GITHUB_PAGES) {
+} else if (ON_HOSTED_SITE) {
   syncEl.textContent = 'ブラウザ表示のみ（進捗はローカルで .\\Show-Map.ps1）';
 } else {
   syncEl.textContent = '記録なし（.\\Show-Map.ps1 で同期）';
