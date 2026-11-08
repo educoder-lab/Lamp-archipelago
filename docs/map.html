@@ -42,6 +42,10 @@ aside h3 { font-size: 13px; color: var(--muted); margin: 18px 0 8px; font-weight
 button { font: inherit; cursor: pointer; }
 .copy { background: var(--panel2); color: var(--ink); border: 1px solid #343a6b; border-radius: 4px; padding: 2px 8px; font-size: 12px; }
 .copy.done { color: var(--gold); border-color: var(--gold); }
+.panel-btn { background: var(--panel2); color: var(--ink); border: 1px solid #343a6b; border-radius: 6px; padding: 6px 12px; font-size: 13px; margin: 4px 6px 4px 0; }
+.panel-btn.warn { border-color: #c59bff; color: #e8d4ff; }
+.panel-input { background: #0b0e1f; color: var(--ink); border: 1px solid #343a6b; border-radius: 6px; padding: 6px 10px; font: inherit; font-size: 14px; width: min(100%, 220px); }
+.save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
 ul.lessons { list-style: none; padding: 0; margin: 0; }
 ul.lessons li { display: grid; grid-template-columns: 22px 1fr auto; gap: 6px; align-items: center; padding: 6px 4px; border-bottom: 1px solid #23284c; font-size: 14px; }
 ul.lessons li.next { background: #13283a; }
@@ -260,6 +264,54 @@ function playLink(text, no) {
   const a = el('a', { href: lessonPlayHref(no), class: 'play-btn', style: 'display:inline-block;margin:8px 0;padding:10px 16px;background:#1b4a6b;border:1px solid var(--open);border-radius:8px;color:var(--ink);text-decoration:none;font-weight:600' }, text);
   return a;
 }
+function appendTravelerPanel(panel) {
+  panel.appendChild(el('h3', null, '旅人'));
+  const row = el('div', { class: 'save-row' });
+  const inp = el('input', { class: 'panel-input', id: 'traveler-name', value: SAVE.displayName || '旅人', maxlength: '32' });
+  const saveBtn = el('button', { class: 'panel-btn', type: 'button' }, '名前を保存');
+  saveBtn.onclick = () => {
+    LampSave.setDisplayName(LampSave.loadLocal(), inp.value);
+    location.reload();
+  };
+  row.appendChild(inp);
+  row.appendChild(saveBtn);
+  panel.appendChild(row);
+}
+function appendSaveTools(panel) {
+  panel.appendChild(el('h3', null, '冒険記録（この端末）'));
+  panel.appendChild(el('div', { class: 'stat' }, 'JSON の出し入れでバックアップできます。インポートはブラウザ内の記録を上書きします。'));
+  const row = el('div', { class: 'save-row' });
+  const ex = el('button', { class: 'panel-btn', type: 'button' }, 'エクスポート');
+  ex.onclick = () => LampSave.downloadExport();
+  const file = el('input', { type: 'file', accept: 'application/json,.json', style: 'font-size:12px;color:var(--muted)' });
+  file.onchange = () => {
+    const f = file.files && file.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        LampSave.importFromJson(String(reader.result));
+        alert('インポートしました。');
+        location.reload();
+      } catch (e) {
+        alert('インポートできません: ' + e.message);
+      }
+    };
+    reader.readAsText(f, 'UTF-8');
+    file.value = '';
+  };
+  const reset = el('button', { class: 'panel-btn warn', type: 'button' }, '記録を消去');
+  reset.onclick = () => {
+    if (confirm('ブラウザ内の冒険記録を消します。よろしいですか？')) {
+      LampSave.resetLocal();
+      location.reload();
+    }
+  };
+  row.appendChild(ex);
+  row.appendChild(file);
+  row.appendChild(reset);
+  panel.appendChild(row);
+}
 
 function showHome() {
   panel.innerHTML = '';
@@ -271,6 +323,16 @@ function showHome() {
     const dom = domains.find(d => d.id === next.domain);
     if (dom) panel.appendChild(el('div', { class: 'stat' }, dom.title + ' ／ ' + dom.npc));
     panel.appendChild(playLink('ブラウザで挑戦する →', next.no));
+    if (!cleared.has(next.no)) {
+      const skipBtn = el('button', { class: 'panel-btn warn', type: 'button' }, '迂回して先へ（↷）');
+      skipBtn.onclick = () => {
+        if (confirm('講座 ' + pad(next.no) + ' を迂回します。あとで一覧から戻れます。')) {
+          LampSave.registerSkip(LampSave.loadLocal(), next.no);
+          location.reload();
+        }
+      };
+      panel.appendChild(skipBtn);
+    }
     panel.appendChild(el('h3', null, 'ローカル（PowerShell）'));
     panel.appendChild(cmdBox(lessonCmd(next)));
   } else {
@@ -291,6 +353,8 @@ function showHome() {
   const lg = el('div', { class: 'legend' });
   lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧の中（推奨順の先。入ることはできます）</div><div>✓ クリア　↷ 迂回中　▶ 次の推奨</div>';
   panel.appendChild(lg);
+  appendTravelerPanel(panel);
+  appendSaveTools(panel);
   panel.appendChild(el('h3', null, '操作'));
   panel.appendChild(el('div', { class: 'stat' }, 'ブラウザの進捗はこの端末の localStorage に保存されます。'));
   panel.appendChild(el('a', { href: 'lesson.html?no=' + (next ? next.no : 1), style: 'color:var(--open)' }, 'クエスト画面を開く'));
@@ -308,6 +372,15 @@ function lessonRow(l) {
   const links = el('span');
   links.appendChild(el('a', { href: lessonPlayHref(l.no), style: 'color:var(--open);font-weight:600' }, 'プレイ'));
   links.appendChild(el('a', { href: repoLessonHref(l.path, 'PROBLEMS.md'), target: '_blank', rel: 'noopener' }, 'MD'));
+  if (st === 'skipped') {
+    const un = el('button', { class: 'copy', type: 'button', title: '迂回をやめる' }, '↩');
+    un.onclick = (ev) => {
+      ev.preventDefault();
+      LampSave.unregisterSkip(LampSave.loadLocal(), l.no);
+      location.reload();
+    };
+    links.appendChild(un);
+  }
   li.appendChild(links);
   return li;
 }

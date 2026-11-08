@@ -172,7 +172,7 @@ PROBLEMS.md
 
 - [x] W0 … `quests.json` + `lesson.html` プロトタイプ + [WebQuest-Schema.md](./_tools/WebQuest-Schema.md)
 - [x] W1 … 全 121 講座 `webReady`、`lamp-save.js`（localStorage ↔ マップ）、マップから `lesson.html` へ
-- [ ] W2 … 迂回 UI、旅人名、セーブ export/import
+- [x] W2 … 迂回 UI、旅人名、セーブ export/import
 
 ### Phase 4 — 磨き（継続）
 

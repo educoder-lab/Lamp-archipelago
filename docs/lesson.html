@@ -48,15 +48,20 @@ button:disabled { opacity: .5; cursor: default; }
 .msg.ok { background: #12301f; border: 1px solid var(--ok); color: #b8f0c8; }
 .msg.ng { background: #301818; border: 1px solid var(--ng); color: #f0c0c0; }
 .msg.info { background: #2a2210; border: 1px solid var(--gold); color: #f0d6a0; }
-.navlinks { font-size: 13px; color: var(--muted); margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+.navlinks { font-size: 13px; color: var(--muted); margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.panel-btn { background: var(--panel2); color: var(--ink); border: 1px solid #343a6b; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer; }
+.panel-btn.warn { border-color: #c59bff; color: #e8d4ff; }
+.panel-input { background: #0b0e1f; color: var(--ink); border: 1px solid #343a6b; border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 14px; }
+.save-tools { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 #load-err { color: var(--ng); }
 </style>
 </head>
 <body>
 <header>
   <h1 id="h-title">ランプ諸島 — クエスト</h1>
-  <span class="tag proto">Web（W1）</span>
+  <span class="tag proto">Web（W2）</span>
   <span class="tag" id="h-course"></span>
+  <span class="tag">旅人 <b id="h-traveler"></b></span>
   <a href="map.html">ワールドマップ</a>
 </header>
 <main id="app">
@@ -145,6 +150,7 @@ function renderLesson(lesson, quests) {
   const already = save.clearedNos.includes(lesson.courseNo);
   document.getElementById('h-title').textContent = lesson.title;
   document.getElementById('h-course').textContent = lesson.domainTitle + ' · #' + padNo(lesson.courseNo);
+  document.getElementById('h-traveler').textContent = loadSave().displayName || '旅人';
 
   const app = document.getElementById('app');
   app.innerHTML = '';
@@ -179,6 +185,16 @@ function renderLesson(lesson, quests) {
   const actions = el('div', { class: 'actions' });
   const submit = el('button', { type: 'submit', class: 'primary' }, already ? 'もう一度採点' : '灯を点ける（採点）');
   actions.appendChild(submit);
+  if (!already) {
+    const skipBtn = el('button', { type: 'button', class: 'panel-btn warn' }, '迂回して次へ ↷');
+    skipBtn.onclick = () => {
+      if (!confirm('合格せずに迂回します。あとでマップから戻れます。')) return;
+      LampSave.registerSkip(LampSave.loadLocal(), lesson.courseNo);
+      const nxt = lesson.nav && lesson.nav.nextCourseNo;
+      location.href = nxt ? ('lesson.html?no=' + nxt) : 'map.html';
+    };
+    actions.appendChild(skipBtn);
+  }
   form.appendChild(actions);
   form.appendChild(msg);
   form.addEventListener('submit', async ev => {
@@ -220,6 +236,39 @@ function renderLesson(lesson, quests) {
   }
   nav.appendChild(el('span', null, '灯 ' + LampSave.loadMerged().clearedNos.length + ' / ' + quests.lessonCount));
   app.appendChild(nav);
+
+  const tools = el('section');
+  tools.appendChild(el('h2', null, '旅人・記録'));
+  const nameRow = el('div', { class: 'save-tools' });
+  const nameInp = el('input', { class: 'panel-input', value: LampSave.loadLocal().displayName || '旅人', maxlength: '32' });
+  const nameBtn = el('button', { type: 'button', class: 'panel-btn' }, '名前を保存');
+  nameBtn.onclick = () => { LampSave.setDisplayName(LampSave.loadLocal(), nameInp.value); location.reload(); };
+  nameRow.appendChild(nameInp);
+  nameRow.appendChild(nameBtn);
+  tools.appendChild(nameRow);
+  const ioRow = el('div', { class: 'save-tools' });
+  const exBtn = el('button', { type: 'button', class: 'panel-btn' }, '記録をエクスポート');
+  exBtn.onclick = () => LampSave.downloadExport();
+  const fileInp = el('input', { type: 'file', accept: 'application/json,.json' });
+  fileInp.onchange = () => {
+    const f = fileInp.files && fileInp.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        LampSave.importFromJson(String(reader.result));
+        alert('インポートしました。');
+        location.reload();
+      } catch (e) { alert('インポートできません: ' + e.message); }
+    };
+    reader.readAsText(f, 'UTF-8');
+    fileInp.value = '';
+  };
+  ioRow.appendChild(exBtn);
+  ioRow.appendChild(el('span', null, 'インポート'));
+  ioRow.appendChild(fileInp);
+  tools.appendChild(ioRow);
+  app.appendChild(tools);
 }
 
 async function main() {

@@ -70,6 +70,15 @@
 
 `docs/lamp-save.js` が `localStorage` と `save-data.js` をマージする。`map.html` / `lesson.html` は W1 から利用。
 
+### W2 API（`LampSave`）
+
+| メソッド | 用途 |
+|----------|------|
+| `registerSkip` / `unregisterSkip` | 迂回 ↷（マップ・講座） |
+| `setDisplayName` | 旅人名 |
+| `downloadExport` / `importFromJson` | セーブの JSON 出し入れ |
+| `resetLocal` | ブラウザ記録の消去 |
+
 ## 生成
 
 ```powershell

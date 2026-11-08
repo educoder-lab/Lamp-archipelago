@@ -22,6 +22,7 @@
 2. 土地を選び **プレイ**、または [講座 01](https://educoder-lab.github.io/Lamp-archipelago/lesson.html?no=1) から開始  
 3. 用語を読む → 四肢択一に答える → **灯を点ける** で採点  
 4. 灯・称号はブラウザの **localStorage** に保存（マップに反映）
+5. 詰まったら **迂回**、記録は **エクスポート / インポート**（マップ or 講座画面）
 
 ローカル clone 後は `docs/map.html` / `docs/lesson.html` を HTTP で開いてください（`file://` では `quests.json` が読めないことがあります）。
 

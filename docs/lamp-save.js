@@ -86,6 +86,60 @@
     return true;
   }
 
+  function unregisterSkip(save, courseNo) {
+    save.skippedNos = save.skippedNos.filter(n => n !== courseNo);
+    writeLocal(save);
+    return true;
+  }
+
+  function setDisplayName(save, name) {
+    save.displayName = (String(name || '').trim()) || '旅人';
+    writeLocal(save);
+    return save;
+  }
+
+  function sanitizeImported(obj) {
+    if (!obj || typeof obj !== 'object') throw new Error('JSON オブジェクトではありません');
+    const save = defaultSave();
+    save.displayName = (obj.displayName && String(obj.displayName).trim()) || '旅人';
+    save.clearedIds = uniqStr([].concat(obj.clearedIds || []));
+    save.clearedNos = uniqNums([].concat(obj.clearedNos || []));
+    save.skippedNos = uniqNums([].concat(obj.skippedNos || []))
+      .filter(n => !save.clearedNos.includes(n));
+    save.titles = uniqStr([].concat(obj.titles || []));
+    save.lastLessonId = obj.lastLessonId || null;
+    save.lastCourseNo = parseInt(obj.lastCourseNo, 10) || 0;
+    save.repoRoot = obj.repoRoot || null;
+    return save;
+  }
+
+  function exportLocalJson(pretty) {
+    return JSON.stringify(loadLocal(), null, pretty ? 2 : 0);
+  }
+
+  function importFromJson(text) {
+    const obj = JSON.parse(text);
+    const save = sanitizeImported(obj);
+    writeLocal(save);
+    return save;
+  }
+
+  function resetLocal() {
+    if (global.localStorage) global.localStorage.removeItem(SAVE_KEY);
+    return defaultSave();
+  }
+
+  function downloadExport(filename) {
+    const fn = filename || 'lamp-adventure-save.json';
+    const blob = new Blob([exportLocalJson(true)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = global.document.createElement('a');
+    a.href = url;
+    a.download = fn;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   function saveSourceLabel(save) {
     if (save._sources && save._sources.local && save._sources.file) return 'ブラウザ＋ローカル同期';
     if (save._sources && save._sources.local) return 'ブラウザ記録';
@@ -101,6 +155,12 @@
     writeLocal,
     registerClear,
     registerSkip,
+    unregisterSkip,
+    setDisplayName,
+    exportLocalJson,
+    importFromJson,
+    resetLocal,
+    downloadExport,
     saveSourceLabel
   };
 })(typeof window !== 'undefined' ? window : globalThis);
