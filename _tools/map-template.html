@@ -90,7 +90,14 @@ ul.lessons a:hover { color: var(--ink); }
 <main>
   <div class="world-wrap" id="world">
     <button type="button" class="world-back-btn" id="world-back">← 航路へ戻る</button>
-    <div class="world-hint">灯台の港で身支度 · ステージは概要を見てから挑戦 · Lvで姿が変化</div>
+    <div class="world-nav" id="world-nav" role="toolbar" aria-label="航路ナビ">
+      <button type="button" class="world-nav-btn" data-nav="overview">全体図</button>
+      <button type="button" class="world-nav-btn realm sky" data-nav="sky">空</button>
+      <button type="button" class="world-nav-btn realm land" data-nav="land">陸</button>
+      <button type="button" class="world-nav-btn realm underground" data-nav="underground">地下</button>
+      <button type="button" class="world-nav-btn" data-nav="hub">灯台の港</button>
+    </div>
+    <div class="world-hint">ドラッグで見回す · ホイールでズーム · 港の門か上のボタンで空／陸／地下へ</div>
   </div>
 </main>
 <aside id="panel"></aside>
@@ -370,6 +377,24 @@ function showHome() {
   panel.appendChild(el('h2', null, '灯台の港 — 身支度'));
   panel.appendChild(el('div', { class: 'quote' }, 'ここは旅の拠点。出発前に名前を整え、つまずいた封印を復習し、次の島へ備えましょう。'));
   panel.appendChild(el('div', { class: 'stat' }, DATA.prologue));
+  panel.appendChild(el('h3', null, '領域への門'));
+  panel.appendChild(el('div', { class: 'stat' }, '港の三つの門、またはマップ右上から、空・陸地・地下を自由に行き来できます。全体図で諸島の配置を確認しましょう。'));
+  const realmRow = el('div', { class: 'save-row' });
+  [
+    ['overview', '全体図'],
+    ['sky', '空へ'],
+    ['land', '陸へ'],
+    ['underground', '地下へ']
+  ].forEach(pair => {
+    const b = el('button', { class: 'panel-btn', type: 'button' }, pair[1]);
+    b.onclick = () => {
+      if (!worldApi) return;
+      if (pair[0] === 'overview') worldApi.showOverview();
+      else worldApi.travelToRealm(pair[0]);
+    };
+    realmRow.appendChild(b);
+  });
+  panel.appendChild(realmRow);
 
   panel.appendChild(el('h3', null, 'いまの旅人'));
   panel.appendChild(el('div', { class: 'stat' },
@@ -530,7 +555,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-import('./lamp-world.js?v=13').then(mod => {
+import('./lamp-world.js?v=14').then(mod => {
   const mount = mod.mountLampWorld || (window.LampWorld && window.LampWorld.mountLampWorld);
   if (!mount) { console.error('LampWorld mount failed'); return; }
   worldApi = mount(document.getElementById('world'), {
@@ -544,11 +569,27 @@ import('./lamp-world.js?v=13').then(mod => {
     onSelectDomain: (d) => showDomain(d),
     onSelectHub: () => showHome(),
     onSelectLesson: (l) => { openLessonModal(l); },
+    onTravelRealm: (realm) => {
+      const labels = { sky: '空の諸島', land: '陸地の台地', underground: '地下の砦' };
+      const tip = document.querySelector('.world-hint');
+      if (tip) tip.textContent = (labels[realm] || realm) + ' へ移動 · ドラッグで見回す · 全体図で諸島を俯瞰';
+    },
     onModeChange: (mode) => {
       if (mode === 'island') backBtn.classList.add('visible');
       else backBtn.classList.remove('visible');
     }
   });
+  const nav = document.getElementById('world-nav');
+  if (nav) {
+    nav.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('[data-nav]');
+      if (!btn || !worldApi) return;
+      const act = btn.getAttribute('data-nav');
+      if (act === 'overview') worldApi.showOverview();
+      else if (act === 'hub') worldApi.returnToHub();
+      else worldApi.travelToRealm(act);
+    });
+  }
 
   if (arrive && worldApi) {
     const fromIdx = worldApi.findNodeIndexForCourse(fromNo);

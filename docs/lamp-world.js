@@ -2,7 +2,8 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 import { themeFor as islandThemeFor } from './island-themes.js';
 
-const REALM_Y = { sky: 3.5, underground: -2.2, land: 0.6 };
+const REALM_Y = { sky: 10, land: 0, underground: -10 };
+const REALM_COLOR = { sky: 0x7fd1ff, land: 0x6fdc8c, underground: 0xc59bff };
 const STATE_COLOR = {
   cleared: 0xf5c451,
   current: 0x5ec8ff,
@@ -686,9 +687,9 @@ export function mountLampWorld(container, opts) {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x070b18);
-  scene.fog = new THREE.Fog(0x070b18, 40, 95);
+  scene.fog = new THREE.Fog(0x070b18, 70, 180);
 
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 250);
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -698,26 +699,26 @@ export function mountLampWorld(container, opts) {
 
   scene.add(new THREE.HemisphereLight(0xc5d4ff, 0x12101c, 1.05));
   const sun = new THREE.DirectionalLight(0xffe4c0, 1.05);
-  sun.position.set(12, 22, 8);
+  sun.position.set(18, 36, 14);
   scene.add(sun);
-  const fill = new THREE.DirectionalLight(0x6a88ff, 0.4);
-  fill.position.set(-14, 6, -10);
+  const fill = new THREE.DirectionalLight(0x6a88ff, 0.45);
+  fill.position.set(-20, 10, -14);
   scene.add(fill);
-  const rimL = new THREE.DirectionalLight(0xf5c451, 0.2);
-  rimL.position.set(0, 4, 18);
+  const rimL = new THREE.DirectionalLight(0xf5c451, 0.22);
+  rimL.position.set(0, 8, 24);
   scene.add(rimL);
 
-  // realm sea discs
+  // realm sea discs（層を離して全体俯瞰でも空・陸・地下が分かる）
   const bandMat = {
-    sky: new THREE.MeshStandardMaterial({ color: 0x142848, roughness: 0.85, metalness: 0.08, transparent: true, opacity: 0.65 }),
-    underground: new THREE.MeshStandardMaterial({ color: 0x241434, roughness: 0.9, transparent: true, opacity: 0.65 }),
-    land: new THREE.MeshStandardMaterial({ color: 0x143428, roughness: 0.88, transparent: true, opacity: 0.65 })
+    sky: new THREE.MeshStandardMaterial({ color: 0x142848, roughness: 0.85, metalness: 0.08, transparent: true, opacity: 0.55 }),
+    underground: new THREE.MeshStandardMaterial({ color: 0x241434, roughness: 0.9, transparent: true, opacity: 0.55 }),
+    land: new THREE.MeshStandardMaterial({ color: 0x143428, roughness: 0.88, transparent: true, opacity: 0.55 })
   };
-  ['sky', 'underground', 'land'].forEach((realm) => {
-    const plane = new THREE.Mesh(new THREE.CircleGeometry(38, 64), bandMat[realm]);
+  ['sky', 'land', 'underground'].forEach((realm) => {
+    const plane = new THREE.Mesh(new THREE.CircleGeometry(48, 64), bandMat[realm]);
     plane.rotation.x = -Math.PI / 2;
-    plane.position.set(0, REALM_Y[realm] - 2.4, realm === 'sky' ? -10 : realm === 'underground' ? 16 : 6);
-    plane.scale.set(1.35, 1, realm === 'sky' ? 0.75 : 0.6);
+    plane.position.set(0, REALM_Y[realm] - 2.6, realm === 'sky' ? -8 : realm === 'underground' ? 14 : 4);
+    plane.scale.set(1.45, 1, realm === 'sky' ? 0.8 : 0.65);
     scene.add(plane);
   });
 
@@ -787,13 +788,68 @@ export function mountLampWorld(container, opts) {
   let focusKey = null;
   let anim = null;
   let pulseT = 0;
+  let zoom = 1;
+  let orbitAz = 0.55;
+  let orbitEl = 0.72;
+  let orbitDist = 55;
+  let userOrbit = false;
   const clock = new THREE.Clock();
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
 
   const camTarget = new THREE.Vector3(0, 2, 0);
-  const camPos = new THREE.Vector3(0, 28, 42);
+  const camPos = new THREE.Vector3(0, 40, 60);
   camera.position.copy(camPos);
+
+  const mapCenter = new THREE.Vector3();
+  const mapSize = new THREE.Vector3();
+  if (worldPositions.length) {
+    const box = new THREE.Box3().setFromPoints(worldPositions);
+    box.getCenter(mapCenter);
+    box.getSize(mapSize);
+  }
+  const overviewSpan = Math.max(mapSize.x, mapSize.y * 1.4, mapSize.z, 28);
+
+  // 灯台の港まわりの領域ゲート（空・陸・地下へ自由に移動）
+  const hubNode = nodes.find(n => n.kind === 'hub');
+  const hubPos = (hubNode && hubNode._pos) ? hubNode._pos.clone() : new THREE.Vector3();
+  const gateGroup = new THREE.Group();
+  scene.add(gateGroup);
+  const realmGates = [];
+  [['sky', '空'], ['land', '陸'], ['underground', '地下']].forEach((pair, i) => {
+    const realm = pair[0];
+    const label = pair[1];
+    const g = new THREE.Group();
+    const col = REALM_COLOR[realm];
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(0.85, 0.1, 10, 28),
+      new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 0.85, metalness: 0.4 })
+    );
+    ring.rotation.x = Math.PI / 2;
+    const pillar = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.18, 0.22, 1.6, 10),
+      new THREE.MeshStandardMaterial({ color: 0xe8eef8, emissive: col, emissiveIntensity: 0.35 })
+    );
+    pillar.position.y = 0.85;
+    const flame = new THREE.Mesh(
+      new THREE.SphereGeometry(0.28, 12, 12),
+      new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 1.4 })
+    );
+    flame.position.y = 1.85;
+    g.add(ring, pillar, flame);
+    const ang = (i - 1) * 1.05;
+    const r = 6.2;
+    g.position.set(
+      hubPos.x + Math.sin(ang) * r,
+      hubPos.y + (hubNode && hubNode._deckY != null ? hubNode._deckY : 0.95) + 0.05,
+      hubPos.z + Math.cos(ang) * r
+    );
+    g.userData.pick = true;
+    g.userData.realmGate = realm;
+    g.userData.realmLabel = label;
+    gateGroup.add(g);
+    realmGates.push(g);
+  });
 
   function resize() {
     const w = container.clientWidth || 1;
@@ -857,12 +913,29 @@ export function mountLampWorld(container, opts) {
     return i;
   }
 
+  function applyOrbitFromSpherical() {
+    const x = orbitDist * Math.sin(orbitEl) * Math.sin(orbitAz);
+    const y = orbitDist * Math.cos(orbitEl);
+    const z = orbitDist * Math.sin(orbitEl) * Math.cos(orbitAz);
+    camPos.set(camTarget.x + x, camTarget.y + y, camTarget.z + z);
+  }
+
+  function setOrbitFromCamera() {
+    const off = camPos.clone().sub(camTarget);
+    orbitDist = Math.max(8, off.length());
+    orbitAz = Math.atan2(off.x, off.z);
+    orbitEl = Math.acos(THREE.MathUtils.clamp(off.y / orbitDist, -1, 1));
+    orbitEl = THREE.MathUtils.clamp(orbitEl, 0.25, 1.35);
+  }
+
   function focusCameraOn(pos, dist, height, duration) {
-    const toPos = pos.clone().add(new THREE.Vector3(dist * 0.4, height, dist));
+    const toPos = pos.clone().add(new THREE.Vector3(dist * 0.35, height, dist));
     const toLook = pos.clone().add(new THREE.Vector3(0, 1.2, 0));
+    userOrbit = false;
     if (reduced || !duration) {
       camPos.copy(toPos);
       camTarget.copy(toLook);
+      setOrbitFromCamera();
       return;
     }
     anim = {
@@ -874,6 +947,89 @@ export function mountLampWorld(container, opts) {
       fromLook: camTarget.clone(),
       toLook
     };
+  }
+
+  function showOverview(duration) {
+    if (mode === 'island') {
+      // 島内からは航路モードに戻してから俯瞰
+      mode = 'world';
+      focusKey = null;
+      clearStages();
+      stageGroup.visible = false;
+      islandGroup.children.forEach(ch => {
+        ch.scale.setScalar(1);
+        ch.traverse(o => {
+          if (o.isMesh && o.material && o.userData._op != null) {
+            o.material.opacity = o.userData._op;
+            delete o.userData._op;
+          }
+        });
+      });
+      if (opts.onModeChange) opts.onModeChange('world', null);
+    }
+    const look = mapCenter.clone().add(new THREE.Vector3(0, 1.5, 0));
+    const dist = overviewSpan * 1.15;
+    const height = overviewSpan * 0.72;
+    focusCameraOn(look, dist, height, duration == null ? (reduced ? 0 : 700) : duration);
+    zoom = 1;
+  }
+
+  function firstNodeInRealm(realm) {
+    return nodes.find(n => n.realm === realm && n.kind === 'domain')
+      || nodes.find(n => n.realm === realm)
+      || null;
+  }
+
+  function travelToRealm(realm, duration) {
+    if (mode === 'island') {
+      clearStages();
+      stageGroup.visible = false;
+      islandGroup.children.forEach(ch => {
+        ch.scale.setScalar(1);
+        ch.traverse(o => {
+          if (o.isMesh && o.material && o.userData._op != null) {
+            o.material.opacity = o.userData._op;
+            delete o.userData._op;
+          }
+        });
+      });
+      mode = 'world';
+      focusKey = null;
+      if (opts.onModeChange) opts.onModeChange('world', null);
+    }
+    const n = firstNodeInRealm(realm);
+    if (!n || !n._pos) {
+      showOverview(duration);
+      return null;
+    }
+    const pos = n._pos;
+    setAvatarAt(pos, null, pos.y + deckHeightAt(n) + 0.05);
+    focusCameraOn(pos, 22, 14, duration == null ? (reduced ? 0 : 650) : duration);
+    if (opts.onTravelRealm) opts.onTravelRealm(realm, n);
+    return n;
+  }
+
+  function returnToHub(duration) {
+    if (!hubNode || !hubNode._pos) return;
+    if (mode === 'island') {
+      clearStages();
+      stageGroup.visible = false;
+      islandGroup.children.forEach(ch => {
+        ch.scale.setScalar(1);
+        ch.traverse(o => {
+          if (o.isMesh && o.material && o.userData._op != null) {
+            o.material.opacity = o.userData._op;
+            delete o.userData._op;
+          }
+        });
+      });
+      mode = 'world';
+      focusKey = null;
+      if (opts.onModeChange) opts.onModeChange('world', null);
+    }
+    setAvatarAt(hubNode._pos, null, hubNode._pos.y + deckHeightAt(hubNode) + 0.05);
+    focusCameraOn(hubNode._pos, 18, 12, duration == null ? (reduced ? 0 : 600) : duration);
+    if (opts.onSelectHub) opts.onSelectHub();
   }
 
   function clearStages() {
@@ -970,13 +1126,7 @@ export function mountLampWorld(container, opts) {
         }
       });
     });
-    const cur = nodes.find(n => n.state === 'current') || nodes[0];
-    if (cur && cur._pos) {
-      setAvatarAt(cur._pos, null, cur._pos.y + deckHeightAt(cur) + 0.05);
-      focusCameraOn(cur._pos, 26, 18, reduced ? 0 : 650);
-    } else {
-      focusCameraOn(new THREE.Vector3(0, 0, 0), 36, 24, reduced ? 0 : 650);
-    }
+    showOverview(reduced ? 0 : 650);
     if (opts.onModeChange) opts.onModeChange('world', null);
   }
 
@@ -1053,19 +1203,26 @@ export function mountLampWorld(container, opts) {
     requestAnimationFrame(tickP);
   }
 
-  function pick(ev) {
+  function pickAt(clientX, clientY) {
     const rect = renderer.domElement.getBoundingClientRect();
-    pointer.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
-    pointer.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
+    pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
     const targets = [];
     islandGroup.traverse(o => { if (o.userData && o.userData.pick) targets.push(o); });
     stageGroup.traverse(o => { if (o.userData && o.userData.pick) targets.push(o); });
+    gateGroup.traverse(o => { if (o.userData && o.userData.pick) targets.push(o); });
     const hits = raycaster.intersectObjects(targets, true);
     if (!hits.length) return;
     let obj = hits[0].object;
-    while (obj && !(obj.userData && (obj.userData.node || obj.userData.lesson))) obj = obj.parent;
+    while (obj && !(obj.userData && (obj.userData.node || obj.userData.lesson || obj.userData.realmGate))) {
+      obj = obj.parent;
+    }
     if (!obj) return;
+    if (obj.userData.realmGate) {
+      travelToRealm(obj.userData.realmGate);
+      return;
+    }
     if (obj.userData.lesson) {
       if (opts.onSelectLesson) opts.onSelectLesson(obj.userData.lesson);
       return;
@@ -1075,18 +1232,65 @@ export function mountLampWorld(container, opts) {
     if (n.kind === 'domain' && n.d) {
       if (opts.onSelectDomain) opts.onSelectDomain(n.d);
       enterIsland(n.d, opts.lessonState);
+    } else if (n.kind === 'hub') {
+      returnToHub(reduced ? 0 : 500);
     } else if (opts.onSelectHub) {
       opts.onSelectHub();
-      exitIsland();
+      showOverview(reduced ? 0 : 500);
     }
   }
 
-  renderer.domElement.addEventListener('pointerdown', pick);
+  let dragState = null;
+  renderer.domElement.addEventListener('pointerdown', (ev) => {
+    if (ev.button !== 0) return;
+    dragState = {
+      x: ev.clientX,
+      y: ev.clientY,
+      downX: ev.clientX,
+      downY: ev.clientY,
+      moved: false,
+      id: ev.pointerId
+    };
+    try { renderer.domElement.setPointerCapture(ev.pointerId); } catch (e) { /* ignore */ }
+  });
+  renderer.domElement.addEventListener('pointermove', (ev) => {
+    if (!dragState || dragState.id !== ev.pointerId) return;
+    const dx = ev.clientX - dragState.x;
+    const dy = ev.clientY - dragState.y;
+    if (!dragState.moved && Math.hypot(ev.clientX - dragState.downX, ev.clientY - dragState.downY) < 6) return;
+    if (!dragState.moved) {
+      dragState.moved = true;
+      if (mode === 'world') {
+        anim = null;
+        setOrbitFromCamera();
+        userOrbit = true;
+      }
+    }
+    if (mode !== 'world') return;
+    dragState.x = ev.clientX;
+    dragState.y = ev.clientY;
+    orbitAz -= dx * 0.005;
+    orbitEl = THREE.MathUtils.clamp(orbitEl - dy * 0.004, 0.22, 1.38);
+    applyOrbitFromSpherical();
+  });
+  function endDrag(ev) {
+    if (!dragState || dragState.id !== ev.pointerId) return;
+    const wasDrag = dragState.moved;
+    dragState = null;
+    try { renderer.domElement.releasePointerCapture(ev.pointerId); } catch (e) { /* ignore */ }
+    if (!wasDrag) pickAt(ev.clientX, ev.clientY);
+  }
+  renderer.domElement.addEventListener('pointerup', endDrag);
+  renderer.domElement.addEventListener('pointercancel', endDrag);
 
-  let zoom = 1;
   renderer.domElement.addEventListener('wheel', (ev) => {
     ev.preventDefault();
-    zoom = Math.min(1.4, Math.max(0.7, zoom + (ev.deltaY > 0 ? 0.05 : -0.05)));
+    if (mode === 'world' && userOrbit) {
+      orbitDist = THREE.MathUtils.clamp(orbitDist + (ev.deltaY > 0 ? 2.2 : -2.2), 12, overviewSpan * 2.2);
+      applyOrbitFromSpherical();
+    } else {
+      zoom = Math.min(1.55, Math.max(0.45, zoom + (ev.deltaY > 0 ? 0.06 : -0.06)));
+    }
   }, { passive: false });
 
   function frame() {
@@ -1104,6 +1308,13 @@ export function mountLampWorld(container, opts) {
         }
       }
     });
+    realmGates.forEach((g, i) => {
+      g.rotation.y = pulseT * 0.4 + i;
+      const flame = g.children[2];
+      if (flame && flame.material) {
+        flame.material.emissiveIntensity = 1.2 + Math.sin(pulseT * 3 + i) * 0.35;
+      }
+    });
     if (avatar.userData.lamp) {
       avatar.userData.lamp.material.emissiveIntensity =
         (avatar.userData.tier === 'ascendant' ? 2.0 : 1.3) + Math.sin(pulseT * 4) * 0.3;
@@ -1115,7 +1326,10 @@ export function mountLampWorld(container, opts) {
       if (anim.kind === 'cam') {
         camPos.lerpVectors(anim.fromPos, anim.toPos, e);
         camTarget.lerpVectors(anim.fromLook, anim.toLook, e);
-        if (u >= 1) anim = null;
+        if (u >= 1) {
+          anim = null;
+          setOrbitFromCamera();
+        }
       } else if (anim.kind === 'walk') {
         const p = anim.curve.getPointAt(e);
         const p2 = anim.curve.getPointAt(Math.min(1, e + 0.02));
@@ -1130,6 +1344,8 @@ export function mountLampWorld(container, opts) {
           if (done) done();
         }
       }
+    } else if (mode === 'world' && userOrbit) {
+      applyOrbitFromSpherical();
     }
     const look = camTarget.clone();
     const pos = camPos.clone();
@@ -1140,9 +1356,12 @@ export function mountLampWorld(container, opts) {
   }
   frame();
 
-  const startIdx = placeAvatarForProgress(opts.avatarCourseNo || 0);
-  const startPos = worldPositions[startIdx] || new THREE.Vector3();
-  focusCameraOn(startPos, 28, 20, 0);
+  // 開始時はアバターを進行位置に置き、カメラは諸島全体を俯瞰
+  placeAvatarForProgress(opts.avatarCourseNo || 0);
+  if (hubNode && hubNode._pos && !(opts.avatarCourseNo > 1)) {
+    setAvatarAt(hubNode._pos, null, hubNode._pos.y + deckHeightAt(hubNode) + 0.05);
+  }
+  showOverview(0);
 
   return {
     THREE,
@@ -1153,6 +1372,9 @@ export function mountLampWorld(container, opts) {
     findNodeIndexForCourse,
     spawnParticles,
     setAvatarLevel,
+    showOverview,
+    travelToRealm,
+    returnToHub,
     getMode: () => mode,
     focusDomainId: () => focusKey,
     worldPositions,

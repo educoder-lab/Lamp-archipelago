@@ -45,6 +45,34 @@
 .world-back-btn.visible { display: inline-block; }
 .world-back-btn:hover { border-color: #7fd1ff; }
 
+.world-nav {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  max-width: min(420px, calc(100% - 24px));
+}
+.world-nav-btn {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid #343a6b;
+  background: rgba(31, 36, 71, .92);
+  color: #ece9f5;
+  cursor: pointer;
+}
+.world-nav-btn:hover { border-color: #7fd1ff; }
+.world-nav-btn.realm.sky { border-color: #4a90b8; color: #b8e8ff; }
+.world-nav-btn.realm.land { border-color: #3a8a58; color: #b8f0c8; }
+.world-nav-btn.realm.underground { border-color: #7a58b0; color: #e0d0ff; }
+.world-nav-btn:focus-visible { outline: 2px solid #7fd1ff; outline-offset: 2px; }
+
 .lv-overlay {
   position: fixed;
   inset: 0;
