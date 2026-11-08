@@ -1,0 +1,19 @@
+﻿if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
+  $dir = $PSScriptRoot
+  $repoRoot = $null
+  while ($dir) {
+    if (Test-Path (Join-Path $dir '_grading\Invoke-LessonAssert.ps1')) { $repoRoot = $dir; break }
+    $parent = Split-Path $dir -Parent
+    if (-not $parent -or $parent -eq $dir) { break }
+    $dir = $parent
+  }
+  if (-not $repoRoot) { Write-Error 'リポジトリルートが見つかりません。'; exit 1 }
+  . (Join-Path $repoRoot '_grading\Resolve-Lesson.ps1')
+  $rel = Get-LessonRelativePath -LessonDir $PSScriptRoot
+  $realm = Get-RealmFromPath -Path $PSScriptRoot
+  & (Join-Path $repoRoot 'Test-Lesson.ps1') -Lesson $rel -Realm $realm
+  exit $LASTEXITCODE
+}
+Start-LessonTest "講座 75　設計手法とUML"
+$r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '外部=ユーザ視点,結合度低+凝集度高=良い'
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/75-design' -NextLesson 'island-dev-tech/76-oop')
