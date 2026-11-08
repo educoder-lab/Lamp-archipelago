@@ -90,7 +90,7 @@ ul.lessons a:hover { color: var(--ink); }
 <main>
   <div class="world-wrap" id="world">
     <button type="button" class="world-back-btn" id="world-back">← 航路へ戻る</button>
-    <div class="world-hint">島をクリック · ホイールでズーム · クリア後はアバターが自動で進みます</div>
+    <div class="world-hint">大きな島の上にステージが並びます · クリックで上陸 · Lvで旅人の姿が変わります</div>
   </div>
 </main>
 <aside id="panel"></aside>
@@ -388,10 +388,17 @@ function showLevelUp(level, titles) {
   const ov = document.getElementById('lv-overlay');
   const sub = document.getElementById('lv-sub');
   document.getElementById('lv-title').textContent = 'レベル ' + level + ' に到達！';
-  let msg = '島の灯が強まり、旅人の経験が深まりました。';
+  const tierName = { novice: '旅人', adept: '灯の見習い', keeper: '灯守', ascendant: '光の継承者' };
+  let tier = 'novice';
+  if (level >= 11) tier = 'ascendant';
+  else if (level >= 6) tier = 'keeper';
+  else if (level >= 3) tier = 'adept';
+  let msg = '見た目が「' + tierName[tier] + '」に変わりました。';
   if (titles && titles.length) msg += '\n称号: ' + titles.join('、');
   sub.textContent = msg;
   ov.classList.add('show');
+  if (worldApi && worldApi.setAvatarLevel) worldApi.setAvatarLevel(level);
+  document.getElementById('h-level').textContent = String(level);
   document.getElementById('lv-ok').onclick = () => ov.classList.remove('show');
 }
 
@@ -413,6 +420,7 @@ import('./lamp-world.js').then(mod => {
     nodes,
     layoutW,
     layoutH,
+    level: SAVE.level || 1,
     avatarCourseNo: SAVE.lastCourseNo || (next && next.no) || 1,
     lessonState,
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
