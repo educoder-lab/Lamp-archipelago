@@ -38,3 +38,4 @@ A. 業務改善　B. 法令遵守　C. 利益追求　D. 情報公開
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
 | 称号 | [TITLES.md](../../../TITLES.md) |
+| ワールドマップ | [docs/map.html](../../../docs/map.html)（`.\Show-Map.ps1` で記録つき） |

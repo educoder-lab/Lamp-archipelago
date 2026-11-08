@@ -16,7 +16,7 @@ $lessons = @(Get-LampLessonCatalog)
 $total = $lessons.Count
 $cleared = @($save.clearedNos).Count
 
-$next = $lessons | Where-Object { $save.clearedNos -notcontains $_.CourseNo } | Select-Object -First 1
+$next = $lessons | Where-Object { $save.clearedNos -notcontains $_.CourseNo -and $save.skippedNos -notcontains $_.CourseNo } | Select-Object -First 1
 if (-not $next) {
   $next = $lessons[-1]
 }
@@ -57,5 +57,12 @@ if ($next.Realm -eq 'land' -and ($save.clearedNos -notcontains 113)) {
   Write-Host "（ソフトロック）台地 #114 以降は、地下 #110〜113 深層まで済ませるのがおすすめです。" -ForegroundColor DarkYellow
 }
 
+$skippedOpen = @($save.skippedNos | Where-Object { $save.clearedNos -notcontains $_ })
+if ($skippedOpen.Count -gt 0) {
+  Write-Host ""
+  Write-Host "迂回中（あとで戻る）: $(($skippedOpen | ForEach-Object { '#' + $_.ToString('00') }) -join ' ')" -ForegroundColor Magenta
+}
+
 Write-Host ""
+Write-Host "ワールドマップ: .\Show-Map.ps1　／　詰まったら: .\Skip-Lesson.ps1"
 Write-Host "リンク: WORLD.md / CURRICULUM.md / GLOSSARY.md / TITLES.md"

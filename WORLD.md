@@ -57,7 +57,17 @@
 .\Show-Status.ps1 -Name 灯  # 旅人名を登録
 cd sky\island-foundation\01-bit
 .\Test-Lesson.ps1           # 封印を解く
+.\Show-Map.ps1              # ワールドマップを開く
+.\Skip-Lesson.ps1           # 迂回（あとで戻れる。-Undo で取り消し）
 ```
 
-進行データ: `.adventure-save.json`（git では追跡しません）
+## ワールドマップ
+
+[docs/map.html](./docs/map.html) は、拠点 **灯台の港** から島・砦・台地を一本の道でつなぎ、最後に **諸島の中枢** へ至る地図です。
+
+- 灯が揃った土地は金色、いま挑んでいる土地は青く脈打ちます。
+- 推奨順の先は **霧の中**。入ることはできます（ソフトロック）。
+- **迂回**した講座は ↷ 印で残り、あとで戻って灯せます。
+
+進行データ: `.adventure-save.json` と `docs/save-data.js`（どちらも git では追跡しません）
 

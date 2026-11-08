@@ -1,4 +1,4 @@
-$repoRoot = Split-Path $PSScriptRoot -Parent
+﻿$repoRoot = Split-Path $PSScriptRoot -Parent
 . (Join-Path $PSScriptRoot 'LessonData.ps1')
 $valid = @{}
 foreach ($l in Get-LampLessonCatalog) { $valid[(Join-Path $repoRoot $l.Path).ToLowerInvariant()] = $true }

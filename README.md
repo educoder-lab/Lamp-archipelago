@@ -18,6 +18,8 @@
 
 ```powershell
 .\Show-Status.ps1              # 冒険状況・次の cd
+.\Show-Map.ps1                 # ワールドマップ（ブラウザ）を記録つきで開く
+.\Skip-Lesson.ps1              # 詰まったら迂回して先へ（あとで戻れる）
 cd sky\island-foundation\01-bit
 # README → PROBLEMS → 演習結果\answers.txt
 .\Test-Lesson.ps1

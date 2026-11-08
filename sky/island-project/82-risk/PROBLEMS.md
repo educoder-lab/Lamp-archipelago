@@ -38,3 +38,4 @@ A. 対策実行　B. リスク特定　C. 残余リスク評価　D. コスト�
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
 | 称号 | [TITLES.md](../../../TITLES.md) |
+| ワールドマップ | [docs/map.html](../../../docs/map.html)（`.\Show-Map.ps1` で記録つき） |

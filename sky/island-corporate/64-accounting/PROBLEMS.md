@@ -38,3 +38,4 @@ A. 限界利益　B. 損益分岐点　C. 安全余裕率　D. 固定費
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
 | 称号 | [TITLES.md](../../../TITLES.md) |
+| ワールドマップ | [docs/map.html](../../../docs/map.html)（`.\Show-Map.ps1` で記録つき） |

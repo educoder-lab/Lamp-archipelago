@@ -41,3 +41,4 @@ A. MTTR を長くする　B. MTBF を短くする　C. 冗長構成を採用す�
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
 | 称号 | [TITLES.md](../../../TITLES.md) |
+| ワールドマップ | [docs/map.html](../../../docs/map.html)（`.\Show-Map.ps1` で記録つき） |

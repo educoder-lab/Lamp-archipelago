@@ -41,3 +41,4 @@ A. 問題文の長さ　B. 固有名詞の暗記　C. 条件と制約の正確�
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
 | 称号 | [TITLES.md](../../../TITLES.md) |
+| ワールドマップ | [docs/map.html](../../../docs/map.html)（`.\Show-Map.ps1` で記録つき） |

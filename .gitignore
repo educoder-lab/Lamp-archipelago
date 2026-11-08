@@ -1,5 +1,6 @@
 .course-progress.json
 .adventure-save.json
+docs/save-data.js
 演習結果/
 _tmp-hash.ps1
 _verify-test.ps1

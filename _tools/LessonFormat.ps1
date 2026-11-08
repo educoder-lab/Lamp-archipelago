@@ -52,6 +52,7 @@ function Format-LessonNav {
   $worldRel = Get-WorldRelPath -LessonPath $Lesson.Path
   $glossaryRel = if ($depth -eq 3) { '../../../GLOSSARY.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/GLOSSARY.md' }
   $titlesRel = if ($depth -eq 3) { '../../../TITLES.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/TITLES.md' }
+  $mapRel = if ($depth -eq 3) { '../../../docs/map.html' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/docs/map.html' }
   $islandRel = '../README.md'
   $advisory = Get-LampTravelAdvisory -Lesson $Lesson
   $prevLine = '—'
@@ -81,6 +82,7 @@ $advisory
 | 世界 | [WORLD.md]($worldRel) |
 | 用語図鑑 | [GLOSSARY.md]($glossaryRel) |
 | 称号 | [TITLES.md]($titlesRel) |
+| ワールドマップ | [docs/map.html]($mapRel)（``.\Show-Map.ps1`` で記録つき） |
 "@
 }
 

@@ -170,9 +170,10 @@ PROBLEMS.md
 
 ### Phase 4 — 磨き（継続）
 
+- [x] HTML マップ（`docs/map.html`。拠点→土地を道でつなぎ推奨順に開く。参考: [WebTerm Learn の冒険マップ](https://learn.webterm.app/ja/adventure)）
+- [x] 迂回（`Skip-Lesson.ps1`。詰まっても止まらない。マップに ↷ 印）
 - [ ] 分岐クエスト（同一島の「余談」オプション講座）
 - [ ] 季節イベント（模試追加セット）
-- [ ] HTML マップ
 
 ---
 
