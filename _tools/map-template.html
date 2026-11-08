@@ -23,6 +23,8 @@ header {
 }
 header h1 { font-size: 18px; margin: 0; letter-spacing: .05em; }
 .stat { font-size: 13px; color: var(--muted); }
+.stat.nav a { color: var(--open); margin-left: 8px; text-decoration: none; font-size: 12px; }
+.stat.nav a:hover { text-decoration: underline; }
 .stat b { color: var(--ink); font-size: 15px; }
 .bar { width: 120px; height: 6px; background: #2a2f58; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 6px; }
 .bar i { display: block; height: 100%; background: var(--gold); }
@@ -77,6 +79,12 @@ ul.lessons a:hover { color: var(--ink); }
   <span class="stat">灯 <b id="h-lamps"></b><span class="bar"><i id="h-bar"></i></span></span>
   <span class="stat">称号 <b id="h-titles"></b></span>
   <span class="stat" id="h-sync"></span>
+  <span class="stat nav">
+    <a href="ref.html?p=curriculum">一覧</a>
+    <a href="ref.html?p=glossary">用語</a>
+    <a href="ref.html?p=world">世界</a>
+    <a href="ref.html?p=titles">称号</a>
+  </span>
 </header>
 <main><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></main>
 <aside id="panel"></aside>

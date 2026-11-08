@@ -59,18 +59,22 @@ button:disabled { opacity: .5; cursor: default; }
 <body>
 <header>
   <h1 id="h-title">ランプ諸島 — クエスト</h1>
-  <span class="tag proto">Web（W2）</span>
+  <span class="tag proto">Web（W3）</span>
   <span class="tag" id="h-course"></span>
   <span class="tag">旅人 <b id="h-traveler"></b></span>
-  <a href="map.html">ワールドマップ</a>
+  <a href="map.html">マップ</a>
+  <a href="ref.html?p=glossary">用語図鑑</a>
+  <a href="ref.html?p=curriculum">一覧</a>
 </header>
 <main id="app">
   <p id="load-err" hidden></p>
 </main>
 <script src="save-data.js"></script>
 <script src="lamp-save.js"></script>
+<script src="lamp-markdown.js"></script>
 <script>
 function loadSave() { return LampSave.loadMerged(); }
+function renderMarkdownSimple(md) { return LampMarkdown.render(md); }
 
 async function sha256Hex(text) {
   const data = new TextEncoder().encode(text);
@@ -86,32 +90,6 @@ async function answerHashFromForm(questions, form) {
   }).filter(l => /^\d+:[A-D]$/.test(l));
   const norm = lines.join('\n');
   return sha256Hex(norm);
-}
-
-function renderMarkdownSimple(md) {
-  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const blocks = md.split(/\n\n+/);
-  const html = [];
-  for (const block of blocks) {
-    const t = block.trim();
-    if (!t) continue;
-    if (t.startsWith('## ')) {
-      html.push('<h3>' + esc(t.slice(3)) + '</h3>');
-    } else if (t.includes('|') && t.includes('---')) {
-      const rows = t.split('\n').filter(r => r.trim());
-      const head = rows[0].split('|').map(c => c.trim()).filter(Boolean);
-      const body = rows.slice(2);
-      html.push('<table><thead><tr>' + head.map(h => '<th>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>');
-      for (const row of body) {
-        const cells = row.split('|').map(c => c.trim()).filter(Boolean);
-        html.push('<tr>' + cells.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>');
-      }
-      html.push('</tbody></table>');
-    } else {
-      html.push('<p>' + esc(t).replace(/\n/g, '<br>') + '</p>');
-    }
-  }
-  return html.join('\n');
 }
 
 function padNo(n) { return n < 10 ? '0' + n : String(n); }

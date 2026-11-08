@@ -79,12 +79,18 @@
 | `downloadExport` / `importFromJson` | セーブの JSON 出し入れ |
 | `resetLocal` | ブラウザ記録の消去 |
 
+## 参照ページ（W3）
+
+`docs/data/refs.json` … `WORLD.md` / `GLOSSARY.md` / `CURRICULUM.md` / `TITLES.md` を Web 用リンクに差し替え。  
+表示: `docs/ref.html?p=curriculum|glossary|world|titles`（`lamp-markdown.js`、表は検索で絞り込み）。
+
 ## 生成
 
 ```powershell
-.\_tools\Build-AllLessons.ps1   # 末尾で Write-QuestsFile
+.\_tools\Build-AllLessons.ps1   # Write-QuestsFile + Write-WebDocsFile
 # または
 .\_tools\Write-Quests.ps1
+.\_tools\Write-WebDocs.ps1
 ```
 
 ## 関連

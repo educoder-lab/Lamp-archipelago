@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ランプ諸島 — 参照</title>
+<style>
+:root {
+  --bg: #0f1226; --panel: #171b36; --panel2: #1f2447; --ink: #ece9f5; --muted: #9aa0c4; --open: #7fd1ff; --gold: #f5c451;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", "Meiryo", sans-serif; background: var(--bg); color: var(--ink); }
+a { color: var(--open); }
+header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  padding: 12px 20px; background: var(--panel); border-bottom: 1px solid #2a2f58;
+}
+header h1 { font-size: 17px; margin: 0; }
+.nav a { font-size: 13px; margin-right: 10px; color: var(--muted); }
+.nav a.active { color: var(--gold); font-weight: 600; }
+.search { flex: 1; min-width: 200px; max-width: 360px; }
+.search input {
+  width: 100%; background: #0b0e1f; border: 1px solid #343a6b; border-radius: 8px;
+  color: var(--ink); padding: 8px 12px; font: inherit; font-size: 14px;
+}
+main { max-width: 900px; margin: 0 auto; padding: 20px 20px 48px; }
+.md-body { background: var(--panel); border: 1px solid #2a2f58; border-radius: 10px; padding: 20px 22px; font-size: 14px; line-height: 1.65; }
+.md-body h1 { font-size: 22px; margin: 0 0 12px; }
+.md-body h2 { font-size: 17px; margin: 22px 0 10px; color: var(--muted); }
+.md-body h3 { font-size: 15px; margin: 16px 0 8px; }
+.md-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0 16px; }
+.md-table th, .md-table td { border: 1px solid #343a6b; padding: 6px 8px; text-align: left; vertical-align: top; }
+.md-table th { background: var(--panel2); }
+.md-code { background: #0b0e1f; border: 1px solid #2a2f58; border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 13px; }
+.md-list { margin: 8px 0; padding-left: 1.4em; }
+#err { color: #f08080; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="page-title">参照</h1>
+  <nav class="nav" id="nav"></nav>
+  <div class="search" id="search-wrap" hidden>
+    <input type="search" id="q" placeholder="表を絞り込み（用語・講座名）" autocomplete="off">
+  </div>
+</header>
+<main>
+  <p id="err" hidden></p>
+  <div class="md-body" id="content"></div>
+</main>
+<script src="lamp-markdown.js"></script>
+<script>
+const PAGES = ['curriculum', 'glossary', 'world', 'titles'];
+const labels = { curriculum: 'カリキュラム', glossary: '用語図鑑', world: '世界', titles: '称号' };
+
+function el(tag, attrs, text) {
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) {
+    if (k === 'class') e.className = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  }
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+function buildNav(current) {
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  nav.appendChild(el('a', { href: 'map.html' }, 'マップ'));
+  PAGES.forEach(p => {
+    const a = el('a', { href: 'ref.html?p=' + p, class: p === current ? 'active' : '' }, labels[p]);
+    nav.appendChild(a);
+  });
+  nav.appendChild(el('a', { href: 'lesson.html?no=1' }, '講座'));
+}
+
+async function main() {
+  const params = new URLSearchParams(location.search);
+  let p = params.get('p') || 'curriculum';
+  if (!PAGES.includes(p)) p = 'curriculum';
+  buildNav(p);
+  let data;
+  try {
+    const res = await fetch('data/refs.json');
+    if (!res.ok) throw new Error(res.statusText);
+    data = await res.json();
+  } catch (e) {
+    document.getElementById('err').hidden = false;
+    document.getElementById('err').textContent = 'refs.json を読めません。Build-AllLessons を実行してください。（' + e.message + '）';
+    return;
+  }
+  const page = data.pages && data.pages[p];
+  if (!page) {
+    document.getElementById('err').hidden = false;
+    document.getElementById('err').textContent = 'ページが見つかりません: ' + p;
+    return;
+  }
+  document.title = 'ランプ諸島 — ' + page.title;
+  document.getElementById('page-title').textContent = page.title;
+  const root = document.getElementById('content');
+  root.innerHTML = LampMarkdown.render(page.markdown);
+  const sw = document.getElementById('search-wrap');
+  const q = document.getElementById('q');
+  if (page.searchable) {
+    sw.hidden = false;
+    q.oninput = () => LampMarkdown.filterTables(root, q.value);
+  }
+}
+main();
+</script>
+</body>
+</html>
