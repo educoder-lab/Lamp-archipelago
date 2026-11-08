@@ -27,9 +27,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 42　SQL SELECT文](../42-sql-select/README.md) |
-| 次の講座 | [講座 44　SQL 更新系と制約（問題）](../44-sql-update/PROBLEMS.md) |
-| 次（用語） | [講座 44　SQL 更新系と制約（用語）](../44-sql-update/README.md) |
+| 前の講座 | [講座 42　SQL SELECT文](..42-sql-select README.md) |
+| 次の講座 | [講座 44　SQL 更新系と制約（問題）](..44-sql-update PROBLEMS.md) |
+| 次（用語） | [講座 44　SQL 更新系と制約（用語）](..44-sql-update README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 09　確率と統計"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '6a234d6c78b3b3b5b51ee2abc6495b26b69ceaeadd9e54f70fc7778398c878af' '期待値=Σ(値×確率)'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/09-prob' -NextLesson 'island-foundation/10-matrix' -CourseNo 9 -ClearLine 'サイコロが止まり、静かな見通しが得られた。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/09-prob' -NextLesson 'island-foundation/10-matrix' -CourseNo 9 -ClearLine 'サイコロが止まり、静かな見通しが得られた。' -TitleAwards '')

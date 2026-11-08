@@ -25,9 +25,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 11　計算量とオーダ](../11-bigo/README.md) |
-| 次の講座 | [講座 13　配列と線形探索（問題）](..../island-algorithm/13-array/PROBLEMS.md) |
-| 次（用語） | [講座 13　配列と線形探索（用語）](..../island-algorithm/13-array/README.md) |
+| 前の講座 | [講座 11　計算量とオーダ](..11-bigo README.md) |
+| 次の講座 | [講座 13　配列と線形探索（問題）](../../island-algorithm/13-array/PROBLEMS.md) |
+| 次（用語） | [講座 13　配列と線形探索（用語）](../../island-algorithm/13-array/README.md) |
 | この島・砦 | [基礎理論の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

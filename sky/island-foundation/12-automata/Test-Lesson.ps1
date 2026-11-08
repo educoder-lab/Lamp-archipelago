@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 12　オートマトンと形式言語"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7efcf5f8293e86a25da9a8a6ec7128b008002040030883d87c0b29d98ab35a9b' 'a*=0回以上,逆ポーランドはスタック'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/12-automata' -NextLesson 'island-algorithm/13-array' -CourseNo 12 -ClearLine '灯台の最上階まで、灯が一気に繋がった。' -TitleAward '灯台の証')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/12-automata' -NextLesson 'island-algorithm/13-array' -CourseNo 12 -ClearLine '灯台の最上階まで、灯が一気に繋がった。' -TitleAwards '灯台の証|基礎理論の灯守')

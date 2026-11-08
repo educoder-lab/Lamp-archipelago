@@ -30,9 +30,11 @@ A. A, B　B. C, B　C. B, A　D. C, A
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 16　マージソートとクイックソート](../16-merge/README.md) |
-| 次の講座 | [講座 18　リスト構造（問題）](../18-list/PROBLEMS.md) |
-| 次（用語） | [講座 18　リスト構造（用語）](../18-list/README.md) |
+| 前の講座 | [講座 16　マージソートとクイックソート](..16-merge README.md) |
+| 次の講座 | [講座 18　リスト構造（問題）](..18-list PROBLEMS.md) |
+| 次（用語） | [講座 18　リスト構造（用語）](..18-list README.md) |
 | この島・砦 | [アルゴリズムの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

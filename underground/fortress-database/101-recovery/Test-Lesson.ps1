@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 101　障害回復と性能"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' 'ロールフォワード=ログで復元,B木=インデックス'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/101-recovery' -NextLesson 'fortress-network/102-subnet-calc' -CourseNo 101 -ClearLine '石版の一角が白く染まり、地下の灯が 101 番目を刻んだ。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/101-recovery' -NextLesson 'fortress-network/102-subnet-calc' -CourseNo 101 -ClearLine '石版の一角が白く染まり、地下の灯が 101 番目を刻んだ。' -TitleAwards '地下水晶庫の鍵')

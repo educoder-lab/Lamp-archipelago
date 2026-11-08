@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 92　午後トレース：配列操作"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' '1始まりならA[2]=2番目の要素'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-algorithm/92-trace-array' -NextLesson 'fortress-algorithm/93-trace-recurse' -CourseNo 92 -ClearLine '配列の欄が順に埋まり、記録が一つ完成した。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-algorithm/92-trace-array' -NextLesson 'fortress-algorithm/93-trace-recurse' -CourseNo 92 -ClearLine '配列の欄が順に埋まり、記録が一つ完成した。' -TitleAwards '')

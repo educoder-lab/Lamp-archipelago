@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 65　知的財産と法務"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bcfa238a9fa9e2b4fabfbae592c8c635d32fdba63bf75e75649ba11ea4213e57' '著作権=無登録で発生,特許=出願必要'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-corporate/65-law' -NextLesson 'island-corporate/66-or' -CourseNo 65 -ClearLine '港の帳場の帳簿と印が一つ光り、灯が 65 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-corporate/65-law' -NextLesson 'island-corporate/66-or' -CourseNo 65 -ClearLine '港の帳場の帳簿と印が一つ光り、灯が 65 番目に繋がった。' -TitleAwards '')

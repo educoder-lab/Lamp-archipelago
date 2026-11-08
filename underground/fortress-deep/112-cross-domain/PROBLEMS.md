@@ -25,14 +25,19 @@ A. 1 分野の知識だけ深掘り　B. 各分野の基礎を関連付けて考
 ```powershell
 .\Test-Lesson.ps1
 ```
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 地下は **#90** 以降が本編。空 **#87〜89 関門** を先に越えると物語がつながりやすいです。進行の強制はありません。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 111　システム構成シナリオ](../111-system-scenario/README.md) |
-| 次の講座 | [講座 113　総合戦略と時間管理（問題）](../113-final-strategy/PROBLEMS.md) |
-| 次（用語） | [講座 113　総合戦略と時間管理（用語）](../113-final-strategy/README.md) |
+| 前の講座 | [講座 111　システム構成シナリオ](..111-system-scenario README.md) |
+| 次の講座 | [講座 113　総合戦略と時間管理（問題）](..113-final-strategy PROBLEMS.md) |
+| 次（用語） | [講座 113　総合戦略と時間管理（用語）](..113-final-strategy README.md) |
 | この島・砦 | [深層砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

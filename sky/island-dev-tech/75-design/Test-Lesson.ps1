@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 75　設計手法とUML"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '外部=ユーザ視点,結合度低+凝集度高=良い'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/75-design' -NextLesson 'island-dev-tech/76-oop' -CourseNo 75 -ClearLine '開発工房の型と試作が一つ光り、灯が 75 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/75-design' -NextLesson 'island-dev-tech/76-oop' -CourseNo 75 -ClearLine '開発工房の型と試作が一つ光り、灯が 75 番目に繋がった。' -TitleAwards '')

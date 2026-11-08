@@ -25,9 +25,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 04　論理演算](../04-logic/README.md) |
-| 次の講座 | [講座 06　浮動小数点と誤差（問題）](../06-float/PROBLEMS.md) |
-| 次（用語） | [講座 06　浮動小数点と誤差（用語）](../06-float/README.md) |
+| 前の講座 | [講座 04　論理演算](..04-logic README.md) |
+| 次の講座 | [講座 06　浮動小数点と誤差（問題）](..06-float PROBLEMS.md) |
+| 次（用語） | [講座 06　浮動小数点と誤差（用語）](..06-float README.md) |
 | この島・砦 | [基礎理論の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

@@ -25,14 +25,19 @@ A. 検索が遅くなる　B. 更新処理のオーバーヘッド　C. デー�
 ```powershell
 .\Test-Lesson.ps1
 ```
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 地下は **#90** 以降が本編。空 **#87〜89 関門** を先に越えると物語がつながりやすいです。進行の強制はありません。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 100　ロックと同時実行制御](../100-lock/README.md) |
-| 次の講座 | [講座 102　サブネット計算（問題）](..../fortress-network/102-subnet-calc/PROBLEMS.md) |
-| 次（用語） | [講座 102　サブネット計算（用語）](..../fortress-network/102-subnet-calc/README.md) |
+| 前の講座 | [講座 100　ロックと同時実行制御](..100-lock README.md) |
+| 次の講座 | [講座 102　サブネット計算（問題）](../../fortress-network/102-subnet-calc/PROBLEMS.md) |
+| 次（用語） | [講座 102　サブネット計算（用語）](../../fortress-network/102-subnet-calc/README.md) |
 | この島・砦 | [データベース砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

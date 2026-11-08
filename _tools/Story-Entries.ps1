@@ -57,7 +57,7 @@ function Get-LampLessonStoryOverrides {
 '@ 'ヴェルク: 初陣だ。石版の変数を追跡しろ。' '石版の一本が白く光り、地下での最初の灯が灯った。' '地下入り'
   & $add 'fortress-algorithm' 'trace-loop' 'ループの石版が回り始める。' 'ヴェルク: 繰り返しの封印を解け。' 'ループの跡が円を描き、灯が二つ目を刻んだ。' $null
   & $add 'fortress-algorithm' 'trace-array' '配列の欄が石板上に現れる。' 'ヴェルク: 添字に気をつけろ。' '配列の欄が順に埋まり、記録が一つ完成した。' $null
-  & $add 'fortress-algorithm' 'trace-recurse' '自分を呼ぶ式が石に刻まれる。' 'ヴェルク: 再帰だ。戻りを見失うな。' '式の呼び木が静かに収まり、衛兵が頷いた。' $null
+  & $add 'fortress-algorithm' 'trace-recurse' '自分を呼ぶ式が石に刻まれる。' 'ヴェルク: 再帰だ。戻りを見失うな。' '式の呼び木が静かに収まり、衛兵が頷いた。' 'トレースの証'
   & $add 'island-algorithm' 'array' '塔の低層。棚に番号の付いた箱が並び、先頭から光が走る。' 'ミラ: 探索は順に踏むことが先だ。配列と線形探索の封印を解いて。' '棚のラベルが一つ光り、塔の歯車がかすかに回り始めた。' $null
   & $add 'island-algorithm' 'bsearch' '塔の螺旋階段の途中、真ん中を指す矢印がある。' 'ミラ: 半分ずつ狭めろ。二分探索だ。' '矢印が折れ、探索の経路が短く見えた。' $null
   & $add 'island-algorithm' 'bubble' '泡のような光が要素の間を昇っていく。' 'ミラ: 隣同士を比べて並べ替える。バブルと選択の話だ。' '泡が一つ消え、整列の音が塔に響いた。' $null

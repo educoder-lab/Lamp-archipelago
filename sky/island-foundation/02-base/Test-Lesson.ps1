@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 02　基数変換"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '307d23979bdd5076515d8f4b97f356739231fc8df901879762e02412b6d98fcf' '各桁の重みを掛けて合計する'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/02-base' -NextLesson 'island-foundation/03-unit' -CourseNo 2 -ClearLine '灯台の二段目で、風が数の桁を数え始めた。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/02-base' -NextLesson 'island-foundation/03-unit' -CourseNo 2 -ClearLine '灯台の二段目で、風が数の桁を数え始めた。' -TitleAwards '')

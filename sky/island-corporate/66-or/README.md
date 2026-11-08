@@ -26,9 +26,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 65　知的財産と法務](../65-law/README.md) |
-| 次の講座 | [講座 67　企業分析と標準化（問題）](../67-analysis/PROBLEMS.md) |
-| 次（用語） | [講座 67　企業分析と標準化（用語）](../67-analysis/README.md) |
+| 前の講座 | [講座 65　知的財産と法務](..65-law README.md) |
+| 次の講座 | [講座 67　企業分析と標準化（問題）](..67-analysis PROBLEMS.md) |
+| 次（用語） | [講座 67　企業分析と標準化（用語）](..67-analysis README.md) |
 | この島・砦 | [企業活動の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

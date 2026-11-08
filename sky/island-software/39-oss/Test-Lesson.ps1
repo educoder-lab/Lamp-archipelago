@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 39　OSSとライセンス"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '5222d0e0bf6520225789fd6f898e53a5271fc1c59352f645ff09c75592ce41a6' 'GPL=コピーレフト,OSS=有償販売も可'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/39-oss' -NextLesson 'island-database/40-rdb' -CourseNo 39 -ClearLine '書庫の層と扉が一つ光り、灯が 39 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/39-oss' -NextLesson 'island-database/40-rdb' -CourseNo 39 -ClearLine '書庫の層と扉が一つ光り、灯が 39 番目に繋がった。' -TitleAwards '書庫の鍵')

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 64　財務と会計の基礎"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' '売上総利益=売上−原価,BEP=利益ゼロ地点'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-corporate/64-accounting' -NextLesson 'island-corporate/65-law' -CourseNo 64 -ClearLine '港の帳場の帳簿と印が一つ光り、灯が 64 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-corporate/64-accounting' -NextLesson 'island-corporate/65-law' -CourseNo 64 -ClearLine '港の帳場の帳簿と印が一つ光り、灯が 64 番目に繋がった。' -TitleAwards '')

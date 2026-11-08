@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 63　ヒューマンインタフェース"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'GUI=視覚操作,ユニバーサル=誰でも使える'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-media/63-ux' -NextLesson 'island-corporate/64-accounting' -CourseNo 63 -ClearLine '絵師の亭の色と音が一つ光り、灯が 63 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-media/63-ux' -NextLesson 'island-corporate/64-accounting' -CourseNo 63 -ClearLine '絵師の亭の色と音が一つ光り、灯が 63 番目に繋がった。' -TitleAwards '絵師の落款')

@@ -25,14 +25,19 @@ A. 選択肢を見ずに解く　B. 具体的な値を代入してトレース�
 ```powershell
 .\Test-Lesson.ps1
 ```
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 地下は **#90** 以降が本編。空 **#87〜89 関門** を先に越えると物語がつながりやすいです。進行の強制はありません。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 96　制御構造の組合せ](../96-structure/README.md) |
-| 次の講座 | [講座 98　午後E-R図の読解（問題）](..../fortress-database/98-er-read/PROBLEMS.md) |
-| 次（用語） | [講座 98　午後E-R図の読解（用語）](..../fortress-database/98-er-read/README.md) |
+| 前の講座 | [講座 96　制御構造の組合せ](..96-structure README.md) |
+| 次の講座 | [講座 98　午後E-R図の読解（問題）](../../fortress-database/98-er-read/PROBLEMS.md) |
+| 次（用語） | [講座 98　午後E-R図の読解（用語）](../../fortress-database/98-er-read/README.md) |
 | この島・砦 | [プログラム砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

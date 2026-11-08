@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 19　木構造と二分木"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' 'リーフ=子なし,ルート=最上位'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/19-tree' -NextLesson 'island-algorithm/20-hash' -CourseNo 19 -ClearLine '木の一条の枝が灯り、探索の木が澄んだ。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/19-tree' -NextLesson 'island-algorithm/20-hash' -CourseNo 19 -ClearLine '木の一条の枝が灯り、探索の木が澄んだ。' -TitleAwards '')

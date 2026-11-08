@@ -26,9 +26,11 @@ UMLの線が壁に浮かぶ。工房棟梁ディン が待っている。
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 78　レビューと品質管理](../78-review/README.md) |
-| 次の講座 | [講座 80　プロジェクト管理の基礎（問題）](..../island-project/80-pmbok/PROBLEMS.md) |
-| 次（用語） | [講座 80　プロジェクト管理の基礎（用語）](..../island-project/80-pmbok/README.md) |
+| 前の講座 | [講座 78　レビューと品質管理](..78-review README.md) |
+| 次の講座 | [講座 80　プロジェクト管理の基礎（問題）](../../island-project/80-pmbok/PROBLEMS.md) |
+| 次（用語） | [講座 80　プロジェクト管理の基礎（用語）](../../island-project/80-pmbok/README.md) |
 | この島・砦 | [開発技術の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

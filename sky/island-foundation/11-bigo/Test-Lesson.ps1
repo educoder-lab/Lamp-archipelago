@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 11　計算量とオーダ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' '二分探索=O(log n), バブル=O(n²)'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/11-bigo' -NextLesson 'island-foundation/12-automata' -CourseNo 11 -ClearLine '塔の影が短くなり、見通しが遠くまで届いた。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/11-bigo' -NextLesson 'island-foundation/12-automata' -CourseNo 11 -ClearLine '塔の影が短くなり、見通しが遠くまで届いた。' -TitleAwards '')

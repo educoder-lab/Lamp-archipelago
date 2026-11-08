@@ -19,14 +19,21 @@
 ## クエストへ
 
 [PROBLEMS.md](./PROBLEMS.md) で演習 → `.\Test-Lesson.ps1` で採点。
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 地下は **#90** 以降が本編。空 **#87〜89 関門** を先に越えると物語がつながりやすいです。進行の強制はありません。
+
+ここから **地下帝国** エリアに入ります。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 89　空の関門：ストラテジ総合](....../sky/gate-sky-trial/89-strat-trial/README.md) |
-| 次の講座 | [講座 91　午後トレース：繰返し（問題）](../91-trace-loop/PROBLEMS.md) |
-| 次（用語） | [講座 91　午後トレース：繰返し（用語）](../91-trace-loop/README.md) |
+| 前の講座 | [講座 89　空の関門：ストラテジ総合](../../../sky/gate-sky-trial/89-strat-trial/README.md) |
+| 次の講座 | [講座 91　午後トレース：繰返し（問題）](..91-trace-loop PROBLEMS.md) |
+| 次（用語） | [講座 91　午後トレース：繰返し（用語）](..91-trace-loop README.md) |
 | この島・砦 | [アルゴリズム砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

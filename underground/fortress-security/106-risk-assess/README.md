@@ -20,14 +20,19 @@
 ## クエストへ
 
 [PROBLEMS.md](./PROBLEMS.md) で演習 → `.\Test-Lesson.ps1` で採点。
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 地下は **#90** 以降が本編。空 **#87〜89 関門** を先に越えると物語がつながりやすいです。進行の強制はありません。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 105　ネットワーク設計と冗長化](..../fortress-network/105-design-nw/README.md) |
-| 次の講座 | [講座 107　暗号と認証の午後対策（問題）](../107-crypto-pm/PROBLEMS.md) |
-| 次（用語） | [講座 107　暗号と認証の午後対策（用語）](../107-crypto-pm/README.md) |
+| 前の講座 | [講座 105　ネットワーク設計と冗長化](../../fortress-network/105-design-nw/README.md) |
+| 次の講座 | [講座 107　暗号と認証の午後対策（問題）](..107-crypto-pm PROBLEMS.md) |
+| 次（用語） | [講座 107　暗号と認証の午後対策（用語）](..107-crypto-pm README.md) |
 | この島・砦 | [セキュリティ砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

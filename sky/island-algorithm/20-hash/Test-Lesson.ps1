@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 20　ハッシュ法"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '253c6c4bd961bb44e8ef9513812a367d4e1ab47016413b8462025f28068600e0' 'ハッシュ=O(1),衝突=コリジョン'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/20-hash' -NextLesson 'island-algorithm/21-graph' -CourseNo 20 -ClearLine '鍵穴が一つ鳴り、対応が一瞬で見つかった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/20-hash' -NextLesson 'island-algorithm/21-graph' -CourseNo 20 -ClearLine '鍵穴が一つ鳴り、対応が一瞬で見つかった。' -TitleAwards '塔の見習い')

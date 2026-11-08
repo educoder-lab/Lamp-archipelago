@@ -30,9 +30,11 @@ A. Cookie の暗号化　B. プレースホルダの使用　C. パスワード�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 57　ファイアウォールとDMZ](../57-firewall/README.md) |
-| 次の講座 | [講座 59　情報セキュリティ管理（問題）](../59-policy/PROBLEMS.md) |
-| 次（用語） | [講座 59　情報セキュリティ管理（用語）](../59-policy/README.md) |
+| 前の講座 | [講座 57　ファイアウォールとDMZ](..57-firewall README.md) |
+| 次の講座 | [講座 59　情報セキュリティ管理（問題）](..59-policy PROBLEMS.md) |
+| 次（用語） | [講座 59　情報セキュリティ管理（用語）](..59-policy README.md) |
 | この島・砦 | [セキュリティの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

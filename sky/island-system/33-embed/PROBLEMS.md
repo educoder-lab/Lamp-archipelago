@@ -30,9 +30,11 @@ A. センサ　B. アクチュエータ　C. A/D 変換器　D. プロセッサ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 32　クラスタと負荷分散](../32-cluster/README.md) |
-| 次の講座 | [講座 34　OSの役割とプロセス（問題）](..../island-software/34-os/PROBLEMS.md) |
-| 次（用語） | [講座 34　OSの役割とプロセス（用語）](..../island-software/34-os/README.md) |
+| 前の講座 | [講座 32　クラスタと負荷分散](..32-cluster README.md) |
+| 次の講座 | [講座 34　OSの役割とプロセス（問題）](../../island-software/34-os/PROBLEMS.md) |
+| 次（用語） | [講座 34　OSの役割とプロセス（用語）](../../island-software/34-os/README.md) |
 | この島・砦 | [システム構成の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 42　SQL SELECT文"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' 'LIKE "田%"=田で始まる,DISTINCT=重複除外'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/42-sql-select' -NextLesson 'island-database/43-sql-join' -CourseNo 42 -ClearLine '水晶の泉の表と鍵が一つ光り、灯が 42 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/42-sql-select' -NextLesson 'island-database/43-sql-join' -CourseNo 42 -ClearLine '水晶の泉の表と鍵が一つ光り、灯が 42 番目に繋がった。' -TitleAwards '')

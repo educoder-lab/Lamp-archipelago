@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 43　SQL 結合と副問合せ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' 'INNER JOIN=一致のみ,HAVING=集計後絞込み'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/43-sql-join' -NextLesson 'island-database/44-sql-update' -CourseNo 43 -ClearLine '水晶の泉の表と鍵が一つ光り、灯が 43 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/43-sql-join' -NextLesson 'island-database/44-sql-update' -CourseNo 43 -ClearLine '水晶の泉の表と鍵が一つ光り、灯が 43 番目に繋がった。' -TitleAwards '')

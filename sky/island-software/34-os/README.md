@@ -27,9 +27,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 33　組込みとIoT](..../island-system/33-embed/README.md) |
-| 次の講座 | [講座 35　スケジューリングと排他（問題）](../35-sched/PROBLEMS.md) |
-| 次（用語） | [講座 35　スケジューリングと排他（用語）](../35-sched/README.md) |
+| 前の講座 | [講座 33　組込みとIoT](../../island-system/33-embed/README.md) |
+| 次の講座 | [講座 35　スケジューリングと排他（問題）](..35-sched PROBLEMS.md) |
+| 次（用語） | [講座 35　スケジューリングと排他（用語）](..35-sched README.md) |
 | この島・砦 | [ソフトウェアの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

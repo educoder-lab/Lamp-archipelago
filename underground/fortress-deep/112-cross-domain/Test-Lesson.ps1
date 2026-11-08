@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 112　分野横断演習"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' '午後5問150分≒30分/問,横断=基礎の関連付け'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/112-cross-domain' -NextLesson 'fortress-deep/113-final-strategy' -CourseNo 112 -ClearLine '石版の一角が白く染まり、地下の灯が 112 番目を刻んだ。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/112-cross-domain' -NextLesson 'fortress-deep/113-final-strategy' -CourseNo 112 -ClearLine '石版の一角が白く染まり、地下の灯が 112 番目を刻んだ。' -TitleAwards '')

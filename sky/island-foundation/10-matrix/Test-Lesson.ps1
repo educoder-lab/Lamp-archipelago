@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 10　行列と線形代数"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '単位行列×A=A,逆行列×A=E'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/10-matrix' -NextLesson 'island-foundation/11-bigo' -CourseNo 10 -ClearLine '床の格子が光り、基礎理論の灯が十二分に近づいた。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/10-matrix' -NextLesson 'island-foundation/11-bigo' -CourseNo 10 -ClearLine '床の格子が光り、基礎理論の灯が十二分に近づいた。' -TitleAwards '')

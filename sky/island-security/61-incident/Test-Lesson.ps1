@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 61　インシデント対応と法規"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '81bb104751cd519abf8d78e5c73b0aedd3da24dc6f086e081d078a9cde80efed' 'CSIRT=インシデント対応チーム'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/61-incident' -NextLesson 'island-media/62-image' -CourseNo 61 -ClearLine '盾商会の盾壁と鍵が一つ光り、灯が 61 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/61-incident' -NextLesson 'island-media/62-image' -CourseNo 61 -ClearLine '盾商会の盾壁と鍵が一つ光り、灯が 61 番目に繋がった。' -TitleAwards '盾の紋章')

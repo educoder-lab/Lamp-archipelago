@@ -30,9 +30,11 @@ A. コスト高　B. 投資効果が高い　C. リスクが高い　D. 期間�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 72　システム企画と要件定義](../72-plan/README.md) |
-| 次の講座 | [講座 74　開発プロセスモデル（問題）](..../island-dev-tech/74-sdlc/PROBLEMS.md) |
-| 次（用語） | [講座 74　開発プロセスモデル（用語）](..../island-dev-tech/74-sdlc/README.md) |
+| 前の講座 | [講座 72　システム企画と要件定義](..72-plan README.md) |
+| 次の講座 | [講座 74　開発プロセスモデル（問題）](../../island-dev-tech/74-sdlc/PROBLEMS.md) |
+| 次（用語） | [講座 74　開発プロセスモデル（用語）](../../island-dev-tech/74-sdlc/README.md) |
 | この島・砦 | [システム企画の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

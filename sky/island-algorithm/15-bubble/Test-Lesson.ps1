@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 15　バブルソートと選択ソート"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '9fe0f1a3dbf7432866342b9cfb1a38ed0d5789e20d2dd09dbe84bccdefe6f020' 'バブル・選択ともO(n²),バブルは安定'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/15-bubble' -NextLesson 'island-algorithm/16-merge' -CourseNo 15 -ClearLine '泡が一つ消え、整列の音が塔に響いた。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/15-bubble' -NextLesson 'island-algorithm/16-merge' -CourseNo 15 -ClearLine '泡が一つ消え、整列の音が塔に響いた。' -TitleAwards '')

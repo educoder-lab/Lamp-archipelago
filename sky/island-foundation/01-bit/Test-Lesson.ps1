@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 01　ビットとバイト"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'ビットは最小、バイトは8ビット'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/01-bit' -NextLesson 'island-foundation/02-base' -CourseNo 1 -ClearLine '最小の粒が光に溶け、灯芯が一本だけ太くなった。' -TitleAward 'ビットの灯')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/01-bit' -NextLesson 'island-foundation/02-base' -CourseNo 1 -ClearLine '最小の粒が光に溶け、灯芯が一本だけ太くなった。' -TitleAwards 'ビットの灯')

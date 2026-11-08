@@ -30,9 +30,11 @@ A. 法律　B. 国際規格　C. ベストプラクティス集　D. フレー�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 82　リスクと品質管理](..../island-project/82-risk/README.md) |
-| 次の講座 | [講座 84　ファシリティマネジメント（問題）](../84-facility/PROBLEMS.md) |
-| 次（用語） | [講座 84　ファシリティマネジメント（用語）](../84-facility/README.md) |
+| 前の講座 | [講座 82　リスクと品質管理](../../island-project/82-risk/README.md) |
+| 次の講座 | [講座 84　ファシリティマネジメント（問題）](..84-facility PROBLEMS.md) |
+| 次（用語） | [講座 84　ファシリティマネジメント（用語）](..84-facility README.md) |
 | この島・砦 | [サービスの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

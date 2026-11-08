@@ -27,9 +27,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 53　Webとプロトコル応用](..../island-network/53-webapi/README.md) |
-| 次の講座 | [講座 55　暗号化の基礎（問題）](../55-crypto/PROBLEMS.md) |
-| 次（用語） | [講座 55　暗号化の基礎（用語）](../55-crypto/README.md) |
+| 前の講座 | [講座 53　Webとプロトコル応用](../../island-network/53-webapi/README.md) |
+| 次の講座 | [講座 55　暗号化の基礎（問題）](..55-crypto PROBLEMS.md) |
+| 次（用語） | [講座 55　暗号化の基礎（用語）](..55-crypto README.md) |
 | この島・砦 | [セキュリティの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

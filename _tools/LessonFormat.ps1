@@ -8,7 +8,8 @@
   while ($i -lt $fa.Count -and $i -lt $ta.Count -and $fa[$i] -eq $ta[$i]) { $i++ }
   $up = $fa.Count - $i
   $down = $ta[$i..($ta.Count - 1)]
-  $rel = @(('..' * $up) -split ' ' | Where-Object { $_ }) + $down
+  $upParts = if ($up -gt 0) { 1..$up | ForEach-Object { '..' } } else { @() }
+  $rel = @($upParts + $down)
   return ($rel -join '/')
 }
 
@@ -17,6 +18,25 @@ function Get-WorldRelPath {
   $depth = ($LessonPath -split '\\').Count
   if ($depth -eq 3) { return '../../../WORLD.md' }
   return ('../' * ($depth + 1)).TrimEnd('/') + '/WORLD.md'
+}
+
+function Get-LampTravelAdvisory {
+  param($Lesson)
+  $lines = [System.Collections.Generic.List[string]]::new()
+  if ($Lesson.Realm -eq 'underground') {
+    $lines.Add('**冒険メモ（ソフトロック）**: 地下は **#90** 以降が本編。空 **#87〜89 関門** を先に越えると物語がつながりやすいです。進行の強制はありません。')
+  }
+  if ($Lesson.Realm -eq 'land') {
+    $lines.Add('**冒険メモ（ソフトロック）**: 台地は **#114** 以降推奨。地下 **#110〜113** まで済ませると安心です。強制はありません。')
+  }
+  if ($Lesson.CourseNo -eq 90) {
+    $lines.Add('ここから **地下帝国** エリアに入ります。')
+  }
+  if ($Lesson.CourseNo -eq 114) {
+    $lines.Add('ここから **大陸の台地** エリアに入ります。')
+  }
+  if ($lines.Count -eq 0) { return '' }
+  return "## 冒険メモ`n`n$($lines -join "`n`n")`n"
 }
 
 function Format-LessonNav {
@@ -30,7 +50,10 @@ function Format-LessonNav {
   $curRoot = Join-Path $RepoRoot $Lesson.Path
   $curriculumRel = if ($depth -eq 3) { '../../../CURRICULUM.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/CURRICULUM.md' }
   $worldRel = Get-WorldRelPath -LessonPath $Lesson.Path
+  $glossaryRel = if ($depth -eq 3) { '../../../GLOSSARY.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/GLOSSARY.md' }
+  $titlesRel = if ($depth -eq 3) { '../../../TITLES.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/TITLES.md' }
   $islandRel = '../README.md'
+  $advisory = Get-LampTravelAdvisory -Lesson $Lesson
   $prevLine = '—'
   if ($Prev) {
     $p = Get-RelativePathBetween -FromDir $curRoot -ToDir (Join-Path $RepoRoot $Prev.Path) -File 'README.md'
@@ -45,7 +68,7 @@ function Format-LessonNav {
     $nextRead = "[講座 $($Next.CourseNo.ToString('00'))　$($Next.Blurb)（用語）]($nr)"
   }
   return @"
-
+$advisory
 ## ナビ
 
 | | リンク |
@@ -56,6 +79,8 @@ function Format-LessonNav {
 | この島・砦 | [$($Lesson.DomainTitle)]($islandRel) |
 | 全体一覧 | [カリキュラム（全講座）]($curriculumRel) |
 | 世界 | [WORLD.md]($worldRel) |
+| 用語図鑑 | [GLOSSARY.md]($glossaryRel) |
+| 称号 | [TITLES.md]($titlesRel) |
 "@
 }
 

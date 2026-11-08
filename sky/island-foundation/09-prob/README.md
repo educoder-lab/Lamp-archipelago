@@ -25,9 +25,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 08　集合と論理](../08-set/README.md) |
-| 次の講座 | [講座 10　行列と線形代数（問題）](../10-matrix/PROBLEMS.md) |
-| 次（用語） | [講座 10　行列と線形代数（用語）](../10-matrix/README.md) |
+| 前の講座 | [講座 08　集合と論理](..08-set README.md) |
+| 次の講座 | [講座 10　行列と線形代数（問題）](..10-matrix PROBLEMS.md) |
+| 次（用語） | [講座 10　行列と線形代数（用語）](..10-matrix README.md) |
 | この島・砦 | [基礎理論の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

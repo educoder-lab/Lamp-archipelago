@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 79　運用・保守とDevOps"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '94f0768be88d2e4ad9bee724cc2ac3215764e4866b90f07266cb1c8be220e2b8' 'DevOps=開発+運用,CI=継続的統合'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/79-devops' -NextLesson 'island-project/80-pmbok' -CourseNo 79 -ClearLine '開発工房の型と試作が一つ光り、灯が 79 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/79-devops' -NextLesson 'island-project/80-pmbok' -CourseNo 79 -ClearLine '開発工房の型と試作が一つ光り、灯が 79 番目に繋がった。' -TitleAwards '棟梁の証')

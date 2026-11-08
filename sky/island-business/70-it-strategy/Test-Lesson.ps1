@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 70　IT戦略とガバナンス"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '897f4dcab6616dff296ca2d9124bbd3568bdb3323dcee6d182b2636e75461b0f' 'ERP=統合基幹,BPR=業務再設計'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/70-it-strategy' -NextLesson 'island-business/71-contract' -CourseNo 70 -ClearLine '羅針盤室の方角と戦略が一つ光り、灯が 70 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/70-it-strategy' -NextLesson 'island-business/71-contract' -CourseNo 70 -ClearLine '羅針盤室の方角と戦略が一つ光り、灯が 70 番目に繋がった。' -TitleAwards '')

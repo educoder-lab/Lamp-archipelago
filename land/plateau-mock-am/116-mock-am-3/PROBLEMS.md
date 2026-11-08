@@ -31,14 +31,19 @@ A. データ暗号化　B. 停電時の一時電力供給　C. ネットワー�
 ```powershell
 .\Test-Lesson.ps1
 ```
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 台地は **#114** 以降推奨。地下 **#110〜113** まで済ませると安心です。強制はありません。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 115　午前模試 第2回](../115-mock-am-2/README.md) |
-| 次の講座 | [講座 117　午後模試 第1回（問題）](..../plateau-mock-pm/117-mock-pm-1/PROBLEMS.md) |
-| 次（用語） | [講座 117　午後模試 第1回（用語）](..../plateau-mock-pm/117-mock-pm-1/README.md) |
+| 前の講座 | [講座 115　午前模試 第2回](..115-mock-am-2 README.md) |
+| 次の講座 | [講座 117　午後模試 第1回（問題）](../../plateau-mock-pm/117-mock-pm-1/PROBLEMS.md) |
+| 次（用語） | [講座 117　午後模試 第1回（用語）](../../plateau-mock-pm/117-mock-pm-1/README.md) |
 | この島・砦 | [午前模試の台地](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

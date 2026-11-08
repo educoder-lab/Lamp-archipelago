@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 16　マージソートとクイックソート"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'マージ=安定O(n log n),クイック最悪O(n²)'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/16-merge' -NextLesson 'island-algorithm/17-stack' -CourseNo 16 -ClearLine '二列の歯車が噛み合い、ソートの図が完成した。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/16-merge' -NextLesson 'island-algorithm/17-stack' -CourseNo 16 -ClearLine '二列の歯車が噛み合い、ソートの図が完成した。' -TitleAwards '')

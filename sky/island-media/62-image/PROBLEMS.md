@@ -30,9 +30,11 @@ A. 可逆圧縮　B. 非可逆圧縮　C. 無圧縮　D. 差分圧縮
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 61　インシデント対応と法規](..../island-security/61-incident/README.md) |
-| 次の講座 | [講座 63　ヒューマンインタフェース（問題）](../63-ux/PROBLEMS.md) |
-| 次（用語） | [講座 63　ヒューマンインタフェース（用語）](../63-ux/README.md) |
+| 前の講座 | [講座 61　インシデント対応と法規](../../island-security/61-incident/README.md) |
+| 次の講座 | [講座 63　ヒューマンインタフェース（問題）](..63-ux PROBLEMS.md) |
+| 次（用語） | [講座 63　ヒューマンインタフェース（用語）](..63-ux README.md) |
 | この島・砦 | [マルチメディアの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

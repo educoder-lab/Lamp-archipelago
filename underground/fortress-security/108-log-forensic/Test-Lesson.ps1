@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 108　ログ管理とフォレンジック"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'フォレンジック=電子証拠,SIEM=ログ一元分析'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-security/108-log-forensic' -NextLesson 'fortress-security/109-secure-design' -CourseNo 108 -ClearLine '石版の一角が白く染まり、地下の灯が 108 番目を刻んだ。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-security/108-log-forensic' -NextLesson 'fortress-security/109-secure-design' -CourseNo 108 -ClearLine '石版の一角が白く染まり、地下の灯が 108 番目を刻んだ。' -TitleAwards '')

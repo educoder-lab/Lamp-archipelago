@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 76　オブジェクト指向"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '6a234d6c78b3b3b5b51ee2abc6495b26b69ceaeadd9e54f70fc7778398c878af' 'カプセル化=隠蔽,継承=引継ぎ,多態性=同名異動作'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/76-oop' -NextLesson 'island-dev-tech/77-test' -CourseNo 76 -ClearLine '開発工房の型と試作が一つ光り、灯が 76 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/76-oop' -NextLesson 'island-dev-tech/77-test' -CourseNo 76 -ClearLine '開発工房の型と試作が一つ光り、灯が 76 番目に繋がった。' -TitleAwards '')

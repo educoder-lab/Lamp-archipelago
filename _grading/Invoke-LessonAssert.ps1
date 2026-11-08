@@ -52,7 +52,8 @@ function Complete-LessonTest {
     [string]$NextLesson,
     [int]$CourseNo = 0,
     [string]$ClearLine = '',
-    [string]$TitleAward = ''
+    [string]$TitleAward = '',
+    [string]$TitleAwards = ''
   )
   $ok = $Results -notcontains $false
   Write-Host ""
@@ -69,10 +70,13 @@ function Complete-LessonTest {
     $adventureScript = Join-Path $PSScriptRoot 'Invoke-AdventureSave.ps1'
     if ((Test-Path -LiteralPath $adventureScript) -and $CourseNo -gt 0) {
       . $adventureScript
-      Register-LessonClear -LessonId $LessonId -CourseNo $CourseNo -ClearLine $ClearLine -TitleAward $TitleAward
+      Register-LessonClear -LessonId $LessonId -CourseNo $CourseNo -ClearLine $ClearLine -TitleAward $TitleAward -TitleAwards $TitleAwards
     }
-    if ($TitleAward) {
-      Write-LessonResult "称号を得た: $TitleAward" Pass
+    $gotTitles = if ($TitleAwards) {
+      @($TitleAwards -split '\|' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+    } elseif ($TitleAward) { @($TitleAward) } else { @() }
+    foreach ($t in $gotTitles) {
+      Write-LessonResult "称号を得た: $t" Pass
     }
     return 0
   }

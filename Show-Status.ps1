@@ -35,10 +35,27 @@ Write-Host "  $($next.TestTitle)"
 Write-Host "  cd $($next.Path)"
 Write-Host "  .\Test-Lesson.ps1"
 
-if ($next.CourseNo -ge 90 -and ($save.clearedNos -notcontains 89)) {
+$skyLessons = @($lessons | Where-Object { $_.Realm -eq 'sky' })
+$ugLessons = @($lessons | Where-Object { $_.Realm -eq 'underground' })
+$landLessons = @($lessons | Where-Object { $_.Realm -eq 'land' })
+$skyC = @($skyLessons | Where-Object { $save.clearedNos -contains $_.CourseNo }).Count
+$ugC = @($ugLessons | Where-Object { $save.clearedNos -contains $_.CourseNo }).Count
+$landC = @($landLessons | Where-Object { $save.clearedNos -contains $_.CourseNo }).Count
+
+Write-Host ""
+Write-Host "エリア進行（推奨順・強制なし）" -ForegroundColor DarkCyan
+Write-Host "  空 sky:            $skyC / $($skyLessons.Count)"
+Write-Host "  地下 underground: $ugC / $($ugLessons.Count)"
+Write-Host "  陸 land:           $landC / $($landLessons.Count)"
+
+if ($next.Realm -eq 'underground' -and ($save.clearedNos -notcontains 89)) {
   Write-Host ""
-  Write-Host "（ヒント）空の関門 #89 まで済むと、地下の物語がつながりやすいです。" -ForegroundColor DarkYellow
+  Write-Host "（ソフトロック）空の関門 #87〜89 を先に済ませると、地下の物語がつながりやすいです。" -ForegroundColor DarkYellow
+}
+if ($next.Realm -eq 'land' -and ($save.clearedNos -notcontains 113)) {
+  Write-Host ""
+  Write-Host "（ソフトロック）台地 #114 以降は、地下 #110〜113 深層まで済ませるのがおすすめです。" -ForegroundColor DarkYellow
 }
 
 Write-Host ""
-Write-Host "リンク: WORLD.md / CURRICULUM.md"
+Write-Host "リンク: WORLD.md / CURRICULUM.md / GLOSSARY.md / TITLES.md"

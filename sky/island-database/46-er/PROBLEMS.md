@@ -30,9 +30,11 @@ A. 画面設計　B. 概念データモデリング　C. プログラム設計�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 45　トランザクションと障害回復](../45-transaction/README.md) |
-| 次の講座 | [講座 47　OSI参照モデル（問題）](..../island-network/47-osi/PROBLEMS.md) |
-| 次（用語） | [講座 47　OSI参照モデル（用語）](..../island-network/47-osi/README.md) |
+| 前の講座 | [講座 45　トランザクションと障害回復](..45-transaction README.md) |
+| 次の講座 | [講座 47　OSI参照モデル（問題）](../../island-network/47-osi/PROBLEMS.md) |
+| 次（用語） | [講座 47　OSI参照モデル（用語）](../../island-network/47-osi/README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

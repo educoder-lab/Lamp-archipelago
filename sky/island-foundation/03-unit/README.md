@@ -25,9 +25,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 02　基数変換](../02-base/README.md) |
-| 次の講座 | [講座 04　論理演算（問題）](../04-logic/PROBLEMS.md) |
-| 次（用語） | [講座 04　論理演算（用語）](../04-logic/README.md) |
+| 前の講座 | [講座 02　基数変換](..02-base README.md) |
+| 次の講座 | [講座 04　論理演算（問題）](..04-logic PROBLEMS.md) |
+| 次（用語） | [講座 04　論理演算（用語）](..04-logic README.md) |
 | この島・砦 | [基礎理論の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

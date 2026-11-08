@@ -27,9 +27,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 79　運用・保守とDevOps](..../island-dev-tech/79-devops/README.md) |
-| 次の講座 | [講座 81　スケジュールと工数（問題）](../81-schedule/PROBLEMS.md) |
-| 次（用語） | [講座 81　スケジュールと工数（用語）](../81-schedule/README.md) |
+| 前の講座 | [講座 79　運用・保守とDevOps](../../island-dev-tech/79-devops/README.md) |
+| 次の講座 | [講座 81　スケジュールと工数（問題）](..81-schedule PROBLEMS.md) |
+| 次（用語） | [講座 81　スケジュールと工数（用語）](..81-schedule README.md) |
 | この島・砦 | [プロジェクトの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

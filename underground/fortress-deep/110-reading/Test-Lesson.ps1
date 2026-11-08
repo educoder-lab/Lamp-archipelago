@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 110　長文読解の技法"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' '設問先読み→本文を目的読み'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/110-reading' -NextLesson 'fortress-deep/111-system-scenario' -CourseNo 110 -ClearLine '石版の一角が白く染まり、地下の灯が 110 番目を刻んだ。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/110-reading' -NextLesson 'fortress-deep/111-system-scenario' -CourseNo 110 -ClearLine '石版の一角が白く染まり、地下の灯が 110 番目を刻んだ。' -TitleAwards '')

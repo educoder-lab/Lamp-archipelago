@@ -26,9 +26,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 49　TCP/UDPとポート](../49-tcpudp/README.md) |
-| 次の講座 | [講座 51　ルーティングとスイッチ（問題）](../51-routing/PROBLEMS.md) |
-| 次（用語） | [講座 51　ルーティングとスイッチ（用語）](../51-routing/README.md) |
+| 前の講座 | [講座 49　TCP/UDPとポート](..49-tcpudp README.md) |
+| 次の講座 | [講座 51　ルーティングとスイッチ（問題）](..51-routing PROBLEMS.md) |
+| 次（用語） | [講座 51　ルーティングとスイッチ（用語）](..51-routing README.md) |
 | この島・砦 | [ネットワークの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

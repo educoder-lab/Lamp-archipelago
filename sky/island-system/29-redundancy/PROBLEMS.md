@@ -30,9 +30,11 @@ A. 待機系は停止　B. 即座に切替え可能　C. 同じ処理を同時�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 28　システムの信頼性](../28-reliability/README.md) |
-| 次の講座 | [講座 30　性能評価（問題）](../30-perf/PROBLEMS.md) |
-| 次（用語） | [講座 30　性能評価（用語）](../30-perf/README.md) |
+| 前の講座 | [講座 28　システムの信頼性](..28-reliability README.md) |
+| 次の講座 | [講座 30　性能評価（問題）](..30-perf PROBLEMS.md) |
+| 次（用語） | [講座 30　性能評価（用語）](..30-perf README.md) |
 | この島・砦 | [システム構成の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

@@ -30,9 +30,11 @@ A. リスクアセスメント　B. リスク回避　C. リスク移転　D. �
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 58　Webセキュリティ](../58-webattack/README.md) |
-| 次の講座 | [講座 60　アクセス制御と認証技術（問題）](../60-accessctl/PROBLEMS.md) |
-| 次（用語） | [講座 60　アクセス制御と認証技術（用語）](../60-accessctl/README.md) |
+| 前の講座 | [講座 58　Webセキュリティ](..58-webattack README.md) |
+| 次の講座 | [講座 60　アクセス制御と認証技術（問題）](..60-accessctl PROBLEMS.md) |
+| 次（用語） | [講座 60　アクセス制御と認証技術（用語）](..60-accessctl README.md) |
 | この島・砦 | [セキュリティの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

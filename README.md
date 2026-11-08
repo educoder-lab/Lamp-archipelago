@@ -11,7 +11,8 @@
 | [underground](./underground/) | 午後（追跡・SQL・読解） |
 | [land](./land/) | 模擬試験 |
 
-**講座数・順番**: [CURRICULUM.md](./CURRICULUM.md)（自動生成。README/PROBLEMS からも **ナビ** で次へ進めます）
+**講座数・順番**: [CURRICULUM.md](./CURRICULUM.md)（自動生成。README/PROBLEMS からも **ナビ** で次へ進めます）  
+**RPG**: [WORLD.md](./WORLD.md) · [GLOSSARY.md](./GLOSSARY.md) · [TITLES.md](./TITLES.md)
 
 ## はじめ方
 

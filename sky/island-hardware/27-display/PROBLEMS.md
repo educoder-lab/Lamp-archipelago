@@ -30,9 +30,11 @@ A. 解像度　B. 色数　C. リフレッシュレート　D. CPU クロック
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 26　入出力インタフェース](../26-io/README.md) |
-| 次の講座 | [講座 28　システムの信頼性（問題）](..../island-system/28-reliability/PROBLEMS.md) |
-| 次（用語） | [講座 28　システムの信頼性（用語）](..../island-system/28-reliability/README.md) |
+| 前の講座 | [講座 26　入出力インタフェース](..26-io README.md) |
+| 次の講座 | [講座 28　システムの信頼性（問題）](../../island-system/28-reliability/PROBLEMS.md) |
+| 次（用語） | [講座 28　システムの信頼性（用語）](../../island-system/28-reliability/README.md) |
 | この島・砦 | [ハードウェアの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

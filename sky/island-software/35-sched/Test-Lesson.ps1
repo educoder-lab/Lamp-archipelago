@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 35　スケジューリングと排他"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '99adc96456554066b093d2a5ae358b44ec28dd24670315cccd53939e4e88c0b6' 'デッドロック=相互待ち,セマフォ=排他制御'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/35-sched' -NextLesson 'island-software/36-vmem' -CourseNo 35 -ClearLine '書庫の層と扉が一つ光り、灯が 35 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/35-sched' -NextLesson 'island-software/36-vmem' -CourseNo 35 -ClearLine '書庫の層と扉が一つ光り、灯が 35 番目に繋がった。' -TitleAwards '')

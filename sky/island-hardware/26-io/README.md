@@ -26,9 +26,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 25　補助記憶と入出力](../25-disk/README.md) |
-| 次の講座 | [講座 27　表示装置と解像度（問題）](../27-display/PROBLEMS.md) |
-| 次（用語） | [講座 27　表示装置と解像度（用語）](../27-display/README.md) |
+| 前の講座 | [講座 25　補助記憶と入出力](..25-disk README.md) |
+| 次の講座 | [講座 27　表示装置と解像度（問題）](..27-display PROBLEMS.md) |
+| 次（用語） | [講座 27　表示装置と解像度（用語）](..27-display README.md) |
 | この島・砦 | [ハードウェアの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

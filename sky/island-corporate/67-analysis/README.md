@@ -26,9 +26,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 66　OR・在庫管理](../66-or/README.md) |
-| 次の講座 | [講座 68　経営戦略（問題）](..../island-business/68-strategy/PROBLEMS.md) |
-| 次（用語） | [講座 68　経営戦略（用語）](..../island-business/68-strategy/README.md) |
+| 前の講座 | [講座 66　OR・在庫管理](..66-or README.md) |
+| 次の講座 | [講座 68　経営戦略（問題）](../../island-business/68-strategy/PROBLEMS.md) |
+| 次（用語） | [講座 68　経営戦略（用語）](../../island-business/68-strategy/README.md) |
 | この島・砦 | [企業活動の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

@@ -31,14 +31,21 @@ A. 自社の技術力　B. 顧客ニーズの変化　C. 競合の新規参入�
 ```powershell
 .\Test-Lesson.ps1
 ```
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 台地は **#114** 以降推奨。地下 **#110〜113** まで済ませると安心です。強制はありません。
+
+ここから **大陸の台地** エリアに入ります。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 113　総合戦略と時間管理](....../underground/fortress-deep/113-final-strategy/README.md) |
-| 次の講座 | [講座 115　午前模試 第2回（問題）](../115-mock-am-2/PROBLEMS.md) |
-| 次（用語） | [講座 115　午前模試 第2回（用語）](../115-mock-am-2/README.md) |
+| 前の講座 | [講座 113　総合戦略と時間管理](../../../underground/fortress-deep/113-final-strategy/README.md) |
+| 次の講座 | [講座 115　午前模試 第2回（問題）](..115-mock-am-2 PROBLEMS.md) |
+| 次（用語） | [講座 115　午前模試 第2回（用語）](..115-mock-am-2 README.md) |
 | この島・砦 | [午前模試の台地](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

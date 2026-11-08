@@ -54,14 +54,23 @@ function Register-LessonClear {
     [string]$LessonId,
     [int]$CourseNo,
     [string]$ClearLine,
-    [string]$TitleAward
+    [string]$TitleAward,
+    [string]$TitleAwards
   )
   $save = Get-AdventureSave
+  $awardList = @()
+  if ($TitleAwards) {
+    $awardList = @($TitleAwards -split '\|' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+  } elseif ($TitleAward) {
+    $awardList = @($TitleAward)
+  }
   if ($save.clearedIds -notcontains $LessonId) {
     $save.clearedIds = @($save.clearedIds + $LessonId)
     $save.clearedNos = @($save.clearedNos + $CourseNo | Sort-Object -Unique)
-    if ($TitleAward -and $save.titles -notcontains $TitleAward) {
-      $save.titles = @($save.titles + $TitleAward)
+    foreach ($t in $awardList) {
+      if ($save.titles -notcontains $t) {
+        $save.titles = @($save.titles + $t)
+      }
     }
   }
   $save.lastLessonId = $LessonId

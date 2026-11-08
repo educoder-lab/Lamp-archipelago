@@ -30,9 +30,11 @@ A. DNS サーバ　B. プロキシサーバ　C. メールサーバ　D. ファ�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 52　無線LANとHTTP](../52-wireless/README.md) |
-| 次の講座 | [講座 54　脅威と攻撃手法（問題）](..../island-security/54-threat/PROBLEMS.md) |
-| 次（用語） | [講座 54　脅威と攻撃手法（用語）](..../island-security/54-threat/README.md) |
+| 前の講座 | [講座 52　無線LANとHTTP](..52-wireless README.md) |
+| 次の講座 | [講座 54　脅威と攻撃手法（問題）](../../island-security/54-threat/PROBLEMS.md) |
+| 次（用語） | [講座 54　脅威と攻撃手法（用語）](../../island-security/54-threat/README.md) |
 | この島・砦 | [ネットワークの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

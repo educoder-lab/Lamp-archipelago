@@ -26,9 +26,11 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 60　アクセス制御と認証技術](../60-accessctl/README.md) |
-| 次の講座 | [講座 62　画像と音声のデータ（問題）](..../island-media/62-image/PROBLEMS.md) |
-| 次（用語） | [講座 62　画像と音声のデータ（用語）](..../island-media/62-image/README.md) |
+| 前の講座 | [講座 60　アクセス制御と認証技術](..60-accessctl README.md) |
+| 次の講座 | [講座 62　画像と音声のデータ（問題）](../../island-media/62-image/PROBLEMS.md) |
+| 次（用語） | [講座 62　画像と音声のデータ（用語）](../../island-media/62-image/README.md) |
 | この島・砦 | [セキュリティの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

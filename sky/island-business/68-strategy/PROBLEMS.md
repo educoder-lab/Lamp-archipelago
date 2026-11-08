@@ -30,9 +30,11 @@ A. インソーシング　B. アウトソーシング　C. オフショアリ�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 67　企業分析と標準化](..../island-corporate/67-analysis/README.md) |
-| 次の講座 | [講座 69　マーケティングとe-Biz（問題）](../69-marketing/PROBLEMS.md) |
-| 次（用語） | [講座 69　マーケティングとe-Biz（用語）](../69-marketing/README.md) |
+| 前の講座 | [講座 67　企業分析と標準化](../../island-corporate/67-analysis/README.md) |
+| 次の講座 | [講座 69　マーケティングとe-Biz（問題）](..69-marketing PROBLEMS.md) |
+| 次（用語） | [講座 69　マーケティングとe-Biz（用語）](..69-marketing README.md) |
 | この島・砦 | [経営戦略の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

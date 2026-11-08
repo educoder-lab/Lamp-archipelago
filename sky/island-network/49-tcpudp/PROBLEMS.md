@@ -30,9 +30,11 @@ A. ポーリング　B. 3ウェイハンドシェイク　C. トンネリング�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 48　IPアドレスとサブネット](../48-ip/README.md) |
-| 次の講座 | [講座 50　DNS・DHCP・メール（問題）](../50-dns/PROBLEMS.md) |
-| 次（用語） | [講座 50　DNS・DHCP・メール（用語）](../50-dns/README.md) |
+| 前の講座 | [講座 48　IPアドレスとサブネット](..48-ip README.md) |
+| 次の講座 | [講座 50　DNS・DHCP・メール（問題）](..50-dns PROBLEMS.md) |
+| 次（用語） | [講座 50　DNS・DHCP・メール（用語）](..50-dns README.md) |
 | この島・砦 | [ネットワークの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

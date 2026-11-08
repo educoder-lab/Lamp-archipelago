@@ -25,14 +25,19 @@ A. 除外される　B. NULL で埋められる　C. エラーになる　D. デ
 ```powershell
 .\Test-Lesson.ps1
 ```
+## 冒険メモ
+
+**冒険メモ（ソフトロック）**: 台地は **#114** 以降推奨。地下 **#110〜113** まで済ませると安心です。強制はありません。
 
 ## ナビ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 118　午後模試 第2回](../118-mock-pm-2/README.md) |
-| 次の講座 | [講座 120　最終模試：午前（問題）](..../plateau-final/120-final-am/PROBLEMS.md) |
-| 次（用語） | [講座 120　最終模試：午前（用語）](..../plateau-final/120-final-am/README.md) |
+| 前の講座 | [講座 118　午後模試 第2回](..118-mock-pm-2 README.md) |
+| 次の講座 | [講座 120　最終模試：午前（問題）](../../plateau-final/120-final-am/PROBLEMS.md) |
+| 次（用語） | [講座 120　最終模試：午前（用語）](../../plateau-final/120-final-am/README.md) |
 | この島・砦 | [午後模試の台地](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

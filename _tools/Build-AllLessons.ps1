@@ -9,10 +9,17 @@ $repoRoot = Split-Path $PSScriptRoot -Parent
 . (Join-Path $PSScriptRoot 'Format-RealmDocs.ps1')
 . (Join-Path $PSScriptRoot 'LessonData.ps1')
 . (Join-Path $PSScriptRoot 'Story-Entries.ps1')
+. (Join-Path $PSScriptRoot 'Story-Titles.ps1')
+. (Join-Path $PSScriptRoot 'Write-Glossary.ps1')
 
 $bootstrap = Get-LessonTestBootstrap
 $lessons = @(Get-LampLessonCatalog)
 $domainStories = Get-LampDomainStories
+$domainLastCourseNo = @{}
+foreach ($L in $lessons) {
+  $cur = $domainLastCourseNo[$L.Domain]
+  if (-not $cur -or $L.CourseNo -gt $cur) { $domainLastCourseNo[$L.Domain] = $L.CourseNo }
+}
 
 function Escape-ForPsSingleQuotedString {
   param([string]$Text)
@@ -40,12 +47,13 @@ for ($i = 0; $i -lt $lessons.Count; $i++) {
   $lessonId = "$($L.Realm)/$($L.Domain)/$($L.Slug)"
   $nextLabel = if ($next) { "$($next.Domain)/$($next.Slug)" } else { $L.Next }
   $clearEsc = Escape-ForPsSingleQuotedString $story.ClearLine
-  $titleEsc = Escape-ForPsSingleQuotedString ($story.TitleAward)
+  $awardList = Get-LampTitleAwardsForLesson -Lesson $L -PrimaryTitleAward $story.TitleAward -DomainLastCourseNo $domainLastCourseNo
+  $awardsEsc = Escape-ForPsSingleQuotedString (($awardList -join '|'))
   $testBody = @"
 $bootstrap
 Start-LessonTest "$($L.TestTitle)"
 `$r = Assert-AnswerHash (Join-Path `$PSScriptRoot '演習結果\answers.txt') '$hash' '$($L.Hint)'
-exit (Complete-LessonTest -Results @(`$r) -LessonId '$lessonId' -NextLesson '$nextLabel' -CourseNo $($L.CourseNo) -ClearLine '$clearEsc' -TitleAward '$titleEsc')
+exit (Complete-LessonTest -Results @(`$r) -LessonId '$lessonId' -NextLesson '$nextLabel' -CourseNo $($L.CourseNo) -ClearLine '$clearEsc' -TitleAwards '$awardsEsc')
 "@
   Set-Content -LiteralPath (Join-Path $lessonDir 'Test-Lesson.ps1') -Value $testBody -Encoding UTF8
   Write-Host "Lesson $($L.CourseNo.ToString('00')): $($L.Path)"
@@ -100,4 +108,6 @@ cd $realm\$domain\$($first.Slug)
 
 Write-CurriculumFile -RepoRoot $repoRoot -Lessons $lessons
 Write-RealmChapterReadmes -RepoRoot $repoRoot -Lessons $lessons
+Write-GlossaryFile -RepoRoot $repoRoot -Lessons $lessons
+Write-TitlesReferenceFile -RepoRoot $repoRoot -Lessons $lessons -DomainLastCourseNo $domainLastCourseNo
 Write-Host "Done. $($lessons.Count) lessons."

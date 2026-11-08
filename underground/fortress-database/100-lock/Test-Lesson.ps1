@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 100　ロックと同時実行制御"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' '排他ロック=全禁止,2相=直列可能性保証'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/100-lock' -NextLesson 'fortress-database/101-recovery' -CourseNo 100 -ClearLine '石版の一角が白く染まり、地下の灯が 100 番目を刻んだ。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/100-lock' -NextLesson 'fortress-database/101-recovery' -CourseNo 100 -ClearLine '石版の一角が白く染まり、地下の灯が 100 番目を刻んだ。' -TitleAwards '')

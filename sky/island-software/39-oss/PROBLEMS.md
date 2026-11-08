@@ -30,9 +30,11 @@ A. 商用ソフトウェア　B. OSS　C. ファームウェア　D. シェア�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 38　コンパイラとリンカ](../38-compiler/README.md) |
-| 次の講座 | [講座 40　関係データベースの基礎（問題）](..../island-database/40-rdb/PROBLEMS.md) |
-| 次（用語） | [講座 40　関係データベースの基礎（用語）](..../island-database/40-rdb/README.md) |
+| 前の講座 | [講座 38　コンパイラとリンカ](..38-compiler README.md) |
+| 次の講座 | [講座 40　関係データベースの基礎（問題）](../../island-database/40-rdb/PROBLEMS.md) |
+| 次（用語） | [講座 40　関係データベースの基礎（用語）](../../island-database/40-rdb/README.md) |
 | この島・砦 | [ソフトウェアの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
+| 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |
+| 称号 | [TITLES.md](../../../TITLES.md) |

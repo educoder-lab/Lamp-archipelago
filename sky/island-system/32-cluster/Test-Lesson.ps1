@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 32　クラスタと負荷分散"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'スケールアウト=台数増,スケールアップ=性能増'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/32-cluster' -NextLesson 'island-system/33-embed' -CourseNo 32 -ClearLine '系譜の館の冗長の梁が一つ光り、灯が 32 番目に繋がった。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/32-cluster' -NextLesson 'island-system/33-embed' -CourseNo 32 -ClearLine '系譜の館の冗長の梁が一つ光り、灯が 32 番目に繋がった。' -TitleAwards '')
