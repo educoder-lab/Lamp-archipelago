@@ -7,7 +7,8 @@
 | [map.html](./map.html) | Three.js 航路マップ・アバター進行・迂回 |
 | `lamp-world.js` · `lamp-world.css` | 3D航路（島・ステージ台・歩行） |
 | `island-themes.js` | 島ごとのテーマ色・代表オブジェクト |
-| [lesson.html](./lesson.html) | 121 講座プレイヤー |
+| [lesson.html](./lesson.html) | 121 講座プレイヤー（`?hub=1` で港の FE 手引き） |
+| `data/hub-quest.json` · `data/slides/hub.json` | 灯台の港のスライド・演習 |
 | [ref.html](./ref.html) | 世界 / 用語 / カリキュラム / 称号 |
 | [data/quests.json](./data/quests.json) | 講座 UI 用（ビルド生成） |
 | [data/refs.json](./data/refs.json) | 参照 Markdown（ビルド生成） |

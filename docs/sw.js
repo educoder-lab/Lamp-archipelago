@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v17';
+const CACHE = 'lamp-archipelago-v18';
 const PRECACHE = [
   './',
   './index.html',
@@ -18,7 +18,9 @@ const PRECACHE = [
   './island-themes.js',
   './save-data.js',
   './data/quests.json',
-  './data/refs.json'
+  './data/refs.json',
+  './data/hub-quest.json',
+  './data/slides/hub.json'
 ];
 
 self.addEventListener('install', (event) => {

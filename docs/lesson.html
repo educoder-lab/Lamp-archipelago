@@ -63,6 +63,15 @@ button:disabled { opacity: .5; cursor: default; }
 .panel-input { background: #0b0e1f; color: var(--ink); border: 1px solid #343a6b; border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 14px; }
 .save-tools { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 #load-err { color: var(--ng); }
+@media print {
+  header, .actions, .navlinks, .save-tools, section.slide-sec, #grade-msg, button { display: none !important; }
+  body { background: #fff; color: #111; }
+  details.readme-sec { display: block !important; border: none; }
+  details.readme-sec summary { display: none; }
+  .readme { font-size: 12pt; line-height: 1.55; }
+  .readme table { page-break-inside: avoid; }
+  section#questions { break-before: page; }
+}
 </style>
 </head>
 <body>
@@ -141,7 +150,9 @@ function renderLesson(lesson, quests, deck) {
   const save = loadSave();
   const already = save.clearedNos.includes(lesson.courseNo);
   document.getElementById('h-title').textContent = lesson.title;
-  document.getElementById('h-course').textContent = lesson.domainTitle + ' · #' + padNo(lesson.courseNo);
+  document.getElementById('h-course').textContent = lesson.courseNo === 0
+    ? (lesson.domainTitle + ' · 港')
+    : (lesson.domainTitle + ' · #' + padNo(lesson.courseNo));
   document.getElementById('h-traveler').textContent = loadSave().displayName || '旅人';
 
   const app = document.getElementById('app');
@@ -311,6 +322,44 @@ function renderLesson(lesson, quests, deck) {
 
 async function main() {
   const params = new URLSearchParams(location.search);
+  const isHub = params.get('hub') === '1' || params.get('no') === '0';
+
+  if (isHub) {
+    let lesson;
+    let deck = null;
+    try {
+      const res = await fetch('data/hub-quest.json', { cache: 'no-cache' });
+      if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+      lesson = await res.json();
+    } catch (e) {
+      const err = document.getElementById('load-err');
+      err.hidden = false;
+      err.textContent = '港のクエスト（hub-quest.json）を読めませんでした。（' + e.message + '）';
+      return;
+    }
+    try {
+      const sres = await fetch('data/slides/hub.json', { cache: 'no-cache' });
+      if (sres.ok) deck = await sres.json();
+    } catch (e) { /* optional */ }
+    const quests = { lessons: [lesson], lessonCount: 121 };
+    // 学習プリント印刷用
+    lesson._hubPrint = true;
+    renderLesson(lesson, quests, deck);
+    const readSec = document.querySelector('details.readme-sec');
+    if (readSec) {
+      readSec.open = true;
+      const sum = readSec.querySelector('summary');
+      if (sum) sum.textContent = '学習プリント（FE試験の概要）— クリックで開閉';
+      const printBtn = el('button', { type: 'button', class: 'panel-btn', style: 'margin:8px 0 0' }, '学習プリントを印刷…');
+      printBtn.onclick = () => {
+        readSec.open = true;
+        window.print();
+      };
+      readSec.appendChild(printBtn);
+    }
+    return;
+  }
+
   let no = parseInt(params.get('no') || '1', 10);
   if (!Number.isFinite(no) || no < 1) no = 1;
   let quests;

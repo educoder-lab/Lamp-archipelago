@@ -7,15 +7,15 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 /**
- * 箱庭ジオラマ配置（陸地が基準）
- * - land: Z=0, Y=0（手前）
+ * 箱庭ジオラマ配置（陸地が基準・港も陸地）
+ * - land: Z=0, Y=0（手前。灯台の港）
  * - sky: 奥かつ上空（Z≈-30, Y≈+20〜+40）
- * - underground: さらに奥かつ地下（Z≈-50, Y≈-20〜-40）
+ * - underground: さらに奥へ下げ、陸地視点で隠れやすい位置（Z≈-95）
  */
 const REALM = {
   land: { x: 0, y: 0, z: 0 },
   sky: { x: -20, y: 30, z: -30 },
-  underground: { x: 28, y: -30, z: -52 }
+  underground: { x: 45, y: -36, z: -95 }
 };
 const REALM_COLOR = { sky: 0x7fd1ff, land: 0xf0a060, underground: 0xc59bff };
 const STATE_COLOR = {
@@ -662,32 +662,29 @@ function createStagePad(lesson, state, index) {
   return g;
 }
 
-/** 空: ステージ順のジグザグ（スネーク）一本道 */
+/** 空: ステージ順のジグザグ（スネーク）一本道（港は陸地側） */
 function layoutSkySnake(list) {
-  const hub = list.find(n => n.kind === 'hub');
-  const domains = list.filter(n => n.kind !== 'hub');
+  const onlyDomains = list.filter(n => n.kind === 'domain');
   const c = REALM.sky;
-  // 港はルートの手前（陸地寄り・やや低め）
-  if (hub) {
-    hub._pos = new THREE.Vector3(c.x - 32, 20, c.z + 16);
-    hub._routeIndex = -1;
-  }
   const cols = 5;
   const stepX = 15;
   const stepZ = 12;
   const originX = c.x - 30;
   const originZ = c.z + 6;
-  domains.forEach((node, i) => {
+  onlyDomains.forEach((node, i) => {
     const row = Math.floor(i / cols);
     const colInRow = i % cols;
     const ltr = row % 2 === 0;
     const col = ltr ? colInRow : (cols - 1 - colInRow);
     const x = originX + col * stepX;
     const z = originZ - row * stepZ;
-    const t = domains.length <= 1 ? 0 : i / (domains.length - 1);
+    const t = onlyDomains.length <= 1 ? 0 : i / (onlyDomains.length - 1);
     const y = 22 + t * 16; // +20〜+38
     node._pos = new THREE.Vector3(x, y, z);
     node._routeIndex = i;
+  });
+  list.filter(n => n.kind === 'hub' && !n._pos).forEach(n => {
+    n._pos = new THREE.Vector3(REALM.land.x - 8, 0, REALM.land.z + 16);
   });
 }
 
@@ -709,17 +706,23 @@ function layoutUnderground(list) {
   });
 }
 
-/** 陸地: 基準平面（Y=0, Z=0 付近）に台地 */
+/** 陸地: 港を手前、台地を奥に配置（Y=0, Z≈0） */
 function layoutLand(list) {
   const c = REALM.land;
+  const hub = list.find(n => n.kind === 'hub');
   const domains = list.filter(n => n.kind === 'domain');
   const core = list.find(n => n.kind === 'core');
+  // 灯台の港 = カメラ側の手前（陸地の玄関）
+  if (hub) {
+    hub._pos = new THREE.Vector3(c.x - 10, 0, c.z + 18);
+    hub._routeIndex = -1;
+  }
   domains.forEach((node, i) => {
     const x = c.x + (i - (domains.length - 1) / 2) * 24;
-    const z = c.z + (i % 2 === 0 ? 2 : -6);
+    const z = c.z - 4 + (i % 2 === 0 ? 0 : -5);
     node._pos = new THREE.Vector3(x, 0, z);
   });
-  if (core) core._pos = new THREE.Vector3(c.x + 36, 0, c.z - 2);
+  if (core) core._pos = new THREE.Vector3(c.x + 36, 0, c.z - 8);
   list.forEach(n => {
     if (!n._pos) n._pos = new THREE.Vector3(c.x, 0, c.z);
   });
@@ -804,13 +807,11 @@ export function mountLampWorld(container, opts) {
   ugFloor.receiveShadow = true;
   scene.add(ugFloor);
 
-  {
-    const grid = new THREE.GridHelper(50, 20, 0x1f3a3a, 0x12161c);
-    grid.position.set(REALM.underground.x, REALM.underground.y - 5.9, REALM.underground.z);
-    grid.material.transparent = true;
-    grid.material.opacity = 0.45;
-    scene.add(grid);
-  }
+  const ugGrid = new THREE.GridHelper(50, 20, 0x1f3a3a, 0x12161c);
+  ugGrid.position.set(REALM.underground.x, REALM.underground.y - 5.9, REALM.underground.z);
+  ugGrid.material.transparent = true;
+  ugGrid.material.opacity = 0.45;
+  scene.add(ugGrid);
 
   const landGround = new THREE.Mesh(
     new THREE.CircleGeometry(52, 64),
@@ -898,42 +899,47 @@ export function mountLampWorld(container, opts) {
     n._deckY = mesh.userData.deckY;
   });
 
-  // 空の一本道: 港→島1→…→島17 を光の橋で接続
+  // 空の一本道: 島1→…→島17 を光の橋で接続
   {
-    const skyRoute = [];
-    const hub = (byRealm.sky || []).find(n => n.kind === 'hub');
-    if (hub && hub._pos) skyRoute.push(hub);
-    (byRealm.sky || [])
+    const skyRoute = (byRealm.sky || [])
       .filter(n => n.kind === 'domain')
-      .sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0))
-      .forEach(n => skyRoute.push(n));
+      .sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0));
     for (let i = 0; i < skyRoute.length - 1; i++) {
       const a = skyRoute[i];
       const b = skyRoute[i + 1];
       if (!a._pos || !b._pos) continue;
-      const lit = a.state === 'cleared' || a.state === 'current' || b.state === 'current' || a.kind === 'hub';
+      const lit = a.state === 'cleared' || a.state === 'current' || b.state === 'current';
       bridgeGroup.add(createLightBridge(a._pos, b._pos, lit && b.state !== 'fog'));
     }
   }
 
-  // 領域をつなぐ薄いガイドライン（俯瞰用）
+  // 港（陸地）→ 空の入口 → 地下 への薄いガイドライン
   {
-    const anchors = [
-      REALM.land,
-      { x: REALM.sky.x - 32, y: 20, z: REALM.sky.z + 16 },
-      REALM.underground
-    ].map(p => new THREE.Vector3(p.x, p.y, p.z));
-    if (anchors.length >= 2) {
-      const curve = new THREE.CatmullRomCurve3(anchors, false, 'catmullrom', 0.4);
-      const guide = new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 48, 0.08, 6, false),
-        new THREE.MeshStandardMaterial({
-          color: 0xe8c56a, emissive: 0x5a3a10, emissiveIntensity: 0.25, transparent: true, opacity: 0.35, roughness: 0.45, metalness: 0.4
-        })
-      );
-      scene.add(guide);
-    }
+    const hubN = nodes.find(n => n.kind === 'hub');
+    const firstSky = (byRealm.sky || []).filter(n => n.kind === 'domain').sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0))[0];
+    const anchors = [];
+    if (hubN && hubN._pos) anchors.push(hubN._pos.clone());
+    else anchors.push(new THREE.Vector3(REALM.land.x, 0, REALM.land.z + 18));
+    if (firstSky && firstSky._pos) anchors.push(firstSky._pos.clone());
+    else anchors.push(new THREE.Vector3(REALM.sky.x, REALM.sky.y, REALM.sky.z));
+    anchors.push(new THREE.Vector3(REALM.underground.x, REALM.underground.y, REALM.underground.z));
+    const curve = new THREE.CatmullRomCurve3(anchors, false, 'catmullrom', 0.4);
+    const guide = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 64, 0.08, 6, false),
+      new THREE.MeshStandardMaterial({
+        color: 0xe8c56a, emissive: 0x5a3a10, emissiveIntensity: 0.25, transparent: true, opacity: 0.3, roughness: 0.45, metalness: 0.4
+      })
+    );
+    scene.add(guide);
   }
+
+  // 地下グループ参照（陸地視点では奥の砦を隠して紛れ込みを防ぐ）
+  const undergroundMeshes = [];
+  islandGroup.children.forEach(ch => {
+    const n = ch.userData.node;
+    if (n && n.realm === 'underground') undergroundMeshes.push(ch);
+  });
+  undergroundMeshes.push(ugFloor, ugGrid);
 
   let avatar = createAvatar(playerLevel);
   scene.add(avatar);
@@ -944,7 +950,7 @@ export function mountLampWorld(container, opts) {
 
   // hub realm gates
   const hubNode = nodes.find(n => n.kind === 'hub');
-  const hubPos = (hubNode && hubNode._pos) ? hubNode._pos.clone() : new THREE.Vector3(REALM.sky.x - 32, 20, REALM.sky.z + 16);
+  const hubPos = (hubNode && hubNode._pos) ? hubNode._pos.clone() : new THREE.Vector3(REALM.land.x - 10, 0, REALM.land.z + 18);
   const gateGroup = new THREE.Group();
   scene.add(gateGroup);
   const realmGates = [];
@@ -1126,7 +1132,8 @@ export function mountLampWorld(container, opts) {
   function realmLook(realm) {
     if (realm === 'sky') return new THREE.Vector3(REALM.sky.x - 5, REALM.sky.y, REALM.sky.z);
     if (realm === 'underground') return new THREE.Vector3(REALM.underground.x, REALM.underground.y + 2, REALM.underground.z);
-    return new THREE.Vector3(REALM.land.x, 3, REALM.land.z);
+    if (hubNode && hubNode._pos) return hubNode._pos.clone().add(new THREE.Vector3(0, 2, 0));
+    return new THREE.Vector3(REALM.land.x, 3, REALM.land.z + 10);
   }
 
   function restoreWorldOpacity() {
@@ -1206,7 +1213,7 @@ export function mountLampWorld(container, opts) {
       if (opts.onModeChange) opts.onModeChange('world', null);
     }
     setAvatarAt(hubNode._pos, null, hubNode._pos.y + deckHeightAt(hubNode) + 0.05);
-    slideToRealm('sky', duration == null ? (reduced ? 0 : 650) : duration);
+    slideToRealm('land', duration == null ? (reduced ? 0 : 650) : duration);
     if (opts.onSelectHub) opts.onSelectHub();
   }
 
@@ -1505,21 +1512,32 @@ export function mountLampWorld(container, opts) {
     }
 
     // bloom: 地下アンカーとの距離で強弱
-    const ugDist = camTarget.distanceTo(new THREE.Vector3(REALM.underground.x, REALM.underground.y, REALM.underground.z));
-    const nearUg = 1 - Math.min(1, ugDist / 70);
-    bloomPass.strength = 0.25 + nearUg * 1.55;
+    const ugAnchor = new THREE.Vector3(REALM.underground.x, REALM.underground.y, REALM.underground.z);
+    const ugDist = camTarget.distanceTo(ugAnchor);
+    const nearUg = 1 - Math.min(1, ugDist / 85);
+    bloomPass.strength = 0.2 + nearUg * 1.6;
     bloomPass.threshold = 0.55 - nearUg * 0.25;
+
+    // 陸地にいるときは地下を隠す（Z を下げたうえで視界からも除外）
+    const landDist = camTarget.distanceTo(new THREE.Vector3(REALM.land.x, REALM.land.y + 2, REALM.land.z + 10));
+    const showUg = ugDist < 70 || camTarget.z < -55 || nearUg > 0.45;
+    undergroundMeshes.forEach(m => { m.visible = showUg; });
 
     // fog / bg tint by 3D proximity
     const skyW = Math.max(0, 1 - camTarget.distanceTo(new THREE.Vector3(REALM.sky.x, REALM.sky.y, REALM.sky.z)) / 75);
-    const landW = Math.max(0, 1 - camTarget.distanceTo(new THREE.Vector3(REALM.land.x, REALM.land.y, REALM.land.z)) / 55);
+    const landW = Math.max(0, 1 - landDist / 50);
     const ugW = nearUg;
     const bg = new THREE.Color(0x0a1428);
     bg.lerp(new THREE.Color(0x7eb6e8), skyW * 0.45);
     bg.lerp(new THREE.Color(0x08060f), ugW * 0.55);
     bg.lerp(new THREE.Color(0x2a1810), landW * 0.4);
     scene.background.copy(bg);
-    if (scene.fog) scene.fog.color.copy(bg);
+    if (scene.fog) {
+      scene.fog.color.copy(bg);
+      // 陸地寄りは霧を短めにして奥の地下シルエットを抑える
+      scene.fog.near = landW > 0.5 ? 40 : 55;
+      scene.fog.far = landW > 0.5 ? 130 : 220;
+    }
 
     const look = camTarget.clone();
     const pos = camPos.clone();

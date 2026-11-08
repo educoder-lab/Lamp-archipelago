@@ -222,7 +222,7 @@ const COLS = 6, DX = 175, DY = 150, MX = 110, BAND_GAP = 46;
 const allDone = lessons.length > 0 && lessons.every(l => cleared.has(l.no));
 
 const nodes = [];
-nodes.push({ kind: 'hub', realm: 'sky', label: '灯台の港', sub: '拠点', state: 'cleared' });
+nodes.push({ kind: 'hub', realm: 'land', label: '灯台の港', sub: '拠点・手引き', state: 'cleared' });
 domains.forEach(d => nodes.push({ kind: 'domain', realm: d.realm, label: d.title, sub: d.done + '/' + d.total, state: d.state, d }));
 nodes.push({ kind: 'core', realm: 'land', label: '諸島の中枢', sub: allDone ? '再起動' : '最終目的地', state: allDone ? 'cleared' : 'fog' });
 
@@ -383,10 +383,17 @@ function showHome() {
   if (worldApi && worldApi.getMode() === 'island') worldApi.exitIsland();
   panel.innerHTML = '';
   panel.appendChild(el('h2', null, '灯台の港 — 身支度'));
-  panel.appendChild(el('div', { class: 'quote' }, 'ここは旅の拠点。出発前に名前を整え、つまずいた封印を復習し、次の島へ備えましょう。'));
+  panel.appendChild(el('div', { class: 'quote' }, 'ここは陸地の拠点。試験の全体像をスライドと学習プリントで学び、演習で確認してから空の島へ出よう。'));
   panel.appendChild(el('div', { class: 'stat' }, DATA.prologue));
+
+  panel.appendChild(el('h3', null, '港の手引き（最初のクエスト）'));
+  panel.appendChild(el('div', { class: 'stat' }, '基本情報技術者試験の概要 — スライド → 学習プリント → 演習。通常の島と同じ型です。'));
+  const hubGo = el('a', { href: 'lesson.html?hub=1', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' },
+    cleared.has(0) ? '港の手引きを見返す →' : 'FE試験の手引きを学ぶ →');
+  panel.appendChild(hubGo);
+
   panel.appendChild(el('h3', null, '領域への門'));
-  panel.appendChild(el('div', { class: 'stat' }, '港の三つの門、またはマップ右上から、空・陸地・地下を自由に行き来できます。全体図で諸島の配置を確認しましょう。'));
+  panel.appendChild(el('div', { class: 'stat' }, '港の三つの門、またはマップ右上から、空・陸地・地下を行き来できます。'));
   const realmRow = el('div', { class: 'save-row' });
   [
     ['overview', '全体図'],
@@ -563,7 +570,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-import('./lamp-world.js?v=17').then(mod => {
+import('./lamp-world.js?v=18').then(mod => {
   const mount = mod.mountLampWorld || (window.LampWorld && window.LampWorld.mountLampWorld);
   if (!mount) { console.error('LampWorld mount failed'); return; }
   worldApi = mount(document.getElementById('world'), {
