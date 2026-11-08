@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171b36">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <title>ランプ諸島 — クエスト</title>
 <style>
 :root {
@@ -59,7 +62,7 @@ button:disabled { opacity: .5; cursor: default; }
 <body>
 <header>
   <h1 id="h-title">ランプ諸島 — クエスト</h1>
-  <span class="tag proto">Web（W4）</span>
+  <span class="tag proto">PWA</span>
   <span class="tag" id="h-course"></span>
   <span class="tag">旅人 <b id="h-traveler"></b></span>
   <a href="map.html">マップ</a>
@@ -278,5 +281,6 @@ async function main() {
 }
 main();
 </script>
+<script src="lamp-pwa.js"></script>
 </body>
 </html>

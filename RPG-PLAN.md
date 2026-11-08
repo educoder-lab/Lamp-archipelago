@@ -175,6 +175,7 @@ PROBLEMS.md
 - [x] W2 … 迂回 UI、旅人名、セーブ export/import
 - [x] W3 … `ref.html` + `refs.json`（WORLD / GLOSSARY / CURRICULUM / TITLES、表検索）
 - [x] W4 … `Test-WebQuests.ps1` + CI、`HOW-GRADING-WORKS` ブラウザ／PS 分離
+- [x] W5 … PWA（manifest + service worker）、README 一新
 
 ### Phase 4 — 磨き（継続）
 

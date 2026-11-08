@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171b36">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <title>ランプ諸島 ワールドマップ</title>
 <style>
 :root {
@@ -91,6 +94,7 @@ ul.lessons a:hover { color: var(--ink); }
 
 <script src="save-data.js"></script>
 <script src="lamp-save.js"></script>
+<script src="lamp-pwa.js"></script>
 <script>
 const DATA = /*__LAMP_DATA__*/null;
 const SAVE = LampSave.loadMerged();
@@ -260,6 +264,7 @@ document.getElementById('h-bar').style.width = (lessons.length ? cleared.size / 
 document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
 const syncEl = document.getElementById('h-sync');
 syncEl.textContent = LampSave.saveSourceLabel(SAVE) + (SAVE.updatedAt ? ' · ' + new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '');
+if (window.LampPwa) LampPwa.markOffline(syncEl);
 
 // ---- side panel -----------------------------------------------------------
 const panel = document.getElementById('panel');

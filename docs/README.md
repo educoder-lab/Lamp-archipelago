@@ -1,11 +1,15 @@
-# docs（ワールドマップ）
+# docs（GitHub Pages）
 
-| 開き方 | URL / 操作 |
-|--------|------------|
-| **ローカル（進捗つき）** | リポジトリルートで `.\Show-Map.ps1` |
-| **GitHub Pages** | https://educoder-lab.github.io/Lamp-archipelago/map.html |
-| **ブラウザ講座** | [`lesson.html`](./lesson.html) · [`ref.html`](./ref.html)（参照・表検索） |
-| **ファイル** | [`map.html`](./map.html) |
+公開サイト: https://educoder-lab.github.io/Lamp-archipelago/
 
-`map.html` は `Build-AllLessons.ps1` で再生成されます。個人の灯・迂回記録は `save-data.js`（git 管理外）に同期します。  
-ブラウザ講座の JSON スキーマ: [`_tools/WebQuest-Schema.md`](../_tools/WebQuest-Schema.md)
+| ファイル | 役割 |
+|----------|------|
+| [map.html](./map.html) | ワールドマップ・進行・迂回 |
+| [lesson.html](./lesson.html) | 121 講座プレイヤー |
+| [ref.html](./ref.html) | 世界 / 用語 / カリキュラム / 称号 |
+| [data/quests.json](./data/quests.json) | 講座 UI 用（ビルド生成） |
+| [data/refs.json](./data/refs.json) | 参照 Markdown（ビルド生成） |
+| `sw.js` · `manifest.webmanifest` | PWA（オフラインキャッシュ） |
+
+`map.html` は `_tools/map-template.html` から `Build-AllLessons.ps1` で生成。  
+個人進捗: ブラウザ `localStorage`（`lamp-save.js`）。PowerShell 利用時は `save-data.js`（git 管理外）も可。

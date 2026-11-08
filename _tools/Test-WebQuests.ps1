@@ -71,6 +71,13 @@ foreach ($q in $raw.lessons) {
   }
 }
 
+foreach ($pwa in @('manifest.webmanifest', 'sw.js', 'lamp-pwa.js', 'icon.svg')) {
+  if (-not (Test-Path -LiteralPath (Join-Path $RepoRoot "docs/$pwa"))) {
+    Write-Host "NG  docs/$pwa がありません（W5 PWA）" -ForegroundColor Red
+    $fail++
+  }
+}
+
 $refsPath = Join-Path $RepoRoot 'docs/data/refs.json'
 if (-not (Test-Path -LiteralPath $refsPath)) {
   Write-Host "NG  docs/data/refs.json がありません" -ForegroundColor Red

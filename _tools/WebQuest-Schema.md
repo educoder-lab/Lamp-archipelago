@@ -96,6 +96,10 @@
 
 CI: `.github/workflows/verify-web.yml`（push / PR で `Test-WebQuests.ps1`）。
 
+## PWA（W5）
+
+`docs/manifest.webmanifest` · `docs/sw.js` · `docs/lamp-pwa.js` — 初回ロード後、講座 JSON と静的 HTML をオフライン利用可（進捗は従来どおり localStorage）。
+
 ## 関連
 
 - 技術設計: [DESIGN.md](../DESIGN.md)
