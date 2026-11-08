@@ -9,6 +9,9 @@ create table if not exists public.lamp_progress (
 
 alter table public.lamp_progress enable row level security;
 
+grant select, insert, update on table public.lamp_progress to authenticated;
+grant select on table public.lamp_progress to anon;
+
 drop policy if exists "own read" on public.lamp_progress;
 drop policy if exists "own upsert" on public.lamp_progress;
 drop policy if exists "own update" on public.lamp_progress;
