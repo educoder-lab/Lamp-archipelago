@@ -46,7 +46,14 @@ function Start-LessonTest { param([string]$LessonTitle)
 }
 
 function Complete-LessonTest {
-  param([bool[]]$Results, [string]$LessonId, [string]$NextLesson)
+  param(
+    [bool[]]$Results,
+    [string]$LessonId,
+    [string]$NextLesson,
+    [int]$CourseNo = 0,
+    [string]$ClearLine = '',
+    [string]$TitleAward = ''
+  )
   $ok = $Results -notcontains $false
   Write-Host ""
   if ($ok) {
@@ -59,6 +66,14 @@ function Complete-LessonTest {
     }
     $progress[$LessonId] = (Get-Date -Format 'o')
     $progress | ConvertTo-Json | Set-Content -LiteralPath $progressPath -Encoding UTF8
+    $adventureScript = Join-Path $PSScriptRoot 'Invoke-AdventureSave.ps1'
+    if ((Test-Path -LiteralPath $adventureScript) -and $CourseNo -gt 0) {
+      . $adventureScript
+      Register-LessonClear -LessonId $LessonId -CourseNo $CourseNo -ClearLine $ClearLine -TitleAward $TitleAward
+    }
+    if ($TitleAward) {
+      Write-LessonResult "称号を得た: $TitleAward" Pass
+    }
     return 0
   }
   Write-LessonResult "未合格。PROBLEMS.md を見直してください。" Fail

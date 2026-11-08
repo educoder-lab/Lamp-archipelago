@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 83　ITサービスマネジメント"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'インシデント管理=復旧優先,問題管理=根本原因'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-service/83-itil' -NextLesson 'island-service/84-facility')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-service/83-itil' -NextLesson 'island-service/84-facility' -CourseNo 83 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

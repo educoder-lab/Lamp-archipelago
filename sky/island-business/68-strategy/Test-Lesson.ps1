@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 68　経営戦略"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'コアコンピタンス=模倣困難な強み'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/68-strategy' -NextLesson 'island-business/69-marketing')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/68-strategy' -NextLesson 'island-business/69-marketing' -CourseNo 68 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

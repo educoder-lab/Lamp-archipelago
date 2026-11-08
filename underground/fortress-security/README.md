@@ -1,6 +1,18 @@
 ﻿# セキュリティ砦
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**盾壁団リーゼ** — リスクと暗号の午後。
+
+
+## マップ（講座番号）
+
+```
+106 ─ 107 ─ 108 ─ 109
+106-risk-assess  107-crypto-pm  108-log-forensic  109-secure-design
+```
 
 ## 講座
 

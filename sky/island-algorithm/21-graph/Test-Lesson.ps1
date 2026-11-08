@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 21　グラフと探索"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'DFS=スタック,BFS=キュー'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/21-graph' -NextLesson 'island-hardware/22-cpu')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/21-graph' -NextLesson 'island-hardware/22-cpu' -CourseNo 21 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

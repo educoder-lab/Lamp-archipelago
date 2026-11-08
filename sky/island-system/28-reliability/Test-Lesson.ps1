@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 28　システムの信頼性"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' '稼働率=MTBF/(MTBF+MTTR)'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/28-reliability' -NextLesson 'island-system/29-redundancy')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/28-reliability' -NextLesson 'island-system/29-redundancy' -CourseNo 28 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

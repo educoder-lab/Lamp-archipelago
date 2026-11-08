@@ -5,7 +5,11 @@
 - フォルダ `演習結果` がある
 - `演習結果\answers.txt` に **3 問**（`1:B` 形式）
 
-## 問題
+## 依頼
+
+水晶司ライラ: 次の封印の問いを解いてくれ。
+
+## 封印の問い
 
 **1.** テーブルに新しい行を追加する SQL 文はどれか。
 A. SELECT　B. INSERT　C. UPDATE　D. CREATE
@@ -31,3 +35,4 @@ A. UNIQUE　B. PRIMARY KEY　C. CHECK　D. NOT NULL
 | 次（用語） | [講座 45　トランザクションと障害回復（用語）](../45-transaction/README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
+| 世界 | [WORLD.md](../../../WORLD.md) |

@@ -1,6 +1,18 @@
 ﻿# 深層砦
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**深層司祭オーレ** — 読解とシナリオの最奥。
+
+
+## マップ（講座番号）
+
+```
+110 ─ 111 ─ 112 ─ 113
+110-reading  111-system-scenario  112-cross-domain  113-final-strategy
+```
 
 ## 講座
 

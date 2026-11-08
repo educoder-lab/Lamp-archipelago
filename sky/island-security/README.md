@@ -1,6 +1,18 @@
 ﻿# セキュリティの島
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**盾商会マスター・クレス** — 脅威と暗号の商会。
+
+
+## マップ（講座番号）
+
+```
+54 ─ 55 ─ 56 ─ 57 ─ 58 ─ 59 ─ 60 ─ 61
+54-threat  55-crypto  56-cert  57-firewall  58-webattack  59-policy  60-accessctl  61-incident
+```
 
 ## 講座
 

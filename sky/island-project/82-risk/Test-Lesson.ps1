@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 82　リスクと品質管理"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' '転嫁=保険・外注,PV=計画予算'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-project/82-risk' -NextLesson 'island-service/83-itil')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-project/82-risk' -NextLesson 'island-service/83-itil' -CourseNo 82 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

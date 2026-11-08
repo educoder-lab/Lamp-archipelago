@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 62　画像と音声のデータ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '6a234d6c78b3b3b5b51ee2abc6495b26b69ceaeadd9e54f70fc7778398c878af' 'ベクタ=拡大OK,標本化→量子化→符号化'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-media/62-image' -NextLesson 'island-media/63-ux')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-media/62-image' -NextLesson 'island-media/63-ux' -CourseNo 62 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

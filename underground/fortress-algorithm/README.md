@@ -1,6 +1,18 @@
 ﻿# アルゴリズム砦
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**衛兵長ヴェルク** — 帝国石版のトレース訓練場。
+
+
+## マップ（講座番号）
+
+```
+90 ─ 91 ─ 92 ─ 93
+90-trace-basic  91-trace-loop  92-trace-array  93-trace-recurse
+```
 
 ## 講座
 

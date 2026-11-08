@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 08　集合と論理"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' '積集合=共通部分,和集合=合わせたもの'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/08-set' -NextLesson 'island-foundation/09-prob')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/08-set' -NextLesson 'island-foundation/09-prob' -CourseNo 8 -ClearLine '輪が重なり、集合の灯が点灯した。' -TitleAward '')

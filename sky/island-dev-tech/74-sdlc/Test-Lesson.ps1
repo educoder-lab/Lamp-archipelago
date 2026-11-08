@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 74　開発プロセスモデル"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'WF=順番,アジャイル=反復,スクラム=スプリント'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/74-sdlc' -NextLesson 'island-dev-tech/75-design')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-dev-tech/74-sdlc' -NextLesson 'island-dev-tech/75-design' -CourseNo 74 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

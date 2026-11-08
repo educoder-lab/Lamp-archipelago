@@ -5,7 +5,11 @@
 - フォルダ `演習結果` がある
 - `演習結果\answers.txt` に **3 問**（`1:B` 形式）
 
-## 問題
+## 依頼
+
+水晶司ライラ: 次の封印の問いを解いてくれ。
+
+## 封印の問い
 
 **1.** テーブルからデータを取得する SQL 文はどれか。
 A. INSERT　B. UPDATE　C. SELECT　D. DELETE
@@ -31,3 +35,4 @@ A. UNIQUE　B. DISTINCT　C. GROUP BY　D. HAVING
 | 次（用語） | [講座 43　SQL 結合と副問合せ（用語）](../43-sql-join/README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
+| 世界 | [WORLD.md](../../../WORLD.md) |

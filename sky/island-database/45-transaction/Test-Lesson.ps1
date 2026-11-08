@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 45　トランザクションと障害回復"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'ACID=原子性・一貫性・独立性・永続性'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/45-transaction' -NextLesson 'island-database/46-er')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/45-transaction' -NextLesson 'island-database/46-er' -CourseNo 45 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

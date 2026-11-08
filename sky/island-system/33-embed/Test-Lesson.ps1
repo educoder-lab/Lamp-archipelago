@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 33　組込みとIoT"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'RTOS=時間保証,アクチュエータ=信号→動作'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/33-embed' -NextLesson 'island-software/34-os')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/33-embed' -NextLesson 'island-software/34-os' -CourseNo 33 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

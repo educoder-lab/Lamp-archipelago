@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 95　コーディングと変数"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '局所変数=関数内のみ有効'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-program/95-coding' -NextLesson 'fortress-program/96-structure')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-program/95-coding' -NextLesson 'fortress-program/96-structure' -CourseNo 95 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

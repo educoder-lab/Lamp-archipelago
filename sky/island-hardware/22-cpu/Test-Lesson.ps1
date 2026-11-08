@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 22　CPU の仕組み"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'PC=次命令アドレス,CPU=演算と制御'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/22-cpu' -NextLesson 'island-hardware/23-pipeline')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/22-cpu' -NextLesson 'island-hardware/23-pipeline' -CourseNo 22 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

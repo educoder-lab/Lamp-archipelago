@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 60　アクセス制御と認証技術"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' 'RBAC=ロール基準,SSO=1回認証で複数利用'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/60-accessctl' -NextLesson 'island-security/61-incident')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/60-accessctl' -NextLesson 'island-security/61-incident' -CourseNo 60 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

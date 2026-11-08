@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 23　パイプラインと高速化"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' 'パイプラインは段数分同時実行'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/23-pipeline' -NextLesson 'island-hardware/24-memory')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/23-pipeline' -NextLesson 'island-hardware/24-memory' -CourseNo 23 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

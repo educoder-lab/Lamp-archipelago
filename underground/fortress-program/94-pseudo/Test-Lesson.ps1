@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 94　擬似言語の読み方"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '76c1c8a017f9b5b4f46c369fda5316523765a831a24c1186b2564b92d0035d1b' '擬似言語の配列はA[i],手続き=値を返さない'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-program/94-pseudo' -NextLesson 'fortress-program/95-coding')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-program/94-pseudo' -NextLesson 'fortress-program/95-coding' -CourseNo 94 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 41　正規化"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '1e755a5a06793c7baf6695f320300d7dcbf22b846dc7bd6d236fb67e964c070b' '1NF=繰返し除去,2NF=部分従属除去,3NF=推移従属除去'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/41-normal' -NextLesson 'island-database/42-sql-select')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-database/41-normal' -NextLesson 'island-database/42-sql-select' -CourseNo 41 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

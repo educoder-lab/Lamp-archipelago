@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 56　認証と証明書"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '81bb104751cd519abf8d78e5c73b0aedd3da24dc6f086e081d078a9cde80efed' 'CA=証明書発行,MFA=2要素以上'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/56-cert' -NextLesson 'island-security/57-firewall')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/56-cert' -NextLesson 'island-security/57-firewall' -CourseNo 56 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

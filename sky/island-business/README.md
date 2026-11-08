@@ -1,6 +1,18 @@
 ﻿# 経営戦略の島
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**羅針盤の執事アル** — 経営と戦略の室。
+
+
+## マップ（講座番号）
+
+```
+68 ─ 69 ─ 70 ─ 71
+68-strategy  69-marketing  70-it-strategy  71-contract
+```
 
 ## 講座
 

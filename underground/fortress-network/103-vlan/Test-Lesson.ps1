@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 103　VLANとVPN"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' 'VLAN=論理分割,IPsec=IP層暗号化'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-network/103-vlan' -NextLesson 'fortress-network/104-packet')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-network/103-vlan' -NextLesson 'fortress-network/104-packet' -CourseNo 103 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

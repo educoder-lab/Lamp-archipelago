@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 111　システム構成シナリオ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '応答時間=非機能要件,FW=フィルタリング'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/111-system-scenario' -NextLesson 'fortress-deep/112-cross-domain')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/111-system-scenario' -NextLesson 'fortress-deep/112-cross-domain' -CourseNo 111 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

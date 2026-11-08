@@ -12,6 +12,13 @@
   return ($rel -join '/')
 }
 
+function Get-WorldRelPath {
+  param([string]$LessonPath)
+  $depth = ($LessonPath -split '\\').Count
+  if ($depth -eq 3) { return '../../../WORLD.md' }
+  return ('../' * ($depth + 1)).TrimEnd('/') + '/WORLD.md'
+}
+
 function Format-LessonNav {
   param(
     $Lesson,
@@ -21,11 +28,9 @@ function Format-LessonNav {
   )
   $depth = ($Lesson.Path -split '\\').Count
   $curRoot = Join-Path $RepoRoot $Lesson.Path
-  $curriculumRel = ('../' * ($depth + 1)).TrimEnd('/') + '/CURRICULUM.md'
-  if ($depth -eq 3) { $curriculumRel = '../../../CURRICULUM.md' }
-
+  $curriculumRel = if ($depth -eq 3) { '../../../CURRICULUM.md' } else { ('../' * ($depth + 1)).TrimEnd('/') + '/CURRICULUM.md' }
+  $worldRel = Get-WorldRelPath -LessonPath $Lesson.Path
   $islandRel = '../README.md'
-
   $prevLine = '—'
   if ($Prev) {
     $p = Get-RelativePathBetween -FromDir $curRoot -ToDir (Join-Path $RepoRoot $Prev.Path) -File 'README.md'
@@ -39,7 +44,6 @@ function Format-LessonNav {
     $nextProb = "[講座 $($Next.CourseNo.ToString('00'))　$($Next.Blurb)（問題）]($np)"
     $nextRead = "[講座 $($Next.CourseNo.ToString('00'))　$($Next.Blurb)（用語）]($nr)"
   }
-
   return @"
 
 ## ナビ
@@ -51,16 +55,18 @@ function Format-LessonNav {
 | 次（用語） | $nextRead |
 | この島・砦 | [$($Lesson.DomainTitle)]($islandRel) |
 | 全体一覧 | [カリキュラム（全講座）]($curriculumRel) |
+| 世界 | [WORLD.md]($worldRel) |
 "@
 }
 
 function Format-LessonReadme {
-  param($L, [string]$Nav)
+  param($L, [string]$Nav, $Story)
   $head = "# $($L.TestTitle)"
+  $loreBlock = if ($Story.ReadmeLore) { "## 物語`n`n$($Story.ReadmeLore.Trim())`n`n" } else { '' }
   $body = if ($L.ReadmeBody) { $L.ReadmeBody.Trim() } else { '' }
   if ($body) {
     $body = @"
-## 分野
+$loreBlock## 分野
 
 $($L.ExamField)
 
@@ -85,8 +91,9 @@ $($L.Blurb)（$($L.ExamField)）
 }
 
 function Format-LessonProblems {
-  param($L, [string]$Nav, [int]$QuestionCount)
+  param($L, [string]$Nav, [int]$QuestionCount, $Story)
   $qblock = $L.ProblemBody.Trim()
+  $req = if ($Story.Request) { "## 依頼`n`n$($Story.Request.Trim())`n`n" } else { '' }
   return @"
 # $($L.TestTitle)
 
@@ -95,7 +102,7 @@ function Format-LessonProblems {
 - フォルダ ``演習結果`` がある
 - ``演習結果\answers.txt`` に **$QuestionCount 問**（``1:B`` 形式）
 
-## 問題
+$req## 封印の問い
 
 $qblock
 

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 71　システム調達と契約"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' 'RFP=提案依頼,SLA=品質合意,請負=完成義務'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/71-contract' -NextLesson 'island-system-plan/72-plan')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/71-contract' -NextLesson 'island-system-plan/72-plan' -CourseNo 71 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

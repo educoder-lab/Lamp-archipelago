@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 57　ファイアウォールとDMZ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7238a2509048888d2027269b403b0c570081c36683b08cc34648c4c018498448' 'WAF=Web攻撃防御,DMZ=公開サーバ用'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/57-firewall' -NextLesson 'island-security/58-webattack')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/57-firewall' -NextLesson 'island-security/58-webattack' -CourseNo 57 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 84　ファシリティマネジメント"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'UPS=無停電電源,BCP=事業継続計画'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-service/84-facility' -NextLesson 'island-audit/85-audit-base')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-service/84-facility' -NextLesson 'island-audit/85-audit-base' -CourseNo 84 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

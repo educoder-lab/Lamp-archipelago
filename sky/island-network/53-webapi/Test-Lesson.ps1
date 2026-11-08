@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 53　Webとプロトコル応用"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' 'Cookie=状態保存,GET=取得'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/53-webapi' -NextLesson 'island-security/54-threat')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/53-webapi' -NextLesson 'island-security/54-threat' -CourseNo 53 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

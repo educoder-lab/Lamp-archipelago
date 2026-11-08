@@ -16,6 +16,7 @@
 ## はじめ方
 
 ```powershell
+.\Show-Status.ps1              # 冒険状況・次の cd
 cd sky\island-foundation\01-bit
 # README → PROBLEMS → 演習結果\answers.txt
 .\Test-Lesson.ps1
@@ -23,4 +24,5 @@ cd sky\island-foundation\01-bit
 
 採点: [HOW-GRADING-WORKS.md](./HOW-GRADING-WORKS.md)  
 設計: [DESIGN.md](./DESIGN.md)  
+学習RPG化の計画: [RPG-PLAN.md](./RPG-PLAN.md)  
 講座データ: `_tools/Manifest-Entries.ps1` → `.\_tools\Build-AllLessons.ps1`

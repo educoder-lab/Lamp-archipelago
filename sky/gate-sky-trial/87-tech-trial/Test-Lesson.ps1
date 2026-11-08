@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 87　空の関門：テクノロジ総合"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '09603452d55d67da5fe60a81c76055c556c4b8fa3279ed8a9812f8967f9574a5' 'テクノロジ全域の午前問題レベル'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/gate-sky-trial/87-tech-trial' -NextLesson 'gate-sky-trial/88-mgmt-trial')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/gate-sky-trial/87-tech-trial' -NextLesson 'gate-sky-trial/88-mgmt-trial' -CourseNo 87 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

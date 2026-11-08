@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 115　午前模試 第2回"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'd57e8d97f75e3a23bc804c6a89f1dc6d2b4cdb3475ac25ad90aa44fd0d0ac338' '直列稼働率=0.8×0.8,2^10=1024'
-exit (Complete-LessonTest -Results @($r) -LessonId 'land/plateau-mock-am/115-mock-am-2' -NextLesson 'plateau-mock-am/116-mock-am-3')
+exit (Complete-LessonTest -Results @($r) -LessonId 'land/plateau-mock-am/115-mock-am-2' -NextLesson 'plateau-mock-am/116-mock-am-3' -CourseNo 115 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

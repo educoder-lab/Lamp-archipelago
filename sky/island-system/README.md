@@ -1,6 +1,18 @@
 ﻿# システム構成の島
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**系譜士セラ** — 信頼性と冗長。システム全体の話。
+
+
+## マップ（講座番号）
+
+```
+28 ─ 29 ─ 30 ─ 31 ─ 32 ─ 33
+28-reliability  29-redundancy  30-perf  31-virtual  32-cluster  33-embed
+```
 
 ## 講座
 

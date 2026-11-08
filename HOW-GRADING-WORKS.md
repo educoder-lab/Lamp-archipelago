@@ -17,6 +17,8 @@
 4. `.\Test-Lesson.ps1`
 5. チャットで「**採点して**」
 
+冒険の進行: `.\Show-Status.ps1`（灯の数・次の `cd`）。合格で `.adventure-save.json` が更新されます。
+
 ### answers.txt の形式
 
 ```text

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 36　仮想記憶"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'ページング=固定長,LRU=最長未使用を置換'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/36-vmem' -NextLesson 'island-software/37-file')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/36-vmem' -NextLesson 'island-software/37-file' -CourseNo 36 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

@@ -25,7 +25,8 @@
 
 - **網羅** … 出題範囲を `Manifest-Entries.ps1` で順序付きに列挙（現在 100 講座超）
 - **ナビ必須** … README / PROBLEMS 末尾の **ナビ**（前・次・島一覧・[CURRICULUM.md](./CURRICULUM.md)）
-- 再生成: `.\_tools\Build-AllLessons.ps1`（ナビ付きで常に上書き）
+- 再生成: `.\_tools\Build-AllLessons.ps1`（ナビ・物語付きで上書き）
+- RPG: [WORLD.md](./WORLD.md) · `Show-Status.ps1` · `.adventure-save.json` · `_tools/Story-Entries.ps1`
 
 ## 1講座の型
 

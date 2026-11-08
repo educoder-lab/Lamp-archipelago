@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 51　ルーティングとスイッチ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '6a234d6c78b3b3b5b51ee2abc6495b26b69ceaeadd9e54f70fc7778398c878af' 'ルータ=L3,L2スイッチ=MAC転送'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/51-routing' -NextLesson 'island-network/52-wireless')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/51-routing' -NextLesson 'island-network/52-wireless' -CourseNo 51 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

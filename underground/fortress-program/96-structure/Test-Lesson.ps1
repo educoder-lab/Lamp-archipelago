@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 96　制御構造の組合せ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'a2a81bd9440c32d5de7e3493206e57e197d1b99528d908befe0491906222714c' '基本3構造=順次・選択・繰返し'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-program/96-structure' -NextLesson 'fortress-program/97-debug')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-program/96-structure' -NextLesson 'fortress-program/97-debug' -CourseNo 96 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

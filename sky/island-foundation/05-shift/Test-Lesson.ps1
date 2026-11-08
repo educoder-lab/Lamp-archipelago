@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 05　シフト演算と補数"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '左シフト=×2, 算術シフトは符号保持'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/05-shift' -NextLesson 'island-foundation/06-float')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/05-shift' -NextLesson 'island-foundation/06-float' -CourseNo 5 -ClearLine '灯芯がひとつ、丁寧に位置を変えた。' -TitleAward '')

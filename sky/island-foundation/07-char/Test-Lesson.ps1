@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 07　文字コードと符号化"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '964daa0b69ca2fd54b360f8342dc4735bf0fa88828e256508d562d49ab94e9cb' 'ASCII=128種,UTF-8は可変長'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/07-char' -NextLesson 'island-foundation/08-set')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-foundation/07-char' -NextLesson 'island-foundation/08-set' -CourseNo 7 -ClearLine '巻物の文字が、ようやく一つの声になった。' -TitleAward '')

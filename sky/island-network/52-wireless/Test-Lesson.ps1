@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 52　無線LANとHTTP"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'SSID=NW名,HTTPS=TLS暗号化'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/52-wireless' -NextLesson 'island-network/53-webapi')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/52-wireless' -NextLesson 'island-network/53-webapi' -CourseNo 52 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

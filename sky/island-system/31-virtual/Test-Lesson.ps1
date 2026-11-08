@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 31　仮想化とクラウド"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' 'IaaS=インフラ,PaaS=プラットフォーム,SaaS=ソフト'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/31-virtual' -NextLesson 'island-system/32-cluster')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/31-virtual' -NextLesson 'island-system/32-cluster' -CourseNo 31 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

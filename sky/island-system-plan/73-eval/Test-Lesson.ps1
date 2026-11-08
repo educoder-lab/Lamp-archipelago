@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 73　IT投資評価"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '81bb104751cd519abf8d78e5c73b0aedd3da24dc6f086e081d078a9cde80efed' 'TCO=全期間コスト,ROI=利益/投資額'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system-plan/73-eval' -NextLesson 'island-dev-tech/74-sdlc')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system-plan/73-eval' -NextLesson 'island-dev-tech/74-sdlc' -CourseNo 73 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

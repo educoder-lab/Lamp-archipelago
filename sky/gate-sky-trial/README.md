@@ -1,6 +1,18 @@
 ﻿# 空の関門
 
-[カリキュラム全体](../../CURRICULUM.md)
+[カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
+
+## あらすじ
+
+**関門番トリス** — 空を裂く三つの試練。
+
+
+## マップ（講座番号）
+
+```
+87 ─ 88 ─ 89
+87-tech-trial  88-mgmt-trial  89-strat-trial
+```
 
 ## 講座
 

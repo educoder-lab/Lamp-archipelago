@@ -5,7 +5,11 @@
 - フォルダ `演習結果` がある
 - `演習結果\answers.txt` に **3 問**（`1:B` 形式）
 
-## 問題
+## 依頼
+
+羅針盤の執事アル: 次の封印の問いを解いてくれ。
+
+## 封印の問い
 
 **1.** 4P に含まれないものはどれか。
 A. Product　B. Price　C. Place　D. People
@@ -31,3 +35,4 @@ A. CRM　B. SCM　C. ERP　D. BPR
 | 次（用語） | [講座 70　IT戦略とガバナンス（用語）](../70-it-strategy/README.md) |
 | この島・砦 | [経営戦略の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
+| 世界 | [WORLD.md](../../../WORLD.md) |

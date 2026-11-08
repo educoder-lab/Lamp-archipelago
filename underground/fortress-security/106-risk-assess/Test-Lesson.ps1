@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 106　リスクアセスメント演習"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '8dae8c578450fa6d84884de209169946770227d35d4e057d7b887c210e062878' 'リスク値=脅威×脆弱性×資産価値'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-security/106-risk-assess' -NextLesson 'fortress-security/107-crypto-pm')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-security/106-risk-assess' -NextLesson 'fortress-security/107-crypto-pm' -CourseNo 106 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

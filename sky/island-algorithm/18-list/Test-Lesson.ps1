@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 18　リスト構造"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '76c1c8a017f9b5b4f46c369fda5316523765a831a24c1186b2564b92d0035d1b' 'リスト=ポインタで連結,ランダムアクセスは苦手'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/18-list' -NextLesson 'island-algorithm/19-tree')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/18-list' -NextLesson 'island-algorithm/19-tree' -CourseNo 18 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 98　午後E-R図の読解"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' 'M:N解消=連関エンティティ,菱形=関連'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/98-er-read' -NextLesson 'fortress-database/99-sql-pm')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/98-er-read' -NextLesson 'fortress-database/99-sql-pm' -CourseNo 98 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')

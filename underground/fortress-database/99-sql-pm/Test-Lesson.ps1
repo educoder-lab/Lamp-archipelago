@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 99　午後SQL問題演習"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' '相関副問合せ=外側参照,EXISTS=存在判定'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/99-sql-pm' -NextLesson 'fortress-database/100-lock')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-database/99-sql-pm' -NextLesson 'fortress-database/100-lock' -CourseNo 99 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
