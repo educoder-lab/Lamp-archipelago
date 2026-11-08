@@ -29,8 +29,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 109　セキュア設計とゼロトラスト](../../fortress-security/109-secure-design/README.md) |
-| 次の講座 | [講座 111　システム構成シナリオ（問題）](..111-system-scenario PROBLEMS.md) |
-| 次（用語） | [講座 111　システム構成シナリオ（用語）](..111-system-scenario README.md) |
+| 次の講座 | [講座 111　システム構成シナリオ（問題）](../111-system-scenario/PROBLEMS.md) |
+| 次（用語） | [講座 111　システム構成シナリオ（用語）](../111-system-scenario/README.md) |
 | この島・砦 | [深層砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

@@ -30,7 +30,7 @@ A. 対策実行　B. リスク特定　C. 残余リスク評価　D. コスト�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 81　スケジュールと工数](..81-schedule README.md) |
+| 前の講座 | [講座 81　スケジュールと工数](../81-schedule/README.md) |
 | 次の講座 | [講座 83　ITサービスマネジメント（問題）](../../island-service/83-itil/PROBLEMS.md) |
 | 次（用語） | [講座 83　ITサービスマネジメント（用語）](../../island-service/83-itil/README.md) |
 | この島・砦 | [プロジェクトの島](../README.md) |

@@ -28,7 +28,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 112　分野横断演習](..112-cross-domain README.md) |
+| 前の講座 | [講座 112　分野横断演習](../112-cross-domain/README.md) |
 | 次の講座 | [講座 114　午前模試 第1回（問題）](../../../land/plateau-mock-am/114-mock-am-1/PROBLEMS.md) |
 | 次（用語） | [講座 114　午前模試 第1回（用語）](../../../land/plateau-mock-am/114-mock-am-1/README.md) |
 | この島・砦 | [深層砦](../README.md) |

@@ -74,6 +74,7 @@
 | IT ガバナンス | 経営戦略に沿って IT を統制する仕組み | [IT戦略とガバナンス](sky/island-business/70-it-strategy/README.md) |
 | IT 統制 | 情報システムに関する内部統制 | [内部統制と法令遵守](sky/island-audit/86-internal/README.md) |
 | ITIL | IT サービスマネジメントのベストプラクティス集 | [ITサービスマネジメント](sky/island-service/83-itil/README.md) |
+| ITIL / CMMI / PMBOK | ITIL=運用サービス管理、CMMI=開発組織の成熟度、PMBOK=プロジェクト管理の知識体系 | [運用・保守とDevOps](sky/island-dev-tech/79-devops/README.md) |
 | KB（キロバイト） | 約 1,000 バイト（厳密には 1,024 バイト） | [情報量の単位](sky/island-foundation/03-unit/README.md) |
 | L2スイッチ（スイッチングハブ） | MAC アドレスを基にフレームを転送する装置 | [ルーティングとスイッチ](sky/island-network/51-routing/README.md) |
 | LIKE | パターンマッチングに使う演算子。% は任意文字列 | [SQL SELECT文](sky/island-database/42-sql-select/README.md) |
@@ -103,6 +104,7 @@
 | PPM（プロダクトポートフォリオマネジメント） | 市場成長率と市場シェアで事業を分類する手法 | [企業分析と標準化](sky/island-corporate/67-analysis/README.md) |
 | QC 七つ道具 | パレート図・特性要因図など品質管理に使う基本ツール群 | [企業分析と標準化](sky/island-corporate/67-analysis/README.md) |
 | QoS（サービス品質） | 通信の優先度を制御して品質を保証する技術 | [ネットワーク設計と冗長化](underground/fortress-network/105-design-nw/README.md) |
+| RAD | 高速に開発する手法。プロトタイピングと部品の再利用で期間を短くする | [開発プロセスモデル](sky/island-dev-tech/74-sdlc/README.md) |
 | RAID | 複数ディスクを組み合わせて信頼性・速度を向上させる技術 | [補助記憶と入出力](sky/island-hardware/25-disk/README.md) |
 | RBAC（ロールベースアクセス制御） | 役割（ロール）を通じて権限を付与する方式 | [アクセス制御と認証技術](sky/island-security/60-accessctl/README.md) |
 | REST | HTTP メソッド(GET/POST等)でリソースを操作する設計方式 | [Webとプロトコル応用](sky/island-network/53-webapi/README.md) |
@@ -122,6 +124,7 @@
 | SMTP | メール送信に使うプロトコル（ポート 25） | [DNS・DHCP・メール](sky/island-network/50-dns/README.md) |
 | SoR / SoE | 記録のシステム（安定重視）と関与のシステム（変化対応） | [IT戦略とガバナンス](sky/island-business/70-it-strategy/README.md) |
 | SQLインジェクション | SQL文を不正に挿入してDBを操作する攻撃 | [Webセキュリティ](sky/island-security/58-webattack/README.md) |
+| SSADM / DOA | 処理（機能）とデータの流れに着目して設計する構造化手法 | [開発プロセスモデル](sky/island-dev-tech/74-sdlc/README.md) |
 | SSD | フラッシュメモリを使った高速な補助記憶装置 | [補助記憶と入出力](sky/island-hardware/25-disk/README.md) |
 | SSID | 無線 LAN のネットワーク名 | [無線LANとHTTP](sky/island-network/52-wireless/README.md) |
 | SSL/TLS | 通信を暗号化し、証明書で相手を認証するプロトコル | [認証と証明書](sky/island-security/56-cert/README.md) |
@@ -153,10 +156,13 @@
 | アクセシビリティ | 障がいの有無に関わらず利用できること | [ヒューマンインタフェース](sky/island-media/63-ux/README.md) |
 | アクセス制御 | 利用者ごとに情報資源への操作を制限する仕組み | [アクセス制御と認証技術](sky/island-security/60-accessctl/README.md) |
 | アクチュエータ | 電気信号を物理的な動き（モータなど）に変換する装置 | [組込みとIoT](sky/island-system/33-embed/README.md) |
+| アクティビティ図 | 処理の流れ（分岐・並行）を表す UML 図 | [設計手法とUML](sky/island-dev-tech/75-design/README.md) |
 | アジャイル開発 | 短いイテレーションで機能を繰り返し開発する手法 | [開発プロセスモデル](sky/island-dev-tech/74-sdlc/README.md) |
+| アプリケーション層 | HTTP・SMTP など、利用者に近いサービスを提供する第 7 層 | [OSI参照モデル](sky/island-network/47-osi/README.md) |
 | アライアンス | 企業間の戦略的提携 | [経営戦略](sky/island-business/68-strategy/README.md) |
 | アローダイアグラム | 作業を矢印で表すネットワーク図 | [スケジュールと工数](sky/island-project/81-schedule/README.md) |
 | アンダーフロー | 空の構造からデータを取り出そうとするエラー | [スタックとキュー](sky/island-algorithm/17-stack/README.md) |
+| イテレーション | アジャイルで機能を作る短い反復期間（スクラムでは「スプリント」） | [開発プロセスモデル](sky/island-dev-tech/74-sdlc/README.md) |
 | インシデント管理 | サービスの中断を速やかに復旧する活動 | [ITサービスマネジメント](sky/island-service/83-itil/README.md) |
 | インシデント対応 | セキュリティ事故の検知・封じ込め・復旧・再発防止の一連の活動 | [インシデント対応と法規](sky/island-security/61-incident/README.md) |
 | インスペクション | 第三者が公式な手順で欠陥を検出するレビュー | [レビューと品質管理](sky/island-dev-tech/78-review/README.md) |
@@ -190,6 +196,7 @@
 | サーバルーム | サーバ設置のための温度・湿度管理された部屋 | [ファシリティマネジメント](sky/island-service/84-facility/README.md) |
 | サブネットマスク | ネットワーク部とホスト部を区別するためのビットマスク | [IPアドレスとサブネット](sky/island-network/48-ip/README.md) |
 | シーク時間 | 磁気ヘッドを目的トラックまで移動させる時間 | [補助記憶と入出力](sky/island-hardware/25-disk/README.md) |
+| シーケンス図 | オブジェクト間のメッセージのやりとりを時間順に表す UML 図 | [設計手法とUML](sky/island-dev-tech/75-design/README.md) |
 | システムテスト | システム全体が要件を満たすかを確認するテスト | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | システム化計画 | 経営課題を解決する IT 投資の方針と優先度を決める活動 | [システム企画と要件定義](sky/island-system-plan/72-plan/README.md) |
 | システム監査 | 情報システムの信頼性・安全性・効率性を独立した立場で評価する活動 | [システム監査](sky/island-audit/85-audit-base/README.md) |
@@ -204,6 +211,7 @@
 | スループット | 単位時間あたりの処理量 | [性能評価](sky/island-system/30-perf/README.md) |
 | スレッド | プロセス内の実行単位。軽量プロセスとも呼ばれる | [OSの役割とプロセス](sky/island-software/34-os/README.md) |
 | セキュアバイデザイン | 設計段階からセキュリティを組み込む考え方 | [セキュア設計とゼロトラスト](underground/fortress-security/109-secure-design/README.md) |
+| セッション層 | 通信の開始・維持・終了（会話の管理）を行う第 5 層 | [OSI参照モデル](sky/island-network/47-osi/README.md) |
 | セマフォ | 資源の利用可能数を管理し排他制御を実現する仕組み | [スケジューリングと排他](sky/island-software/35-sched/README.md) |
 | ゼロトラスト | 内部外部を問わずすべてのアクセスを検証するセキュリティモデル | [セキュア設計とゼロトラスト](underground/fortress-security/109-secure-design/README.md) |
 | センサ | 温度・圧力・光などの物理量を電気信号に変換する装置 | [組込みとIoT](sky/island-system/33-embed/README.md) |
@@ -253,6 +261,7 @@
 | フォールトトレラント | 故障が起きても運用を継続できる設計 | [システムの信頼性](sky/island-system/28-reliability/README.md) |
 | フラグメンテーション | ファイルがディスク上に断片化して散らばる現象 | [補助記憶と入出力](sky/island-hardware/25-disk/README.md) |
 | ブラックボックステスト | 仕様を基に入出力をテストする手法 | [テスト技法](sky/island-dev-tech/77-test/README.md) |
+| プレゼンテーション層 | データの表現形式（文字コード・暗号化・圧縮）を変換する第 6 層 | [OSI参照モデル](sky/island-network/47-osi/README.md) |
 | ブロードキャストアドレス | ホスト部がすべて 1 のアドレス | [サブネット計算](underground/fortress-network/102-subnet-calc/README.md) |
 | フロー制御 | 受信側の処理能力に合わせて送信量を調整する仕組み | [パケット解析と通信制御](underground/fortress-network/104-packet/README.md) |
 | プロキシサーバ | クライアントの代理で外部にアクセスする中継サーバ | [Webとプロトコル応用](sky/island-network/53-webapi/README.md) |
@@ -260,6 +269,7 @@
 | プロジェクト | 期限と目標が定まった一回限りの活動 | [プロジェクト管理の基礎](sky/island-project/80-pmbok/README.md) |
 | プロセス | 実行中のプログラムの単位 | [OSの役割とプロセス](sky/island-software/34-os/README.md) |
 | プロトタイピング | 試作品を作りユーザの確認を得ながら進める手法 | [開発プロセスモデル](sky/island-dev-tech/74-sdlc/README.md) |
+| ペアプログラミング | 2 人 1 組で 1 台の画面を見ながら書き、書いた直後にレビューも行う手法 | [レビューと品質管理](sky/island-dev-tech/78-review/README.md) |
 | ページフォールト | 必要なページが主記憶にないとき発生する割込み | [仮想記憶](sky/island-software/36-vmem/README.md) |
 | ページング | 仮想空間を固定長のページに分割して管理する方式 | [仮想記憶](sky/island-software/36-vmem/README.md) |
 | ベクタ画像 | 数式で図形を定義する画像（SVG）。拡大しても劣化しない | [画像と音声のデータ](sky/island-media/62-image/README.md) |
@@ -272,12 +282,14 @@
 | ホワイトボックステスト | 内部構造（コード）を基にテストケースを作成する手法 | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | マーケティングミックス (4P) | 製品・価格・流通・販促で戦略を立てるフレームワーク | [マーケティングとe-Biz](sky/island-business/69-marketing/README.md) |
 | マージソート | 分割統治法で配列を半分ずつ分けて統合。O(n log n)・安定 | [マージソートとクイックソート](sky/island-algorithm/16-merge/README.md) |
+| マイグレーション / リバースエンジニアリング | 別の環境へ移行すること／完成品から仕組みを調べて設計情報を得ること | [運用・保守とDevOps](sky/island-dev-tech/79-devops/README.md) |
 | マイルストーン | プロジェクトの重要な節目 | [プロジェクト管理の基礎](sky/island-project/80-pmbok/README.md) |
 | マルウェア | 悪意あるソフトウェアの総称（ウイルス・ワーム・トロイの木馬など） | [脅威と攻撃手法](sky/island-security/54-threat/README.md) |
 | マルチタスク | 複数のタスクを切り替えて並行実行する仕組み | [OSの役割とプロセス](sky/island-software/34-os/README.md) |
 | メインメモリ (RAM) | CPU が直接アクセスする主記憶。電源 OFF で消える | [記憶装置の階層](sky/island-hardware/24-memory/README.md) |
 | メッセージ認証コード (MAC) | 通信内容の改ざんを検出するための認証データ | [暗号と認証の午後対策](underground/fortress-security/107-crypto-pm/README.md) |
 | モジュール結合度・凝集度 | 結合度は低いほど、凝集度は高いほど良い設計 | [設計手法とUML](sky/island-dev-tech/75-design/README.md) |
+| ユースケース図 | 利用者（アクタ）がシステムで行うことを表す UML 図 | [設計手法とUML](sky/island-dev-tech/75-design/README.md) |
 | ユニバーサルデザイン | 年齢・能力に関わらず誰でも使えるデザイン | [ヒューマンインタフェース](sky/island-media/63-ux/README.md) |
 | ラウンドロビン | 各プロセスに均等な CPU 時間（タイムスライス）を与える方式 | [スケジューリングと排他](sky/island-software/35-sched/README.md) |
 | ラスタ画像 | ピクセルの集合で表す画像（BMP, JPEG, PNG） | [画像と音声のデータ](sky/island-media/62-image/README.md) |
@@ -305,6 +317,7 @@
 | ログ管理 | システムの操作記録を保存・監視する活動 | [ログ管理とフォレンジック](underground/fortress-security/108-log-forensic/README.md) |
 | ワード | CPU が一度に扱うデータ幅。32 ビットや 64 ビットなど | [ビットとバイト](sky/island-foundation/01-bit/README.md) |
 | 安定ソート | 同値要素の相対順序が保たれるソート | [バブルソートと選択ソート](sky/island-algorithm/15-bubble/README.md) |
+| 委譲・集約 | 他のオブジェクトに処理を任せる関係（委譲）／部分と全体の「持つ」関係（集約） | [オブジェクト指向](sky/island-dev-tech/76-oop/README.md) |
 | 右シフト | ビット列を右にずらす。1 回で値が 1/2 | [シフト演算と補数](sky/island-foundation/05-shift/README.md) |
 | 営業利益 | 売上総利益 − 販売費及び一般管理費 | [財務と会計の基礎](sky/island-corporate/64-accounting/README.md) |
 | 液晶ディスプレイ | 液晶の光透過率を制御して表示する装置 | [表示装置と解像度](sky/island-hardware/27-display/README.md) |
@@ -365,6 +378,7 @@
 | 実効アクセス時間 | ヒット率を加味した平均アクセス時間 | [記憶装置の階層](sky/island-hardware/24-memory/README.md) |
 | 主キー | 行を一意に識別する列。NULL 不可 | [関係データベースの基礎](sky/island-database/40-rdb/README.md) |
 | 手続き・関数 | 処理のまとまり。引数を受け取り値を返すことがある | [擬似言語の読み方](underground/fortress-program/94-pseudo/README.md) |
+| 受入テスト | 発注者・利用者が、要件どおりか確認して受け入れる最終のテスト | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | 準委任契約 | 業務遂行を委託する契約。成果物の完成義務なし | [システム調達と契約](sky/island-business/71-contract/README.md) |
 | 順次 | 上から順に処理を実行する構造 | [制御構造の組合せ](underground/fortress-program/96-structure/README.md) |
 | 商標権 | ブランドの名前やマークを保護する権利 | [知的財産と法務](sky/island-corporate/65-law/README.md) |
@@ -379,7 +393,7 @@
 | 深さ優先探索 (DFS) | スタックを使い、行けるだけ深く探索してから戻る | [グラフと探索](sky/island-algorithm/21-graph/README.md) |
 | 正規化 | データの冗長性を排除しテーブルを分割する設計手法 | [正規化](sky/island-database/41-normal/README.md) |
 | 正規表現 | 文字列パターンを記述する表記法 | [オートマトンと形式言語](sky/island-foundation/12-automata/README.md) |
-| 請負契約 | 成果物の完成を約束する契約。瑕疵担保責任あり | [システム調達と契約](sky/island-business/71-contract/README.md) |
+| 請負契約 | 成果物の完成を約束する契約。契約不適合責任あり（旧: 瑕疵担保責任） | [システム調達と契約](sky/island-business/71-contract/README.md) |
 | 積集合（A∩B） | A と B の両方に属する要素の集合 | [集合と論理](sky/island-foundation/08-set/README.md) |
 | 絶対パス | ルートからの完全な経路指定 | [ファイルシステム](sky/island-software/37-file/README.md) |
 | 線形計画法 (LP) | 制約条件のもとで目的関数を最大化・最小化する手法 | [OR・在庫管理](sky/island-corporate/66-or/README.md) |
@@ -406,6 +420,7 @@
 | 単位行列 | 対角成分が 1、それ以外が 0 の正方行列 | [行列と線形代数](sky/island-foundation/10-matrix/README.md) |
 | 単体テスト | モジュール単位で動作を確認するテスト | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | 単方向リスト | 次の要素だけを指すリスト | [リスト構造](sky/island-algorithm/18-list/README.md) |
+| 探索的テスト | 手順書に頼らず、動かしながら考えてテストする手法 | [レビューと品質管理](sky/island-dev-tech/78-review/README.md) |
 | 探索範囲 | 探索対象として残っている部分 | [二分探索](sky/island-algorithm/14-bsearch/README.md) |
 | 抽象クラス | インスタンス化できない、派生クラスの雛形となるクラス | [オブジェクト指向](sky/island-dev-tech/76-oop/README.md) |
 | 著作権 | 創作物を保護する権利。登録不要で発生 | [知的財産と法務](sky/island-corporate/65-law/README.md) |
@@ -432,9 +447,11 @@
 | 標準偏差 | 分散の正の平方根 | [確率と統計](sky/island-foundation/09-prob/README.md) |
 | 標本化（サンプリング） | アナログ信号を一定間隔で値を取り出しデジタル化する工程 | [画像と音声のデータ](sky/island-media/62-image/README.md) |
 | 表・図の読解 | ネットワーク構成図やテーブル定義から情報を読み取る技術 | [システム構成シナリオ](underground/fortress-deep/111-system-scenario/README.md) |
+| 品質管理 | 求められた品質を満たすよう、基準を決めて確認・改善する活動 | [リスクと品質管理](sky/island-project/82-risk/README.md) |
 | 不正アクセス禁止法 | 他人のID・パスワードで不正ログインすることを禁じる法律 | [インシデント対応と法規](sky/island-security/61-incident/README.md) |
 | 不正競争防止法 | 営業秘密の不正取得などを禁じる法律 | [知的財産と法務](sky/island-corporate/65-law/README.md) |
 | 浮動小数点数 | 仮数部×基数の指数乗で実数を表す形式 | [浮動小数点と誤差](sky/island-foundation/06-float/README.md) |
+| 負荷テスト | 大量のアクセスなどをかけて、性能や限界を確認するテスト | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | 副問合せ（サブクエリ） | SQL 文の中に入れ子にした SELECT 文 | [SQL 結合と副問合せ](sky/island-database/43-sql-join/README.md) |
 | 幅優先探索 (BFS) | キューを使い、近い頂点から順に探索する | [グラフと探索](sky/island-algorithm/21-graph/README.md) |
 | 物理層 | 電気信号やケーブルなどの物理的な伝送 | [OSI参照モデル](sky/island-network/47-osi/README.md) |

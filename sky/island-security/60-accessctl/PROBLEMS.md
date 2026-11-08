@@ -30,9 +30,9 @@ A. DAC　B. MAC　C. RBAC　D. SSO
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 59　情報セキュリティ管理](..59-policy README.md) |
-| 次の講座 | [講座 61　インシデント対応と法規（問題）](..61-incident PROBLEMS.md) |
-| 次（用語） | [講座 61　インシデント対応と法規（用語）](..61-incident README.md) |
+| 前の講座 | [講座 59　情報セキュリティ管理](../59-policy/README.md) |
+| 次の講座 | [講座 61　インシデント対応と法規（問題）](../61-incident/PROBLEMS.md) |
+| 次（用語） | [講座 61　インシデント対応と法規（用語）](../61-incident/README.md) |
 | この島・砦 | [セキュリティの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

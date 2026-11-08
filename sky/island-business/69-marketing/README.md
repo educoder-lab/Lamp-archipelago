@@ -27,9 +27,9 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 68　経営戦略](..68-strategy README.md) |
-| 次の講座 | [講座 70　IT戦略とガバナンス（問題）](..70-it-strategy PROBLEMS.md) |
-| 次（用語） | [講座 70　IT戦略とガバナンス（用語）](..70-it-strategy README.md) |
+| 前の講座 | [講座 68　経営戦略](../68-strategy/README.md) |
+| 次の講座 | [講座 70　IT戦略とガバナンス（問題）](../70-it-strategy/PROBLEMS.md) |
+| 次（用語） | [講座 70　IT戦略とガバナンス（用語）](../70-it-strategy/README.md) |
 | この島・砦 | [経営戦略の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

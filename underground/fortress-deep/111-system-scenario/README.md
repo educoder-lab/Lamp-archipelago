@@ -28,9 +28,9 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 110　長文読解の技法](..110-reading README.md) |
-| 次の講座 | [講座 112　分野横断演習（問題）](..112-cross-domain PROBLEMS.md) |
-| 次（用語） | [講座 112　分野横断演習（用語）](..112-cross-domain README.md) |
+| 前の講座 | [講座 110　長文読解の技法](../110-reading/README.md) |
+| 次の講座 | [講座 112　分野横断演習（問題）](../112-cross-domain/PROBLEMS.md) |
+| 次（用語） | [講座 112　分野横断演習（用語）](../112-cross-domain/README.md) |
 | この島・砦 | [深層砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

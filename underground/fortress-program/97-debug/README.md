@@ -29,7 +29,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 96　制御構造の組合せ](..96-structure README.md) |
+| 前の講座 | [講座 96　制御構造の組合せ](../96-structure/README.md) |
 | 次の講座 | [講座 98　午後E-R図の読解（問題）](../../fortress-database/98-er-read/PROBLEMS.md) |
 | 次（用語） | [講座 98　午後E-R図の読解（用語）](../../fortress-database/98-er-read/README.md) |
 | この島・砦 | [プログラム砦](../README.md) |

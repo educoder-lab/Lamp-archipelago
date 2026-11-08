@@ -31,8 +31,8 @@ A. 演算　B. 制御　C. 長期記憶　D. 比較判断
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 21　グラフと探索](../../island-algorithm/21-graph/README.md) |
-| 次の講座 | [講座 23　パイプラインと高速化（問題）](..23-pipeline PROBLEMS.md) |
-| 次（用語） | [講座 23　パイプラインと高速化（用語）](..23-pipeline README.md) |
+| 次の講座 | [講座 23　パイプラインと高速化（問題）](../23-pipeline/PROBLEMS.md) |
+| 次（用語） | [講座 23　パイプラインと高速化（用語）](../23-pipeline/README.md) |
 | この島・砦 | [ハードウェアの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

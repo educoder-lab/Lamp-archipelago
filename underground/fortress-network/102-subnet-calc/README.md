@@ -30,8 +30,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 101　障害回復と性能](../../fortress-database/101-recovery/README.md) |
-| 次の講座 | [講座 103　VLANとVPN（問題）](..103-vlan PROBLEMS.md) |
-| 次（用語） | [講座 103　VLANとVPN（用語）](..103-vlan README.md) |
+| 次の講座 | [講座 103　VLANとVPN（問題）](../103-vlan/PROBLEMS.md) |
+| 次（用語） | [講座 103　VLANとVPN（用語）](../103-vlan/README.md) |
 | この島・砦 | [ネットワーク砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

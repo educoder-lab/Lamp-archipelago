@@ -26,7 +26,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 45　トランザクションと障害回復](..45-transaction README.md) |
+| 前の講座 | [講座 45　トランザクションと障害回復](../45-transaction/README.md) |
 | 次の講座 | [講座 47　OSI参照モデル（問題）](../../island-network/47-osi/PROBLEMS.md) |
 | 次（用語） | [講座 47　OSI参照モデル（用語）](../../island-network/47-osi/README.md) |
 | この島・砦 | [データベースの島](../README.md) |

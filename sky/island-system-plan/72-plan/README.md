@@ -28,8 +28,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 71　システム調達と契約](../../island-business/71-contract/README.md) |
-| 次の講座 | [講座 73　IT投資評価（問題）](..73-eval PROBLEMS.md) |
-| 次（用語） | [講座 73　IT投資評価（用語）](..73-eval README.md) |
+| 次の講座 | [講座 73　IT投資評価（問題）](../73-eval/PROBLEMS.md) |
+| 次（用語） | [講座 73　IT投資評価（用語）](../73-eval/README.md) |
 | この島・砦 | [システム企画の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

@@ -30,7 +30,7 @@ A. RFP　B. NDA　C. SLA　D. MOU
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 70　IT戦略とガバナンス](..70-it-strategy README.md) |
+| 前の講座 | [講座 70　IT戦略とガバナンス](../70-it-strategy/README.md) |
 | 次の講座 | [講座 72　システム企画と要件定義（問題）](../../island-system-plan/72-plan/PROBLEMS.md) |
 | 次（用語） | [講座 72　システム企画と要件定義（用語）](../../island-system-plan/72-plan/README.md) |
 | この島・砦 | [経営戦略の島](../README.md) |

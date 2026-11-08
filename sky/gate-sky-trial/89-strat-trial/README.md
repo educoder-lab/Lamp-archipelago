@@ -25,7 +25,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 88　空の関門：マネジメント総合](..88-mgmt-trial README.md) |
+| 前の講座 | [講座 88　空の関門：マネジメント総合](../88-mgmt-trial/README.md) |
 | 次の講座 | [講座 90　午後トレース基礎（問題）](../../../underground/fortress-algorithm/90-trace-basic/PROBLEMS.md) |
 | 次（用語） | [講座 90　午後トレース基礎（用語）](../../../underground/fortress-algorithm/90-trace-basic/README.md) |
 | この島・砦 | [空の関門](../README.md) |

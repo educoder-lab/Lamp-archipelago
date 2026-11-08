@@ -17,7 +17,7 @@ A. SELECT　B. INSERT　C. UPDATE　D. CREATE
 **2.** UPDATE 文で更新対象を絞るには何を使うか。
 A. HAVING　B. GROUP BY　C. WHERE　D. ORDER BY
 
-**3.** 列に NULL を許さない制約はどれか。
+**3.** 列の値が空（NULL）であることだけを禁止する制約はどれか。
 A. UNIQUE　B. PRIMARY KEY　C. CHECK　D. NOT NULL
 
 ## 採点
@@ -30,9 +30,9 @@ A. UNIQUE　B. PRIMARY KEY　C. CHECK　D. NOT NULL
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 43　SQL 結合と副問合せ](..43-sql-join README.md) |
-| 次の講座 | [講座 45　トランザクションと障害回復（問題）](..45-transaction PROBLEMS.md) |
-| 次（用語） | [講座 45　トランザクションと障害回復（用語）](..45-transaction README.md) |
+| 前の講座 | [講座 43　SQL 結合と副問合せ](../43-sql-join/README.md) |
+| 次の講座 | [講座 45　トランザクションと障害回復（問題）](../45-transaction/PROBLEMS.md) |
+| 次（用語） | [講座 45　トランザクションと障害回復（用語）](../45-transaction/README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

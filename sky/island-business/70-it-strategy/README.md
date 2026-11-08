@@ -26,9 +26,9 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 69　マーケティングとe-Biz](..69-marketing README.md) |
-| 次の講座 | [講座 71　システム調達と契約（問題）](..71-contract PROBLEMS.md) |
-| 次（用語） | [講座 71　システム調達と契約（用語）](..71-contract README.md) |
+| 前の講座 | [講座 69　マーケティングとe-Biz](../69-marketing/README.md) |
+| 次の講座 | [講座 71　システム調達と契約（問題）](../71-contract/PROBLEMS.md) |
+| 次（用語） | [講座 71　システム調達と契約（用語）](../71-contract/README.md) |
 | この島・砦 | [経営戦略の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

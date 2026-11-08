@@ -30,9 +30,9 @@ A. ウォークスルー　B. インスペクション　C. ブレインスト�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 77　テスト技法](..77-test README.md) |
-| 次の講座 | [講座 79　運用・保守とDevOps（問題）](..79-devops PROBLEMS.md) |
-| 次（用語） | [講座 79　運用・保守とDevOps（用語）](..79-devops README.md) |
+| 前の講座 | [講座 77　テスト技法](../77-test/README.md) |
+| 次の講座 | [講座 79　運用・保守とDevOps（問題）](../79-devops/PROBLEMS.md) |
+| 次（用語） | [講座 79　運用・保守とDevOps（用語）](../79-devops/README.md) |
 | この島・砦 | [開発技術の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

@@ -28,7 +28,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 108　ログ管理とフォレンジック](..108-log-forensic README.md) |
+| 前の講座 | [講座 108　ログ管理とフォレンジック](../108-log-forensic/README.md) |
 | 次の講座 | [講座 110　長文読解の技法（問題）](../../fortress-deep/110-reading/PROBLEMS.md) |
 | 次（用語） | [講座 110　長文読解の技法（用語）](../../fortress-deep/110-reading/README.md) |
 | この島・砦 | [セキュリティ砦](../README.md) |

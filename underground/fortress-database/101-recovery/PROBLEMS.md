@@ -33,7 +33,7 @@ A. 検索が遅くなる　B. 更新処理のオーバーヘッド　C. デー�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 100　ロックと同時実行制御](..100-lock README.md) |
+| 前の講座 | [講座 100　ロックと同時実行制御](../100-lock/README.md) |
 | 次の講座 | [講座 102　サブネット計算（問題）](../../fortress-network/102-subnet-calc/PROBLEMS.md) |
 | 次（用語） | [講座 102　サブネット計算（用語）](../../fortress-network/102-subnet-calc/README.md) |
 | この島・砦 | [データベース砦](../README.md) |

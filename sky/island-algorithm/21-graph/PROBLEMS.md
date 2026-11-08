@@ -30,7 +30,7 @@ A. 無向グラフ　B. 完全グラフ　C. 有向グラフ　D. 重み付き�
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 20　ハッシュ法](..20-hash README.md) |
+| 前の講座 | [講座 20　ハッシュ法](../20-hash/README.md) |
 | 次の講座 | [講座 22　CPU の仕組み（問題）](../../island-hardware/22-cpu/PROBLEMS.md) |
 | 次（用語） | [講座 22　CPU の仕組み（用語）](../../island-hardware/22-cpu/README.md) |
 | この島・砦 | [アルゴリズムの島](../README.md) |

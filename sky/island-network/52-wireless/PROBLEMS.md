@@ -12,7 +12,7 @@
 ## 封印の問い
 
 **1.** 無線 LAN のネットワーク識別名はどれか。
-A. BSSID　B. SSID　C. MAC アドレス　D. ESSID のみ
+A. BSSID　B. SSID　C. MAC アドレス　D. IP アドレス
 
 **2.** HTTPS で使われる暗号化技術はどれか。
 A. WEP　B. SSL/TLS　C. IPsec　D. SSH
@@ -30,9 +30,9 @@ A. WEP　B. WPA　C. WPA2/WPA3　D. TKIP のみ
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 51　ルーティングとスイッチ](..51-routing README.md) |
-| 次の講座 | [講座 53　Webとプロトコル応用（問題）](..53-webapi PROBLEMS.md) |
-| 次（用語） | [講座 53　Webとプロトコル応用（用語）](..53-webapi README.md) |
+| 前の講座 | [講座 51　ルーティングとスイッチ](../51-routing/README.md) |
+| 次の講座 | [講座 53　Webとプロトコル応用（問題）](../53-webapi/PROBLEMS.md) |
+| 次（用語） | [講座 53　Webとプロトコル応用（用語）](../53-webapi/README.md) |
 | この島・砦 | [ネットワークの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

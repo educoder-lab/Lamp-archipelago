@@ -28,8 +28,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 27　表示装置と解像度](../../island-hardware/27-display/README.md) |
-| 次の講座 | [講座 29　冗長化と多重化（問題）](..29-redundancy PROBLEMS.md) |
-| 次（用語） | [講座 29　冗長化と多重化（用語）](..29-redundancy README.md) |
+| 次の講座 | [講座 29　冗長化と多重化（問題）](../29-redundancy/PROBLEMS.md) |
+| 次（用語） | [講座 29　冗長化と多重化（用語）](../29-redundancy/README.md) |
 | この島・砦 | [システム構成の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

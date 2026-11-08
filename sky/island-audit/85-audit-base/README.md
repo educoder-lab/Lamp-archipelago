@@ -27,8 +27,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 84　ファシリティマネジメント](../../island-service/84-facility/README.md) |
-| 次の講座 | [講座 86　内部統制と法令遵守（問題）](..86-internal PROBLEMS.md) |
-| 次（用語） | [講座 86　内部統制と法令遵守（用語）](..86-internal README.md) |
+| 次の講座 | [講座 86　内部統制と法令遵守（問題）](../86-internal/PROBLEMS.md) |
+| 次（用語） | [講座 86　内部統制と法令遵守（用語）](../86-internal/README.md) |
 | この島・砦 | [監査の島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

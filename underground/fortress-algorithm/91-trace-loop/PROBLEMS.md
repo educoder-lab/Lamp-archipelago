@@ -33,9 +33,9 @@ A. 7　B. 12　C. 3　D. 4
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 90　午後トレース基礎](..90-trace-basic README.md) |
-| 次の講座 | [講座 92　午後トレース：配列操作（問題）](..92-trace-array PROBLEMS.md) |
-| 次（用語） | [講座 92　午後トレース：配列操作（用語）](..92-trace-array README.md) |
+| 前の講座 | [講座 90　午後トレース基礎](../90-trace-basic/README.md) |
+| 次の講座 | [講座 92　午後トレース：配列操作（問題）](../92-trace-array/PROBLEMS.md) |
+| 次（用語） | [講座 92　午後トレース：配列操作（用語）](../92-trace-array/README.md) |
 | この島・砦 | [アルゴリズム砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

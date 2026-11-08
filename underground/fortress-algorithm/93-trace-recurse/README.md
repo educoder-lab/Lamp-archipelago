@@ -27,7 +27,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 92　午後トレース：配列操作](..92-trace-array README.md) |
+| 前の講座 | [講座 92　午後トレース：配列操作](../92-trace-array/README.md) |
 | 次の講座 | [講座 94　擬似言語の読み方（問題）](../../fortress-program/94-pseudo/PROBLEMS.md) |
 | 次（用語） | [講座 94　擬似言語の読み方（用語）](../../fortress-program/94-pseudo/README.md) |
 | この島・砦 | [アルゴリズム砦](../README.md) |

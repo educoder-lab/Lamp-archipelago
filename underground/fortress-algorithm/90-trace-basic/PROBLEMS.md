@@ -36,8 +36,8 @@ A. 3　B. 4　C. 1　D. 0
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 89　空の関門：ストラテジ総合](../../../sky/gate-sky-trial/89-strat-trial/README.md) |
-| 次の講座 | [講座 91　午後トレース：繰返し（問題）](..91-trace-loop PROBLEMS.md) |
-| 次（用語） | [講座 91　午後トレース：繰返し（用語）](..91-trace-loop README.md) |
+| 次の講座 | [講座 91　午後トレース：繰返し（問題）](../91-trace-loop/PROBLEMS.md) |
+| 次（用語） | [講座 91　午後トレース：繰返し（用語）](../91-trace-loop/README.md) |
 | この島・砦 | [アルゴリズム砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

@@ -27,8 +27,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 39　OSSとライセンス](../../island-software/39-oss/README.md) |
-| 次の講座 | [講座 41　正規化（問題）](..41-normal PROBLEMS.md) |
-| 次（用語） | [講座 41　正規化（用語）](..41-normal README.md) |
+| 次の講座 | [講座 41　正規化（問題）](../41-normal/PROBLEMS.md) |
+| 次（用語） | [講座 41　正規化（用語）](../41-normal/README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

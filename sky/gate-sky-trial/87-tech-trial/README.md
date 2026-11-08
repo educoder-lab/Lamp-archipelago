@@ -30,8 +30,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 86　内部統制と法令遵守](../../island-audit/86-internal/README.md) |
-| 次の講座 | [講座 88　空の関門：マネジメント総合（問題）](..88-mgmt-trial PROBLEMS.md) |
-| 次（用語） | [講座 88　空の関門：マネジメント総合（用語）](..88-mgmt-trial README.md) |
+| 次の講座 | [講座 88　空の関門：マネジメント総合（問題）](../88-mgmt-trial/PROBLEMS.md) |
+| 次（用語） | [講座 88　空の関門：マネジメント総合（用語）](../88-mgmt-trial/README.md) |
 | この島・砦 | [空の関門](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

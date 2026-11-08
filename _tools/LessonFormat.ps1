@@ -8,8 +8,8 @@
   while ($i -lt $fa.Count -and $i -lt $ta.Count -and $fa[$i] -eq $ta[$i]) { $i++ }
   $up = $fa.Count - $i
   $down = $ta[$i..($ta.Count - 1)]
-  $upParts = if ($up -gt 0) { 1..$up | ForEach-Object { '..' } } else { @() }
-  $rel = @($upParts + $down)
+  $upParts = @(if ($up -gt 0) { 1..$up | ForEach-Object { '..' } })
+  $rel = @($upParts) + @($down)
   return ($rel -join '/')
 }
 

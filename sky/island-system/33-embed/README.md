@@ -27,7 +27,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 32　クラスタと負荷分散](..32-cluster README.md) |
+| 前の講座 | [講座 32　クラスタと負荷分散](../32-cluster/README.md) |
 | 次の講座 | [講座 34　OSの役割とプロセス（問題）](../../island-software/34-os/PROBLEMS.md) |
 | 次（用語） | [講座 34　OSの役割とプロセス（用語）](../../island-software/34-os/README.md) |
 | この島・砦 | [システム構成の島](../README.md) |

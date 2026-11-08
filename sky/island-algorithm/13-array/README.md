@@ -26,8 +26,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 12　オートマトンと形式言語](../../island-foundation/12-automata/README.md) |
-| 次の講座 | [講座 14　二分探索（問題）](..14-bsearch PROBLEMS.md) |
-| 次（用語） | [講座 14　二分探索（用語）](..14-bsearch README.md) |
+| 次の講座 | [講座 14　二分探索（問題）](../14-bsearch/PROBLEMS.md) |
+| 次（用語） | [講座 14　二分探索（用語）](../14-bsearch/README.md) |
 | この島・砦 | [アルゴリズムの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

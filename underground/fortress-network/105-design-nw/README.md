@@ -29,7 +29,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 104　パケット解析と通信制御](..104-packet README.md) |
+| 前の講座 | [講座 104　パケット解析と通信制御](../104-packet/README.md) |
 | 次の講座 | [講座 106　リスクアセスメント演習（問題）](../../fortress-security/106-risk-assess/PROBLEMS.md) |
 | 次（用語） | [講座 106　リスクアセスメント演習（用語）](../../fortress-security/106-risk-assess/README.md) |
 | この島・砦 | [ネットワーク砦](../README.md) |

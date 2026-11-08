@@ -26,7 +26,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 62　画像と音声のデータ](..62-image README.md) |
+| 前の講座 | [講座 62　画像と音声のデータ](../62-image/README.md) |
 | 次の講座 | [講座 64　財務と会計の基礎（問題）](../../island-corporate/64-accounting/PROBLEMS.md) |
 | 次（用語） | [講座 64　財務と会計の基礎（用語）](../../island-corporate/64-accounting/README.md) |
 | この島・砦 | [マルチメディアの島](../README.md) |

@@ -26,9 +26,9 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 55　暗号化の基礎](..55-crypto README.md) |
-| 次の講座 | [講座 57　ファイアウォールとDMZ（問題）](..57-firewall PROBLEMS.md) |
-| 次（用語） | [講座 57　ファイアウォールとDMZ（用語）](..57-firewall README.md) |
+| 前の講座 | [講座 55　暗号化の基礎](../55-crypto/README.md) |
+| 次の講座 | [講座 57　ファイアウォールとDMZ（問題）](../57-firewall/PROBLEMS.md) |
+| 次（用語） | [講座 57　ファイアウォールとDMZ（用語）](../57-firewall/README.md) |
 | この島・砦 | [セキュリティの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

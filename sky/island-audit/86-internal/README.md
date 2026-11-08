@@ -26,7 +26,7 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 85　システム監査](..85-audit-base README.md) |
+| 前の講座 | [講座 85　システム監査](../85-audit-base/README.md) |
 | 次の講座 | [講座 87　空の関門：テクノロジ総合（問題）](../../gate-sky-trial/87-tech-trial/PROBLEMS.md) |
 | 次（用語） | [講座 87　空の関門：テクノロジ総合（用語）](../../gate-sky-trial/87-tech-trial/README.md) |
 | この島・砦 | [監査の島](../README.md) |

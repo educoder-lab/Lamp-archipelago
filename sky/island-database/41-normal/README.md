@@ -26,9 +26,9 @@
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 40　関係データベースの基礎](..40-rdb README.md) |
-| 次の講座 | [講座 42　SQL SELECT文（問題）](..42-sql-select PROBLEMS.md) |
-| 次（用語） | [講座 42　SQL SELECT文（用語）](..42-sql-select README.md) |
+| 前の講座 | [講座 40　関係データベースの基礎](../40-rdb/README.md) |
+| 次の講座 | [講座 42　SQL SELECT文（問題）](../42-sql-select/PROBLEMS.md) |
+| 次（用語） | [講座 42　SQL SELECT文（用語）](../42-sql-select/README.md) |
 | この島・砦 | [データベースの島](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
