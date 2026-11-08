@@ -27,10 +27,11 @@
 4. **大事な言葉だけ強調**。`**太字**` か `==下線ハイライト==` を 1 枚に 1〜2 か所。
 5. **むずかしい言葉の直後に、かんたんな言い換え**（括弧でもよい）。
 6. **たとえ話を先に**。IT の定義だけから始めない。
-7. **図を優先**。長い文章より `big` / `analogy` / `flow` / `bits` / `layers`。
-8. 日本語は「です・ます」。子どもっぽくしすぎない。
-9. **封印の問いの答えを書かない**。`check` は PROBLEMS と別の題材。
-10. README・PROBLEMS と矛盾させない。
+7. **図を優先**。長い文章より `big` / `analogy` / `flow` / `bits` / `layers` / `example` / `anim` / `bitfield`。
+8. **抽象概念には具体例**。定義の直後に `example`（数・式）か `anim`（流れ）を 1 枚置く。
+9. 日本語は「です・ます」。子どもっぽくしすぎない。
+10. **封印の問いの答えを書かない**。`check` は PROBLEMS と別の題材。
+11. README・PROBLEMS と矛盾させない。
 
 ### 悪い例 → 良い例
 
@@ -68,7 +69,15 @@
 | `blocks` | ✓* | **最大 2**（表紙は空可） |
 | `note` | | 任意。短く |
 
-ブロック種別は従来どおり（`p` `bullets` `big` `analogy` `flow` `compare` `table` `cards` `callout` `code` `bits` `trace` `check` `layers` `steps` `array` `tree`）。詳細は `_tools/slides/island-foundation.json` の講座 1・2 を見本にする。
+ブロック種別（`p` `bullets` `big` `analogy` `flow` `compare` `table` `cards` `callout` `code` `bits` `trace` `check` `layers` `steps` `array` `tree` **`example` `anim` `bitfield`**）。  
+見本: 講座 1・2（基礎）、講座 **6（浮動小数点）**＝具体例＋再生アニメ。
+
+| 新ブロック | 用途 | 主なフィールド |
+|------------|------|----------------|
+| `example` | 数・式の具体例 | `before`/`after` または `rows`、`why`、`surprise` |
+| `anim` | ▶ で進む流れ | `frames[{visual,text}]` |
+| `bitfield` | 符号・指数など部品の横並び | `segments[{label,bits,sub,tone}]` |
+| `flow` + `stepwise:true` | 矢印フローを 1 歩ずつ | 既存 `steps` |
 
 ## 例（理想の密度）
 

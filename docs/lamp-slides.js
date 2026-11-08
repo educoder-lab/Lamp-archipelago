@@ -46,20 +46,131 @@
 
   R.flow = b => {
     const wrap = h('div', 'b');
-    const f = h('div', 'b-flow' + (b.direction === 'v' ? ' v' : ''));
+    const f = h('div', 'b-flow' + (b.direction === 'v' ? ' v' : '') + (b.stepwise ? ' stepwise' : ''));
+    const parts = [];
     let i = 0;
     (b.steps || []).forEach((st, idx) => {
       if (idx > 0 && b.arrows !== false) {
         const a = h('div', 'arr', '➜');
         a.style.setProperty('--i', i++);
         f.appendChild(a);
+        parts.push(a);
       }
       const s = typeof st === 'string' ? { label: st } : st;
       const d = h('div', 'step', (s.icon ? '<span class="ico">' + esc(s.icon) + '</span>' : '') + '<b>' + fmt(s.label) + '</b>' + (s.sub ? '<span class="s">' + fmt(s.sub) + '</span>' : ''));
       d.style.setProperty('--i', i++);
       f.appendChild(d);
+      parts.push(d);
     });
     wrap.appendChild(f);
+    if (b.stepwise && parts.length) {
+      let k = 0;
+      const ctl = h('div', 'b-anim-ctl');
+      const nextB = h('button', null, '▶ 次のステップ'); nextB.type = 'button';
+      const resetB = h('button', null, '↺'); resetB.type = 'button';
+      const cnt = h('span', 'b-cap', '');
+      function paint() {
+        parts.forEach((el, idx) => {
+          el.classList.toggle('dim', idx > k);
+          el.classList.toggle('hot', idx === k);
+        });
+        nextB.disabled = k >= parts.length - 1;
+        cnt.textContent = Math.floor(k / 2) + 1 + ' / ' + (b.steps || []).length;
+      }
+      nextB.onclick = () => { if (k < parts.length - 1) { k++; paint(); } };
+      resetB.onclick = () => { k = 0; paint(); };
+      ctl.append(nextB, resetB, cnt);
+      wrap.appendChild(ctl);
+      paint();
+    }
+    const c = cap(b.caption); if (c) wrap.appendChild(c);
+    return wrap;
+  };
+
+  R.example = b => {
+    const wrap = h('div', 'b b-example');
+    wrap.appendChild(h('div', 'ex-lab', esc(b.label || '具体例')));
+    if (b.title) wrap.appendChild(h('div', 'ex-title', fmt(b.title)));
+    if (b.before || b.after) {
+      const row = h('div', 'ex-io');
+      if (b.before) {
+        const a = h('div', 'ex-box in');
+        a.appendChild(h('span', 'tag', '入力・式'));
+        a.appendChild(h('div', 'val', fmt(b.before)));
+        row.appendChild(a);
+      }
+      if (b.before && b.after) row.appendChild(h('div', 'ex-arr', '➜'));
+      if (b.after) {
+        const a = h('div', 'ex-box out' + (b.surprise ? ' surprise' : ''));
+        a.appendChild(h('span', 'tag', b.afterLabel || '結果'));
+        a.appendChild(h('div', 'val', fmt(b.after)));
+        row.appendChild(a);
+      }
+      wrap.appendChild(row);
+    }
+    if (b.rows && b.rows.length) {
+      const grid = h('div', 'ex-rows');
+      b.rows.forEach(r => {
+        const row = h('div', 'ex-row' + (r.hl ? ' hl' : ''));
+        row.appendChild(h('span', 'k', fmt(r.label || '')));
+        row.appendChild(h('span', 'v', fmt(r.value || '')));
+        grid.appendChild(row);
+      });
+      wrap.appendChild(grid);
+    }
+    if (b.why) wrap.appendChild(h('div', 'ex-why', '👉 ' + fmt(b.why)));
+    return wrap;
+  };
+
+  R.anim = b => {
+    const frames = b.frames || [];
+    const wrap = h('div', 'b b-anim');
+    const stage = h('div', 'anim-stage');
+    const vis = h('div', 'anim-vis');
+    const txt = h('div', 'anim-txt');
+    stage.append(vis, txt);
+    wrap.appendChild(stage);
+    const ctl = h('div', 'b-anim-ctl');
+    const nextB = h('button', null, '▶ 再生'); nextB.type = 'button';
+    const resetB = h('button', null, '↺ 最初から'); resetB.type = 'button';
+    const cnt = h('span', 'b-cap', '');
+    ctl.append(nextB, resetB, cnt);
+    wrap.appendChild(ctl);
+    let k = 0;
+    function paint() {
+      const fr = frames[k] || {};
+      vis.innerHTML = fmt(fr.visual || '');
+      txt.innerHTML = fmt(fr.text || '');
+      stage.classList.remove('pop');
+      void stage.offsetWidth;
+      stage.classList.add('pop');
+      nextB.textContent = k >= frames.length - 1 ? '▶ もう一度見る' : '▶ 次へ';
+      cnt.textContent = (frames.length ? k + 1 : 0) + ' / ' + frames.length;
+    }
+    nextB.onclick = () => {
+      if (!frames.length) return;
+      if (k >= frames.length - 1) k = 0; else k++;
+      paint();
+    };
+    resetB.onclick = () => { k = 0; paint(); };
+    paint();
+    const c = cap(b.caption); if (c) wrap.appendChild(c);
+    return wrap;
+  };
+
+  R.bitfield = b => {
+    const wrap = h('div', 'b b-bitfield');
+    const row = h('div', 'bf-row');
+    (b.segments || []).forEach((seg, i) => {
+      const tone = seg.tone || ['gold', 'open', 'ok'][i % 3];
+      const d = h('div', 'bf-seg ' + tone);
+      d.style.setProperty('--i', i);
+      d.appendChild(h('div', 'bf-label', fmt(seg.label || '')));
+      d.appendChild(h('div', 'bf-bits', esc(seg.bits || '')));
+      if (seg.sub) d.appendChild(h('div', 'bf-sub', fmt(seg.sub)));
+      row.appendChild(d);
+    });
+    wrap.appendChild(row);
     const c = cap(b.caption); if (c) wrap.appendChild(c);
     return wrap;
   };
@@ -369,7 +480,15 @@
     function go(n) {
       i = Math.max(0, Math.min(slides.length - 1, n));
       seen.add(i);
-      els.forEach((e, k) => e.classList.toggle('active', k === i));
+      els.forEach((e, k) => {
+        const on = k === i;
+        e.classList.toggle('active', on);
+        if (on) {
+          e.classList.remove('enter');
+          void e.offsetWidth;
+          e.classList.add('enter');
+        }
+      });
       dotEls.forEach((d, k) => { d.classList.toggle('on', k === i); d.classList.toggle('seen', seen.has(k) && k !== i); });
       count.textContent = (i + 1) + ' / ' + slides.length;
       barI.style.width = ((i + 1) / slides.length * 100) + '%';
