@@ -195,6 +195,50 @@
   text-align: center;
   text-decoration: none;
 }
+.hub-modal { width: min(480px, 100%); }
+.hub-modal .hm-sec {
+  margin: 14px 0 8px;
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: #9aa0c4;
+  font-weight: 700;
+}
+.hub-modal .hm-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hub-modal .hm-row a,
+.hub-modal .hm-row button {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1px solid #343a6b;
+  background: rgba(31, 36, 71, .95);
+  color: #ece9f5;
+  cursor: pointer;
+  text-decoration: none;
+}
+.hub-modal .hm-row a.primary,
+.hub-modal .hm-row button.primary {
+  border-color: #7fd1ff;
+  background: #1b4a6b;
+}
+.hub-modal .hm-row button.sky { border-color: #4a90b8; color: #b8e8ff; }
+.hub-modal .hm-row button.land { border-color: #3a8a58; color: #b8f0c8; }
+.hub-modal .hm-row button.underground { border-color: #7a58b0; color: #e0d0ff; }
+.hub-modal .hm-review { max-height: 160px; overflow-y: auto; }
+.hub-modal .hm-review a {
+  display: block;
+  font-size: 13px;
+  color: #7fd1ff;
+  text-decoration: none;
+  padding: 5px 0;
+  border-bottom: 1px solid #2a3158;
+}
+.hub-modal .hm-review .stat { font-size: 13px; color: #9aa0c4; }
 .quest-modal .qm-actions .ghost {
   font: inherit;
   font-size: 14px;

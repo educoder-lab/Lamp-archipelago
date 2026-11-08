@@ -105,7 +105,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground">地下</button>
       <button type="button" class="world-nav-btn" data-nav="hub">灯台の港</button>
     </div>
-    <div class="world-hint">箱庭俯瞰 · 空は光の橋の一本道 · ナビで上空／地下／陸地へ立体移動</div>
+    <div class="world-hint">港を押すとメニュー · 光の橋が進行ルート · ナビで領域移動</div>
   </div>
 </main>
 <aside id="panel"></aside>
@@ -131,6 +131,28 @@ ul.lessons a:hover { color: var(--ink); }
     <div class="qm-actions">
       <button type="button" class="ghost" id="qm-close">やめる</button>
       <a class="primary" id="qm-go" href="#">挑戦する</a>
+    </div>
+  </div>
+</div>
+<div class="quest-overlay" id="hub-overlay" role="dialog" aria-modal="true" aria-labelledby="hm-title">
+  <div class="quest-modal hub-modal">
+    <div class="qm-top">
+      <div class="qm-kicker">陸地の拠点</div>
+      <h2 id="hm-title">灯台の港</h2>
+    </div>
+    <div class="qm-body">
+      <p class="qm-desc" id="hm-desc">試験の全体像を学び、空・地下・陸地へ出発し、つまずいた封印を復習できます。</p>
+      <div class="qm-meta" id="hm-meta"></div>
+      <h3 class="hm-sec">学習</h3>
+      <div class="hm-row" id="hm-learn"></div>
+      <h3 class="hm-sec">領域へ飛ぶ</h3>
+      <div class="hm-row" id="hm-travel"></div>
+      <h3 class="hm-sec">間違い復習</h3>
+      <div id="hm-review" class="hm-review"></div>
+    </div>
+    <div class="qm-actions">
+      <button type="button" class="ghost" id="hm-close">とじる</button>
+      <button type="button" class="primary" id="hm-panel">詳細パネルを開く</button>
     </div>
   </div>
 </div>
@@ -276,6 +298,69 @@ function playLink(text, no) {
 function closeLessonModal() {
   document.getElementById('quest-overlay').classList.remove('show');
 }
+function closeHubModal() {
+  document.getElementById('hub-overlay').classList.remove('show');
+}
+function openHubModal() {
+  closeLessonModal();
+  if (worldApi && worldApi.returnToHub) worldApi.returnToHub(0);
+  const meta = document.getElementById('hm-meta');
+  meta.innerHTML = '';
+  meta.appendChild(el('span', { class: 'tag cleared' }, '拠点'));
+  meta.appendChild(el('span', { class: 'tag' }, 'Lv ' + (SAVE.level || 1)));
+  meta.appendChild(el('span', { class: 'tag' }, '灯 ' + cleared.size + '/' + lessons.length));
+  meta.appendChild(el('span', { class: 'tag' }, '復習 ' + missed.size + ' 件'));
+  document.getElementById('hm-desc').textContent =
+    'ここは陸地の玄関。FE試験の手引きを学び、空・地下・陸地へ飛び、つまずいた封印を復習できます。';
+
+  const learn = document.getElementById('hm-learn');
+  learn.innerHTML = '';
+  const hubLearn = el('a', {
+    href: 'lesson.html?hub=1',
+    class: 'primary'
+  }, cleared.has(0) ? 'FE手引きを見返す' : 'FE試験の手引きを学ぶ');
+  learn.appendChild(hubLearn);
+  if (next) {
+    const nextBtn = el('button', { type: 'button', class: 'primary' }, '次の推奨 #' + pad(next.no));
+    nextBtn.onclick = () => { closeHubModal(); openLessonModal(next); };
+    learn.appendChild(nextBtn);
+  }
+
+  const travel = document.getElementById('hm-travel');
+  travel.innerHTML = '';
+  [
+    ['sky', '空の諸島へ', 'sky'],
+    ['underground', '地下帝国へ', 'underground'],
+    ['land', '陸地の台地へ', 'land'],
+    ['overview', '全体図', '']
+  ].forEach(pair => {
+    const b = el('button', { type: 'button', class: pair[2] }, pair[1]);
+    b.onclick = () => {
+      closeHubModal();
+      if (!worldApi) return;
+      if (pair[0] === 'overview') worldApi.showOverview();
+      else worldApi.travelToRealm(pair[0]);
+    };
+    travel.appendChild(b);
+  });
+
+  const review = document.getElementById('hm-review');
+  review.innerHTML = '';
+  const missList = lessons.filter(l => missed.has(l.no));
+  if (missList.length === 0) {
+    review.appendChild(el('div', { class: 'stat' }, 'まだ復習候補はありません。未合格になるとここに溜まります。'));
+  } else {
+    missList.slice(0, 10).forEach(l => {
+      const a = el('a', { href: '#' }, '講座 ' + pad(l.no) + '　' + l.title);
+      a.onclick = (ev) => { ev.preventDefault(); closeHubModal(); openLessonModal(l); };
+      review.appendChild(a);
+    });
+    if (missList.length > 10) {
+      review.appendChild(el('div', { class: 'stat' }, 'ほか ' + (missList.length - 10) + ' 件は詳細パネルへ'));
+    }
+  }
+  document.getElementById('hub-overlay').classList.add('show');
+}
 
 async function openLessonModal(noOrLesson) {
   const l = typeof noOrLesson === 'object' ? noOrLesson : lessons.find(x => x.no === noOrLesson);
@@ -321,8 +406,13 @@ document.getElementById('qm-close').onclick = closeLessonModal;
 document.getElementById('quest-overlay').addEventListener('click', (ev) => {
   if (ev.target.id === 'quest-overlay') closeLessonModal();
 });
+document.getElementById('hm-close').onclick = closeHubModal;
+document.getElementById('hm-panel').onclick = () => { closeHubModal(); showHome(); };
+document.getElementById('hub-overlay').addEventListener('click', (ev) => {
+  if (ev.target.id === 'hub-overlay') closeHubModal();
+});
 document.addEventListener('keydown', (ev) => {
-  if (ev.key === 'Escape') closeLessonModal();
+  if (ev.key === 'Escape') { closeLessonModal(); closeHubModal(); }
 });
 function appendTravelerPanel(panel) {
   panel.appendChild(el('h3', null, '旅人'));
@@ -570,7 +660,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-import('./lamp-world.js?v=18').then(mod => {
+import('./lamp-world.js?v=19').then(mod => {
   const mount = mod.mountLampWorld || (window.LampWorld && window.LampWorld.mountLampWorld);
   if (!mount) { console.error('LampWorld mount failed'); return; }
   worldApi = mount(document.getElementById('world'), {
@@ -582,7 +672,7 @@ import('./lamp-world.js?v=18').then(mod => {
     lessonState,
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     onSelectDomain: (d) => showDomain(d),
-    onSelectHub: () => showHome(),
+    onSelectHub: () => openHubModal(),
     onSelectLesson: (l) => { openLessonModal(l); },
     onTravelRealm: (realm) => {
       const labels = { sky: '空の諸島', land: '陸地の台地', underground: '地下の砦' };
@@ -601,7 +691,7 @@ import('./lamp-world.js?v=18').then(mod => {
       if (!btn || !worldApi) return;
       const act = btn.getAttribute('data-nav');
       if (act === 'overview') worldApi.showOverview();
-      else if (act === 'hub') worldApi.returnToHub();
+      else if (act === 'hub') openHubModal();
       else worldApi.travelToRealm(act);
     });
   }

@@ -8,7 +8,7 @@
 
 | URL | 内容 |
 |-----|------|
-| [map.html](./map.html) | 3D 航路・アバター・領域ナビ・迂回 |
+| [map.html](./map.html) | 3D 航路・港モーダル・光の橋・領域ナビ |
 | [lesson.html?hub=1](./lesson.html?hub=1) | 灯台の港 — FE 試験の概要（スライド／プリント／演習） |
 | [lesson.html?no=1](./lesson.html?no=1) | 講座 01 から |
 | [ref.html](./ref.html) | 世界・用語・カリキュラム・称号 |

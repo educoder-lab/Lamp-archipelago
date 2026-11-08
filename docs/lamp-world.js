@@ -444,33 +444,67 @@ function createSkyIsland(node, theme, R, foggy) {
   return { group, deckY };
 }
 
-/** 隣り合う島を結ぶ細い光の橋 */
-function createLightBridge(from, to, lit) {
+/** 隣り合う島を結ぶ光の橋（領域色・芯線つきで視認性を確保） */
+function createLightBridge(from, to, lit, kind) {
+  const palette = {
+    sky: { lit: 0xa8e8ff, dim: 0x4a7090, emissiveLit: 0x7fd1ff, emissiveDim: 0x284868 },
+    underground: { lit: 0xe0c8ff, dim: 0x5a4070, emissiveLit: 0xc59bff, emissiveDim: 0x3a2858 },
+    land: { lit: 0xffe08a, dim: 0x7a6040, emissiveLit: 0xf5c451, emissiveDim: 0x5a4020 },
+    link: { lit: 0xffe0a0, dim: 0x6a5840, emissiveLit: 0xe8c56a, emissiveDim: 0x4a3820 }
+  };
+  const p = palette[kind] || palette.sky;
   const a = from.clone();
   const b = to.clone();
-  // デッキ付近の高さに寄せる
-  a.y += 1.0;
-  b.y += 1.0;
+  a.y += 1.15;
+  b.y += 1.15;
   const dir = new THREE.Vector3().subVectors(b, a);
   const len = Math.max(0.5, dir.length());
   const mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
-  const mesh = new THREE.Mesh(
-    new THREE.CylinderGeometry(lit ? 0.16 : 0.1, lit ? 0.16 : 0.1, len, 10),
+  const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+  const g = new THREE.Group();
+  const radius = lit ? 0.24 : 0.15;
+  const shell = new THREE.Mesh(
+    new THREE.CylinderGeometry(radius, radius, len, 12),
     new THREE.MeshStandardMaterial({
-      color: lit ? 0xe8f6ff : 0x6a90b0,
-      emissive: lit ? 0x7fd1ff : 0x2a4060,
-      emissiveIntensity: lit ? 1.8 : 0.35,
+      color: lit ? p.lit : p.dim,
+      emissive: lit ? p.emissiveLit : p.emissiveDim,
+      emissiveIntensity: lit ? 1.7 : 0.65,
       transparent: true,
-      opacity: lit ? 0.95 : 0.4,
-      metalness: 0.25,
-      roughness: 0.25
+      opacity: lit ? 0.95 : 0.7,
+      metalness: 0.35,
+      roughness: 0.28
     })
   );
-  mesh.position.copy(mid);
-  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
-  mesh.userData.lightBridge = true;
-  mesh.userData.lit = !!lit;
-  return mesh;
+  shell.quaternion.copy(quat);
+  const core = new THREE.Mesh(
+    new THREE.CylinderGeometry(radius * 0.38, radius * 0.38, len * 0.98, 8),
+    new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      emissive: lit ? p.emissiveLit : p.emissiveDim,
+      emissiveIntensity: lit ? 2.5 : 0.85,
+      transparent: true,
+      opacity: lit ? 0.98 : 0.55
+    })
+  );
+  core.quaternion.copy(quat);
+  g.add(shell, core);
+  g.position.copy(mid);
+  g.userData.lightBridge = true;
+  g.userData.lit = !!lit;
+  g.userData.shell = shell;
+  g.userData.core = core;
+  return g;
+}
+
+function addRouteBridges(bridgeGroup, routeNodes, kind) {
+  for (let i = 0; i < routeNodes.length - 1; i++) {
+    const a = routeNodes[i];
+    const b = routeNodes[i + 1];
+    if (!a || !a._pos || !b || !b._pos) continue;
+    const lit = a.state === 'cleared' || a.state === 'current' || b.state === 'current' || a.kind === 'hub';
+    const showLit = !!(lit && b.state !== 'fog');
+    bridgeGroup.add(createLightBridge(a._pos, b._pos, showLit, kind));
+  }
 }
 
 function createFortress(node, theme, R, foggy) {
@@ -700,6 +734,7 @@ function layoutUnderground(list) {
     const z = c.z + (0.5 - row) * 14;
     const y = -22 - row * 8 - col * 1.5; // -20〜-40 帯
     node._pos = new THREE.Vector3(x, y, z);
+    node._routeIndex = i;
   });
   list.filter(n => n.kind !== 'domain').forEach((n, i) => {
     n._pos = new THREE.Vector3(c.x, c.y - 4, c.z + i * 4);
@@ -721,8 +756,12 @@ function layoutLand(list) {
     const x = c.x + (i - (domains.length - 1) / 2) * 24;
     const z = c.z - 4 + (i % 2 === 0 ? 0 : -5);
     node._pos = new THREE.Vector3(x, 0, z);
+    node._routeIndex = i;
   });
-  if (core) core._pos = new THREE.Vector3(c.x + 36, 0, c.z - 8);
+  if (core) {
+    core._pos = new THREE.Vector3(c.x + 36, 0, c.z - 8);
+    core._routeIndex = domains.length;
+  }
   list.forEach(n => {
     if (!n._pos) n._pos = new THREE.Vector3(c.x, 0, c.z);
   });
@@ -899,38 +938,25 @@ export function mountLampWorld(container, opts) {
     n._deckY = mesh.userData.deckY;
   });
 
-  // 空の一本道: 島1→…→島17 を光の橋で接続
+  // 明確な一本道: 港→空ジグザグ→地下→陸地台地→中枢
   {
-    const skyRoute = (byRealm.sky || [])
-      .filter(n => n.kind === 'domain')
-      .sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0));
-    for (let i = 0; i < skyRoute.length - 1; i++) {
-      const a = skyRoute[i];
-      const b = skyRoute[i + 1];
-      if (!a._pos || !b._pos) continue;
-      const lit = a.state === 'cleared' || a.state === 'current' || b.state === 'current';
-      bridgeGroup.add(createLightBridge(a._pos, b._pos, lit && b.state !== 'fog'));
-    }
-  }
-
-  // 港（陸地）→ 空の入口 → 地下 への薄いガイドライン
-  {
+    const sortRoute = (arr) => arr.slice().sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0));
     const hubN = nodes.find(n => n.kind === 'hub');
-    const firstSky = (byRealm.sky || []).filter(n => n.kind === 'domain').sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0))[0];
-    const anchors = [];
-    if (hubN && hubN._pos) anchors.push(hubN._pos.clone());
-    else anchors.push(new THREE.Vector3(REALM.land.x, 0, REALM.land.z + 18));
-    if (firstSky && firstSky._pos) anchors.push(firstSky._pos.clone());
-    else anchors.push(new THREE.Vector3(REALM.sky.x, REALM.sky.y, REALM.sky.z));
-    anchors.push(new THREE.Vector3(REALM.underground.x, REALM.underground.y, REALM.underground.z));
-    const curve = new THREE.CatmullRomCurve3(anchors, false, 'catmullrom', 0.4);
-    const guide = new THREE.Mesh(
-      new THREE.TubeGeometry(curve, 64, 0.08, 6, false),
-      new THREE.MeshStandardMaterial({
-        color: 0xe8c56a, emissive: 0x5a3a10, emissiveIntensity: 0.25, transparent: true, opacity: 0.3, roughness: 0.45, metalness: 0.4
-      })
-    );
-    scene.add(guide);
+    const skyRoute = sortRoute((byRealm.sky || []).filter(n => n.kind === 'domain'));
+    const ugRoute = sortRoute((byRealm.underground || []).filter(n => n.kind === 'domain'));
+    const landRoute = sortRoute((byRealm.land || []).filter(n => n.kind === 'domain'));
+    const coreN = nodes.find(n => n.kind === 'core');
+
+    addRouteBridges(bridgeGroup, skyRoute, 'sky');
+    addRouteBridges(bridgeGroup, ugRoute, 'underground');
+    const landChain = landRoute.slice();
+    if (coreN) landChain.push(coreN);
+    addRouteBridges(bridgeGroup, landChain, 'land');
+
+    // 領域をつなぐ太いリンク（あいまいな曲線ガイドは使わない）
+    if (hubN && skyRoute[0]) addRouteBridges(bridgeGroup, [hubN, skyRoute[0]], 'link');
+    if (skyRoute.length && ugRoute[0]) addRouteBridges(bridgeGroup, [skyRoute[skyRoute.length - 1], ugRoute[0]], 'link');
+    if (ugRoute.length && landRoute[0]) addRouteBridges(bridgeGroup, [ugRoute[ugRoute.length - 1], landRoute[0]], 'link');
   }
 
   // 地下グループ参照（陸地視点では奥の砦を隠して紛れ込みを防ぐ）
@@ -1214,7 +1240,6 @@ export function mountLampWorld(container, opts) {
     }
     setAvatarAt(hubNode._pos, null, hubNode._pos.y + deckHeightAt(hubNode) + 0.05);
     slideToRealm('land', duration == null ? (reduced ? 0 : 650) : duration);
-    if (opts.onSelectHub) opts.onSelectHub();
   }
 
   function clearStages() {
@@ -1386,10 +1411,10 @@ export function mountLampWorld(container, opts) {
       if (opts.onSelectDomain) opts.onSelectDomain(n.d);
       enterIsland(n.d, opts.lessonState);
     } else if (n.kind === 'hub') {
-      returnToHub(reduced ? 0 : 500);
+      returnToHub(reduced ? 0 : 400);
+      if (opts.onSelectHub) opts.onSelectHub();
     } else if (opts.onSelectHub) {
       opts.onSelectHub();
-      showOverview(reduced ? 0 : 500);
     }
   }
 
@@ -1468,9 +1493,15 @@ export function mountLampWorld(container, opts) {
     });
 
     bridgeGroup.children.forEach((br, i) => {
-      if (br.material && br.userData.lit) {
-        br.material.emissiveIntensity = 1.4 + Math.sin(pulseT * 2.5 + i) * 0.35;
+      if (!br.userData.lit) return;
+      const pulse = 1.45 + Math.sin(pulseT * 2.5 + i) * 0.35;
+      if (br.userData.shell && br.userData.shell.material) {
+        br.userData.shell.material.emissiveIntensity = pulse;
       }
+      if (br.userData.core && br.userData.core.material) {
+        br.userData.core.material.emissiveIntensity = pulse + 0.6;
+      }
+      if (br.material) br.material.emissiveIntensity = pulse;
     });
 
     cloudGroup.rotation.y = pulseT * 0.02;
