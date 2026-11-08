@@ -17,7 +17,8 @@
 ### 1 講座の流れ
 
 1. マップで土地を選び **プレイ**（または講座 URL の `?no=番号`）
-2. **用語**を読む → **封印の問い**（四肢択一）に答える
+2. **やさしい解説（図解スライド）**を読む → **封印の問い**（四肢択一）に答える  
+   スライドは、たとえ話・図・クリックできる 2 進数・1 歩ずつ進むトレース・ミニ確認つき。「一覧で読む」や全画面にも切り替えられます
 3. **灯を点ける** で自動採点 → 合格で灯・称号が増える（`localStorage`）
 4. 詰まったら **迂回 ↷**（あとで戻れる）／記録は **JSON エクスポート・インポート**
 
@@ -45,6 +46,9 @@ _tools/            … 講座ビルド・Web JSON 生成
   Manifest-Entries.ps1   正答・問題本文（ソース）
   Build-AllLessons.ps1   README/PROBLEMS/Test-Lesson + docs 再生成
   Test-WebQuests.ps1     採点ハッシュ整合チェック
+  slides/<領域>.json      解説スライドのソース（手書き）
+  Write-Slides.ps1       スライド JSON 生成 → docs/data/slides/
+  Test-Slides.ps1        スライド形式の検証
 sky|underground|land/    講座フォルダ（Markdown + Test-Lesson.ps1）
 ```
 

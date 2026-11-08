@@ -176,6 +176,7 @@ PROBLEMS.md
 - [x] W3 … `ref.html` + `refs.json`（WORLD / GLOSSARY / CURRICULUM / TITLES、表検索）
 - [x] W4 … `Test-WebQuests.ps1` + CI、`HOW-GRADING-WORKS` ブラウザ／PS 分離
 - [x] W5 … PWA（manifest + service worker）、README 一新
+- [x] S … 全 121 講座の解説を初心者向け図解スライドに刷新（`_tools/slides/*.json` → `docs/data/slides/`、[Slides-Schema.md](./_tools/Slides-Schema.md)）
 
 ### Phase 4 — 磨き（継続）
 
