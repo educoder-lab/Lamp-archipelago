@@ -14,20 +14,25 @@
 **講座数・順番**: [CURRICULUM.md](./CURRICULUM.md)（自動生成。README/PROBLEMS からも **ナビ** で次へ進めます）  
 **RPG**: [WORLD.md](./WORLD.md) · [GLOSSARY.md](./GLOSSARY.md) · [TITLES.md](./TITLES.md)
 
-## ワールドマップ（HTML）
+## はじめ方（ブラウザ・W1）
 
-| 開き方 | 説明 |
-|--------|------|
-| **ローカル（おすすめ）** `.\Show-Map.ps1` | `.adventure-save.json` を `docs/save-data.js` に同期してから地図を開きます。**灯・迂回・称号**が反映されます。 |
-| **GitHub Pages** | [map.html](https://educoder-lab.github.io/Lamp-archipelago/map.html)（進捗は載りません。初回は **Settings → Pages → GitHub Actions** を有効化し、Actions のデプロイが成功していること） |
-| ファイル `docs/map.html` | ダブルクリックでも動きます（記録なし）。 |
+ターミナル不要で **GitHub Pages** だけで学習できます。
 
-## はじめ方
+1. [ワールドマップ](https://educoder-lab.github.io/Lamp-archipelago/map.html) を開く  
+2. 土地を選び **プレイ**、または [講座 01](https://educoder-lab.github.io/Lamp-archipelago/lesson.html?no=1) から開始  
+3. 用語を読む → 四肢択一に答える → **灯を点ける** で採点  
+4. 灯・称号はブラウザの **localStorage** に保存（マップに反映）
+
+ローカル clone 後は `docs/map.html` / `docs/lesson.html` を HTTP で開いてください（`file://` では `quests.json` が読めないことがあります）。
+
+スキーマ: [_tools/WebQuest-Schema.md](./_tools/WebQuest-Schema.md)
+
+## はじめ方（PowerShell）
 
 ```powershell
-.\Show-Status.ps1              # 冒険状況・次の cd
-.\Show-Map.ps1                 # ワールドマップ（ブラウザ）を記録つきで開く
-.\Skip-Lesson.ps1              # 詰まったら迂回して先へ（あとで戻れる）
+.\Show-Status.ps1
+.\Show-Map.ps1                 # 地図 ＋ save-data.js 同期
+.\Skip-Lesson.ps1
 cd sky\island-foundation\01-bit
 # README → PROBLEMS → 演習結果\answers.txt
 .\Test-Lesson.ps1

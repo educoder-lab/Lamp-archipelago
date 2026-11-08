@@ -168,6 +168,12 @@ PROBLEMS.md
 - [x] エリア解禁: 地下 #90・陸地 #114 推奨（**ソフトロック**: ナビ・Show-Status の警告のみ）
 - [x] 用語図鑑 `GLOSSARY.md` 自動生成（README の用語表を集約）
 
+### Phase W — ブラウザ完結（並行）
+
+- [x] W0 … `quests.json` + `lesson.html` プロトタイプ + [WebQuest-Schema.md](./_tools/WebQuest-Schema.md)
+- [x] W1 … 全 121 講座 `webReady`、`lamp-save.js`（localStorage ↔ マップ）、マップから `lesson.html` へ
+- [ ] W2 … 迂回 UI、旅人名、セーブ export/import
+
 ### Phase 4 — 磨き（継続）
 
 - [x] HTML マップ（`docs/map.html`。拠点→土地を道でつなぎ推奨順に開く。参考: [WebTerm Learn の冒険マップ](https://learn.webterm.app/ja/adventure)）
@@ -221,6 +227,8 @@ PROBLEMS.md
 | `_tools/LessonFormat.ps1`     | ナビ・テンプレ     |
 | `WORLD.md`                    | 設定集             |
 | `Show-Status.ps1`             | プレイヤー UI      |
+| `_tools/WebQuest-Schema.md`   | ブラウザ用 `quests.json` |
+| `docs/lesson.html` + `lamp-save.js` | Web クエスト（W1: 全講座） |
 
 ---
 

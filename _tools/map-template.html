@@ -78,9 +78,10 @@ ul.lessons a:hover { color: var(--ink); }
 <aside id="panel"></aside>
 
 <script src="save-data.js"></script>
+<script src="lamp-save.js"></script>
 <script>
 const DATA = /*__LAMP_DATA__*/null;
-const SAVE = Object.assign({ displayName: '旅人', clearedNos: [], skippedNos: [], titles: [], updatedAt: null }, window.LAMP_SAVE || {});
+const SAVE = LampSave.loadMerged();
 const cleared = new Set(SAVE.clearedNos || []);
 const skipped = new Set((SAVE.skippedNos || []).filter(n => !cleared.has(n)));
 const lessons = DATA.lessons;
@@ -246,19 +247,18 @@ document.getElementById('h-lamps').textContent = cleared.size + ' / ' + lessons.
 document.getElementById('h-bar').style.width = (lessons.length ? cleared.size / lessons.length * 100 : 0) + '%';
 document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
 const syncEl = document.getElementById('h-sync');
-if (window.LAMP_SAVE) {
-  syncEl.textContent = '記録: ' + (SAVE.updatedAt ? new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '読み込み済');
-} else if (ON_HOSTED_SITE) {
-  syncEl.textContent = 'ブラウザ表示のみ（進捗はローカルで .\\Show-Map.ps1）';
-} else {
-  syncEl.textContent = '記録なし（.\\Show-Map.ps1 で同期）';
-}
+syncEl.textContent = LampSave.saveSourceLabel(SAVE) + (SAVE.updatedAt ? ' · ' + new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '');
 
 // ---- side panel -----------------------------------------------------------
 const panel = document.getElementById('panel');
+function lessonPlayHref(no) { return 'lesson.html?no=' + no; }
 function lessonCmd(l) {
   const root = SAVE.repoRoot ? 'cd "' + SAVE.repoRoot + '"\n' : '';
   return root + 'cd ' + l.path.replace(/\//g, '\\') + '\n.\\Test-Lesson.ps1';
+}
+function playLink(text, no) {
+  const a = el('a', { href: lessonPlayHref(no), class: 'play-btn', style: 'display:inline-block;margin:8px 0;padding:10px 16px;background:#1b4a6b;border:1px solid var(--open);border-radius:8px;color:var(--ink);text-decoration:none;font-weight:600' }, text);
+  return a;
 }
 
 function showHome() {
@@ -270,6 +270,8 @@ function showHome() {
     panel.appendChild(el('div', null, '講座 ' + pad(next.no) + '　' + next.title));
     const dom = domains.find(d => d.id === next.domain);
     if (dom) panel.appendChild(el('div', { class: 'stat' }, dom.title + ' ／ ' + dom.npc));
+    panel.appendChild(playLink('ブラウザで挑戦する →', next.no));
+    panel.appendChild(el('h3', null, 'ローカル（PowerShell）'));
     panel.appendChild(cmdBox(lessonCmd(next)));
   } else {
     panel.appendChild(el('div', null, 'すべての灯が揃いました。諸島の中枢が目を覚まします。'));
@@ -290,7 +292,10 @@ function showHome() {
   lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧の中（推奨順の先。入ることはできます）</div><div>✓ クリア　↷ 迂回中　▶ 次の推奨</div>';
   panel.appendChild(lg);
   panel.appendChild(el('h3', null, '操作'));
-  panel.appendChild(cmdBox('.\\Show-Map.ps1        # 記録を同期して開く'));
+  panel.appendChild(el('div', { class: 'stat' }, 'ブラウザの進捗はこの端末の localStorage に保存されます。'));
+  panel.appendChild(el('a', { href: 'lesson.html?no=' + (next ? next.no : 1), style: 'color:var(--open)' }, 'クエスト画面を開く'));
+  panel.appendChild(el('h3', null, 'ローカル（PowerShell）'));
+  panel.appendChild(cmdBox('.\\Show-Map.ps1        # 記録を save-data.js に同期'));
   panel.appendChild(cmdBox('.\\Skip-Lesson.ps1     # 詰まったら迂回して先へ'));
 }
 
@@ -301,8 +306,8 @@ function lessonRow(l) {
   const name = el('span', null, pad(l.no) + '　' + l.title);
   li.appendChild(name);
   const links = el('span');
-  links.appendChild(el('a', { href: repoLessonHref(l.path, 'README.md'), target: '_blank' }, '用語'));
-  links.appendChild(el('a', { href: repoLessonHref(l.path, 'PROBLEMS.md'), target: '_blank' }, '問題'));
+  links.appendChild(el('a', { href: lessonPlayHref(l.no), style: 'color:var(--open);font-weight:600' }, 'プレイ'));
+  links.appendChild(el('a', { href: repoLessonHref(l.path, 'PROBLEMS.md'), target: '_blank', rel: 'noopener' }, 'MD'));
   li.appendChild(links);
   return li;
 }
@@ -334,6 +339,7 @@ function showDomain(d) {
   const target = d.lessons.find(l => !cleared.has(l.no) && !skipped.has(l.no)) || d.lessons[0];
   if (target) {
     panel.appendChild(el('h3', null, 'ここから始める'));
+    panel.appendChild(playLink('講座 ' + pad(target.no) + ' をプレイ', target.no));
     panel.appendChild(cmdBox(lessonCmd(target)));
   }
   panel.appendChild(el('h3', null, '島・砦の案内'));

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ランプ諸島 — クエスト</title>
+<style>
+:root {
+  --bg: #0f1226; --panel: #171b36; --panel2: #1f2447; --ink: #ece9f5; --muted: #9aa0c4;
+  --gold: #f5c451; --open: #7fd1ff; --ok: #6fdc8c; --ng: #f08080;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100%;
+  font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", "Meiryo", sans-serif;
+  background: var(--bg); color: var(--ink);
+}
+a { color: var(--open); }
+header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  padding: 12px 20px; background: var(--panel); border-bottom: 1px solid #2a2f58;
+}
+header h1 { font-size: 17px; margin: 0; }
+.tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--panel2); color: var(--muted); }
+.tag.proto { color: #1a1300; background: var(--gold); }
+main { max-width: 720px; margin: 0 auto; padding: 20px; }
+section { background: var(--panel); border: 1px solid #2a2f58; border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
+section h2 { font-size: 15px; margin: 0 0 10px; color: var(--muted); letter-spacing: .06em; }
+.readme { font-size: 14px; line-height: 1.65; }
+.readme h3 { font-size: 15px; margin: 16px 0 8px; color: var(--ink); }
+.readme table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+.readme th, .readme td { border: 1px solid #343a6b; padding: 6px 8px; text-align: left; }
+.readme th { background: var(--panel2); }
+.quote { border-left: 3px solid var(--open); padding: 8px 12px; margin: 0 0 12px; background: #141836; color: #cfd6f3; font-size: 14px; }
+.q { margin: 14px 0 18px; }
+.q legend { font-weight: 600; margin-bottom: 8px; }
+.choice { display: block; margin: 6px 0; padding: 8px 10px; border-radius: 8px; border: 1px solid #343a6b; cursor: pointer; }
+.choice:hover { border-color: var(--open); background: #1a2038; }
+.choice input { margin-right: 8px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+button, .btn {
+  font: inherit; cursor: pointer; border-radius: 8px; padding: 10px 16px;
+  border: 1px solid #343a6b; background: var(--panel2); color: var(--ink);
+}
+button.primary { background: #1b4a6b; border-color: var(--open); }
+button:disabled { opacity: .5; cursor: default; }
+.msg { padding: 10px 12px; border-radius: 8px; font-size: 14px; margin-top: 10px; }
+.msg.ok { background: #12301f; border: 1px solid var(--ok); color: #b8f0c8; }
+.msg.ng { background: #301818; border: 1px solid var(--ng); color: #f0c0c0; }
+.msg.info { background: #2a2210; border: 1px solid var(--gold); color: #f0d6a0; }
+.navlinks { font-size: 13px; color: var(--muted); margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+#load-err { color: var(--ng); }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="h-title">ランプ諸島 — クエスト</h1>
+  <span class="tag proto">Web（W1）</span>
+  <span class="tag" id="h-course"></span>
+  <a href="map.html">ワールドマップ</a>
+</header>
+<main id="app">
+  <p id="load-err" hidden></p>
+</main>
+<script src="save-data.js"></script>
+<script src="lamp-save.js"></script>
+<script>
+function loadSave() { return LampSave.loadMerged(); }
+
+async function sha256Hex(text) {
+  const data = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function answerHashFromForm(questions, form) {
+  const lines = questions.map(q => {
+    const picked = form.querySelector('input[name="q' + q.no + '"]:checked');
+    const letter = picked ? picked.value : '';
+    return q.no + ':' + letter;
+  }).filter(l => /^\d+:[A-D]$/.test(l));
+  const norm = lines.join('\n');
+  return sha256Hex(norm);
+}
+
+function renderMarkdownSimple(md) {
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const blocks = md.split(/\n\n+/);
+  const html = [];
+  for (const block of blocks) {
+    const t = block.trim();
+    if (!t) continue;
+    if (t.startsWith('## ')) {
+      html.push('<h3>' + esc(t.slice(3)) + '</h3>');
+    } else if (t.includes('|') && t.includes('---')) {
+      const rows = t.split('\n').filter(r => r.trim());
+      const head = rows[0].split('|').map(c => c.trim()).filter(Boolean);
+      const body = rows.slice(2);
+      html.push('<table><thead><tr>' + head.map(h => '<th>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>');
+      for (const row of body) {
+        const cells = row.split('|').map(c => c.trim()).filter(Boolean);
+        html.push('<tr>' + cells.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>');
+      }
+      html.push('</tbody></table>');
+    } else {
+      html.push('<p>' + esc(t).replace(/\n/g, '<br>') + '</p>');
+    }
+  }
+  return html.join('\n');
+}
+
+function padNo(n) { return n < 10 ? '0' + n : String(n); }
+
+function showNotReady(lesson, quests) {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  document.getElementById('h-title').textContent = lesson.title;
+  document.getElementById('h-course').textContent = '講座 ' + padNo(lesson.courseNo);
+  const sec = el('section');
+  sec.innerHTML = '<h2>ブラウザ未対応</h2><p>問題のパースに失敗したか、問数が一致しません（<code>webReady: false</code>）。GitHub の PROBLEMS か PowerShell で学習してください。</p>';
+  const links = el('div', { class: 'navlinks' });
+  links.appendChild(el('a', { href: 'lesson.html?no=1' }, '講座 01 へ'));
+  links.appendChild(el('a', { href: 'map.html' }, 'マップ'));
+  if (quests.lessons[0]) {
+    const gh = 'https://github.com/educoder-lab/Lamp-archipelago/blob/main/' + lesson.path + '/PROBLEMS.md';
+    links.appendChild(el('a', { href: gh, target: '_blank', rel: 'noopener' }, 'GitHub で問題'));
+  }
+  app.appendChild(sec);
+  app.appendChild(links);
+}
+
+function el(tag, attrs, text) {
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) {
+    if (k === 'class') e.className = attrs[k];
+    else if (k === 'html') e.innerHTML = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  }
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+function renderLesson(lesson, quests) {
+  const save = loadSave();
+  const already = save.clearedNos.includes(lesson.courseNo);
+  document.getElementById('h-title').textContent = lesson.title;
+  document.getElementById('h-course').textContent = lesson.domainTitle + ' · #' + padNo(lesson.courseNo);
+
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const readSec = el('section');
+  readSec.appendChild(el('h2', null, '用語（README）'));
+  const readDiv = el('div', { class: 'readme', html: renderMarkdownSimple(lesson.readmeMarkdown || '') });
+  readSec.appendChild(readDiv);
+  app.appendChild(readSec);
+
+  const probSec = el('section');
+  probSec.appendChild(el('h2', null, '封印の問い'));
+  if (lesson.request) {
+    probSec.appendChild(el('div', { class: 'quote' }, lesson.request));
+  }
+  const form = el('form');
+  form.id = 'answer-form';
+  for (const q of lesson.questions) {
+    const field = el('fieldset', { class: 'q' });
+    field.appendChild(el('legend', null, q.no + '. ' + q.stem));
+    for (const c of q.choices) {
+      const id = 'q' + q.no + '_' + c.id;
+      const label = el('label', { class: 'choice', for: id });
+      const inp = el('input', { type: 'radio', name: 'q' + q.no, value: c.id, id });
+      label.appendChild(inp);
+      label.appendChild(document.createTextNode(c.id + '. ' + c.text));
+      field.appendChild(label);
+    }
+    form.appendChild(field);
+  }
+  const msg = el('div', { id: 'grade-msg', class: 'msg', style: 'display:none' });
+  const actions = el('div', { class: 'actions' });
+  const submit = el('button', { type: 'submit', class: 'primary' }, already ? 'もう一度採点' : '灯を点ける（採点）');
+  actions.appendChild(submit);
+  form.appendChild(actions);
+  form.appendChild(msg);
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    msg.style.display = 'block';
+    for (const q of lesson.questions) {
+      if (!form.querySelector('input[name="q' + q.no + '"]:checked')) {
+        msg.className = 'msg ng';
+        msg.textContent = 'すべての問に答えてください。';
+        return;
+      }
+    }
+    const hash = await answerHashFromForm(lesson.questions, form);
+    if (hash === lesson.answerHash) {
+      LampSave.registerClear(LampSave.loadLocal(), lesson);
+      msg.className = 'msg ok';
+      let t = '合格。次の講座へ進めます。';
+      if (lesson.clearLine) t += '\n\n' + lesson.clearLine;
+      if (lesson.titleAwards && lesson.titleAwards.length) {
+        t += '\n\n称号: ' + lesson.titleAwards.join('、');
+      }
+      msg.textContent = t;
+      msg.style.whiteSpace = 'pre-wrap';
+    } else {
+      msg.className = 'msg ng';
+      msg.textContent = '未合格。' + (lesson.hint ? 'ヒント: ' + lesson.hint : '用語を読み直してみてください。');
+    }
+  });
+  probSec.appendChild(form);
+  app.appendChild(probSec);
+
+  const nav = el('div', { class: 'navlinks' });
+  nav.appendChild(el('a', { href: 'map.html' }, 'ワールドマップ'));
+  if (lesson.nav && lesson.nav.prevCourseNo) {
+    nav.appendChild(el('a', { href: 'lesson.html?no=' + lesson.nav.prevCourseNo }, '← #' + padNo(lesson.nav.prevCourseNo)));
+  }
+  if (lesson.nav && lesson.nav.nextCourseNo) {
+    nav.appendChild(el('a', { href: 'lesson.html?no=' + lesson.nav.nextCourseNo }, '次の講座 #' + padNo(lesson.nav.nextCourseNo) + ' →'));
+  }
+  nav.appendChild(el('span', null, '灯 ' + LampSave.loadMerged().clearedNos.length + ' / ' + quests.lessonCount));
+  app.appendChild(nav);
+}
+
+async function main() {
+  const params = new URLSearchParams(location.search);
+  let no = parseInt(params.get('no') || '1', 10);
+  if (!Number.isFinite(no) || no < 1) no = 1;
+  let quests;
+  try {
+    const res = await fetch('data/quests.json');
+    if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+    quests = await res.json();
+  } catch (e) {
+    const err = document.getElementById('load-err');
+    err.hidden = false;
+    err.textContent = 'quests.json を読めませんでした。Build-AllLessons 後に docs/data/quests.json があるか、HTTP で開いているか確認してください。（' + e.message + '）';
+    return;
+  }
+  const lesson = quests.lessons.find(l => l.courseNo === no);
+  if (!lesson) {
+    document.getElementById('load-err').hidden = false;
+    document.getElementById('load-err').textContent = '講座 #' + no + ' は見つかりません。';
+    return;
+  }
+  if (!lesson.webReady) {
+    showNotReady(lesson, quests);
+    return;
+  }
+  renderLesson(lesson, quests);
+}
+main();
+</script>
+</body>
+</html>
