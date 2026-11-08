@@ -9,7 +9,7 @@
 
 | 入口 | URL |
 |------|-----|
-| **ワールドマップ** | https://educoder-lab.github.io/Lamp-archipelago/map.html |
+| **ワールドマップ（3D航路）** | https://educoder-lab.github.io/Lamp-archipelago/map.html |
 | **講座 01 から** | https://educoder-lab.github.io/Lamp-archipelago/lesson.html?no=1 |
 | **全講座一覧** | https://educoder-lab.github.io/Lamp-archipelago/ref.html?p=curriculum |
 | **用語図鑑** | https://educoder-lab.github.io/Lamp-archipelago/ref.html?p=glossary |
@@ -19,7 +19,7 @@
 1. マップで土地を選び **プレイ**（または講座 URL の `?no=番号`）
 2. **やさしい解説（図解スライド）**を読む → **封印の問い**（四肢択一）に答える  
    スライドは高校生でも追える密度で、たとえ話・**具体例（数・式）**・▶再生の流れ・クリックできる 2 進数・トレース・ミニ確認つき。「一覧で読む」や全画面にも切り替えられます
-3. **灯を点ける** で自動採点 → 合格で灯・称号が増える（この端末の `localStorage`）
+3. **灯を点ける** で自動採点 → 合格で灯・XP・称号が増え、マップ上のアバターが **次のステージ／島へ自動移動**（島クリアでレベルアップ演出）
 4. （任意）マップの **Google でログイン** → 進捗がクラウドにも残り、別の端末でも続きから学べます
 5. 詰まったら **迂回 ↷**（あとで戻れる）／記録は **JSON エクスポート・インポート**も可
 

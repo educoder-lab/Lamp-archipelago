@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#171b36">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="lamp-world.css">
 <title>Lumina Code — ワールドマップ</title>
 <style>
 :root {
@@ -21,7 +22,7 @@ body {
   display: grid; grid-template-rows: auto 1fr; grid-template-columns: 1fr 400px;
 }
 header {
-  grid-column: 1 / -1; display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  grid-column: 1 / -1; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
   padding: 12px 20px; background: var(--panel); border-bottom: 1px solid #2a2f58;
 }
 header h1 { font-size: 18px; margin: 0; letter-spacing: .05em; }
@@ -31,8 +32,7 @@ header h1 { font-size: 18px; margin: 0; letter-spacing: .05em; }
 .stat b { color: var(--ink); font-size: 15px; }
 .bar { width: 120px; height: 6px; background: #2a2f58; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 6px; }
 .bar i { display: block; height: 100%; background: var(--gold); }
-main { overflow: auto; position: relative; }
-svg { display: block; margin: 0 auto; width: 100%; height: auto; min-width: 640px; }
+main { overflow: hidden; position: relative; min-height: 0; }
 aside { background: var(--panel); border-left: 1px solid #2a2f58; overflow-y: auto; padding: 18px 20px 40px; }
 aside h2 { font-size: 18px; margin: 4px 0 6px; }
 aside h3 { font-size: 13px; color: var(--muted); margin: 18px 0 8px; font-weight: 600; letter-spacing: .08em; }
@@ -65,12 +65,8 @@ ul.lessons a:hover { color: var(--ink); }
 .back { background: none; border: none; color: var(--open); padding: 0; font-size: 13px; }
 .legend { font-size: 12px; color: var(--muted); line-height: 1.9; }
 .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-.node { cursor: pointer; }
-.node:hover .ring { stroke-width: 4; }
-.node.current .halo { animation: pulse 1.8s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity: .15; } 50% { opacity: .5; } }
 @media (max-width: 900px) {
-  body { grid-template-columns: 1fr; grid-template-rows: auto 55vh 1fr; }
+  body { grid-template-columns: 1fr; grid-template-rows: auto 48vh 1fr; }
   aside { border-left: none; border-top: 1px solid #2a2f58; }
 }
 </style>
@@ -79,6 +75,7 @@ ul.lessons a:hover { color: var(--ink); }
 <header>
   <h1>Lumina Code — ワールドマップ</h1>
   <span class="stat">旅人 <b id="h-name"></b></span>
+  <span class="stat">Lv <b id="h-level">1</b><span class="xp-bar"><i id="h-xp"></i></span></span>
   <span class="stat">灯 <b id="h-lamps"></b><span class="bar"><i id="h-bar"></i></span></span>
   <span class="stat">称号 <b id="h-titles"></b></span>
   <span class="stat" id="h-sync"></span>
@@ -90,8 +87,21 @@ ul.lessons a:hover { color: var(--ink); }
     <a href="ref.html?p=titles">称号</a>
   </span>
 </header>
-<main><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></main>
+<main>
+  <div class="world-wrap" id="world">
+    <button type="button" class="world-back-btn" id="world-back">← 航路へ戻る</button>
+    <div class="world-hint">島をクリック · ホイールでズーム · クリア後はアバターが自動で進みます</div>
+  </div>
+</main>
 <aside id="panel"></aside>
+<div class="lv-overlay" id="lv-overlay" role="dialog" aria-modal="true" aria-labelledby="lv-title">
+  <div class="lv-card">
+    <div class="lv-emoji">✦</div>
+    <h2 id="lv-title">レベルアップ！</h2>
+    <p class="lv-sub" id="lv-sub"></p>
+    <button type="button" id="lv-ok">つづける</button>
+  </div>
+</div>
 
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -102,23 +112,17 @@ ul.lessons a:hover { color: var(--ink); }
 <script>
 const DATA = /*__LAMP_DATA__*/null;
 const SAVE = LampSave.loadMerged();
+LampSave.syncLevel(SAVE);
 const cleared = new Set(SAVE.clearedNos || []);
 const skipped = new Set((SAVE.skippedNos || []).filter(n => !cleared.has(n)));
 const lessons = DATA.lessons;
 const next = lessons.find(l => !cleared.has(l.no) && !skipped.has(l.no)) || null;
-const SVGNS = 'http://www.w3.org/2000/svg';
 
 function el(tag, attrs, text) {
   const e = document.createElement(tag);
   for (const k in (attrs || {})) {
     if (k === 'class') e.className = attrs[k]; else e.setAttribute(k, attrs[k]);
   }
-  if (text != null) e.textContent = text;
-  return e;
-}
-function sv(tag, attrs, text) {
-  const e = document.createElementNS(SVGNS, tag);
-  for (const k in (attrs || {})) e.setAttribute(k, attrs[k]);
   if (text != null) e.textContent = text;
   return e;
 }
@@ -146,12 +150,6 @@ function repoLessonHref(path, file) {
   }
   return '../' + path + '/' + file;
 }
-function repoRootHref(file) {
-  if (ON_HOSTED_SITE && DATA.githubRepo) {
-    return 'https://github.com/' + DATA.githubRepo + '/blob/main/' + file;
-  }
-  return '../' + file;
-}
 
 function cmdBox(text) {
   const box = el('div', { class: 'cmd' });
@@ -162,7 +160,6 @@ function cmdBox(text) {
   return box;
 }
 
-// ---- domain states --------------------------------------------------------
 const domains = DATA.domains.map(d => {
   const ls = lessons.filter(l => l.domain === d.id);
   const done = ls.filter(l => cleared.has(l.no)).length;
@@ -176,10 +173,7 @@ domains.forEach((d, i) => {
   else d.state = 'fog';
 });
 
-// ---- layout (serpentine road: hub -> lands -> core) -----------------------
 const COLS = 6, DX = 175, DY = 150, MX = 110, BAND_GAP = 46;
-const realmLabels = { sky: '空 — 雲上の諸島（午前）', underground: '地下帝国（午後）', land: '陸地 — 大陸の台地（模試）' };
-const realmColors = { sky: 'var(--sky)', underground: 'var(--ug)', land: 'var(--land)' };
 const allDone = lessons.length > 0 && lessons.every(l => cleared.has(l.no));
 
 const nodes = [];
@@ -189,11 +183,9 @@ nodes.push({ kind: 'core', realm: 'land', label: '諸島の中枢', sub: allDone
 
 const realmOrder = ['sky', 'underground', 'land'];
 let rowIndex = 0, y = 70;
-const bands = [];
 realmOrder.forEach(realm => {
   const rs = nodes.filter(n => n.realm === realm);
   const rows = Math.ceil(rs.length / COLS);
-  const top = y - 62;
   for (let r = 0; r < rows; r++) {
     const chunk = rs.slice(r * COLS, (r + 1) * COLS);
     const ltr = rowIndex % 2 === 0;
@@ -204,65 +196,13 @@ realmOrder.forEach(realm => {
     rowIndex++;
     y += DY;
   }
-  bands.push({ realm, top, bottom: y - DY + 92 });
   y += BAND_GAP;
 });
-const W = MX * 2 + (COLS - 1) * DX, H = y - BAND_GAP + 10;
+const layoutW = MX * 2 + (COLS - 1) * DX, layoutH = y - BAND_GAP + 10;
 
-// ---- render map -----------------------------------------------------------
-const svg = document.getElementById('map');
-svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-svg.style.maxWidth = W + 'px';
-
-const defs = sv('defs');
-defs.innerHTML = '<radialGradient id="glow"><stop offset="0%" stop-color="#f5c451" stop-opacity=".9"/><stop offset="100%" stop-color="#f5c451" stop-opacity="0"/></radialGradient>';
-svg.appendChild(defs);
-
-bands.forEach(b => {
-  svg.appendChild(sv('rect', { x: 14, y: b.top, width: W - 28, height: b.bottom - b.top, rx: 18, fill: realmColors[b.realm], opacity: .55 }));
-  svg.appendChild(sv('text', { x: 34, y: b.top + 24, fill: '#c9cdef', 'font-size': 14, 'font-weight': 600 }, realmLabels[b.realm]));
-});
-
-for (let i = 0; i < nodes.length - 1; i++) {
-  const a = nodes[i], b = nodes[i + 1];
-  const reached = b.state !== 'fog';
-  let d;
-  if (a.y === b.y) d = 'M' + a.x + ' ' + a.y + ' L' + b.x + ' ' + b.y;
-  else {
-    const mid = (a.y + b.y) / 2;
-    d = 'M' + a.x + ' ' + a.y + ' C' + a.x + ' ' + mid + ' ' + b.x + ' ' + mid + ' ' + b.x + ' ' + b.y;
-  }
-  svg.appendChild(sv('path', {
-    d, fill: 'none', stroke: reached ? '#c9a24a' : '#3a3f62', 'stroke-width': reached ? 5 : 3,
-    'stroke-dasharray': reached ? '' : '6 8', 'stroke-linecap': 'round', opacity: reached ? .85 : .7
-  }));
-}
-
-const fills = { cleared: '#f5c451', current: '#1b4a6b', open: '#262c55', fog: '#22264a' };
-const strokes = { cleared: '#ffe7a3', current: '#7fd1ff', open: '#7fa6d8', fog: '#3a3f62' };
-nodes.forEach(n => {
-  const g = sv('g', { class: 'node ' + n.state, transform: 'translate(' + n.x + ',' + n.y + ')' });
-  const r = n.kind === 'domain' ? 34 : 40;
-  if (n.state === 'current') g.appendChild(sv('circle', { class: 'halo', r: r + 18, fill: '#7fd1ff' }));
-  if (n.state === 'cleared') g.appendChild(sv('circle', { r: r + 16, fill: 'url(#glow)', opacity: .45 }));
-  g.appendChild(sv('circle', { class: 'ring', r, fill: fills[n.state], stroke: strokes[n.state], 'stroke-width': 2.5, opacity: n.state === 'fog' ? .7 : 1 }));
-  if (n.kind === 'domain' && n.d.total > 0 && n.state !== 'cleared') {
-    const C = 2 * Math.PI * (r - 6);
-    const f = n.d.done / n.d.total;
-    if (f > 0) g.appendChild(sv('circle', { r: r - 6, fill: 'none', stroke: '#f5c451', 'stroke-width': 4, 'stroke-dasharray': (C * f) + ' ' + C, transform: 'rotate(-90)' }));
-  }
-  const icon = n.kind === 'hub' ? '⚓' : n.kind === 'core' ? '✦' : n.state === 'cleared' ? '★' : n.state === 'fog' ? '?' : String(n.d.lessons[0] ? pad(n.d.lessons[0].no) : '');
-  g.appendChild(sv('text', { 'text-anchor': 'middle', y: 6, 'font-size': n.kind === 'domain' && n.state !== 'cleared' && n.state !== 'fog' ? 15 : 20, fill: n.state === 'cleared' ? '#2a1d00' : '#dfe4ff', 'font-weight': 700 }, icon));
-  const label = n.state === 'fog' && n.kind === 'domain' ? '霧の中' : n.label;
-  g.appendChild(sv('text', { 'text-anchor': 'middle', y: r + 20, 'font-size': 13, fill: n.state === 'fog' ? '#7a80a8' : '#ece9f5', 'font-weight': 600 }, label));
-  g.appendChild(sv('text', { 'text-anchor': 'middle', y: r + 36, 'font-size': 11, fill: '#9aa0c4' }, n.sub));
-  g.appendChild(sv('title', null, n.label));
-  g.addEventListener('click', () => n.kind === 'domain' ? showDomain(n.d) : showHome());
-  svg.appendChild(g);
-});
-
-// ---- header ---------------------------------------------------------------
 document.getElementById('h-name').textContent = SAVE.displayName;
+document.getElementById('h-level').textContent = String(SAVE.level || 1);
+document.getElementById('h-xp').style.width = (LampSave.xpProgress(SAVE) * 100) + '%';
 document.getElementById('h-lamps').textContent = cleared.size + ' / ' + lessons.length;
 document.getElementById('h-bar').style.width = (lessons.length ? cleared.size / lessons.length * 100 : 0) + '%';
 document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
@@ -273,16 +213,17 @@ if (window.LampCloud) {
   LampCloud.mountAuthControls(document.getElementById('h-auth'), { btnClass: 'panel-btn', showDisabledHint: false });
 }
 
-// ---- side panel -----------------------------------------------------------
 const panel = document.getElementById('panel');
+const backBtn = document.getElementById('world-back');
+let worldApi = null;
+
 function lessonPlayHref(no) { return 'lesson.html?no=' + no; }
 function lessonCmd(l) {
   const root = SAVE.repoRoot ? 'cd "' + SAVE.repoRoot + '"\n' : '';
   return root + 'cd ' + l.path.replace(/\//g, '\\') + '\n.\\Test-Lesson.ps1';
 }
 function playLink(text, no) {
-  const a = el('a', { href: lessonPlayHref(no), class: 'play-btn', style: 'display:inline-block;margin:8px 0;padding:10px 16px;background:#1b4a6b;border:1px solid var(--open);border-radius:8px;color:var(--ink);text-decoration:none;font-weight:600' }, text);
-  return a;
+  return el('a', { href: lessonPlayHref(no), class: 'play-btn', style: 'display:inline-block;margin:8px 0;padding:10px 16px;background:#1b4a6b;border:1px solid var(--open);border-radius:8px;color:var(--ink);text-decoration:none;font-weight:600' }, text);
 }
 function appendTravelerPanel(panel) {
   panel.appendChild(el('h3', null, '旅人'));
@@ -339,6 +280,8 @@ function appendSaveTools(panel) {
 }
 
 function showHome() {
+  backBtn.classList.remove('visible');
+  if (worldApi && worldApi.getMode() === 'island') worldApi.exitIsland();
   panel.innerHTML = '';
   panel.appendChild(el('h2', null, '冒険の拠点'));
   panel.appendChild(el('div', { class: 'quote' }, DATA.prologue));
@@ -353,7 +296,8 @@ function showHome() {
       skipBtn.onclick = () => {
         if (confirm('講座 ' + pad(next.no) + ' を迂回します。あとで一覧から戻れます。')) {
           LampSave.registerSkip(LampSave.loadLocal(), next.no);
-          location.reload();
+          const to = lessons.find(l => l.no > next.no && !cleared.has(l.no) && !skipped.has(l.no) && l.no !== next.no);
+          location.href = 'map.html?arrive=1&from=' + next.no + (to ? '&to=' + to.no : '') + '&skip=1';
         }
       };
       panel.appendChild(skipBtn);
@@ -376,24 +320,20 @@ function showHome() {
   panel.appendChild(t);
   panel.appendChild(el('h3', null, '凡例'));
   const lg = el('div', { class: 'legend' });
-  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧の中（推奨順の先。入ることはできます）</div><div>✓ クリア　↷ 迂回中　▶ 次の推奨</div>';
+  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧の中</div><div>3D航路 · 島クリックでステージ台</div>';
   panel.appendChild(lg);
   appendTravelerPanel(panel);
   appendSaveTools(panel);
   panel.appendChild(el('h3', null, '操作'));
-  panel.appendChild(el('div', { class: 'stat' }, 'ブラウザの進捗はこの端末の localStorage に保存されます。ログイン中は Supabase にも同期します。'));
+  panel.appendChild(el('div', { class: 'stat' }, '進捗は localStorage（ログイン中は Supabase 同期）。アバターはクリア／迂回で次の島へ進みます。'));
   panel.appendChild(el('a', { href: 'lesson.html?no=' + (next ? next.no : 1), style: 'color:var(--open)' }, 'クエスト画面を開く'));
-  panel.appendChild(el('h3', null, 'ローカル（PowerShell）'));
-  panel.appendChild(cmdBox('.\\Show-Map.ps1        # 記録を save-data.js に同期'));
-  panel.appendChild(cmdBox('.\\Skip-Lesson.ps1     # 詰まったら迂回して先へ'));
 }
 
 function lessonRow(l) {
   const st = lessonState(l);
   const li = el('li', { class: st === 'next' ? 'next' : '' });
   li.appendChild(el('span', { class: 'mark ' + st }, { cleared: '✓', skipped: '↷', next: '▶', todo: '・' }[st]));
-  const name = el('span', null, pad(l.no) + '　' + l.title);
-  li.appendChild(name);
+  li.appendChild(el('span', null, pad(l.no) + '　' + l.title));
   const links = el('span');
   links.appendChild(el('a', { href: lessonPlayHref(l.no), style: 'color:var(--open);font-weight:600' }, 'プレイ'));
   links.appendChild(el('a', { href: repoLessonHref(l.path, 'PROBLEMS.md'), target: '_blank', rel: 'noopener' }, 'MD'));
@@ -411,6 +351,7 @@ function lessonRow(l) {
 }
 
 function showDomain(d) {
+  backBtn.classList.add('visible');
   panel.innerHTML = '';
   const back = el('button', { class: 'back' }, '← 拠点へ');
   back.onclick = showHome;
@@ -430,7 +371,7 @@ function showDomain(d) {
     panel.appendChild(el('h3', null, '完走の称号'));
     const t = el('div', { class: 'titles' }); t.appendChild(el('span', null, d.award)); panel.appendChild(t);
   }
-  panel.appendChild(el('h3', null, '講座'));
+  panel.appendChild(el('h3', null, '講座（島のステージ）'));
   const ul = el('ul', { class: 'lessons' });
   d.lessons.forEach(l => ul.appendChild(lessonRow(l)));
   panel.appendChild(ul);
@@ -440,19 +381,75 @@ function showDomain(d) {
     panel.appendChild(playLink('講座 ' + pad(target.no) + ' をプレイ', target.no));
     panel.appendChild(cmdBox(lessonCmd(target)));
   }
-  panel.appendChild(el('h3', null, '島・砦の案内'));
-  const a = el('a', { href: repoLessonHref(d.realm + '/' + d.id, 'README.md'), target: '_blank', style: 'color:var(--open)' }, d.title + ' の README');
-  panel.appendChild(a);
+  if (worldApi) worldApi.enterIsland(d, lessonState);
 }
 
-showHome();
-if (next) {
-  const cur = nodes.find(n => n.kind === 'domain' && n.d.id === next.domain);
-  if (cur) {
-    const scale = svg.getBoundingClientRect().width / W;
-    document.querySelector('main').scrollTop = Math.max(0, cur.y * scale - 200);
-  }
+function showLevelUp(level, titles) {
+  const ov = document.getElementById('lv-overlay');
+  const sub = document.getElementById('lv-sub');
+  document.getElementById('lv-title').textContent = 'レベル ' + level + ' に到達！';
+  let msg = '島の灯が強まり、旅人の経験が深まりました。';
+  if (titles && titles.length) msg += '\n称号: ' + titles.join('、');
+  sub.textContent = msg;
+  ov.classList.add('show');
+  document.getElementById('lv-ok').onclick = () => ov.classList.remove('show');
 }
+
+backBtn.onclick = () => showHome();
+
+showHome();
+
+const params = new URLSearchParams(location.search);
+const arrive = params.get('arrive') === '1';
+const fromNo = parseInt(params.get('from'), 10) || 0;
+const toNo = parseInt(params.get('to'), 10) || 0;
+const levelUp = params.get('levelUp') === '1';
+const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
+
+import('./lamp-world.js').then(mod => {
+  const mount = mod.mountLampWorld || (window.LampWorld && window.LampWorld.mountLampWorld);
+  if (!mount) { console.error('LampWorld mount failed'); return; }
+  worldApi = mount(document.getElementById('world'), {
+    nodes,
+    layoutW,
+    layoutH,
+    avatarCourseNo: SAVE.lastCourseNo || (next && next.no) || 1,
+    lessonState,
+    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    onSelectDomain: (d) => showDomain(d),
+    onSelectHub: () => showHome(),
+    onSelectLesson: (l) => { location.href = lessonPlayHref(l.no); },
+    onModeChange: (mode) => {
+      if (mode === 'island') backBtn.classList.add('visible');
+      else backBtn.classList.remove('visible');
+    }
+  });
+
+  if (arrive && worldApi) {
+    const fromIdx = worldApi.findNodeIndexForCourse(fromNo);
+    const toIdx = toNo ? worldApi.findNodeIndexForCourse(toNo) : Math.min(fromIdx + 1, nodes.length - 1);
+    worldApi.placeAvatarForProgress(fromNo);
+    worldApi.walkAvatar(fromIdx, toIdx, () => {
+      if (toNo) {
+        const dom = domains.find(d => d.lessons.some(l => l.no === toNo));
+        if (dom) showDomain(dom);
+      }
+      history.replaceState({}, '', 'map.html');
+    });
+  } else if (next) {
+    const dom = domains.find(d => d.id === next.domain);
+    if (dom) {
+      /* stay on world overview; optional soft highlight via current state already */
+    }
+  }
+
+  if (levelUp || awardTitles.length) {
+    setTimeout(() => showLevelUp(SAVE.level || 1, awardTitles), arrive ? 1600 : 400);
+  }
+}).catch(err => {
+  console.error(err);
+  document.getElementById('world').appendChild(el('div', { class: 'warn', style: 'margin:16px' }, '3Dマップを読み込めませんでした。回線またはキャッシュを確認してください。'));
+});
 </script>
 </body>
 </html>

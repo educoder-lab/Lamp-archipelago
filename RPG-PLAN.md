@@ -178,6 +178,7 @@ PROBLEMS.md
 - [x] W5 … PWA（manifest + service worker）、README 一新
 - [x] S … 全 121 講座の解説を初心者向け図解スライドに刷新（`_tools/slides/*.json` → `docs/data/slides/`、[Slides-Schema.md](./_tools/Slides-Schema.md)）
 - [x] C … Supabase Google ログイン（任意）＋進捗クラウド同期（[Supabase-Setup.md](./_tools/Supabase-Setup.md)）
+- [x] G … Three.js 航路マップ＋アバター自動移動＋島クリア時レベルアップ（`docs/lamp-world.js`、オープンワールドではない）
 
 ### Phase 4 — 磨き（継続）
 

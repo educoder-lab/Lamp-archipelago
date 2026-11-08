@@ -11,9 +11,29 @@
       titles: [],
       lastLessonId: null,
       lastCourseNo: 0,
+      xp: 0,
+      level: 1,
+      avatarStyle: 'lampbearer',
       updatedAt: null,
       repoRoot: null
     };
+  }
+
+  function levelFromXp(xp) {
+    return 1 + Math.floor((Math.max(0, xp) || 0) / 5);
+  }
+
+  function syncLevel(save) {
+    save.xp = Math.max(0, parseInt(save.xp, 10) || 0);
+    save.level = levelFromXp(save.xp);
+    if (!save.avatarStyle) save.avatarStyle = 'lampbearer';
+    return save;
+  }
+
+  /** XP into next level (0..1) */
+  function xpProgress(save) {
+    const xp = Math.max(0, parseInt(save.xp, 10) || 0);
+    return (xp % 5) / 5;
   }
 
   function uniqNums(arr) {
@@ -28,7 +48,7 @@
     try {
       const raw = global.localStorage && global.localStorage.getItem(SAVE_KEY);
       if (!raw) return defaultSave();
-      return Object.assign(defaultSave(), JSON.parse(raw));
+      return syncLevel(Object.assign(defaultSave(), JSON.parse(raw)));
     } catch {
       return defaultSave();
     }
@@ -58,26 +78,39 @@
     merged.lastLessonId = loc.lastLessonId || file.lastLessonId || null;
     merged.lastCourseNo = Math.max(loc.lastCourseNo || 0, file.lastCourseNo || 0) || loc.lastCourseNo || file.lastCourseNo || 0;
     merged.repoRoot = file.repoRoot || loc.repoRoot || null;
+    merged.xp = Math.max(loc.xp || 0, file.xp || 0);
+    merged.avatarStyle = loc.avatarStyle || file.avatarStyle || 'lampbearer';
     const tu = loc.updatedAt ? Date.parse(loc.updatedAt) : 0;
     const fu = file.updatedAt ? Date.parse(file.updatedAt) : 0;
     merged.updatedAt = (tu >= fu ? loc.updatedAt : file.updatedAt) || loc.updatedAt || file.updatedAt || null;
     merged._sources = { local: tu > 0, file: !!file };
-    return merged;
+    return syncLevel(merged);
   }
 
   function registerClear(save, lesson) {
+    const result = { save, newClear: false, newTitles: [], leveledUp: false, prevLevel: save.level || 1 };
     if (!save.clearedIds.includes(lesson.lessonId)) {
+      result.newClear = true;
       save.clearedIds.push(lesson.lessonId);
       save.clearedNos = uniqNums(save.clearedNos.concat([lesson.courseNo]));
+      save.xp = (save.xp || 0) + 1;
       for (const t of (lesson.titleAwards || [])) {
-        if (!save.titles.includes(t)) save.titles.push(t);
+        if (!save.titles.includes(t)) {
+          save.titles.push(t);
+          result.newTitles.push(t);
+          save.xp = (save.xp || 0) + 2;
+        }
       }
     }
     save.skippedNos = save.skippedNos.filter(n => n !== lesson.courseNo);
     save.lastLessonId = lesson.lessonId;
     save.lastCourseNo = lesson.courseNo;
+    const prev = result.prevLevel;
+    syncLevel(save);
+    result.leveledUp = save.level > prev;
+    result.save = save;
     writeLocal(save);
-    return save;
+    return result;
   }
 
   function registerSkip(save, courseNo) {
@@ -113,7 +146,9 @@
     save.lastLessonId = obj.lastLessonId || null;
     save.lastCourseNo = parseInt(obj.lastCourseNo, 10) || 0;
     save.repoRoot = obj.repoRoot || null;
-    return save;
+    save.xp = Math.max(0, parseInt(obj.xp, 10) || 0);
+    save.avatarStyle = obj.avatarStyle || 'lampbearer';
+    return syncLevel(save);
   }
 
   function exportLocalJson(pretty) {
@@ -164,6 +199,9 @@
     importFromJson,
     resetLocal,
     downloadExport,
-    saveSourceLabel
+    saveSourceLabel,
+    levelFromXp,
+    syncLevel,
+    xpProgress
   };
 })(typeof window !== 'undefined' ? window : globalThis);

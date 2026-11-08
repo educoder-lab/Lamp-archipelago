@@ -31,7 +31,8 @@
   function mergeSaves(a, b) {
     const def = global.LampSave ? global.LampSave.defaultSave() : {
       displayName: '旅人', clearedIds: [], clearedNos: [], skippedNos: [], titles: [],
-      lastLessonId: null, lastCourseNo: 0, updatedAt: null, repoRoot: null
+      lastLessonId: null, lastCourseNo: 0, xp: 0, level: 1, avatarStyle: 'lampbearer',
+      updatedAt: null, repoRoot: null
     };
     const out = Object.assign({}, def);
     out.clearedNos = uniqNums([].concat(a.clearedNos || [], b.clearedNos || []));
@@ -45,9 +46,12 @@
     out.lastLessonId = a.lastLessonId || b.lastLessonId || null;
     out.lastCourseNo = Math.max(a.lastCourseNo || 0, b.lastCourseNo || 0) || 0;
     out.repoRoot = a.repoRoot || b.repoRoot || null;
+    out.xp = Math.max(a.xp || 0, b.xp || 0);
+    out.avatarStyle = a.avatarStyle || b.avatarStyle || 'lampbearer';
     const ta = a.updatedAt ? Date.parse(a.updatedAt) : 0;
     const tb = b.updatedAt ? Date.parse(b.updatedAt) : 0;
     out.updatedAt = (ta >= tb ? a.updatedAt : b.updatedAt) || a.updatedAt || b.updatedAt || null;
+    if (global.LampSave && global.LampSave.syncLevel) global.LampSave.syncLevel(out);
     return out;
   }
 
@@ -60,6 +64,9 @@
       titles: save.titles || [],
       lastLessonId: save.lastLessonId || null,
       lastCourseNo: save.lastCourseNo || 0,
+      xp: save.xp || 0,
+      level: save.level || 1,
+      avatarStyle: save.avatarStyle || 'lampbearer',
       updatedAt: save.updatedAt || new Date().toISOString()
     };
   }

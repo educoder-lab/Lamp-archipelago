@@ -198,7 +198,9 @@ function renderLesson(lesson, quests, deck) {
       if (!confirm('合格せずに迂回します。あとでマップから戻れます。')) return;
       LampSave.registerSkip(LampSave.loadLocal(), lesson.courseNo);
       const nxt = lesson.nav && lesson.nav.nextCourseNo;
-      location.href = nxt ? ('lesson.html?no=' + nxt) : 'map.html';
+      const q = new URLSearchParams({ arrive: '1', from: String(lesson.courseNo), skip: '1' });
+      if (nxt) q.set('to', String(nxt));
+      location.href = 'map.html?' + q.toString();
     };
     actions.appendChild(skipBtn);
   }
@@ -216,15 +218,35 @@ function renderLesson(lesson, quests, deck) {
     }
     const hash = await answerHashFromForm(lesson.questions, form);
     if (hash === lesson.answerHash) {
-      LampSave.registerClear(LampSave.loadLocal(), lesson);
+      const clearedResult = LampSave.registerClear(LampSave.loadLocal(), lesson);
       msg.className = 'msg ok';
-      let t = '合格。次の講座へ進めます。';
-      if (lesson.clearLine) t += '\n\n' + lesson.clearLine;
-      if (lesson.titleAwards && lesson.titleAwards.length) {
-        t += '\n\n称号: ' + lesson.titleAwards.join('、');
-      }
-      msg.textContent = t;
       msg.style.whiteSpace = 'pre-wrap';
+      const nxt = lesson.nav && lesson.nav.nextCourseNo;
+      if (clearedResult.newClear) {
+        let t = '合格。マップで次のステージへ進みます…';
+        if (lesson.clearLine) t += '\n\n' + lesson.clearLine;
+        if (clearedResult.newTitles && clearedResult.newTitles.length) {
+          t += '\n\n称号: ' + clearedResult.newTitles.join('、');
+        }
+        if (clearedResult.leveledUp) t += '\n\nレベル ' + clearedResult.save.level + ' にアップ！';
+        msg.textContent = t;
+        const q = new URLSearchParams({ arrive: '1', from: String(lesson.courseNo) });
+        if (nxt) q.set('to', String(nxt));
+        if (clearedResult.leveledUp || (clearedResult.newTitles && clearedResult.newTitles.length)) {
+          q.set('levelUp', '1');
+          if (clearedResult.newTitles && clearedResult.newTitles.length) {
+            q.set('awards', clearedResult.newTitles.join('|'));
+          }
+        }
+        const skipLink = el('div', { style: 'margin-top:10px' });
+        skipLink.appendChild(el('a', { href: nxt ? ('lesson.html?no=' + nxt) : 'map.html', style: 'color:var(--open)' }, 'マップ演出をスキップして次へ →'));
+        msg.appendChild(skipLink);
+        setTimeout(() => { location.href = 'map.html?' + q.toString(); }, 1400);
+      } else {
+        let t = '合格（この灯はすでに記録済みです）。';
+        if (lesson.clearLine) t += '\n\n' + lesson.clearLine;
+        msg.textContent = t;
+      }
     } else {
       msg.className = 'msg ng';
       msg.textContent = '未合格。' + (lesson.hint ? 'ヒント: ' + lesson.hint : '用語を読み直してみてください。');
