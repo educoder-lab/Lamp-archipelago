@@ -177,6 +177,7 @@ PROBLEMS.md
 - [x] W4 … `Test-WebQuests.ps1` + CI、`HOW-GRADING-WORKS` ブラウザ／PS 分離
 - [x] W5 … PWA（manifest + service worker）、README 一新
 - [x] S … 全 121 講座の解説を初心者向け図解スライドに刷新（`_tools/slides/*.json` → `docs/data/slides/`、[Slides-Schema.md](./_tools/Slides-Schema.md)）
+- [x] C … Supabase Google ログイン（任意）＋進捗クラウド同期（[Supabase-Setup.md](./_tools/Supabase-Setup.md)）
 
 ### Phase 4 — 磨き（継続）
 

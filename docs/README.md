@@ -11,6 +11,7 @@
 | [data/refs.json](./data/refs.json) | 参照 Markdown（ビルド生成） |
 | [data/slides/](./data/slides/) | 講座ごとの解説スライド（ビルド生成。ソースは `_tools/slides/`） |
 | `lamp-slides.js` · `lamp-slides.css` | スライドプレイヤー |
+| `lamp-cloud.js` · `supabase-config.js` | 任意の Google ログイン＋進捗クラウド同期（Supabase） |
 | `sw.js` · `manifest.webmanifest` | PWA（オフラインキャッシュ） |
 
 `map.html` は `_tools/map-template.html` から `Build-AllLessons.ps1` で生成。  

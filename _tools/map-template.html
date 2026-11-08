@@ -82,6 +82,7 @@ ul.lessons a:hover { color: var(--ink); }
   <span class="stat">灯 <b id="h-lamps"></b><span class="bar"><i id="h-bar"></i></span></span>
   <span class="stat">称号 <b id="h-titles"></b></span>
   <span class="stat" id="h-sync"></span>
+  <span class="stat" id="h-auth"></span>
   <span class="stat nav">
     <a href="ref.html?p=curriculum">一覧</a>
     <a href="ref.html?p=glossary">用語</a>
@@ -92,8 +93,11 @@ ul.lessons a:hover { color: var(--ink); }
 <main><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></main>
 <aside id="panel"></aside>
 
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="save-data.js"></script>
 <script src="lamp-save.js"></script>
+<script src="lamp-cloud.js"></script>
 <script src="lamp-pwa.js"></script>
 <script>
 const DATA = /*__LAMP_DATA__*/null;
@@ -265,6 +269,9 @@ document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
 const syncEl = document.getElementById('h-sync');
 syncEl.textContent = LampSave.saveSourceLabel(SAVE) + (SAVE.updatedAt ? ' · ' + new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '');
 if (window.LampPwa) LampPwa.markOffline(syncEl);
+if (window.LampCloud) {
+  LampCloud.mountAuthControls(document.getElementById('h-auth'), { btnClass: 'panel-btn', showDisabledHint: false });
+}
 
 // ---- side panel -----------------------------------------------------------
 const panel = document.getElementById('panel');
@@ -289,6 +296,11 @@ function appendTravelerPanel(panel) {
   row.appendChild(inp);
   row.appendChild(saveBtn);
   panel.appendChild(row);
+  panel.appendChild(el('h3', null, 'クラウド同期（任意）'));
+  panel.appendChild(el('div', { class: 'stat' }, 'Google でログインすると、別の端末でも同じ灯を共有できます。未ログインでもこの端末だけで学べます。'));
+  const authBox = el('div', { class: 'save-row', id: 'panel-auth' });
+  panel.appendChild(authBox);
+  if (window.LampCloud) LampCloud.mountAuthControls(authBox, { btnClass: 'panel-btn', showDisabledHint: true });
 }
 function appendSaveTools(panel) {
   panel.appendChild(el('h3', null, '冒険記録（この端末）'));
@@ -369,7 +381,7 @@ function showHome() {
   appendTravelerPanel(panel);
   appendSaveTools(panel);
   panel.appendChild(el('h3', null, '操作'));
-  panel.appendChild(el('div', { class: 'stat' }, 'ブラウザの進捗はこの端末の localStorage に保存されます。'));
+  panel.appendChild(el('div', { class: 'stat' }, 'ブラウザの進捗はこの端末の localStorage に保存されます。ログイン中は Supabase にも同期します。'));
   panel.appendChild(el('a', { href: 'lesson.html?no=' + (next ? next.no : 1), style: 'color:var(--open)' }, 'クエスト画面を開く'));
   panel.appendChild(el('h3', null, 'ローカル（PowerShell）'));
   panel.appendChild(cmdBox('.\\Show-Map.ps1        # 記録を save-data.js に同期'));

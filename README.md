@@ -19,10 +19,11 @@
 1. マップで土地を選び **プレイ**（または講座 URL の `?no=番号`）
 2. **やさしい解説（図解スライド）**を読む → **封印の問い**（四肢択一）に答える  
    スライドは、たとえ話・図・クリックできる 2 進数・1 歩ずつ進むトレース・ミニ確認つき。「一覧で読む」や全画面にも切り替えられます
-3. **灯を点ける** で自動採点 → 合格で灯・称号が増える（`localStorage`）
-4. 詰まったら **迂回 ↷**（あとで戻れる）／記録は **JSON エクスポート・インポート**
+3. **灯を点ける** で自動採点 → 合格で灯・称号が増える（この端末の `localStorage`）
+4. （任意）**Google でログイン**すると、進捗がクラウドにも残り、別の端末でも続きから学べます（[Supabase 手順](./_tools/Supabase-Setup.md)）
+5. 詰まったら **迂回 ↷**（あとで戻れる）／記録は **JSON エクスポート・インポート**も可
 
-初回アクセス後、主要ページは **オフライン**でも開けます（Service Worker）。進捗のバックアップはエクスポートを推奨します。
+初回アクセス後、主要ページは **オフライン**でも開けます（Service Worker）。ログインは任意で、未ログインでも学習できます。
 
 採点の詳細: [HOW-GRADING-WORKS.md](./HOW-GRADING-WORKS.md)
 
@@ -49,6 +50,8 @@ _tools/            … 講座ビルド・Web JSON 生成
   slides/<領域>.json      解説スライドのソース（手書き）
   Write-Slides.ps1       スライド JSON 生成 → docs/data/slides/
   Test-Slides.ps1        スライド形式の検証
+  Supabase-Setup.md      Google ログイン＋進捗同期の設定手順
+  supabase/lamp_progress.sql  進捗テーブル（RLS）
 sky|underground|land/    講座フォルダ（Markdown + Test-Lesson.ps1）
 ```
 

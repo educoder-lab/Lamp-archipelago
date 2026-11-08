@@ -38,6 +38,9 @@
     if (!global.localStorage) return;
     save.updatedAt = new Date().toISOString();
     global.localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+    if (global.LampCloud && typeof global.LampCloud.schedulePush === 'function') {
+      global.LampCloud.schedulePush();
+    }
   }
 
   function loadMerged() {

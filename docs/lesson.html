@@ -71,6 +71,7 @@ button:disabled { opacity: .5; cursor: default; }
   <span class="tag proto">PWA</span>
   <span class="tag" id="h-course"></span>
   <span class="tag">旅人 <b id="h-traveler"></b></span>
+  <span class="tag" id="h-auth"></span>
   <a href="map.html">マップ</a>
   <a href="ref.html?p=glossary">用語図鑑</a>
   <a href="ref.html?p=curriculum">一覧</a>
@@ -78,8 +79,11 @@ button:disabled { opacity: .5; cursor: default; }
 <main id="app">
   <p id="load-err" hidden></p>
 </main>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="save-data.js"></script>
 <script src="lamp-save.js"></script>
+<script src="lamp-cloud.js"></script>
 <script src="lamp-markdown.js"></script>
 <script src="lamp-slides.js"></script>
 <script>
@@ -249,6 +253,13 @@ function renderLesson(lesson, quests, deck) {
   nameRow.appendChild(nameInp);
   nameRow.appendChild(nameBtn);
   tools.appendChild(nameRow);
+  tools.appendChild(el('h2', null, 'クラウド同期（任意）'));
+  const authRow = el('div', { class: 'save-tools', id: 'lesson-auth' });
+  tools.appendChild(authRow);
+  if (window.LampCloud) {
+    LampCloud.mountAuthControls(authRow, { btnClass: 'panel-btn', showDisabledHint: true });
+    LampCloud.mountAuthControls(document.getElementById('h-auth'), { btnClass: 'panel-btn', showDisabledHint: false });
+  }
   const ioRow = el('div', { class: 'save-tools' });
   const exBtn = el('button', { type: 'button', class: 'panel-btn' }, '記録をエクスポート');
   exBtn.onclick = () => LampSave.downloadExport();
