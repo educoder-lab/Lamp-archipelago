@@ -5,7 +5,7 @@
   height: 100%;
   min-height: 320px;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 20%, #1a2450 0%, #0a0d1c 70%);
+  background: radial-gradient(ellipse at 30% 15%, #3a6aa0 0%, #0a1428 42%, #08060f 78%);
 }
 .world-wrap canvas {
   display: block;
