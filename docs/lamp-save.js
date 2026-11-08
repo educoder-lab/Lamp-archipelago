@@ -8,6 +8,7 @@
       clearedIds: [],
       clearedNos: [],
       skippedNos: [],
+      missedNos: [],
       titles: [],
       lastLessonId: null,
       lastCourseNo: 0,
@@ -71,6 +72,7 @@
     merged.clearedNos = uniqNums([].concat(file.clearedNos || [], loc.clearedNos || []));
     merged.skippedNos = uniqNums([].concat(file.skippedNos || [], loc.skippedNos || []))
       .filter(n => !merged.clearedNos.includes(n));
+    merged.missedNos = uniqNums([].concat(file.missedNos || [], loc.missedNos || []));
     merged.titles = uniqStr([].concat(file.titles || [], loc.titles || []));
     merged.clearedIds = uniqStr([].concat(file.clearedIds || [], loc.clearedIds || []));
     merged.displayName = (loc.displayName && loc.displayName !== '旅人') ? loc.displayName
@@ -122,6 +124,18 @@
     return true;
   }
 
+  /** 未合格を記録（復習リスト用。クリア後も残す） */
+  function registerMiss(save, courseNo) {
+    const n = parseInt(courseNo, 10);
+    if (!Number.isFinite(n) || n <= 0) return save;
+    if (!save.missedNos) save.missedNos = [];
+    if (!save.missedNos.includes(n)) {
+      save.missedNos = uniqNums(save.missedNos.concat([n]));
+      writeLocal(save);
+    }
+    return save;
+  }
+
   function unregisterSkip(save, courseNo) {
     save.skippedNos = save.skippedNos.filter(n => n !== courseNo);
     writeLocal(save);
@@ -142,6 +156,7 @@
     save.clearedNos = uniqNums([].concat(obj.clearedNos || []));
     save.skippedNos = uniqNums([].concat(obj.skippedNos || []))
       .filter(n => !save.clearedNos.includes(n));
+    save.missedNos = uniqNums([].concat(obj.missedNos || []));
     save.titles = uniqStr([].concat(obj.titles || []));
     save.lastLessonId = obj.lastLessonId || null;
     save.lastCourseNo = parseInt(obj.lastCourseNo, 10) || 0;
@@ -193,6 +208,7 @@
     writeLocal,
     registerClear,
     registerSkip,
+    registerMiss,
     unregisterSkip,
     setDisplayName,
     exportLocalJson,

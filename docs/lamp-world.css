@@ -84,6 +84,102 @@
   to { opacity: 1; }
 }
 
+/* ステージ概要モーダル */
+.quest-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(6, 9, 20, .72);
+  backdrop-filter: blur(8px);
+}
+.quest-overlay.show { display: flex; animation: lvFade .28s ease both; }
+.quest-modal {
+  width: min(440px, 100%);
+  border-radius: 18px;
+  background: linear-gradient(165deg, #1c2244 0%, #12182e 100%);
+  border: 1px solid #3a4470;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .45);
+  overflow: hidden;
+}
+.quest-modal .qm-top {
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid #2a3158;
+  background: rgba(127, 209, 255, .06);
+}
+.quest-modal .qm-kicker {
+  font-size: 12px;
+  letter-spacing: .08em;
+  color: #9aa0c4;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.quest-modal h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.35;
+  color: #f2f0fa;
+}
+.quest-modal .qm-body { padding: 16px 20px 8px; }
+.quest-modal .qm-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.quest-modal .qm-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #cfd6f3;
+  margin: 0 0 10px;
+}
+.quest-modal .qm-quote {
+  border-left: 3px solid #7fd1ff;
+  padding: 8px 10px;
+  margin: 0 0 12px;
+  background: #141836;
+  color: #cfd6f3;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.quest-modal .qm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 20px 18px;
+  border-top: 1px solid #2a3158;
+}
+.quest-modal .qm-actions .primary {
+  flex: 1;
+  min-width: 140px;
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 2px solid #7fd1ff;
+  background: #1b4a6b;
+  color: #ece9f5;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+.quest-modal .qm-actions .ghost {
+  font: inherit;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #343a6b;
+  background: transparent;
+  color: #a8add0;
+  cursor: pointer;
+}
+.quest-modal .qm-actions .primary:hover { filter: brightness(1.08); }
+.quest-modal .qm-actions .ghost:hover { border-color: #7fd1ff; color: #ece9f5; }
+
 .xp-bar {
   width: 88px;
   height: 6px;

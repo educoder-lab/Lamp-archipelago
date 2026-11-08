@@ -248,8 +248,10 @@ function renderLesson(lesson, quests, deck) {
         msg.textContent = t;
       }
     } else {
+      LampSave.registerMiss(LampSave.loadLocal(), lesson.courseNo);
       msg.className = 'msg ng';
-      msg.textContent = '未合格。' + (lesson.hint ? 'ヒント: ' + lesson.hint : '用語を読み直してみてください。');
+      msg.textContent = '未合格。灯台の港の「復習」からやり直せます。' + (lesson.hint ? '\nヒント: ' + lesson.hint : ' 用語を読み直してみてください。');
+      msg.style.whiteSpace = 'pre-wrap';
     }
   });
   probSec.appendChild(form);

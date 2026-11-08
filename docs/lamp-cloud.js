@@ -30,7 +30,7 @@
 
   function mergeSaves(a, b) {
     const def = global.LampSave ? global.LampSave.defaultSave() : {
-      displayName: '旅人', clearedIds: [], clearedNos: [], skippedNos: [], titles: [],
+      displayName: '旅人', clearedIds: [], clearedNos: [], skippedNos: [], missedNos: [], titles: [],
       lastLessonId: null, lastCourseNo: 0, xp: 0, level: 1, avatarStyle: 'lampbearer',
       updatedAt: null, repoRoot: null
     };
@@ -38,6 +38,7 @@
     out.clearedNos = uniqNums([].concat(a.clearedNos || [], b.clearedNos || []));
     out.skippedNos = uniqNums([].concat(a.skippedNos || [], b.skippedNos || []))
       .filter(n => !out.clearedNos.includes(n));
+    out.missedNos = uniqNums([].concat(a.missedNos || [], b.missedNos || []));
     out.titles = uniqStr([].concat(a.titles || [], b.titles || []));
     out.clearedIds = uniqStr([].concat(a.clearedIds || [], b.clearedIds || []));
     const an = (a.displayName && a.displayName !== '旅人') ? a.displayName : '';
@@ -61,6 +62,7 @@
       clearedIds: save.clearedIds || [],
       clearedNos: save.clearedNos || [],
       skippedNos: save.skippedNos || [],
+      missedNos: save.missedNos || [],
       titles: save.titles || [],
       lastLessonId: save.lastLessonId || null,
       lastCourseNo: save.lastCourseNo || 0,
