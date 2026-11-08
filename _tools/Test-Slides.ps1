@@ -70,15 +70,17 @@ foreach ($f in $files) {
     [void]$covered.Add($no)
     $les = $data['lessons'][$key]
     $slides = @($les['slides'])
-    if ($slides.Count -lt 5 -or $slides.Count -gt 14) { Err "${tag}: スライド数 $($slides.Count)（5〜14 枚）" }
+    if ($slides.Count -lt 8 -or $slides.Count -gt 16) { Err "${tag}: スライド数 $($slides.Count)（8〜16 枚・1枚1概念）" }
     $hasVisual = $false; $hasCheck = $false; $hasAnalogy = $false
     for ($i = 0; $i -lt $slides.Count; $i++) {
       $s = $slides[$i]
       $st = "$tag/スライド$($i + 1)"
       if (-not (Has $s 'title')) { Err "${st}: title がありません" }
       if (-not (Has $s 'blocks') -and $s['layout'] -ne 'title') { Err "${st}: blocks がありません" }
+      $blocks = @($s['blocks'])
+      if ($s['layout'] -ne 'title' -and $blocks.Count -gt 2) { Err "${st}: ブロックが $($blocks.Count) 個（最大 2・1枚1概念）" }
       $textLen = 0
-      foreach ($b in @($s['blocks'])) {
+      foreach ($b in $blocks) {
         if (-not (Has $b 't')) { Err "${st}: ブロックに t がありません"; continue }
         $t = [string]$b['t']
         if (-not $required.ContainsKey($t)) { Err "${st}: 未知のブロック種別 '$t'"; continue }
@@ -123,7 +125,8 @@ foreach ($f in $files) {
           }
         }
       }
-      if ($textLen -gt 420) { Warn "${st}: 文字が多め ($textLen 字)。図やカードに分けてください" }
+      if ($textLen -gt 160) { Err "${st}: 文字が多すぎ ($textLen 字)。上限 160・目標 80。枚を分けてください" }
+      elseif ($textLen -gt 100) { Warn "${st}: 文字が多め ($textLen 字)。目標は 80 字。大事な語だけ **太字** / ==強調== に" }
     }
     if (-not $hasVisual) { Err "${tag}: 図解ブロックがありません" }
     if (-not $hasCheck) { Err "${tag}: check（ミニ確認）がありません" }
