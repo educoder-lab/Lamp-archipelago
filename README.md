@@ -1,88 +1,129 @@
 # Lumina Code
 
-**基本情報技術者試験**の出題範囲を **121 講座**に刻んだ、網羅型の学習コースです（リポジトリ名: Lamp-archipelago）。  
-物語の舞台は **ランプ諸島**。最短合格のテクニックより **知識を積み上げる順** を優先し、RPG 形式で進行が見えるようにしています。
+**基本情報技術者試験（FE）** の出題範囲を **121 講座**に刻んだ、網羅型の学習冒険です（リポジトリ名: Lamp-archipelago）。
 
-## いま学習を始める（ブラウザ）
+舞台は雲と海の上の **ランプ諸島**。知識の灯を一つずつ点けながら、空（午前）→ 地下（午後）→ 陸地（模擬）へと進みます。最短合格のテクニックより、**積み上がる順**と、マップで見える進行を大切にしています。
 
-**ターミナル不要**です。スマホのホーム画面に追加（PWA）もできます。
+---
+
+## いますぐ始める（ブラウザだけで OK）
+
+ターミナル不要。スマホならホーム画面追加（PWA）もできます。
 
 | 入口 | URL |
 |------|-----|
-| **ワールドマップ（3D航路）** | https://educoder-lab.github.io/Lamp-archipelago/map.html |
-| **講座 01 から** | https://educoder-lab.github.io/Lamp-archipelago/lesson.html?no=1 |
+| **ワールドマップ（3D 箱庭）** | https://educoder-lab.github.io/Lamp-archipelago/map.html |
+| **灯台の港 — FE 試験の手引き**（最初におすすめ） | https://educoder-lab.github.io/Lamp-archipelago/lesson.html?hub=1 |
+| **講座 01（ビットとバイト）** | https://educoder-lab.github.io/Lamp-archipelago/lesson.html?no=1 |
 | **全講座一覧** | https://educoder-lab.github.io/Lamp-archipelago/ref.html?p=curriculum |
 | **用語図鑑** | https://educoder-lab.github.io/Lamp-archipelago/ref.html?p=glossary |
 
-### 1 講座の流れ
+### 推奨ルート
 
-1. マップで土地を選び **プレイ**（または講座 URL の `?no=番号`）
-2. **やさしい解説（図解スライド）**を読む → **封印の問い**（四肢択一）に答える  
-   スライドは高校生でも追える密度で、たとえ話・**具体例（数・式）**・▶再生の流れ・クリックできる 2 進数・トレース・ミニ確認つき。「一覧で読む」や全画面にも切り替えられます
-3. **灯を点ける** で自動採点 → 合格で灯・XP・称号が増え、マップ上のアバターが **次のステージ／島へ自動移動**（島クリアでレベルアップ演出）
-4. （任意）マップの **Google でログイン** → 進捗がクラウドにも残り、別の端末でも続きから学べます
-5. 詰まったら **迂回 ↷**（あとで戻れる）／記録は **JSON エクスポート・インポート**も可
+1. **マップ**を開く → 陸地の **灯台の港**へ  
+2. **FE 試験の手引き**（スライド → 学習プリント → 演習）で全体像をつかむ  
+3. 空の島から講座を進め、光の橋に沿って次の島へ  
+4. 地下の砦で午後型、陸地の台地で模擬の総仕上げ  
 
-初回アクセス後、主要ページは **オフライン**でも開けます（Service Worker）。ログインは任意で、未ログインでも学習できます。公開サイト（GitHub Pages）ではクラウド同期が有効です。自分で fork してログインを立てる場合は [Supabase 手順](./_tools/Supabase-Setup.md) を参照してください。
+### 1 講座の型（港も島も同じ）
 
-採点の詳細: [HOW-GRADING-WORKS.md](./HOW-GRADING-WORKS.md)
+1. **やさしい解説（HTML スライド）** … たとえ・図・具体例・▶再生。高校生でも追える密度  
+2. **学習プリント（README）** … 用語表・対応表を見返す（印刷も可）  
+3. **封印の問い** … 四肢択一などをブラウザで採点  
+4. 合格で **灯・XP・称号**。マップのアバターが次へ進み、島クリアでレベルアップ演出  
+
+詰まったら **迂回 ↷**（あとで港の復習から戻れます）。記録は端末内のほか、任意で **Google ログイン＋クラウド同期**。JSON の出し入れもできます。
+
+採点の仕組み: [HOW-GRADING-WORKS.md](./HOW-GRADING-WORKS.md)  
+クラウド設定（fork 時）: [_tools/Supabase-Setup.md](./_tools/Supabase-Setup.md)
+
+---
+
+## ワールドマップ（Three.js）
+
+公開マップは **箱庭型の 3D 航路**です。
+
+| エリア | 試験との対応 | マップ上のイメージ |
+|--------|----------------|--------------------|
+| **灯台の港**（陸地） | 旅の拠点・FE 概要クエスト | 手前の桟橋。手引きは `lesson.html?hub=1` |
+| **空** | 午前（知識の四肢択一） | 上空奥の浮島。**ジグザグ一本道＋光の橋** |
+| **地下帝国** | 午後（トレース・読解） | さらに奥の深層。ネオン砦＋ブルーム |
+| **陸地の台地** | 模擬・総仕上げ | 基準平面の神殿台地。夕暮れの影 |
+
+- ドラッグで見回し、ナビ（全体図 / 空 / 陸 / 地下 / 港）で立体移動  
+- 次に攻略すべき島は拡大・発光。未開放は暗め  
+- 島ごとにテーマ色とローポリの代表オブジェクト（[_tools/Island-Themes.md](./_tools/Island-Themes.md)）  
+
+世界観の文章: [WORLD.md](./WORLD.md)
+
+---
 
 ## コースの構造
 
 | エリア | フォルダ | 内容 |
 |--------|----------|------|
-| 空 | [sky](./sky/) | 午前（ストラテジ・マネジメント・テクノロジ） |
+| 拠点 | [land/hub-harbor](./land/hub-harbor/) | FE 概要（Web 専用クエスト） |
+| 空 | [sky](./sky/) | 午前（テクノロジ〜ストラテジ） |
 | 地下 | [underground](./underground/) | 午後（追跡・SQL・読解） |
-| 陸地 | [land](./land/) | 模擬試験 |
+| 陸地 | [land](./land/) | 模擬試験の台地 |
 
-- **121 講座** … [CURRICULUM.md](./CURRICULUM.md)（Web: [カリキュラム](https://educoder-lab.github.io/Lamp-archipelago/ref.html?p=curriculum)・表検索可）
-- **物語・設定** … [WORLD.md](./WORLD.md) · [GLOSSARY.md](./GLOSSARY.md) · [TITLES.md](./TITLES.md)
-- **RPG 設計** … [RPG-PLAN.md](./RPG-PLAN.md)
+- **121 講座一覧** … [CURRICULUM.md](./CURRICULUM.md)（Web: [カリキュラム](https://educoder-lab.github.io/Lamp-archipelago/ref.html?p=curriculum)）  
+- **用語・称号** … [GLOSSARY.md](./GLOSSARY.md) · [TITLES.md](./TITLES.md)  
+- **RPG 設計メモ** … [RPG-PLAN.md](./RPG-PLAN.md)
+
+---
 
 ## リポジトリの地図
 
 ```text
-docs/              … GitHub Pages（map / lesson / ref / PWA）
-_tools/            … 講座ビルド・Web JSON 生成
-  Manifest-Entries.ps1   正答・問題本文（ソース）
-  Build-AllLessons.ps1   README/PROBLEMS/Test-Lesson + docs 再生成
-  Test-WebQuests.ps1     採点ハッシュ整合チェック
-  slides/<領域>.json      解説スライドのソース（手書き）
-  Write-Slides.ps1       スライド JSON 生成 → docs/data/slides/
-  Test-Slides.ps1        スライド形式の検証
-  Supabase-Setup.md      Google ログイン＋進捗同期の設定手順
-  supabase/lamp_progress.sql  進捗テーブル（RLS）
-sky|underground|land/    講座フォルダ（Markdown + Test-Lesson.ps1）
+docs/                 GitHub Pages（map / lesson / ref / PWA）
+  map.html            3D 箱庭マップ（テンプレートから生成）
+  lesson.html         講座プレイヤー（?hub=1 で港の手引き）
+  data/hub-quest.json 港クエスト本体
+  data/slides/        講座・港のスライド（ビルド生成＋ hub.json）
+  lamp-world.js       Three.js ワールド
+_tools/               ビルド・検証・スライドソース
+  slides/<領域>.json  手書きスライド
+  map-template.html   マップ HTML のソース
+  Build-AllLessons.ps1
+sky|underground|land/ 講座フォルダ（README + PROBLEMS + Test-Lesson.ps1）
 ```
 
-Web データ仕様: [_tools/WebQuest-Schema.md](./_tools/WebQuest-Schema.md)
+Web データ仕様: [_tools/WebQuest-Schema.md](./_tools/WebQuest-Schema.md)  
+Pages 側のファイル一覧: [docs/README.md](./docs/README.md)
+
+---
 
 ## PowerShell で学ぶ（任意）
 
-clone してターミナル派の従来ルートも利用できます。
+clone してターミナル派のルートもそのまま使えます。
 
 ```powershell
 .\Show-Status.ps1
-.\Show-Map.ps1          # ブラウザ地図 + save-data.js 同期
-.\Skip-Lesson.ps1
+.\Show-Map.ps1
 cd sky\island-foundation\01-bit
-# 演習結果\answers.txt → .\Test-Lesson.ps1
+# 演習結果\answers.txt を書いてから
+.\Test-Lesson.ps1
 ```
 
-ブラウザの `localStorage` と `.adventure-save.json` は別系統です。マップは両方をマージ表示できます（`lamp-save.js`）。
+ブラウザの `localStorage` と `.adventure-save.json` は別系統です。マップは両方をマージ表示できます。
+
+---
 
 ## 開発・ビルド
 
 ```powershell
-.\_tools\Build-AllLessons.ps1    # 講座 MD + docs/data/*.json + map.html
-.\_tools\Test-WebQuests.ps1      # CI と同じ検証
+.\_tools\Build-AllLessons.ps1    # 講座 MD + docs/data + map.html
+.\_tools\Test-WebQuests.ps1      # 採点ハッシュ整合
+.\_tools\Test-Slides.ps1         # スライド形式
 ```
 
-- **Pages デプロイ**: push → `.github/workflows/pages.yml`
-- **整合 CI**: `.github/workflows/verify-web.yml`
+- **Pages デプロイ**: `main` への push → `.github/workflows/pages.yml`  
+- **整合 CI**: `.github/workflows/verify-web.yml`  
+- 技術メモ: [DESIGN.md](./DESIGN.md)
 
-技術メモ: [DESIGN.md](./DESIGN.md)
+---
 
 ## ライセンス・公開
 
-リポジトリは Public。教材の正答は Manifest 上にありますが、公開 Web（`quests.json`）は **ハッシュのみ**です。
+リポジトリは Public です。教材の正答は Manifest 上にありますが、公開 Web（`quests.json`）には **採点ハッシュのみ**を載せています。
