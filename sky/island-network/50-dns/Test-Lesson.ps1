@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 50　DNS・DHCP・メール"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bcfa238a9fa9e2b4fabfbae592c8c635d32fdba63bf75e75649ba11ea4213e57' 'DNS=名前→IP,DHCP=IP自動割当,SMTP=メール送信'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/50-dns' -NextLesson 'island-network/51-routing' -CourseNo 50 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/50-dns' -NextLesson 'island-network/51-routing' -CourseNo 50 -ClearLine '航路台の風路と灯標が一つ光り、灯が 50 番目に繋がった。' -TitleAward '')

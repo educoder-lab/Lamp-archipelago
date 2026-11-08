@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 54　脅威と攻撃手法"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '150d54c95cb7f1a74ddbd7bf5d9a192c507c0edbd2bf1a5cb22937de7b358c07' 'フィッシング=偽サイト,ランサム=身代金'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/54-threat' -NextLesson 'island-security/55-crypto' -CourseNo 54 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/54-threat' -NextLesson 'island-security/55-crypto' -CourseNo 54 -ClearLine '盾商会の盾壁と鍵が一つ光り、灯が 54 番目に繋がった。' -TitleAward '')

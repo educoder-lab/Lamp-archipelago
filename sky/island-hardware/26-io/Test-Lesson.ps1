@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 26　入出力インタフェース"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '253c6c4bd961bb44e8ef9513812a367d4e1ab47016413b8462025f28068600e0' 'DMA=CPU介さず転送,USB=ホットプラグ'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/26-io' -NextLesson 'island-hardware/27-display' -CourseNo 26 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/26-io' -NextLesson 'island-hardware/27-display' -CourseNo 26 -ClearLine '工房の蒸気と基板が一つ光り、灯が 26 番目に繋がった。' -TitleAward '')

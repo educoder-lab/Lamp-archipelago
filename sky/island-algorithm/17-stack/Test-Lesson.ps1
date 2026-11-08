@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 17　スタックとキュー"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'スタック=LIFO,キュー=FIFO'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/17-stack' -NextLesson 'island-algorithm/18-list' -CourseNo 17 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/17-stack' -NextLesson 'island-algorithm/18-list' -CourseNo 17 -ClearLine '射出口から一枚、正しい順で板が落ちた。' -TitleAward '')

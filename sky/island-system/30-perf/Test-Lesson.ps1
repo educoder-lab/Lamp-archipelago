@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 30　性能評価"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' 'MIPS=百万命令/秒,TAT=全体時間'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/30-perf' -NextLesson 'island-system/31-virtual' -CourseNo 30 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-system/30-perf' -NextLesson 'island-system/31-virtual' -CourseNo 30 -ClearLine '系譜の館の冗長の梁が一つ光り、灯が 30 番目に繋がった。' -TitleAward '')

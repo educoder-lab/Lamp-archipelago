@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 38　コンパイラとリンカ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'コンパイラ=一括翻訳,インタプリタ=逐次実行'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/38-compiler' -NextLesson 'island-software/39-oss' -CourseNo 38 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/38-compiler' -NextLesson 'island-software/39-oss' -CourseNo 38 -ClearLine '書庫の層と扉が一つ光り、灯が 38 番目に繋がった。' -TitleAward '')

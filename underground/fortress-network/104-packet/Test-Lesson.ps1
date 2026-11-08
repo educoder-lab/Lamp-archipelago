@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 104　パケット解析と通信制御"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' 'ARP=IP→MAC,ICMP=ping'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-network/104-packet' -NextLesson 'fortress-network/105-design-nw' -CourseNo 104 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-network/104-packet' -NextLesson 'fortress-network/105-design-nw' -CourseNo 104 -ClearLine '石版の一角が白く染まり、地下の灯が 104 番目を刻んだ。' -TitleAward '')

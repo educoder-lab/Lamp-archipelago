@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 37　ファイルシステム"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bca9f4a15ee2934d65d78fca043389c0b0c922508fa5f57c10c68883ce22e5aa' '絶対パス=ルートから,相対パス=現在地から'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/37-file' -NextLesson 'island-software/38-compiler' -CourseNo 37 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-software/37-file' -NextLesson 'island-software/38-compiler' -CourseNo 37 -ClearLine '書庫の層と扉が一つ光り、灯が 37 番目に繋がった。' -TitleAward '')

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 27　表示装置と解像度"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'bcfa238a9fa9e2b4fabfbae592c8c635d32fdba63bf75e75649ba11ea4213e57' 'VRAM=解像度×色ビット数÷8'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/27-display' -NextLesson 'island-system/28-reliability' -CourseNo 27 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-hardware/27-display' -NextLesson 'island-system/28-reliability' -CourseNo 27 -ClearLine '工房の蒸気と基板が一つ光り、灯が 27 番目に繋がった。' -TitleAward '')

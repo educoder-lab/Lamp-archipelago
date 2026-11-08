@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 14　二分探索"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '3a7e04c7465c234ea708a172cdf5ca1fe043bd95f4427b0d6c722504fca5bfc0' '二分探索=ソート済み前提,O(log n)'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/14-bsearch' -NextLesson 'island-algorithm/15-bubble' -CourseNo 14 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/14-bsearch' -NextLesson 'island-algorithm/15-bubble' -CourseNo 14 -ClearLine '矢印が折れ、探索の経路が短く見えた。' -TitleAward '')

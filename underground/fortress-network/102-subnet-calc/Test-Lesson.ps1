@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 102　サブネット計算"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '1513c97cc5d7d04ce1b72fa377e0a57adb9abd839fcfdaf744ec1484d8300823' '/24→ホスト8bit→2^8-2=254'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-network/102-subnet-calc' -NextLesson 'fortress-network/103-vlan' -CourseNo 102 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-network/102-subnet-calc' -NextLesson 'fortress-network/103-vlan' -CourseNo 102 -ClearLine '石版の一角が白く染まり、地下の灯が 102 番目を刻んだ。' -TitleAward '')

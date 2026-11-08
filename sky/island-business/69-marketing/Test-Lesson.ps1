@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 69　マーケティングとe-Biz"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'a2a81bd9440c32d5de7e3493206e57e197d1b99528d908befe0491906222714c' '4P=Product/Price/Place/Promotion'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/69-marketing' -NextLesson 'island-business/70-it-strategy' -CourseNo 69 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-business/69-marketing' -NextLesson 'island-business/70-it-strategy' -CourseNo 69 -ClearLine '羅針盤室の方角と戦略が一つ光り、灯が 69 番目に繋がった。' -TitleAward '')

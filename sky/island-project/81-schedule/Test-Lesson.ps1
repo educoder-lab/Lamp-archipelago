@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 81　スケジュールと工数"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '964daa0b69ca2fd54b360f8342dc4735bf0fa88828e256508d562d49ab94e9cb' 'FP=機能数ベース,COCOMO=コード行数ベース'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-project/81-schedule' -NextLesson 'island-project/82-risk' -CourseNo 81 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-project/81-schedule' -NextLesson 'island-project/82-risk' -CourseNo 81 -ClearLine '吊橋の工程表と矢石が一つ光り、灯が 81 番目に繋がった。' -TitleAward '')

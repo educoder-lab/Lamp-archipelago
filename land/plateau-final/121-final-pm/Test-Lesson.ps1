@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 121　最終模試：午後"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '8d0133d1123b707c25a3badb6f4f3dc5f516040911dc121ddb9e57250a684910' '最終模試午後：BCP=事業継続,EV>PV=前倒し'
-exit (Complete-LessonTest -Results @($r) -LessonId 'land/plateau-final/121-final-pm' -NextLesson '（コース修了）' -CourseNo 121 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'land/plateau-final/121-final-pm' -NextLesson '（コース修了）' -CourseNo 121 -ClearLine '台地の旗が一瞬だけ高く上がり、講座 121 の灯が炎に加わった。' -TitleAward '諸島の旅人')

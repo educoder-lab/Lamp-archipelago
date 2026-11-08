@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 58　Webセキュリティ"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' 'SQLi=SQL挿入,XSS=スクリプト埋込み'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/58-webattack' -NextLesson 'island-security/59-policy' -CourseNo 58 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/58-webattack' -NextLesson 'island-security/59-policy' -CourseNo 58 -ClearLine '盾商会の盾壁と鍵が一つ光り、灯が 58 番目に繋がった。' -TitleAward '')

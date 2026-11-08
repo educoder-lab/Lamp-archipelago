@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 85　システム監査"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '0a072f5b9123f736072fceaf43c61f1546fab6c3f1e0200867a444a1beaf67a9' '監査=独立・客観的,監査証拠=根拠資料'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-audit/85-audit-base' -NextLesson 'island-audit/86-internal' -CourseNo 85 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-audit/85-audit-base' -NextLesson 'island-audit/86-internal' -CourseNo 85 -ClearLine '記録庫の証跡と判子が一つ光り、灯が 85 番目に繋がった。' -TitleAward '')

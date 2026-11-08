@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 113　総合戦略と時間管理"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' '得意分野から解く,マークずれを確認'
-exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/113-final-strategy' -NextLesson 'plateau-mock-am/114-mock-am-1' -CourseNo 113 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'underground/fortress-deep/113-final-strategy' -NextLesson 'plateau-mock-am/114-mock-am-1' -CourseNo 113 -ClearLine '石版の一角が白く染まり、地下の灯が 113 番目を刻んだ。' -TitleAward '深層の読者')

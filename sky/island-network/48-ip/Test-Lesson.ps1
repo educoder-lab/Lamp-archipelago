@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 48　IPアドレスとサブネット"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' 'IPv4=32bit,サブネット/24=先頭24bitがNW部'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/48-ip' -NextLesson 'island-network/49-tcpudp' -CourseNo 48 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-network/48-ip' -NextLesson 'island-network/49-tcpudp' -CourseNo 48 -ClearLine '航路台の風路と灯標が一つ光り、灯が 48 番目に繋がった。' -TitleAward '')

@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 13　配列と線形探索"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '67b61bc35308745a16ad3310d939d0711e850f57f8cb26a95214b65071a8e0d7' '線形探索=先頭から順に,番兵=ダミー'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/13-array' -NextLesson 'island-algorithm/14-bsearch' -CourseNo 13 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-algorithm/13-array' -NextLesson 'island-algorithm/14-bsearch' -CourseNo 13 -ClearLine '棚のラベルが一つ光り、塔の歯車がかすかに回り始めた。' -TitleAward '')

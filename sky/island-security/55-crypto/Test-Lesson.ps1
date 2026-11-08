@@ -16,4 +16,4 @@
 }
 Start-LessonTest "講座 55　暗号化の基礎"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '7e5ac5cad8225318f1b0b6d8ec32942a81b9cdb9d5b459caae08ce100f76bcb5' '共通鍵=同じ鍵,署名=送信者の秘密鍵'
-exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/55-crypto' -NextLesson 'island-security/56-cert' -CourseNo 55 -ClearLine '灯がひとつ、静かに灯った。' -TitleAward '')
+exit (Complete-LessonTest -Results @($r) -LessonId 'sky/island-security/55-crypto' -NextLesson 'island-security/56-cert' -CourseNo 55 -ClearLine '盾商会の盾壁と鍵が一つ光り、灯が 55 番目に繋がった。' -TitleAward '')

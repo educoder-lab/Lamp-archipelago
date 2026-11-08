@@ -60,6 +60,8 @@ foreach ($g in $grouped) {
   $ds = $domainStories[$domain]
   $synopsis = if ($ds) { $ds.Synopsis } else { '' }
   $npc = if ($ds) { $ds.Npc } else { '案内人' }
+  $enter = if ($ds -and $ds.EnterLine) { $ds.EnterLine } else { '' }
+  $enterBlock = if ($enter) { "`n## 入場`n`n$enter`n" } else { '' }
   $map = Format-LessonAsciiMap -Lessons $sorted
   $rows = foreach ($l in $sorted) {
     $np = if ($l.CourseNo -lt $lessons.Count) {
@@ -79,7 +81,7 @@ foreach ($g in $grouped) {
 ## あらすじ
 
 **$npc** — $synopsis
-
+$enterBlock
 $map
 
 ## 講座
