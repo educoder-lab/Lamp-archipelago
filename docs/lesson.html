@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#171b36">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="lamp-slides.css">
 <title>ランプ諸島 — クエスト</title>
 <style>
 :root {
@@ -26,7 +27,12 @@ header {
 header h1 { font-size: 17px; margin: 0; }
 .tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--panel2); color: var(--muted); }
 .tag.proto { color: #1a1300; background: var(--gold); }
-main { max-width: 720px; margin: 0 auto; padding: 20px; }
+main { max-width: 880px; margin: 0 auto; padding: 20px; }
+details.readme-sec { background: var(--panel); border: 1px solid #2a2f58; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; }
+details.readme-sec summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+details.readme-sec[open] summary { margin-bottom: 10px; }
+section.slide-sec { padding: 12px; }
+section.slide-sec > h2 { padding-left: 6px; }
 section { background: var(--panel); border: 1px solid #2a2f58; border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
 section h2 { font-size: 15px; margin: 0 0 10px; color: var(--muted); letter-spacing: .06em; }
 .readme { font-size: 14px; line-height: 1.65; }
@@ -75,6 +81,7 @@ button:disabled { opacity: .5; cursor: default; }
 <script src="save-data.js"></script>
 <script src="lamp-save.js"></script>
 <script src="lamp-markdown.js"></script>
+<script src="lamp-slides.js"></script>
 <script>
 function loadSave() { return LampSave.loadMerged(); }
 function renderMarkdownSimple(md) { return LampMarkdown.render(md); }
@@ -126,7 +133,7 @@ function el(tag, attrs, text) {
   return e;
 }
 
-function renderLesson(lesson, quests) {
+function renderLesson(lesson, quests, deck) {
   const save = loadSave();
   const already = save.clearedNos.includes(lesson.courseNo);
   document.getElementById('h-title').textContent = lesson.title;
@@ -136,13 +143,28 @@ function renderLesson(lesson, quests) {
   const app = document.getElementById('app');
   app.innerHTML = '';
 
-  const readSec = el('section');
-  readSec.appendChild(el('h2', null, '用語（README）'));
+  if (deck && deck.slides && deck.slides.length && window.LampSlides) {
+    const slideSec = el('section', { class: 'slide-sec' });
+    slideSec.appendChild(el('h2', null, 'やさしい解説（スライド）'));
+    const root = el('div');
+    slideSec.appendChild(root);
+    app.appendChild(slideSec);
+    LampSlides.mount(root, deck, {
+      onFinish: () => {
+        const q = document.getElementById('questions');
+        if (q) q.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  const readSec = el('details', { class: 'readme-sec' });
+  readSec.appendChild(el('summary', null, '用語表・あらすじ（README）を開く'));
   const readDiv = el('div', { class: 'readme', html: renderMarkdownSimple(lesson.readmeMarkdown || '') });
   readSec.appendChild(readDiv);
   app.appendChild(readSec);
 
   const probSec = el('section');
+  probSec.id = 'questions';
   probSec.appendChild(el('h2', null, '封印の問い'));
   if (lesson.request) {
     probSec.appendChild(el('div', { class: 'quote' }, lesson.request));
@@ -277,7 +299,12 @@ async function main() {
     showNotReady(lesson, quests);
     return;
   }
-  renderLesson(lesson, quests);
+  let deck = null;
+  try {
+    const sres = await fetch('data/slides/' + no + '.json');
+    if (sres.ok) deck = await sres.json();
+  } catch (e) { /* スライドが無くても問題は解ける */ }
+  renderLesson(lesson, quests, deck);
 }
 main();
 </script>

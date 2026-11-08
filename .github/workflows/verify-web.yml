@@ -15,3 +15,6 @@ jobs:
       - name: Test web quests and refs
         shell: pwsh
         run: ./_tools/Test-WebQuests.ps1
+      - name: Validate lesson slides
+        shell: pwsh
+        run: ./_tools/Test-Slides.ps1

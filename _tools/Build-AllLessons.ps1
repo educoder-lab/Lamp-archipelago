@@ -14,6 +14,7 @@ $repoRoot = Split-Path $PSScriptRoot -Parent
 . (Join-Path $PSScriptRoot 'Write-WorldMap.ps1')
 . (Join-Path $PSScriptRoot 'Write-Quests.ps1')
 . (Join-Path $PSScriptRoot 'Write-WebDocs.ps1')
+. (Join-Path $PSScriptRoot 'Write-Slides.ps1')
 
 $bootstrap = Get-LessonTestBootstrap
 $lessons = @(Get-LampLessonCatalog)
@@ -116,4 +117,5 @@ Write-TitlesReferenceFile -RepoRoot $repoRoot -Lessons $lessons -DomainLastCours
 Write-WorldMapFile -RepoRoot $repoRoot -Lessons $lessons -DomainLastCourseNo $domainLastCourseNo
 Write-QuestsFile -RepoRoot $repoRoot -Lessons $lessons -DomainLastCourseNo $domainLastCourseNo
 Write-WebDocsFile -RepoRoot $repoRoot -Lessons $lessons
+Write-SlidesFile -RepoRoot $repoRoot -Lessons $lessons
 Write-Host "Done. $($lessons.Count) lessons."

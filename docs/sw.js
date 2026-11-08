@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v2';
+const CACHE = 'lamp-archipelago-v3';
 const PRECACHE = [
   './',
   './index.html',
@@ -10,6 +10,8 @@ const PRECACHE = [
   './icon.svg',
   './lamp-save.js',
   './lamp-markdown.js',
+  './lamp-slides.js',
+  './lamp-slides.css',
   './save-data.js',
   './data/quests.json',
   './data/refs.json'
