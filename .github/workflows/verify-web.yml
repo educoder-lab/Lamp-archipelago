@@ -1,0 +1,17 @@
+# Manifest / Test-Lesson / quests.json の採点ハッシュ整合（W4）
+name: Verify web quests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test web quests and refs
+        shell: pwsh
+        run: ./_tools/Test-WebQuests.ps1

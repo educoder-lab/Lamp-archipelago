@@ -91,7 +91,10 @@
 # または
 .\_tools\Write-Quests.ps1
 .\_tools\Write-WebDocs.ps1
+.\_tools\Test-WebQuests.ps1    # W4: ハッシュ・webReady 整合チェック
 ```
+
+CI: `.github/workflows/verify-web.yml`（push / PR で `Test-WebQuests.ps1`）。
 
 ## 関連
 

@@ -39,7 +39,8 @@ cd sky\island-foundation\01-bit
 .\Test-Lesson.ps1
 ```
 
-採点: [HOW-GRADING-WORKS.md](./HOW-GRADING-WORKS.md)  
+採点: [HOW-GRADING-WORKS.md](./HOW-GRADING-WORKS.md)（ブラウザは自動・PS は `Test-Lesson.ps1`）  
+品質: `.\_tools\Test-WebQuests.ps1`（Manifest ↔ quests.json ↔ Test-Lesson のハッシュ）  
 設計: [DESIGN.md](./DESIGN.md)  
 学習RPG化の計画: [RPG-PLAN.md](./RPG-PLAN.md)  
 講座データ: `_tools/Manifest-Entries.ps1` → `.\_tools\Build-AllLessons.ps1`
