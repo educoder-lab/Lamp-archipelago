@@ -105,7 +105,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground">地下</button>
       <button type="button" class="world-nav-btn" data-nav="hub">灯台の港</button>
     </div>
-    <div class="world-hint">左右ドラッグで空→地下→陸へスライド · 全体図で俯瞰 · 港の門でも移動</div>
+    <div class="world-hint">箱庭俯瞰 · 空は光の橋の一本道 · ナビで上空／地下／陸地へ立体移動</div>
   </div>
 </main>
 <aside id="panel"></aside>
@@ -563,7 +563,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-import('./lamp-world.js?v=16').then(mod => {
+import('./lamp-world.js?v=17').then(mod => {
   const mount = mod.mountLampWorld || (window.LampWorld && window.LampWorld.mountLampWorld);
   if (!mount) { console.error('LampWorld mount failed'); return; }
   worldApi = mount(document.getElementById('world'), {
@@ -580,7 +580,7 @@ import('./lamp-world.js?v=16').then(mod => {
     onTravelRealm: (realm) => {
       const labels = { sky: '空の諸島', land: '陸地の台地', underground: '地下の砦' };
       const tip = document.querySelector('.world-hint');
-      if (tip) tip.textContent = (labels[realm] || realm) + ' へ移動 · 左右ドラッグで領域スライド · 全体図で俯瞰';
+      if (tip) tip.textContent = (labels[realm] || realm) + ' へ立体移動 · 全体図で箱庭を俯瞰';
     },
     onModeChange: (mode) => {
       if (mode === 'island') backBtn.classList.add('visible');

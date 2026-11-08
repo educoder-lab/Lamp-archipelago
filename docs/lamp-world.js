@@ -6,8 +6,17 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-/** 空 → 地下 → 陸 を X 軸に並べ、Z は共通基準 */
-const REALM_X = { sky: -78, underground: 0, land: 78 };
+/**
+ * 箱庭ジオラマ配置（陸地が基準）
+ * - land: Z=0, Y=0（手前）
+ * - sky: 奥かつ上空（Z≈-30, Y≈+20〜+40）
+ * - underground: さらに奥かつ地下（Z≈-50, Y≈-20〜-40）
+ */
+const REALM = {
+  land: { x: 0, y: 0, z: 0 },
+  sky: { x: -20, y: 30, z: -30 },
+  underground: { x: 28, y: -30, z: -52 }
+};
 const REALM_COLOR = { sky: 0x7fd1ff, land: 0xf0a060, underground: 0xc59bff };
 const STATE_COLOR = {
   cleared: 0xf5c451,
@@ -348,15 +357,22 @@ function addStateRim(group, node, theme, R, deckY) {
 function createSkyIsland(node, theme, R, foggy) {
   const group = new THREE.Group();
   const deckY = 1.15;
+  const isFocus = node.state === 'current' || node.kind === 'hub';
+  const isOpen = node.state === 'open' || node.state === 'cleared';
+  const rockCol = foggy ? 0x3a4558 : isFocus ? 0xf5fbff : isOpen ? 0xe8f2fa : 0xb8c8d8;
+  const bellyCol = foggy ? 0x2a3448 : isFocus ? 0xd8ecff : 0xc5daf0;
+  const deckCol = foggy ? 0x4a5568 : isFocus ? 0xffffff : 0xf7fbff;
+
   const rock = new THREE.Mesh(
     new THREE.SphereGeometry(R * 0.95, 28, 20, 0, Math.PI * 2, 0, Math.PI * 0.62),
     new THREE.MeshStandardMaterial({
-      color: foggy ? 0x9aacbe : 0xe8f2fa,
+      color: rockCol,
       roughness: 0.78,
       metalness: 0.05,
-      flatShading: false,
+      emissive: isFocus ? 0x7fd1ff : 0x000000,
+      emissiveIntensity: isFocus ? 0.35 : 0,
       transparent: foggy,
-      opacity: foggy ? 0.45 : 1
+      opacity: foggy ? 0.38 : 1
     })
   );
   rock.scale.set(1.05, 0.72, 1.05);
@@ -366,11 +382,11 @@ function createSkyIsland(node, theme, R, foggy) {
   const belly = new THREE.Mesh(
     new THREE.DodecahedronGeometry(R * 0.55, 0),
     new THREE.MeshStandardMaterial({
-      color: foggy ? 0x7a90a8 : 0xc5daf0,
+      color: bellyCol,
       roughness: 0.85,
       metalness: 0.04,
       transparent: foggy,
-      opacity: foggy ? 0.4 : 1
+      opacity: foggy ? 0.35 : 1
     })
   );
   belly.position.y = -0.35;
@@ -380,23 +396,38 @@ function createSkyIsland(node, theme, R, foggy) {
   const deck = new THREE.Mesh(
     new THREE.CylinderGeometry(R * 0.92, R * 0.95, 0.28, 36),
     new THREE.MeshStandardMaterial({
-      color: foggy ? 0xb0c4d8 : 0xf7fbff,
+      color: deckCol,
       roughness: 0.45,
       metalness: 0.12,
+      emissive: isFocus ? 0xa8e8ff : 0x000000,
+      emissiveIntensity: isFocus ? 0.25 : 0,
       transparent: foggy,
-      opacity: foggy ? 0.5 : 1
+      opacity: foggy ? 0.42 : 1
     })
   );
   deck.position.y = deckY;
   group.add(deck);
 
-  addStateRim(group, node, theme, R, deckY);
-  addThemeProps(group, theme, R, deckY, foggy);
+  if (isFocus) {
+    const halo = new THREE.Mesh(
+      new THREE.TorusGeometry(R * 1.15, 0.1, 10, 40),
+      new THREE.MeshStandardMaterial({
+        color: 0x7fd1ff, emissive: 0x7fd1ff, emissiveIntensity: 1.6, transparent: true, opacity: 0.9, metalness: 0.3
+      })
+    );
+    halo.rotation.x = Math.PI / 2;
+    halo.position.y = deckY + 0.2;
+    group.add(halo);
+    group.userData.haloRing = halo;
+  }
 
-  if (!group.userData.flame && (node.state === 'cleared' || node.state === 'current')) {
+  addStateRim(group, node, theme, R, deckY);
+  if (!foggy) addThemeProps(group, theme, R, deckY, foggy);
+
+  if (!group.userData.flame && (node.state === 'cleared' || node.state === 'current' || node.kind === 'hub')) {
     const flame = new THREE.Mesh(
-      new THREE.SphereGeometry(0.24, 14, 14),
-      new THREE.MeshStandardMaterial({ color: theme.accent, emissive: theme.accent, emissiveIntensity: 1.4 })
+      new THREE.SphereGeometry(isFocus ? 0.32 : 0.24, 14, 14),
+      new THREE.MeshStandardMaterial({ color: theme.accent, emissive: theme.accent, emissiveIntensity: isFocus ? 2.0 : 1.4 })
     );
     flame.position.set(0, deckY + 1.4, -R * 0.4);
     group.add(flame);
@@ -405,10 +436,41 @@ function createSkyIsland(node, theme, R, foggy) {
 
   group.userData.float = true;
   group.userData.floatPhase = hash01(node.d ? node.d.id.length : 1, 3) * Math.PI * 2;
-  group.userData.floatAmp = 0.28 + hash01(node.d ? node.d.total : 2, 7) * 0.45;
-  group.userData.floatSpeed = 0.55 + hash01(node.d ? node.d.total : 2, 11) * 0.45;
+  group.userData.floatAmp = isFocus ? 0.55 : (foggy ? 0.12 : 0.28);
+  group.userData.floatSpeed = isFocus ? 0.85 : 0.55;
+  group.userData.highlight = isFocus;
+  group.userData.highlightScale = isFocus ? 1.28 : (foggy ? 0.88 : 1);
   enableShadow(group, true, true);
   return { group, deckY };
+}
+
+/** 隣り合う島を結ぶ細い光の橋 */
+function createLightBridge(from, to, lit) {
+  const a = from.clone();
+  const b = to.clone();
+  // デッキ付近の高さに寄せる
+  a.y += 1.0;
+  b.y += 1.0;
+  const dir = new THREE.Vector3().subVectors(b, a);
+  const len = Math.max(0.5, dir.length());
+  const mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
+  const mesh = new THREE.Mesh(
+    new THREE.CylinderGeometry(lit ? 0.16 : 0.1, lit ? 0.16 : 0.1, len, 10),
+    new THREE.MeshStandardMaterial({
+      color: lit ? 0xe8f6ff : 0x6a90b0,
+      emissive: lit ? 0x7fd1ff : 0x2a4060,
+      emissiveIntensity: lit ? 1.8 : 0.35,
+      transparent: true,
+      opacity: lit ? 0.95 : 0.4,
+      metalness: 0.25,
+      roughness: 0.25
+    })
+  );
+  mesh.position.copy(mid);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+  mesh.userData.lightBridge = true;
+  mesh.userData.lit = !!lit;
+  return mesh;
 }
 
 function createFortress(node, theme, R, foggy) {
@@ -600,40 +662,73 @@ function createStagePad(lesson, state, index) {
   return g;
 }
 
-/** 領域内のノードを X クラスタ（Z≈0）に配置 */
-function layoutRealmPositions(list, centerX, realm) {
-  const n = list.length;
-  if (!n) return;
-  list.forEach((node, i) => {
-    const t = n === 1 ? 0.5 : i / (n - 1);
-    let x; let z; let y;
-    if (realm === 'sky') {
-      const ang = i * 2.399; // golden-ish
-      const rad = 6 + Math.sqrt(i + 1) * 5.2;
-      x = centerX + Math.cos(ang) * rad * 0.85;
-      z = Math.sin(ang) * rad * 0.55;
-      y = 3.5 + hash01(i, 1) * 7.5;
-    } else if (realm === 'underground') {
-      const cols = Math.min(3, n);
-      const row = Math.floor(i / cols);
-      const col = i % cols;
-      x = centerX + (col - (cols - 1) / 2) * 14;
-      z = (row - 0.5) * 12;
-      y = 0.2;
-    } else {
-      // land: spaced temples along X near center
-      x = centerX + (i - (n - 1) / 2) * 22;
-      z = (hash01(i, 5) - 0.5) * 6;
-      y = 0;
-    }
-    if (node.kind === 'hub') {
-      x = centerX - 18; z = 8; y = 5.5;
-    }
-    if (node.kind === 'core') {
-      x = centerX + 28; z = 0; y = 0;
-    }
+/** 空: ステージ順のジグザグ（スネーク）一本道 */
+function layoutSkySnake(list) {
+  const hub = list.find(n => n.kind === 'hub');
+  const domains = list.filter(n => n.kind !== 'hub');
+  const c = REALM.sky;
+  // 港はルートの手前（陸地寄り・やや低め）
+  if (hub) {
+    hub._pos = new THREE.Vector3(c.x - 32, 20, c.z + 16);
+    hub._routeIndex = -1;
+  }
+  const cols = 5;
+  const stepX = 15;
+  const stepZ = 12;
+  const originX = c.x - 30;
+  const originZ = c.z + 6;
+  domains.forEach((node, i) => {
+    const row = Math.floor(i / cols);
+    const colInRow = i % cols;
+    const ltr = row % 2 === 0;
+    const col = ltr ? colInRow : (cols - 1 - colInRow);
+    const x = originX + col * stepX;
+    const z = originZ - row * stepZ;
+    const t = domains.length <= 1 ? 0 : i / (domains.length - 1);
+    const y = 22 + t * 16; // +20〜+38
+    node._pos = new THREE.Vector3(x, y, z);
+    node._routeIndex = i;
+  });
+}
+
+/** 地下: 深い層に砦を整列 */
+function layoutUnderground(list) {
+  const domains = list.filter(n => n.kind === 'domain');
+  const c = REALM.underground;
+  const cols = 3;
+  domains.forEach((node, i) => {
+    const row = Math.floor(i / cols);
+    const col = i % cols;
+    const x = c.x + (col - 1) * 16;
+    const z = c.z + (0.5 - row) * 14;
+    const y = -22 - row * 8 - col * 1.5; // -20〜-40 帯
     node._pos = new THREE.Vector3(x, y, z);
   });
+  list.filter(n => n.kind !== 'domain').forEach((n, i) => {
+    n._pos = new THREE.Vector3(c.x, c.y - 4, c.z + i * 4);
+  });
+}
+
+/** 陸地: 基準平面（Y=0, Z=0 付近）に台地 */
+function layoutLand(list) {
+  const c = REALM.land;
+  const domains = list.filter(n => n.kind === 'domain');
+  const core = list.find(n => n.kind === 'core');
+  domains.forEach((node, i) => {
+    const x = c.x + (i - (domains.length - 1) / 2) * 24;
+    const z = c.z + (i % 2 === 0 ? 2 : -6);
+    node._pos = new THREE.Vector3(x, 0, z);
+  });
+  if (core) core._pos = new THREE.Vector3(c.x + 36, 0, c.z - 2);
+  list.forEach(n => {
+    if (!n._pos) n._pos = new THREE.Vector3(c.x, 0, c.z);
+  });
+}
+
+function layoutAllRealms(byRealm) {
+  layoutSkySnake(byRealm.sky || []);
+  layoutUnderground(byRealm.underground || []);
+  layoutLand(byRealm.land || []);
 }
 
 /**
@@ -664,20 +759,20 @@ export function mountLampWorld(container, opts) {
   const hemiSky = new THREE.HemisphereLight(0xd8ecff, 0xb0c4de, 0.85);
   scene.add(hemiSky);
   const skySun = new THREE.DirectionalLight(0xfff6e8, 0.95);
-  skySun.position.set(REALM_X.sky - 20, 40, 25);
+  skySun.position.set(REALM.sky.x - 20, REALM.sky.y + 30, REALM.sky.z + 40);
   scene.add(skySun);
 
   // 地下の冷たいネオンフィル
-  const ugFill = new THREE.PointLight(0x66fcf1, 1.4, 70);
-  ugFill.position.set(REALM_X.underground, 8, 10);
+  const ugFill = new THREE.PointLight(0x66fcf1, 1.6, 80);
+  ugFill.position.set(REALM.underground.x, REALM.underground.y + 12, REALM.underground.z + 8);
   scene.add(ugFill);
-  const ugFill2 = new THREE.PointLight(0xc084fc, 0.9, 55);
-  ugFill2.position.set(REALM_X.underground - 10, 4, -8);
+  const ugFill2 = new THREE.PointLight(0xc084fc, 1.0, 60);
+  ugFill2.position.set(REALM.underground.x - 12, REALM.underground.y + 4, REALM.underground.z - 6);
   scene.add(ugFill2);
 
   // 陸地の夕暮れ太陽光（長影）
   const landSun = new THREE.DirectionalLight(0xffb070, 2.1);
-  landSun.position.set(REALM_X.land + 35, 42, 18);
+  landSun.position.set(REALM.land.x + 35, 42, REALM.land.z + 28);
   landSun.castShadow = true;
   landSun.shadow.mapSize.set(2048, 2048);
   landSun.shadow.camera.near = 5;
@@ -691,51 +786,50 @@ export function mountLampWorld(container, opts) {
   const landAmb = new THREE.HemisphereLight(0xffd2a8, 0x3a2818, 0.35);
   scene.add(landAmb);
 
-  // 領域床
+  // 領域床（箱庭の各層）
   const skyFloor = new THREE.Mesh(
-    new THREE.CircleGeometry(42, 64),
-    new THREE.MeshStandardMaterial({ color: 0x9ec9f0, transparent: true, opacity: 0.22, roughness: 1, metalness: 0 })
+    new THREE.CircleGeometry(48, 64),
+    new THREE.MeshStandardMaterial({ color: 0x9ec9f0, transparent: true, opacity: 0.18, roughness: 1, metalness: 0 })
   );
   skyFloor.rotation.x = -Math.PI / 2;
-  skyFloor.position.set(REALM_X.sky, -1.5, 0);
+  skyFloor.position.set(REALM.sky.x, 18, REALM.sky.z);
   scene.add(skyFloor);
 
   const ugFloor = new THREE.Mesh(
-    new THREE.PlaneGeometry(55, 40),
+    new THREE.PlaneGeometry(58, 42),
     new THREE.MeshStandardMaterial({ color: 0x0a0b10, roughness: 0.9, metalness: 0.6 })
   );
   ugFloor.rotation.x = -Math.PI / 2;
-  ugFloor.position.set(REALM_X.underground, -0.05, 0);
+  ugFloor.position.set(REALM.underground.x, REALM.underground.y - 6, REALM.underground.z);
   ugFloor.receiveShadow = true;
   scene.add(ugFloor);
 
-  // industrial grid lines
   {
     const grid = new THREE.GridHelper(50, 20, 0x1f3a3a, 0x12161c);
-    grid.position.set(REALM_X.underground, 0.02, 0);
+    grid.position.set(REALM.underground.x, REALM.underground.y - 5.9, REALM.underground.z);
     grid.material.transparent = true;
     grid.material.opacity = 0.45;
     scene.add(grid);
   }
 
   const landGround = new THREE.Mesh(
-    new THREE.CircleGeometry(48, 64),
+    new THREE.CircleGeometry(52, 64),
     new THREE.MeshStandardMaterial({ color: 0x5a7a3a, roughness: 0.92, metalness: 0.05 })
   );
   landGround.rotation.x = -Math.PI / 2;
-  landGround.position.set(REALM_X.land, -0.02, 0);
+  landGround.position.set(REALM.land.x, -0.02, REALM.land.z);
   landGround.receiveShadow = true;
   scene.add(landGround);
 
-  // 雲パーティクル（空エリア）
+  // 雲パーティクル（空エリア上空）
   const cloudGroup = new THREE.Group();
   {
     const count = 90;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = REALM_X.sky + (hash01(i, 1) - 0.5) * 70;
-      pos[i * 3 + 1] = 2 + hash01(i, 2) * 16;
-      pos[i * 3 + 2] = (hash01(i, 3) - 0.5) * 36;
+      pos[i * 3] = REALM.sky.x + (hash01(i, 1) - 0.5) * 70;
+      pos[i * 3 + 1] = REALM.sky.y - 8 + hash01(i, 2) * 22;
+      pos[i * 3 + 2] = REALM.sky.z + (hash01(i, 3) - 0.5) * 40;
     }
     const clouds = new THREE.Points(
       new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(pos, 3)),
@@ -748,9 +842,9 @@ export function mountLampWorld(container, opts) {
         new THREE.MeshStandardMaterial({ color: 0xf5faff, transparent: true, opacity: 0.18, roughness: 1, depthWrite: false })
       );
       puff.position.set(
-        REALM_X.sky + (hash01(i, 5) - 0.5) * 55,
-        4 + hash01(i, 6) * 10,
-        (hash01(i, 7) - 0.5) * 28
+        REALM.sky.x + (hash01(i, 5) - 0.5) * 55,
+        REALM.sky.y - 4 + hash01(i, 6) * 14,
+        REALM.sky.z + (hash01(i, 7) - 0.5) * 32
       );
       puff.scale.set(1.6 + hash01(i, 8), 0.7, 1.2);
       cloudGroup.add(puff);
@@ -758,14 +852,13 @@ export function mountLampWorld(container, opts) {
   }
   scene.add(cloudGroup);
 
-  // soft stars / dust across the corridor
   {
     const n = 220;
     const pos = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) {
-      pos[i * 3] = (hash01(i, 9) - 0.5) * 220;
-      pos[i * 3 + 1] = 8 + hash01(i, 10) * 40;
-      pos[i * 3 + 2] = (hash01(i, 11) - 0.5) * 80;
+      pos[i * 3] = (hash01(i, 9) - 0.5) * 160;
+      pos[i * 3 + 1] = -20 + hash01(i, 10) * 80;
+      pos[i * 3 + 2] = -70 + hash01(i, 11) * 100;
     }
     scene.add(new THREE.Points(
       new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(pos, 3)),
@@ -773,27 +866,28 @@ export function mountLampWorld(container, opts) {
     ));
   }
 
-  // layout positions along X realms
+  // 箱庭レイアウト
   const byRealm = { sky: [], underground: [], land: [] };
   nodes.forEach(n => {
     const r = n.realm || 'sky';
     if (!byRealm[r]) byRealm[r] = [];
     byRealm[r].push(n);
   });
-  layoutRealmPositions(byRealm.sky, REALM_X.sky, 'sky');
-  layoutRealmPositions(byRealm.underground, REALM_X.underground, 'underground');
-  layoutRealmPositions(byRealm.land, REALM_X.land, 'land');
+  layoutAllRealms(byRealm);
 
   const islandGroup = new THREE.Group();
   scene.add(islandGroup);
   const meshByKey = new Map();
   const worldPositions = [];
+  const bridgeGroup = new THREE.Group();
+  scene.add(bridgeGroup);
 
   nodes.forEach((n, i) => {
     const pos = n._pos || new THREE.Vector3(0, 0, 0);
     worldPositions.push(pos.clone());
     const mesh = createIslandMesh(n);
     mesh.position.copy(pos);
+    mesh.scale.setScalar(mesh.userData.highlightScale || 1);
     mesh.userData.index = i;
     mesh.userData.baseY = pos.y;
     islandGroup.add(mesh);
@@ -804,15 +898,41 @@ export function mountLampWorld(container, opts) {
     n._deckY = mesh.userData.deckY;
   });
 
-  if (worldPositions.length >= 2) {
-    const curve = new THREE.CatmullRomCurve3(worldPositions, false, 'catmullrom', 0.2);
-    const tube = new THREE.Mesh(
-      new THREE.TubeGeometry(curve, Math.max(64, worldPositions.length * 12), 0.1, 6, false),
-      new THREE.MeshStandardMaterial({
-        color: 0xe8c56a, emissive: 0x5a3a10, emissiveIntensity: 0.35, roughness: 0.4, metalness: 0.45, transparent: true, opacity: 0.85
-      })
-    );
-    scene.add(tube);
+  // 空の一本道: 港→島1→…→島17 を光の橋で接続
+  {
+    const skyRoute = [];
+    const hub = (byRealm.sky || []).find(n => n.kind === 'hub');
+    if (hub && hub._pos) skyRoute.push(hub);
+    (byRealm.sky || [])
+      .filter(n => n.kind === 'domain')
+      .sort((a, b) => (a._routeIndex || 0) - (b._routeIndex || 0))
+      .forEach(n => skyRoute.push(n));
+    for (let i = 0; i < skyRoute.length - 1; i++) {
+      const a = skyRoute[i];
+      const b = skyRoute[i + 1];
+      if (!a._pos || !b._pos) continue;
+      const lit = a.state === 'cleared' || a.state === 'current' || b.state === 'current' || a.kind === 'hub';
+      bridgeGroup.add(createLightBridge(a._pos, b._pos, lit && b.state !== 'fog'));
+    }
+  }
+
+  // 領域をつなぐ薄いガイドライン（俯瞰用）
+  {
+    const anchors = [
+      REALM.land,
+      { x: REALM.sky.x - 32, y: 20, z: REALM.sky.z + 16 },
+      REALM.underground
+    ].map(p => new THREE.Vector3(p.x, p.y, p.z));
+    if (anchors.length >= 2) {
+      const curve = new THREE.CatmullRomCurve3(anchors, false, 'catmullrom', 0.4);
+      const guide = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 48, 0.08, 6, false),
+        new THREE.MeshStandardMaterial({
+          color: 0xe8c56a, emissive: 0x5a3a10, emissiveIntensity: 0.25, transparent: true, opacity: 0.35, roughness: 0.45, metalness: 0.4
+        })
+      );
+      scene.add(guide);
+    }
   }
 
   let avatar = createAvatar(playerLevel);
@@ -824,7 +944,7 @@ export function mountLampWorld(container, opts) {
 
   // hub realm gates
   const hubNode = nodes.find(n => n.kind === 'hub');
-  const hubPos = (hubNode && hubNode._pos) ? hubNode._pos.clone() : new THREE.Vector3(REALM_X.sky, 5, 0);
+  const hubPos = (hubNode && hubNode._pos) ? hubNode._pos.clone() : new THREE.Vector3(REALM.sky.x - 32, 20, REALM.sky.z + 16);
   const gateGroup = new THREE.Group();
   scene.add(gateGroup);
   const realmGates = [];
@@ -859,8 +979,8 @@ export function mountLampWorld(container, opts) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
 
-  const camTarget = new THREE.Vector3(REALM_X.sky, 4, 0);
-  const camPos = new THREE.Vector3(REALM_X.sky, 28, 52);
+  const camTarget = new THREE.Vector3(REALM.land.x, 4, REALM.land.z);
+  const camPos = new THREE.Vector3(REALM.land.x, 28, 55);
   camera.position.copy(camPos);
 
   // postprocessing bloom（地下で強く）
@@ -969,16 +1089,49 @@ export function mountLampWorld(container, opts) {
     };
   }
 
-  /** X 方向スライドで領域へ */
+  /** 領域へ立体移動（X/Y/Z すべて変化） */
   function slideToRealm(realm, duration) {
-    const x = REALM_X[realm] != null ? REALM_X[realm] : 0;
-    const lookY = realm === 'sky' ? 5 : realm === 'land' ? 3 : 2;
-    focusCameraOn(new THREE.Vector3(x, lookY, 0), realm === 'sky' ? 36 : 32, realm === 'land' ? 22 : 18, duration);
+    const look = realmLook(realm);
+    const shots = {
+      sky: { dist: 42, height: 18 },
+      land: { dist: 38, height: 22 },
+      underground: { dist: 36, height: 14 }
+    };
+    const s = shots[realm] || shots.land;
+    // 上空／地下ではカメラも高さ・奥行きを振る
+    const toLook = look.clone();
+    const toPos = look.clone().add(new THREE.Vector3(
+      realm === 'underground' ? 18 : realm === 'sky' ? -8 : 8,
+      s.height,
+      s.dist
+    ));
+    userOrbit = false;
+    if (reduced || !duration) {
+      camPos.copy(toPos);
+      camTarget.copy(toLook);
+      setOrbitFromCamera();
+      return;
+    }
+    anim = {
+      kind: 'cam',
+      t0: performance.now(),
+      dur: duration,
+      fromPos: camPos.clone(),
+      toPos,
+      fromLook: camTarget.clone(),
+      toLook
+    };
+  }
+
+  function realmLook(realm) {
+    if (realm === 'sky') return new THREE.Vector3(REALM.sky.x - 5, REALM.sky.y, REALM.sky.z);
+    if (realm === 'underground') return new THREE.Vector3(REALM.underground.x, REALM.underground.y + 2, REALM.underground.z);
+    return new THREE.Vector3(REALM.land.x, 3, REALM.land.z);
   }
 
   function restoreWorldOpacity() {
     islandGroup.children.forEach(ch => {
-      ch.scale.setScalar(1);
+      ch.scale.setScalar(ch.userData.highlightScale || 1);
       ch.traverse(o => {
         if (o.isMesh && o.material && o.userData._op != null) {
           o.material.opacity = o.userData._op;
@@ -997,10 +1150,10 @@ export function mountLampWorld(container, opts) {
       restoreWorldOpacity();
       if (opts.onModeChange) opts.onModeChange('world', null);
     }
-    // 三領域を一望（やや南から）
+    // 箱庭全体を斜め上から一望（陸・空・地下の奥行きが見える）
     userOrbit = false;
-    const toLook = new THREE.Vector3(0, 3, 0);
-    const toPos = new THREE.Vector3(0, 55, 130);
+    const toLook = new THREE.Vector3(0, 4, -22);
+    const toPos = new THREE.Vector3(55, 72, 95);
     if (reduced || duration === 0) {
       camPos.copy(toPos);
       camTarget.copy(toLook);
@@ -1251,10 +1404,12 @@ export function mountLampWorld(container, opts) {
     if (mode !== 'world') return;
     dragState.x = ev.clientX;
     dragState.y = ev.clientY;
-    // 水平ドラッグは主に X スライド（領域間移動感）
-    camTarget.x = THREE.MathUtils.clamp(camTarget.x - dx * 0.085, REALM_X.sky - 35, REALM_X.land + 35);
-    orbitAz -= dx * 0.0025;
-    orbitEl = THREE.MathUtils.clamp(orbitEl - dy * 0.004, 0.28, 1.25);
+    // 水平: 領域横断、垂直ドラッグ: 高さ（空⇄陸⇄地下）を感じるパン
+    camTarget.x = THREE.MathUtils.clamp(camTarget.x - dx * 0.07, -70, 70);
+    camTarget.z = THREE.MathUtils.clamp(camTarget.z + dx * 0.02 - dy * 0.01, -75, 25);
+    camTarget.y = THREE.MathUtils.clamp(camTarget.y + dy * 0.05, -40, 45);
+    orbitAz -= dx * 0.002;
+    orbitEl = THREE.MathUtils.clamp(orbitEl - dy * 0.0035, 0.28, 1.25);
     applyOrbitFromSpherical();
   });
   function endDrag(ev) {
@@ -1282,16 +1437,32 @@ export function mountLampWorld(container, opts) {
     const dt = clock.getDelta();
     pulseT += dt;
 
-    // sky float
+    // sky float + focus pulse
     islandGroup.children.forEach(ch => {
       if (ch.userData.float && mode !== 'island') {
         const base = ch.userData.baseY || 0;
         ch.position.y = base + Math.sin(pulseT * (ch.userData.floatSpeed || 0.7) + (ch.userData.floatPhase || 0)) * (ch.userData.floatAmp || 0.35);
       }
+      if (ch.userData.highlight && mode !== 'island') {
+        const pulse = 1 + Math.sin(pulseT * 2.2) * 0.04;
+        ch.scale.setScalar((ch.userData.highlightScale || 1.25) * pulse);
+      }
+      if (ch.userData.haloRing) {
+        ch.userData.haloRing.rotation.z = pulseT * 0.6;
+        if (ch.userData.haloRing.material) {
+          ch.userData.haloRing.material.emissiveIntensity = 1.3 + Math.sin(pulseT * 3) * 0.4;
+        }
+      }
       const flame = ch.userData.flame;
       if (flame && flame.material && flame.material.emissiveIntensity != null) {
-        const baseE = ch.userData.node && (ch.userData.node.state === 'cleared' || ch.userData.node.state === 'current') ? 1.5 : 0.9;
+        const baseE = ch.userData.highlight ? 2.0 : (ch.userData.node && (ch.userData.node.state === 'cleared' || ch.userData.node.state === 'current') ? 1.5 : 0.9);
         flame.material.emissiveIntensity = baseE + Math.sin(pulseT * 3.2 + (ch.userData.index || 0)) * 0.25;
+      }
+    });
+
+    bridgeGroup.children.forEach((br, i) => {
+      if (br.material && br.userData.lit) {
+        br.material.emissiveIntensity = 1.4 + Math.sin(pulseT * 2.5 + i) * 0.35;
       }
     });
 
@@ -1333,15 +1504,16 @@ export function mountLampWorld(container, opts) {
       applyOrbitFromSpherical();
     }
 
-    // bloom: stronger near underground
-    const nearUg = 1 - Math.min(1, Math.abs(camTarget.x - REALM_X.underground) / 55);
+    // bloom: 地下アンカーとの距離で強弱
+    const ugDist = camTarget.distanceTo(new THREE.Vector3(REALM.underground.x, REALM.underground.y, REALM.underground.z));
+    const nearUg = 1 - Math.min(1, ugDist / 70);
     bloomPass.strength = 0.25 + nearUg * 1.55;
     bloomPass.threshold = 0.55 - nearUg * 0.25;
 
-    // fog / bg tint by realm proximity
-    const skyW = Math.max(0, 1 - Math.abs(camTarget.x - REALM_X.sky) / 70);
-    const landW = Math.max(0, 1 - Math.abs(camTarget.x - REALM_X.land) / 70);
-    const ugW = Math.max(0, 1 - Math.abs(camTarget.x - REALM_X.underground) / 70);
+    // fog / bg tint by 3D proximity
+    const skyW = Math.max(0, 1 - camTarget.distanceTo(new THREE.Vector3(REALM.sky.x, REALM.sky.y, REALM.sky.z)) / 75);
+    const landW = Math.max(0, 1 - camTarget.distanceTo(new THREE.Vector3(REALM.land.x, REALM.land.y, REALM.land.z)) / 55);
+    const ugW = nearUg;
     const bg = new THREE.Color(0x0a1428);
     bg.lerp(new THREE.Color(0x7eb6e8), skyW * 0.45);
     bg.lerp(new THREE.Color(0x08060f), ugW * 0.55);
