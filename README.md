@@ -18,18 +18,9 @@
 
 | 開き方 | 説明 |
 |--------|------|
-| **Vercel（おすすめ・Private でも可）** | [vercel.com](https://vercel.com) で GitHub 連携 → このリポジトリを Import。**Framework: Other**（`vercel.json` が `docs/` をそのまま公開）。公開 URL は `https://<project>.vercel.app/map.html`。コードは Private のまま、地図だけ URL で開けます。 |
-| GitHub Pages | Public リポジトリ（または Private + Pages 有料）向け。[設定後](https://educoder-lab.github.io/Lamp-archipelago/map.html) |
-| ローカル `.\Show-Map.ps1` | `.adventure-save.json` を `docs/save-data.js` に同期してから開く。**灯・迂回・称号**が地図に反映されます（Vercel 上には進捗は載りません）。 |
-| `docs/map.html` | クローン先でダブルクリック（記録なし）。 |
-
-### Vercel の手順（初回だけ）
-
-1. Vercel にログイン → **Add New → Project** → `Lamp-archipelago` を Import（Private リポジトリへのアクセスを許可）。
-2. **Build Command** は空、**Output Directory** は `docs`（ルートの `vercel.json` が同じ内容ならそのまま Deploy）。
-3. 完了後 **`/map.html`** を開く。講座の「用語」「問題」は **GitHub 上の README / PROBLEMS**（要 GitHub ログインで Private 閲覧可）にリンクします。
-
-**注意**: Vercel の URL 自体は通常 **誰でも開ける**公開 URL です。教材本文まで隠すなら Vercel の Password Protection（Pro）か、地図はローカルのみにしてください。
+| **ローカル（おすすめ）** `.\Show-Map.ps1` | `.adventure-save.json` を `docs/save-data.js` に同期してから地図を開きます。**灯・迂回・称号**が反映されます。 |
+| **GitHub Pages** | [map.html](https://educoder-lab.github.io/Lamp-archipelago/map.html)（進捗は載りません。初回は **Settings → Pages → GitHub Actions** を有効化し、Actions のデプロイが成功していること） |
+| ファイル `docs/map.html` | ダブルクリックでも動きます（記録なし）。 |
 
 ## はじめ方
 
