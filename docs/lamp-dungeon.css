@@ -21,43 +21,92 @@
   image-rendering: auto;
 }
 
-.lamp-dungeon-dpad {
+/* 右下: 盾・剣・精神レベル */
+.lamp-growth-hud {
   position: absolute;
   right: 12px;
-  bottom: 52px;
+  bottom: 12px;
+  z-index: 4;
+  display: grid;
+  gap: 6px;
+  min-width: 148px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid #343a6b;
+  background: rgba(12, 14, 28, 0.88);
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+.lamp-growth-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+.lamp-growth-row img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #0b0e1f;
+}
+.lamp-growth-row .g-name {
+  font-size: 12px;
+  color: #c8c4e0;
+  font-weight: 700;
+}
+.lamp-growth-row .g-lv {
+  font-size: 12px;
+  font-weight: 800;
+  color: #f5c451;
+  letter-spacing: 0.04em;
+}
+.lamp-growth-row[data-key="shield"] .g-lv { color: #f0a030; }
+.lamp-growth-row[data-key="sword"] .g-lv { color: #c59bff; }
+.lamp-growth-row[data-key="spirit"] .g-lv { color: #7fd1a8; }
+
+/* 扉ナビ（部屋シーンのみ） */
+.lamp-door-nav {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
   z-index: 4;
   display: none;
-  grid-template-columns: 48px 48px 48px;
-  grid-template-rows: 40px 40px;
-  gap: 4px;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(520px, calc(100% - 24px));
   pointer-events: auto;
 }
-
-@media (max-width: 900px), (pointer: coarse) {
-  .lamp-dungeon-dpad {
-    display: grid;
-  }
-  .lamp-dungeon-dpad button:nth-child(1) { grid-column: 2; }
-  .lamp-dungeon-dpad button:nth-child(2) { grid-column: 1; grid-row: 2; }
-  .lamp-dungeon-dpad button:nth-child(3) { grid-column: 2; grid-row: 2; }
-  .lamp-dungeon-dpad button:nth-child(4) { grid-column: 3; grid-row: 2; }
-}
-
-.lamp-dungeon-dpad button {
+.lamp-door-nav.show { display: flex; }
+.lamp-door-nav button {
   font: inherit;
-  font-size: 14px;
-  padding: 0;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 10px;
   border-radius: 8px;
   border: 1px solid #343a6b;
   background: rgba(31, 36, 71, 0.92);
   color: #ece9f5;
   cursor: pointer;
-  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-
-.lamp-dungeon-dpad button:active {
+.lamp-door-nav button:hover { border-color: #7fd1ff; }
+.lamp-door-nav button.primary {
   border-color: #7fd1ff;
-  background: rgba(94, 200, 255, 0.2);
+  color: #dff6ff;
+}
+.lamp-door-nav kbd {
+  font: inherit;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid #4a5078;
+  background: #0b0e1f;
+  color: #9aa0c4;
 }
 
 @media (prefers-reduced-motion: reduce) {

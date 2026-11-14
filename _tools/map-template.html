@@ -110,6 +110,10 @@ ul.lessons a:hover { color: var(--ink); }
 .hm-growth-label { min-width: 72px; color: var(--ink); }
 .hm-growth-bar { flex: 1; height: 8px; background: #0b0e1f; border-radius: 4px; overflow: hidden; border: 1px solid #343a6b; }
 .hm-growth-bar i { display: block; height: 100%; }
+.world-hint {
+  left: 12px; right: auto; bottom: auto; top: 52px;
+  max-width: min(280px, calc(100% - 24px));
+}
 @media (max-width: 900px) {
   header h1 { font-size: 14px; }
   .say-box { left: 8px; right: auto; bottom: 8px; width: min(360px, calc(100% - 16px)); max-height: min(32vh, 200px); }
@@ -122,7 +126,6 @@ ul.lessons a:hover { color: var(--ink); }
 <body>
 <header>
   <h1>三つの扉</h1>
-  <span class="stat">Lv <b id="h-level">1</b><span class="xp-bar"><i id="h-xp"></i></span></span>
   <span class="stat stat-lamp"><img src="assets/common/icon-lamp.png" alt="" width="16" height="16">灯 <b id="h-lamps"></b><span class="bar"><i id="h-bar"></i></span></span>
   <span class="stat" id="h-name" hidden></span>
   <span class="stat" id="h-titles" hidden></span>
@@ -140,7 +143,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground"><img src="assets/common/icon-sword.png" alt="">剣</button>
       <button type="button" class="world-nav-btn" data-nav="hub">間</button>
     </div>
-    <div class="world-hint" id="world-hint">←盾　扉↑　剣→　老人に話す</div>
+    <div class="world-hint" id="world-hint">[ ] 前後の扉　F この扉　←盾　剣→</div>
     <div class="say-box" id="say-box" role="dialog" aria-live="polite">
       <div class="say-speaker" id="say-speaker"></div>
       <div class="say-text" id="say-text"></div>
@@ -376,8 +379,6 @@ const layoutW = MAP_W;
 const layoutH = MAP_H;
 
 document.getElementById('h-name').textContent = SAVE.displayName || '旅人';
-document.getElementById('h-level').textContent = String(SAVE.level || 1);
-document.getElementById('h-xp').style.width = (LampSave.xpProgress(SAVE) * 100) + '%';
 document.getElementById('h-lamps').textContent = cleared.size + '/' + lessons.length;
 document.getElementById('h-bar').style.width = (lessons.length ? cleared.size / lessons.length * 100 : 0) + '%';
 document.getElementById('h-titles').textContent = String((SAVE.titles || []).length);
@@ -895,7 +896,6 @@ function showLevelUp(level, titles) {
   sub.textContent = msg;
   ov.classList.add('show');
   if (worldApi && worldApi.setAvatarLevel) worldApi.setAvatarLevel(level);
-  document.getElementById('h-level').textContent = String(level);
   document.getElementById('lv-ok').onclick = () => ov.classList.remove('show');
 }
 
@@ -911,7 +911,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=11';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=12';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }

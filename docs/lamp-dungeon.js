@@ -72,16 +72,28 @@ function drawArt(ctx, img, x, y, w, h) {
   return true;
 }
 
-/** 背景の空きニッチに扉をピッタリはめ込む矩形（拠点／部屋） */
+/** 背景の空きニッチに扉をピッタリはめ込む矩形（拠点／部屋／剣は下延長） */
 function doorNicheRect(W, H, kind) {
   if (kind === 'hub') {
     const w = W * 0.30;
     const h = H * 0.76;
     return { x: W * 0.5 - w / 2, y: H * 0.045, w, h };
   }
+  if (kind === 'sword') {
+    const w = W * 0.32;
+    const h = H * 0.88;
+    return { x: W * 0.5 - w / 2, y: H * 0.02, w, h };
+  }
   const w = W * 0.305;
   const h = H * 0.80;
   return { x: W * 0.5 - w / 2, y: H * 0.025, w, h };
+}
+
+function growthLevelOf(g) {
+  const r = (g && g.ratio) || 0;
+  if (r >= 0.45) return 3;
+  if (r >= 0.15) return 2;
+  return 1;
 }
 
 /**
@@ -112,14 +124,24 @@ export function mountLampWorld(container, opts) {
   canvas.setAttribute('aria-label', '三つの扉の間');
   container.insertBefore(canvas, container.firstChild);
 
-  const dpad = document.createElement('div');
-  dpad.className = 'lamp-dungeon-dpad';
-  dpad.innerHTML = `
-    <button type="button" data-dir="up" aria-label="上">▲</button>
-    <button type="button" data-dir="left" aria-label="左">◀</button>
-    <button type="button" data-dir="down" aria-label="下">▼</button>
-    <button type="button" data-dir="right" aria-label="右">▶</button>`;
-  container.appendChild(dpad);
+  const growthHud = document.createElement('div');
+  growthHud.className = 'lamp-growth-hud';
+  growthHud.setAttribute('aria-label', '盾・剣・精神の成長');
+  growthHud.innerHTML = `
+    <div class="lamp-growth-row" data-key="shield"><img alt="" width="28" height="28"><span class="g-name">盾</span><span class="g-lv">Lv1</span></div>
+    <div class="lamp-growth-row" data-key="sword"><img alt="" width="28" height="28"><span class="g-name">剣</span><span class="g-lv">Lv1</span></div>
+    <div class="lamp-growth-row" data-key="spirit"><img alt="" width="28" height="28"><span class="g-name">精神</span><span class="g-lv">Lv1</span></div>`;
+  container.appendChild(growthHud);
+
+  const doorNav = document.createElement('div');
+  doorNav.className = 'lamp-door-nav';
+  doorNav.setAttribute('role', 'toolbar');
+  doorNav.setAttribute('aria-label', '扉ナビ');
+  doorNav.innerHTML = `
+    <button type="button" data-door="prev">◀ 前の扉 <kbd>[</kbd></button>
+    <button type="button" class="primary" data-door="current">この扉 <kbd>F</kbd></button>
+    <button type="button" data-door="next">次の扉 ▶ <kbd>]</kbd></button>`;
+  container.appendChild(doorNav);
 
   /** @type {'hub'|'room'|'map'|'path'} */
   let scene = 'hub';
@@ -315,10 +337,55 @@ export function mountLampWorld(container, opts) {
   }
   resize();
 
+  function growthIconSrc(key, level) {
+    const base = {
+      shield: ['common/icon-shield.png', 'common/icon-shield-mid.png', 'common/icon-shield-strong.png'],
+      sword: ['common/icon-sword.png', 'common/icon-sword-mid.png', 'common/icon-sword-strong.png'],
+      spirit: ['common/icon-spirit.png', 'common/icon-spirit-mid.png', 'common/icon-spirit-strong.png']
+    };
+    const list = base[key] || base.shield;
+    const idx = Math.max(0, Math.min(2, (level || 1) - 1));
+    return new URL(list[idx], HUB_ASSET_BASE).href;
+  }
+
+  function refreshGrowthHud() {
+    [
+      ['shield', growth.shield],
+      ['sword', growth.sword],
+      ['spirit', growth.spirit]
+    ].forEach(([key, g]) => {
+      const row = growthHud.querySelector('[data-key="' + key + '"]');
+      if (!row) return;
+      const lv = growthLevelOf(g);
+      const img = row.querySelector('img');
+      const lvEl = row.querySelector('.g-lv');
+      if (img) img.src = growthIconSrc(key, lv);
+      if (lvEl) lvEl.textContent = 'Lv' + lv;
+    });
+  }
+
   function setGrowth(g, open) {
     if (g) growth = g;
     if (open != null) landOpen = !!open;
+    refreshGrowthHud();
   }
+
+  function syncDoorNav() {
+    const show = scene === 'room' && mode !== 'island';
+    doorNav.classList.toggle('show', show);
+  }
+
+  function enterCurrentDoor() {
+    if (scene !== 'room') return;
+    if (mode === 'island') {
+      roomFocus = 'door';
+      return;
+    }
+    roomFocus = 'door';
+    interactRoom();
+  }
+
+  refreshGrowthHud();
 
   function nearestNode() {
     let best = null;
@@ -406,6 +473,7 @@ export function mountLampWorld(container, opts) {
     stagePads = [];
     focusKey = null;
     roomFocus = 'door';
+    syncDoorNav();
     if (opts.onModeChange) opts.onModeChange('world', null);
   }
 
@@ -585,57 +653,8 @@ export function mountLampWorld(container, opts) {
     });
   }
 
-  function drawGrowthHud(ctx) {
-    const bars = [
-      {
-        key: 'shield', label: '盾', color: '#f0a030', glow: '#ffe08a', g: growth.shield,
-        icon: growthIconTier(growth.shield) === 'strong' ? (hubArt.iconShieldStrong || hubArt.iconShieldMid || hubArt.iconShield)
-          : growthIconTier(growth.shield) === 'mid' ? (hubArt.iconShieldMid || hubArt.iconShield) : hubArt.iconShield
-      },
-      {
-        key: 'sword', label: '剣', color: '#a070ff', glow: '#e0d0ff', g: growth.sword,
-        icon: growthIconTier(growth.sword) === 'strong' ? (hubArt.iconSwordStrong || hubArt.iconSwordMid || hubArt.iconSword)
-          : growthIconTier(growth.sword) === 'mid' ? (hubArt.iconSwordMid || hubArt.iconSword) : hubArt.iconSword
-      },
-      {
-        key: 'spirit', label: '精神', color: '#40c080', glow: '#b8ffd0', g: growth.spirit,
-        icon: growthIconTier(growth.spirit) === 'strong' ? (hubArt.iconSpiritStrong || hubArt.iconSpiritMid || hubArt.iconSpirit)
-          : growthIconTier(growth.spirit) === 'mid' ? (hubArt.iconSpiritMid || hubArt.iconSpirit) : hubArt.iconSpirit
-      }
-    ];
-    const x0 = 12;
-    let y = 12;
-    bars.forEach(b => {
-      const ratio = Math.max(0, Math.min(1, b.g && b.g.ratio != null ? b.g.ratio : 0));
-      const pulse = 0.55 + Math.sin(pulseT * 4) * 0.2 * ratio;
-      ctx.fillStyle = 'rgba(10,14,28,0.82)';
-      ctx.fillRect(x0, y, 168, 22);
-      ctx.strokeStyle = b.color;
-      ctx.strokeRect(x0 + 0.5, y + 0.5, 167, 21);
-      if (!drawArt(ctx, b.icon, x0 + 4, y + 2, 18, 18)) {
-        ctx.fillStyle = '#ece9f5';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(b.label, x0 + 8, y + 15);
-      }
-      ctx.fillStyle = b.color;
-      ctx.globalAlpha = 0.35 + pulse * 0.5;
-      ctx.fillRect(x0 + 48, y + 5, Math.max(2, 100 * ratio), 12);
-      ctx.globalAlpha = 1;
-      if (ratio > 0) {
-        ctx.fillStyle = b.glow;
-        ctx.globalAlpha = 0.25 + pulse * 0.4;
-        ctx.fillRect(x0 + 48, y + 5, Math.max(2, 100 * ratio), 4);
-        ctx.globalAlpha = 1;
-      }
-      ctx.fillStyle = '#9aa0c4';
-      ctx.font = '10px sans-serif';
-      ctx.textAlign = 'left';
-      const c = (b.g && b.g.cleared) || 0;
-      const t = (b.g && b.g.total) || 0;
-      ctx.fillText(c + '/' + t, x0 + 138, y + 15);
-      y += 26;
-    });
+  function drawGrowthHud(_ctx) {
+    /* DOM の右下 HUD に移した */
   }
 
   function drawHeroSprite(ctx, W, H) {
@@ -775,8 +794,6 @@ export function mountLampWorld(container, opts) {
       door: landOpen ? 'Enter … 大扉' : 'Enter … まだ不十分'
     };
     ctx.fillText(hints[hubFocus] || '', W / 2, H - 18);
-
-    drawGrowthHud(ctx);
   }
 
   /** 道中も同じ後ろ姿構図（背景・扉セットだけ差し替え） */
@@ -816,7 +833,7 @@ export function mountLampWorld(container, opts) {
       ctx.fillRect(0, 0, W, H);
     }
 
-    const niche = doorNicheRect(W, H, 'room');
+    const niche = doorNicheRect(W, H, pack === 'sword' ? 'sword' : 'room');
     const doorW = niche.w;
     const doorH = niche.h;
     const doorX = niche.x;
@@ -1258,6 +1275,7 @@ export function mountLampWorld(container, opts) {
     roomPack = pack;
     scene = 'room';
     mode = 'island';
+    syncDoorNav();
     islandDomain = domain;
     focusKey = domain && domain.id;
     overview = false;
@@ -1283,6 +1301,7 @@ export function mountLampWorld(container, opts) {
     islandDomain = null;
     stagePads = [];
     focusKey = null;
+    syncDoorNav();
     if (opts.onModeChange) opts.onModeChange('world', null);
   }
 
@@ -1333,6 +1352,7 @@ export function mountLampWorld(container, opts) {
   function showOverview(duration) {
     scene = 'map';
     mode = 'world';
+    syncDoorNav();
     focusKey = null;
     islandDomain = null;
     stagePads = [];
@@ -1390,6 +1410,7 @@ export function mountLampWorld(container, opts) {
     roomFocus = 'door';
     scene = 'room';
     mode = 'world';
+    syncDoorNav();
     focusKey = target.d ? target.d.id : null;
     islandDomain = null;
     stagePads = [];
@@ -1413,6 +1434,7 @@ export function mountLampWorld(container, opts) {
   function returnToHub(duration) {
     scene = 'hub';
     mode = 'world';
+    syncDoorNav();
     islandDomain = null;
     stagePads = [];
     roomPack = null;
@@ -1454,6 +1476,25 @@ export function mountLampWorld(container, opts) {
       e.preventDefault();
       interact();
       return;
+    }
+    if (scene === 'room' && mode !== 'island') {
+      if (e.key === '[' || e.key === 'q' || e.key === 'Q') {
+        e.preventDefault();
+        shiftRoomDomain(-1);
+        roomFocus = 'door';
+        return;
+      }
+      if (e.key === ']' || e.key === 'e' || e.key === 'E') {
+        e.preventDefault();
+        shiftRoomDomain(1);
+        roomFocus = 'door';
+        return;
+      }
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        enterCurrentDoor();
+        return;
+      }
     }
     keys.add(e.key);
   }
@@ -1530,28 +1571,21 @@ export function mountLampWorld(container, opts) {
     }
   });
 
-  dpad.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-dir]');
-    if (!btn) return;
-    const d = btn.getAttribute('data-dir');
-    if (scene === 'hub') {
-      if (d === 'left') hubFocus = 'left';
-      if (d === 'right') hubFocus = 'right';
-      if (d === 'up') hubFocus = 'door';
-      if (d === 'down') hubFocus = 'elder';
+  doorNav.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-door]');
+    if (!btn || scene !== 'room') return;
+    const act = btn.getAttribute('data-door');
+    if (act === 'prev' && mode !== 'island') {
+      shiftRoomDomain(-1);
+      roomFocus = 'door';
       return;
     }
-    if (scene === 'room') {
-      if (d === 'left' && mode !== 'island') shiftRoomDomain(-1);
-      if (d === 'right' && mode !== 'island') shiftRoomDomain(1);
-      if (d === 'up') roomFocus = 'door';
-      if (d === 'down') {
-        roomFocus = 'back';
-        interactRoom();
-      }
+    if (act === 'next' && mode !== 'island') {
+      shiftRoomDomain(1);
+      roomFocus = 'door';
       return;
     }
-    if (scene === 'map' || overview) return;
+    if (act === 'current') enterCurrentDoor();
   });
 
   window.addEventListener('keydown', onKeyDown);
@@ -1588,7 +1622,8 @@ export function mountLampWorld(container, opts) {
       window.removeEventListener('keyup', onKeyUp);
       window.removeEventListener('resize', resize);
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
-      if (dpad.parentNode) dpad.parentNode.removeChild(dpad);
+      if (growthHud.parentNode) growthHud.parentNode.removeChild(growthHud);
+      if (doorNav.parentNode) doorNav.parentNode.removeChild(doorNav);
     }
   };
 }
