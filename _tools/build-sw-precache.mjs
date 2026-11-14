@@ -22,11 +22,19 @@ function walkPngs(dir, acc = []) {
 }
 
 const pngs = walkPngs(assetsRoot).sort();
+const domainBgDir = path.join(assetsRoot, 'rooms', 'domains');
+const domainBgs = fs.existsSync(domainBgDir)
+  ? fs.readdirSync(domainBgDir)
+    .filter((n) => /-bg\.jpe?g$/i.test(n))
+    .sort()
+    .map((n) => './assets/rooms/domains/' + n)
+  : [];
 const plates = [
   './assets/rooms/hub/bg.jpg',
   './assets/rooms/shield/bg.jpg',
   './assets/rooms/sword/bg.jpg',
   './assets/rooms/spirit/bg.jpg',
+  ...domainBgs,
   './assets/map/bg.jpg',
   './assets/common/say-frame.jpg',
   './assets/common/app-icon.jpg',
@@ -69,7 +77,7 @@ const all = [...core, ...pngs, ...plates];
 const body = all.map((p) => `  '${p}'`).join(',\n');
 
 const out = `/* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v35';
+const CACHE = 'lamp-archipelago-v36';
 const PRECACHE = [
 ${body}
 ];

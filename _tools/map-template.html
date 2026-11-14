@@ -907,7 +907,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=6';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=7';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }

@@ -184,7 +184,9 @@ export function mountLampWorld(container, opts) {
     iconSpiritMid: null,
     iconSpiritStrong: null,
     /** @type {Record<string, HTMLImageElement|null>} */
-    domainDoors: {}
+    domainDoors: {},
+    /** @type {Record<string, HTMLImageElement|null>} */
+    domainBgs: {}
   };
   let doorAnim = null;
   let clearDoorFlash = 0;
@@ -242,6 +244,9 @@ export function mountLampWorld(container, opts) {
     loadHubImage('common/icon-spirit-strong.png').then((i) => { hubArt.iconSpiritStrong = i; }),
     ...DOMAIN_DOOR_IDS.map((id) =>
       loadHubImage('rooms/domains/' + id + '.jpg').then((i) => { hubArt.domainDoors[id] = i; })
+    ),
+    ...DOMAIN_DOOR_IDS.map((id) =>
+      loadHubImage('rooms/domains/' + id + '-bg.jpg').then((i) => { hubArt.domainBgs[id] = i; })
     )
   ]).catch(() => {});
 
@@ -763,11 +768,12 @@ export function mountLampWorld(container, opts) {
     const W = canvas.width;
     const H = canvas.height;
     const pack = roomPack || 'shield';
-    const bgImg = pack === 'sword' ? hubArt.swordBg : pack === 'spirit' ? hubArt.spiritBg : hubArt.shieldBg;
+    const packBg = pack === 'sword' ? hubArt.swordBg : pack === 'spirit' ? hubArt.spiritBg : hubArt.shieldBg;
     const packDoor = pack === 'sword' ? hubArt.swordDoor : pack === 'spirit' ? hubArt.spiritDoor : hubArt.shieldDoor;
     const domainNode = currentRoomDomain();
     const domainId = domainNode && domainNode.d && domainNode.d.id;
     const domainCleared = !!(domainNode && domainNode.state === 'cleared');
+    const bgImg = (domainId && hubArt.domainBgs[domainId]) || packBg;
     let doorImg = (domainId && hubArt.domainDoors[domainId]) || packDoor;
     if (domainCleared && !(doorAnim || clearDoorFlash > 0)) {
       doorImg = hubArt.doorOpen2 || hubArt.doorAjar || doorImg;

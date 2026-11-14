@@ -28,7 +28,8 @@ docs/assets/
 | 主人公・成長 | `common/hero-*.png`（透過） | #3 |
 | UI | `common/icon-*.png`（盾／剣／精神／設定／地図／灯） | 第１弾 |
 | 拠点 | `rooms/hub/bg.jpg` ＋ 扉・老人・道口 `.png` | #4 |
-| 道タイプ | `{shield,sword,spirit}/bg.jpg` ＋ `door.png` | 第１弾 |
+| 道タイプ | `{shield,sword,spirit}/bg.jpg` ＋ `door.png` | 扉合わせ再生成 |
+| 分野部屋 | `domains/<id>.png` ＋ `<id>-bg.jpg` | 扉ごと背景 |
 | マップ | `map/bg.jpg`（案Aじゃばら確定）＋ピンPNG・`data/map-layout.json` | 確定 |
 | ムード正本 | `mood/chosen/hero-back-clean-rpg.jpg` · `great-door-ornate.jpg` | #3 / #4 |
 

@@ -33,7 +33,8 @@
 
 ## 優先度 C — 分野扉
 
-全 26 分野 → `rooms/domains/<id>.png` **済・透過**
+全 26 分野 → `rooms/domains/<id>.png` **済・透過**  
+分野背景 → `rooms/domains/<id>-bg.jpg` **済**（扉の色味に合わせた空きニッチのプレート）
 
 ## 優先度 D — マップ
 
