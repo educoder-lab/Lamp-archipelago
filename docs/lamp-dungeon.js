@@ -72,6 +72,18 @@ function drawArt(ctx, img, x, y, w, h) {
   return true;
 }
 
+/** 背景の空きニッチに扉をピッタリはめ込む矩形（拠点／部屋） */
+function doorNicheRect(W, H, kind) {
+  if (kind === 'hub') {
+    const w = W * 0.30;
+    const h = H * 0.70;
+    return { x: W * 0.5 - w / 2, y: H * 0.055, w, h };
+  }
+  const w = W * 0.305;
+  const h = H * 0.74;
+  return { x: W * 0.5 - w / 2, y: H * 0.03, w, h };
+}
+
 /**
  * @param {HTMLElement} container
  * @param {object} opts
@@ -709,12 +721,13 @@ export function mountLampWorld(container, opts) {
         : frame === 1 ? (hubArt.doorAjar || hubArt.doorOpen1)
         : (hubArt.doorOpen2 || hubArt.doorAjar || hubArt.doorClosed);
     }
-    const doorW = W * 0.3;
-    const doorH = H * 0.5;
-    const doorX = W * 0.5 - doorW / 2;
-    const doorY = H * 0.12;
+    const niche = doorNicheRect(W, H, 'hub');
+    const doorW = niche.w;
+    const doorH = niche.h;
+    const doorX = niche.x;
+    const doorY = niche.y;
     if (!drawArt(ctx, doorImg, doorX, doorY, doorW, doorH)) {
-      drawGreatDoor(ctx, W * 0.5, H * 0.18, W * 0.28, H * 0.48, doorOpen, doorLit, s);
+      drawGreatDoor(ctx, W * 0.5, doorY + H * 0.02, doorW * 0.95, doorH * 0.92, doorOpen, doorLit, s);
     } else if (doorLit) {
       ctx.strokeStyle = '#ffe08a';
       ctx.lineWidth = 3;
@@ -800,10 +813,11 @@ export function mountLampWorld(container, opts) {
       ctx.fillRect(0, 0, W, H);
     }
 
-    const doorW = W * 0.32;
-    const doorH = H * 0.52;
-    const doorX = W * 0.5 - doorW / 2;
-    const doorY = H * 0.1;
+    const niche = doorNicheRect(W, H, 'room');
+    const doorW = niche.w;
+    const doorH = niche.h;
+    const doorX = niche.x;
+    const doorY = niche.y;
     if (!drawArt(ctx, doorImg, doorX, doorY, doorW, doorH)) {
       ctx.fillStyle = '#2a1a10';
       ctx.fillRect(doorX, doorY, doorW, doorH);
@@ -811,7 +825,7 @@ export function mountLampWorld(container, opts) {
       ctx.strokeRect(doorX + 8, doorY + 8, doorW - 16, doorH - 16);
     }
     if (domainCleared) {
-      // 解錠済みの印（開いた扉＋金の光＋札）
+      // 解錠済みの印（開いた扉＋金の光＋札）— ニッチ内の同じ矩形に合わせる
       ctx.save();
       const glow = ctx.createRadialGradient(
         doorX + doorW * 0.5, doorY + doorH * 0.45, doorW * 0.08,
@@ -826,16 +840,17 @@ export function mountLampWorld(container, opts) {
       ctx.globalAlpha = 0.95;
       ctx.strokeRect(doorX - 6, doorY - 6, doorW + 12, doorH + 12);
       ctx.globalAlpha = 1;
+      const badgeY = doorY + doorH * 0.48;
       ctx.fillStyle = 'rgba(20, 28, 12, 0.88)';
-      ctx.fillRect(doorX + doorW * 0.18, doorY + doorH * 0.42, doorW * 0.64, 36);
+      ctx.fillRect(doorX + doorW * 0.18, badgeY, doorW * 0.64, 36);
       ctx.strokeStyle = clearAccent;
       ctx.lineWidth = 2;
-      ctx.strokeRect(doorX + doorW * 0.18, doorY + doorH * 0.42, doorW * 0.64, 36);
+      ctx.strokeRect(doorX + doorW * 0.18, badgeY, doorW * 0.64, 36);
       ctx.fillStyle = clearAccent;
       ctx.font = 'bold 16px "Segoe UI", "Yu Gothic UI", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('解錠済み', doorX + doorW * 0.5, doorY + doorH * 0.42 + 18);
+      ctx.fillText('解錠済み', doorX + doorW * 0.5, badgeY + 18);
       ctx.restore();
     }
     if (roomFocus === 'door') {
@@ -844,25 +859,27 @@ export function mountLampWorld(container, opts) {
       ctx.strokeRect(doorX - 4, doorY - 4, doorW + 8, doorH + 8);
     }
 
+    // 扉がニッチいっぱいに伸びるので、ラベルは扉下端ではなく手前帯に置く
     const title = (domainNode && domainNode.d && domainNode.d.title) || realmLabel;
+    const labelY = H * 0.545;
     ctx.fillStyle = 'rgba(10,14,28,0.8)';
-    ctx.fillRect(W / 2 - 160, doorY + doorH + 6, 320, 28);
+    ctx.fillRect(W / 2 - 160, labelY, 320, 28);
     ctx.fillStyle = domainCleared ? clearAccent : accent;
     ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(title + (domainCleared ? '　✓' : ''), W / 2, doorY + doorH + 25);
+    ctx.fillText(title + (domainCleared ? '　✓' : ''), W / 2, labelY + 19);
     if (domainNode && domainNode.state === 'fog') {
       ctx.fillStyle = '#9aa0c4';
       ctx.font = '11px sans-serif';
-      ctx.fillText('霧の中', W / 2, doorY + doorH + 42);
+      ctx.fillText('霧の中', W / 2, labelY + 36);
     } else if (domainCleared) {
       ctx.fillStyle = '#c8e090';
       ctx.font = '11px sans-serif';
-      ctx.fillText('この扉はすでに開いている', W / 2, doorY + doorH + 42);
+      ctx.fillText('この扉はすでに開いている', W / 2, labelY + 36);
     }
 
     if (mode === 'island' && stagePads.length) {
-      const y0 = H * 0.52;
+      const y0 = H * 0.78;
       stagePads.forEach((pad, i) => {
         const x = W * 0.5 + (i - (stagePads.length - 1) / 2) * 52;
         const col = pad.state === 'cleared' ? STATE_COLOR.cleared
@@ -1419,7 +1436,7 @@ export function mountLampWorld(container, opts) {
     const H = canvas.height;
     if (sx > W * 0.1 && sx < W * 0.36 && sy > H * 0.35 && sy < H * 0.82) return 'left';
     if (sx > W * 0.64 && sx < W * 0.9 && sy > H * 0.35 && sy < H * 0.82) return 'right';
-    if (sx > W * 0.36 && sx < W * 0.64 && sy > H * 0.12 && sy < H * 0.55) return 'door';
+    if (sx > W * 0.35 && sx < W * 0.65 && sy > H * 0.05 && sy < H * 0.72) return 'door';
     if (sx > W * 0.5 && sx < W * 0.72 && sy > H * 0.45 && sy < H * 0.7) return 'elder';
     if (sy > H * 0.7) return 'elder';
     return null;
