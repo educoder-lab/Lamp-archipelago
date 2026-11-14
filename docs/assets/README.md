@@ -1,7 +1,8 @@
 # docs/assets — マップ用ピクセル／ムード画
 
 公開マップ（`map.html`）と拠点シーン向けの画像置き場です。  
-トーンの正本は [../ART.md](../ART.md)。物語の正本は [../../WORLD.md](../../WORLD.md)。
+トーンの正本は [../ART.md](../ART.md)。物語の正本は [../../WORLD.md](../../WORLD.md)。  
+第１弾プロンプト: [PHASE1-PROMPTS.md](./PHASE1-PROMPTS.md)
 
 ## ディレクトリ
 
@@ -24,14 +25,18 @@ docs/assets/
 
 | 役割 | パス | 由来 |
 |------|------|------|
-| 主人公（後ろ姿・ドット） | `common/hero-back.jpg` | ムード案 #1 |
-| 大扉（封・装飾） | `rooms/hub/great-door-closed.jpg` | ムード案 #4 |
-| ムード正本コピー | `mood/chosen/hero-back-pixel.jpg` · `great-door-ornate.jpg` | 同上 |
+| 主人公（後ろ姿・きれいめ JRPG） | `common/hero-back.jpg` | ムード案 #3 → 第１弾 |
+| 主人公歩行 | `common/hero-walk-1.jpg` · `hero-walk-2.jpg` | 第１弾 |
+| 成長アイコン | `common/icon-shield.jpg` · `icon-sword.jpg` · `icon-spirit.jpg` | 第１弾 |
+| 大扉（閉／開） | `rooms/hub/great-door-closed.jpg` · `great-door-ajar.jpg` | ムード案 #4 → 第１弾 |
+| 老人・道口 | `rooms/hub/elder.jpg` · `path-shield.jpg` · `path-sword.jpg` | 第１弾 |
+| ムード正本コピー | `mood/chosen/hero-back-clean-rpg.jpg` · `great-door-ornate.jpg` | #3 / #4 |
 
-`mood/explore/` は第１弾実装の参照用アーカイブです。ゲーム本体からは読みません。
+`mood/explore/` は参照用アーカイブです。ゲーム本体からは読みません。  
+※ 生成ツールが JPG を返すため、本番ファイルも `.jpg`（同内容の `.png` 別名あり）。
 
 ## 命名
 
 - 小文字・ハイフン（例: `great-door-open.png`）
 - 状態があるものは接尾辞（`-closed` / `-open` / `-glow`）
-- 本番向けは最終的に透過 PNG またはスプライトシートへ寄せる（第１弾以降）
+- 本番向けは透過 PNG を優先（ムード JPG はフォールバック可）

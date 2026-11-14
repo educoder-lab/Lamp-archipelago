@@ -48,6 +48,24 @@ function pxRect(ctx, x, y, w, h, color, scale) {
   ctx.fillRect(Math.round(x * scale), Math.round(y * scale), Math.round(w * scale), Math.round(h * scale));
 }
 
+const HUB_ASSET_BASE = new URL('./assets/', import.meta.url);
+
+function loadHubImage(rel) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = new URL(rel, HUB_ASSET_BASE).href;
+  });
+}
+
+function drawArt(ctx, img, x, y, w, h) {
+  if (!img || !img.naturalWidth) return false;
+  ctx.drawImage(img, x, y, w, h);
+  return true;
+}
+
 /**
  * @param {HTMLElement} container
  * @param {object} opts
@@ -110,6 +128,34 @@ export function mountLampWorld(container, opts) {
   let pulseT = 0;
   let raf = 0;
   let hubFocus = 'elder'; // left | right | door | elder
+
+  /** 第１弾拠点アート（読み込み失敗時は手描きフォールバック） */
+  const hubArt = {
+    hero: null,
+    heroWalk1: null,
+    heroWalk2: null,
+    doorClosed: null,
+    doorAjar: null,
+    elder: null,
+    pathShield: null,
+    pathSword: null,
+    iconShield: null,
+    iconSword: null,
+    iconSpirit: null
+  };
+  Promise.all([
+    loadHubImage('common/hero-back.jpg').then((i) => { hubArt.hero = i; }),
+    loadHubImage('common/hero-walk-1.jpg').then((i) => { hubArt.heroWalk1 = i; }),
+    loadHubImage('common/hero-walk-2.jpg').then((i) => { hubArt.heroWalk2 = i; }),
+    loadHubImage('rooms/hub/great-door-closed.jpg').then((i) => { hubArt.doorClosed = i; }),
+    loadHubImage('rooms/hub/great-door-ajar.jpg').then((i) => { hubArt.doorAjar = i; }),
+    loadHubImage('rooms/hub/elder.jpg').then((i) => { hubArt.elder = i; }),
+    loadHubImage('rooms/hub/path-shield.jpg').then((i) => { hubArt.pathShield = i; }),
+    loadHubImage('rooms/hub/path-sword.jpg').then((i) => { hubArt.pathSword = i; }),
+    loadHubImage('common/icon-shield.jpg').then((i) => { hubArt.iconShield = i; }),
+    loadHubImage('common/icon-sword.jpg').then((i) => { hubArt.iconSword = i; }),
+    loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; })
+  ]).catch(() => {});
 
   function resize() {
     const r = container.getBoundingClientRect();
@@ -318,9 +364,9 @@ export function mountLampWorld(container, opts) {
 
   function drawGrowthHud(ctx) {
     const bars = [
-      { key: 'shield', label: '盾', color: '#f0a030', glow: '#ffe08a', g: growth.shield },
-      { key: 'sword', label: '剣', color: '#a070ff', glow: '#e0d0ff', g: growth.sword },
-      { key: 'spirit', label: '精神', color: '#40c080', glow: '#b8ffd0', g: growth.spirit }
+      { key: 'shield', label: '盾', color: '#f0a030', glow: '#ffe08a', g: growth.shield, icon: hubArt.iconShield },
+      { key: 'sword', label: '剣', color: '#a070ff', glow: '#e0d0ff', g: growth.sword, icon: hubArt.iconSword },
+      { key: 'spirit', label: '精神', color: '#40c080', glow: '#b8ffd0', g: growth.spirit, icon: hubArt.iconSpirit }
     ];
     const x0 = 12;
     let y = 12;
@@ -328,33 +374,36 @@ export function mountLampWorld(container, opts) {
       const ratio = Math.max(0, Math.min(1, b.g && b.g.ratio != null ? b.g.ratio : 0));
       const pulse = 0.55 + Math.sin(pulseT * 4) * 0.2 * ratio;
       ctx.fillStyle = 'rgba(10,14,28,0.82)';
-      ctx.fillRect(x0, y, 148, 22);
+      ctx.fillRect(x0, y, 168, 22);
       ctx.strokeStyle = b.color;
-      ctx.strokeRect(x0 + 0.5, y + 0.5, 147, 21);
+      ctx.strokeRect(x0 + 0.5, y + 0.5, 167, 21);
+      if (!drawArt(ctx, b.icon, x0 + 4, y + 2, 18, 18)) {
+        ctx.fillStyle = '#ece9f5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(b.label, x0 + 8, y + 15);
+      }
       ctx.fillStyle = b.color;
       ctx.globalAlpha = 0.35 + pulse * 0.5;
-      ctx.fillRect(x0 + 40, y + 5, Math.max(2, 100 * ratio), 12);
+      ctx.fillRect(x0 + 48, y + 5, Math.max(2, 100 * ratio), 12);
       ctx.globalAlpha = 1;
       if (ratio > 0) {
         ctx.fillStyle = b.glow;
         ctx.globalAlpha = 0.25 + pulse * 0.4;
-        ctx.fillRect(x0 + 40, y + 5, Math.max(2, 100 * ratio), 4);
+        ctx.fillRect(x0 + 48, y + 5, Math.max(2, 100 * ratio), 4);
         ctx.globalAlpha = 1;
       }
-      ctx.fillStyle = '#ece9f5';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText(b.label, x0 + 8, y + 15);
       ctx.fillStyle = '#9aa0c4';
       ctx.font = '10px sans-serif';
+      ctx.textAlign = 'left';
       const c = (b.g && b.g.cleared) || 0;
       const t = (b.g && b.g.total) || 0;
-      ctx.fillText(c + '/' + t, x0 + 118, y + 15);
+      ctx.fillText(c + '/' + t, x0 + 138, y + 15);
       y += 26;
     });
   }
 
-  /** 後ろ姿視点の拠点シーン（ドット絵） */
+  /** 後ろ姿視点の拠点シーン（第１弾アート＋手描きフォールバック） */
   function drawHubScene(ctx) {
     const W = canvas.width;
     const H = canvas.height;
@@ -383,24 +432,73 @@ export function mountLampWorld(container, opts) {
     }
     ctx.globalAlpha = 1;
 
-    // 左・盾の道（琥珀のアーチ）
+    // 左・盾の道 / 右・剣の道
     const leftLit = hubFocus === 'left';
-    drawPathArch(ctx, W * 0.14, H * 0.38, W * 0.22, H * 0.42, '#c47820', '#ffe08a', leftLit, '盾');
-    // 右・剣の道（紫銀）
     const rightLit = hubFocus === 'right';
-    drawPathArch(ctx, W * 0.64, H * 0.38, W * 0.22, H * 0.42, '#7040c0', '#d8c8ff', rightLit, '剣');
+    const pathW = W * 0.24;
+    const pathH = H * 0.36;
+    const pathY = H * 0.36;
+    if (!drawArt(ctx, hubArt.pathShield, W * 0.08, pathY, pathW, pathH)) {
+      drawPathArch(ctx, W * 0.14, H * 0.38, W * 0.22, H * 0.42, '#c47820', '#ffe08a', leftLit, '盾');
+    } else if (leftLit) {
+      ctx.strokeStyle = '#ffe08a';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(W * 0.08 + 2, pathY + 2, pathW - 4, pathH - 4);
+    }
+    if (!drawArt(ctx, hubArt.pathSword, W * 0.68, pathY, pathW, pathH)) {
+      drawPathArch(ctx, W * 0.64, H * 0.38, W * 0.22, H * 0.42, '#7040c0', '#d8c8ff', rightLit, '剣');
+    } else if (rightLit) {
+      ctx.strokeStyle = '#d8c8ff';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(W * 0.68 + 2, pathY + 2, pathW - 4, pathH - 4);
+    }
 
     // 正面の仰々しい大扉
     const doorOpen = landOpen;
     const doorLit = hubFocus === 'door';
-    drawGreatDoor(ctx, W * 0.5, H * 0.18, W * 0.28, H * 0.48, doorOpen, doorLit, s);
+    const doorImg = doorOpen ? (hubArt.doorAjar || hubArt.doorClosed) : hubArt.doorClosed;
+    const doorW = W * 0.3;
+    const doorH = H * 0.5;
+    const doorX = W * 0.5 - doorW / 2;
+    const doorY = H * 0.12;
+    if (!drawArt(ctx, doorImg, doorX, doorY, doorW, doorH)) {
+      drawGreatDoor(ctx, W * 0.5, H * 0.18, W * 0.28, H * 0.48, doorOpen, doorLit, s);
+    } else if (doorLit) {
+      ctx.strokeStyle = '#ffe08a';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(doorX - 4, doorY - 4, doorW + 8, doorH + 8);
+    }
 
     // 謎の老人（扉の右前）
     const elderLit = hubFocus === 'elder';
-    drawElder(ctx, W * 0.58, H * 0.52, s, elderLit);
+    const elderW = Math.min(W * 0.18, 140);
+    const elderH = elderW * 1.35;
+    const elderX = W * 0.58;
+    const elderY = H * 0.42;
+    if (!drawArt(ctx, hubArt.elder, elderX, elderY, elderW, elderH)) {
+      drawElder(ctx, W * 0.58, H * 0.52, s, elderLit);
+    } else {
+      if (elderLit) {
+        ctx.strokeStyle = '#7fd1ff';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(elderX - 2, elderY - 2, elderW + 4, elderH + 4);
+      }
+      ctx.fillStyle = '#c8c4e0';
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('謎の老人', elderX + elderW / 2, elderY + elderH + 14);
+    }
 
-    // 主人公の後ろ姿（手前中央）
-    drawHeroBack(ctx, W * 0.5, H * 0.78, s * 1.15, pulseT);
+    // 主人公の後ろ姿（手前中央）— 歩行フレーム切替
+    const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
+    const heroImg = walk || hubArt.hero;
+    const heroW = Math.min(W * 0.22, 160);
+    const heroH = heroW * 1.35;
+    const heroX = W * 0.5 - heroW / 2;
+    const heroY = H * 0.62 + Math.sin(pulseT * 2) * 2;
+    if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
+      drawHeroBack(ctx, W * 0.5, H * 0.78, s * 1.15, pulseT);
+    }
 
     // フォーカス枠ヒント
     ctx.fillStyle = 'rgba(10,14,28,0.75)';

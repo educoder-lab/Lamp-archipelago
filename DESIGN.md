@@ -121,7 +121,7 @@ docs/assets/
   mood/{chosen,explore}/  # ムード正本 / 不採用アーカイブ
 ```
 
-トーンは [docs/ART.md](./docs/ART.md)。採用: 主人公ドット後ろ姿・装飾封印の大扉。
+トーンは [docs/ART.md](./docs/ART.md)。採用: 主人公 #3 きれいめ JRPG・大扉 #4 装飾封印。
 
 ## AI 採点
 

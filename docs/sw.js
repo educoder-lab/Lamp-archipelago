@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v22';
+const CACHE = 'lamp-archipelago-v23';
 const PRECACHE = [
   './',
   './index.html',
@@ -24,7 +24,18 @@ const PRECACHE = [
   './data/quests.json',
   './data/refs.json',
   './data/hub-quest.json',
-  './data/slides/hub.json'
+  './data/slides/hub.json',
+  './assets/common/hero-back.jpg',
+  './assets/common/hero-walk-1.jpg',
+  './assets/common/hero-walk-2.jpg',
+  './assets/common/icon-shield.jpg',
+  './assets/common/icon-sword.jpg',
+  './assets/common/icon-spirit.jpg',
+  './assets/rooms/hub/great-door-closed.jpg',
+  './assets/rooms/hub/great-door-ajar.jpg',
+  './assets/rooms/hub/elder.jpg',
+  './assets/rooms/hub/path-shield.jpg',
+  './assets/rooms/hub/path-sword.jpg'
 ];
 
 self.addEventListener('install', (event) => {
