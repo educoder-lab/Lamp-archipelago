@@ -98,7 +98,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground">地下</button>
       <button type="button" class="world-nav-btn" data-nav="hub">灯台の港</button>
     </div>
-    <div class="world-hint">歩く／矢印キー · Enterで入る · 港を押すとメニュー · 光の道が進行ルート</div>
+    <div class="world-hint">港→空／地下 · 灯を点けると次の土地へ · 陸は最深部クリア後 · Enterで入る</div>
   </div>
 </main>
 <aside id="panel"></aside>
@@ -154,6 +154,7 @@ ul.lessons a:hover { color: var(--ink); }
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="save-data.js"></script>
 <script src="lamp-save.js"></script>
+<script src="lamp-progress.js"></script>
 <script src="lamp-cloud.js"></script>
 <script src="lamp-pwa.js"></script>
 <script>
@@ -164,7 +165,6 @@ const cleared = new Set(SAVE.clearedNos || []);
 const skipped = new Set((SAVE.skippedNos || []).filter(n => !cleared.has(n)));
 const missed = new Set(SAVE.missedNos || []);
 const lessons = DATA.lessons;
-const next = lessons.find(l => !cleared.has(l.no) && !skipped.has(l.no)) || null;
 let questsCache = null;
 
 async function loadQuests() {
@@ -221,17 +221,21 @@ function cmdBox(text) {
 }
 
 const domains = DATA.domains.map(d => {
-  const ls = lessons.filter(l => l.domain === d.id);
+  const ls = lessons.filter(l => l.domain === d.id).slice().sort((a, b) => a.no - b.no);
   const done = ls.filter(l => cleared.has(l.no)).length;
   return Object.assign({}, d, { lessons: ls, done, total: ls.length });
 });
-const nextDomainIdx = next ? domains.findIndex(d => d.id === next.domain) : domains.length;
-domains.forEach((d, i) => {
-  if (d.total > 0 && d.done === d.total) d.state = 'cleared';
-  else if (next && d.id === next.domain) d.state = 'current';
-  else if (i <= nextDomainIdx || d.done > 0 || d.lessons.some(l => skipped.has(l.no))) d.state = 'open';
-  else d.state = 'fog';
-});
+const progressGate = LampProgress.applyDomainStates(domains, cleared, null);
+const landOpen = progressGate.landOpen;
+const next = lessons.find(l => {
+  if (cleared.has(l.no) || skipped.has(l.no)) return false;
+  const dom = domains.find(d => d.id === l.domain);
+  return LampProgress.lessonPlayable(l, dom, cleared, skipped).ok;
+}) || null;
+if (next) {
+  const nd = domains.find(d => d.id === next.domain);
+  if (nd && nd.state === 'open') nd.state = 'current';
+}
 
 const COLS = 6, DX = 175, DY = 150, MX = 110, BAND_GAP = 46;
 const allDone = lessons.length > 0 && lessons.every(l => cleared.has(l.no));
@@ -304,7 +308,7 @@ function openHubModal() {
   meta.appendChild(el('span', { class: 'tag' }, '灯 ' + cleared.size + '/' + lessons.length));
   meta.appendChild(el('span', { class: 'tag' }, '復習 ' + missed.size + ' 件'));
   document.getElementById('hm-desc').textContent =
-    'ここは陸地の玄関。FE試験の手引きを学び、空・地下・陸地へ飛び、つまずいた封印を復習できます。';
+    'ここは旅の拠点。手引きのあと、空か地下へ出発できます。陸地は空と地下の最深部が灯ってから開きます。各土地では灯を点けると次へ進めます。';
 
   const learn = document.getElementById('hm-learn');
   learn.innerHTML = '';
@@ -328,11 +332,16 @@ function openHubModal() {
     ['overview', '全体図', '']
   ].forEach(pair => {
     const b = el('button', { type: 'button', class: pair[2] }, pair[1]);
+    if (pair[0] === 'land' && !landOpen) {
+      b.disabled = true;
+      b.title = progressGate.lockReason || 'まだ陸地は開いていません';
+      b.textContent = '陸地の台地へ（未開放）';
+    }
     b.onclick = () => {
       closeHubModal();
       if (!worldApi) return;
       if (pair[0] === 'overview') worldApi.showOverview();
-      else worldApi.travelToRealm(pair[0]);
+      else travelToRealmSafe(pair[0]);
     };
     travel.appendChild(b);
   });
@@ -355,10 +364,20 @@ function openHubModal() {
   document.getElementById('hub-overlay').classList.add('show');
 }
 
+function travelToRealmSafe(realm) {
+  const gate = LampProgress.realmAccessible(realm, landOpen);
+  if (!gate.ok) {
+    alert(gate.reason);
+    return;
+  }
+  if (worldApi) worldApi.travelToRealm(realm);
+}
+
 async function openLessonModal(noOrLesson) {
   const l = typeof noOrLesson === 'object' ? noOrLesson : lessons.find(x => x.no === noOrLesson);
   if (!l) return;
   const dom = domains.find(d => d.id === l.domain);
+  const play = LampProgress.lessonPlayable(l, dom, cleared, skipped);
   const st = lessonState(l);
   const stLabel = { cleared: 'クリア済み', skipped: '迂回中', next: '次の推奨', todo: '未挑戦' }[st];
   document.getElementById('qm-kicker').textContent = (dom ? dom.title : 'クエスト') + ' · ステージ概要';
@@ -368,6 +387,7 @@ async function openLessonModal(noOrLesson) {
   meta.appendChild(el('span', { class: 'tag ' + (st === 'next' ? 'current' : st === 'cleared' ? 'cleared' : st === 'skipped' ? '' : '') }, stLabel));
   if (dom) meta.appendChild(el('span', { class: 'tag' }, dom.exam || ''));
   if (missed.has(l.no)) meta.appendChild(el('span', { class: 'tag' }, '復習候補'));
+  if (!play.ok) meta.appendChild(el('span', { class: 'tag fog' }, '未開放'));
   const desc = document.getElementById('qm-desc');
   desc.textContent = '読み込み中…';
   const quote = document.getElementById('qm-quote');
@@ -377,13 +397,22 @@ async function openLessonModal(noOrLesson) {
     quote.textContent = (dom.npc ? dom.npc + ' — ' : '') + dom.enter;
   }
   const go = document.getElementById('qm-go');
-  go.href = lessonPlayHref(l.no);
-  go.textContent = st === 'cleared' ? 'もう一度挑戦する' : '挑戦する';
+  if (!play.ok) {
+    go.removeAttribute('href');
+    go.textContent = 'まだ挑戦できません';
+    go.onclick = (ev) => { ev.preventDefault(); alert(play.reason); };
+  } else {
+    go.onclick = null;
+    go.href = lessonPlayHref(l.no);
+    go.textContent = st === 'cleared' ? 'もう一度挑戦する' : '挑戦する';
+  }
   document.getElementById('quest-overlay').classList.add('show');
 
   const quests = await loadQuests();
   const full = (quests.lessons || []).find(q => q.courseNo === l.no || q.no === l.no);
-  if (full) {
+  if (!play.ok) {
+    desc.textContent = play.reason;
+  } else if (full) {
     const qCount = (full.questions && full.questions.length) || 0;
     let body = full.blurb ? full.blurb + '。' : (l.title + '。');
     if (dom && dom.synopsis) body += ' ' + dom.synopsis;
@@ -481,17 +510,25 @@ function showHome() {
   [
     ['overview', '全体図'],
     ['sky', '空へ'],
-    ['land', '陸へ'],
-    ['underground', '地下へ']
+    ['underground', '地下へ'],
+    ['land', '陸へ']
   ].forEach(pair => {
     const b = el('button', { class: 'panel-btn', type: 'button' }, pair[1]);
+    if (pair[0] === 'land' && !landOpen) {
+      b.disabled = true;
+      b.title = progressGate.lockReason || '';
+      b.textContent = '陸へ（未開放）';
+    }
     b.onclick = () => {
       if (!worldApi) return;
       if (pair[0] === 'overview') worldApi.showOverview();
-      else worldApi.travelToRealm(pair[0]);
+      else travelToRealmSafe(pair[0]);
     };
     realmRow.appendChild(b);
   });
+  if (!landOpen) {
+    panel.appendChild(el('div', { class: 'warn' }, progressGate.lockReason));
+  }
   panel.appendChild(realmRow);
 
   panel.appendChild(el('h3', null, 'いまの旅人'));
@@ -563,19 +600,21 @@ function showHome() {
   }
   panel.appendChild(el('h3', null, '凡例'));
   const lg = el('div', { class: 'legend' });
-  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧の中</div><div>ステージクリック → 概要 → 挑戦</div>';
+  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧（未開放）</div><div>港→空／地下。領域内は灯の順。陸は空・地下の最深部クリア後</div>';
   panel.appendChild(lg);
 }
 
-function lessonRow(l) {
+function lessonRow(l, domain) {
   const st = lessonState(l);
+  const play = LampProgress.lessonPlayable(l, domain, cleared, skipped);
   const li = el('li', { class: st === 'next' ? 'next' : '' });
-  li.appendChild(el('span', { class: 'mark ' + st }, { cleared: '✓', skipped: '↷', next: '▶', todo: '・' }[st]));
+  const mark = !play.ok && st !== 'cleared' ? '🔒' : { cleared: '✓', skipped: '↷', next: '▶', todo: '・' }[st];
+  li.appendChild(el('span', { class: 'mark ' + st }, mark));
   li.appendChild(el('span', null, pad(l.no) + '　' + l.title));
   const links = el('span');
-  const play = el('button', { type: 'button', class: 'copy', style: 'color:var(--open);font-weight:600;border-color:var(--open)' }, '概要');
-  play.onclick = (ev) => { ev.preventDefault(); openLessonModal(l); };
-  links.appendChild(play);
+  const playBtn = el('button', { type: 'button', class: 'copy', style: 'color:var(--open);font-weight:600;border-color:var(--open)' }, play.ok ? '概要' : '未開放');
+  playBtn.onclick = (ev) => { ev.preventDefault(); openLessonModal(l); };
+  links.appendChild(playBtn);
   links.appendChild(el('a', { href: repoLessonHref(l.path, 'PROBLEMS.md'), target: '_blank', rel: 'noopener' }, 'MD'));
   if (st === 'skipped') {
     const un = el('button', { class: 'copy', type: 'button', title: '迂回をやめる' }, '↩');
@@ -598,25 +637,31 @@ function showDomain(d) {
   panel.appendChild(back);
   panel.appendChild(el('h2', null, d.title));
   const tags = el('div');
-  const stLabel = { cleared: '灯が揃った', current: '挑戦中', open: '開いている', fog: '霧の中' }[d.state];
+  const stLabel = { cleared: '灯が揃った', current: '挑戦中', open: '開いている', fog: '霧（未開放）' }[d.state];
   tags.appendChild(el('span', { class: 'tag ' + d.state }, stLabel));
   tags.appendChild(el('span', { class: 'tag' }, d.exam));
   tags.appendChild(el('span', { class: 'tag' }, '灯 ' + d.done + '/' + d.total));
   panel.appendChild(tags);
+  if (d.state === 'fog') {
+    panel.appendChild(el('div', { class: 'warn' }, d.lockReason || 'この土地はまだ開いていません。手前の灯を点けてから来てください。'));
+    if (d.synopsis) panel.appendChild(el('div', { class: 'stat' }, d.synopsis));
+    if (worldApi && worldApi.getMode && worldApi.getMode() === 'island') worldApi.exitIsland();
+    return;
+  }
   if (d.enter) panel.appendChild(el('div', { class: 'quote' }, d.enter));
   panel.appendChild(el('div', { class: 'stat' }, '守り手: ' + d.npc + '　／　' + d.synopsis));
-  if (d.state === 'fog' && d.advisory) panel.appendChild(el('div', { class: 'warn' }, d.advisory));
-  else if (d.state === 'fog') panel.appendChild(el('div', { class: 'warn' }, '推奨順ではまだ先の土地です。入ることはできますが、手前の土地から進むと物語がつながります。'));
   if (d.award) {
     panel.appendChild(el('h3', null, '完走の称号'));
     const t = el('div', { class: 'titles' }); t.appendChild(el('span', null, d.award)); panel.appendChild(t);
   }
   panel.appendChild(el('h3', null, '講座（島のステージ）'));
   const ul = el('ul', { class: 'lessons' });
-  d.lessons.forEach(l => ul.appendChild(lessonRow(l)));
+  d.lessons.forEach(l => ul.appendChild(lessonRow(l, d)));
   panel.appendChild(ul);
-  const target = d.lessons.find(l => !cleared.has(l.no) && !skipped.has(l.no)) || d.lessons[0];
-  if (target) {
+  const target = d.lessons.find(l => LampProgress.lessonPlayable(l, d, cleared, skipped).ok && !cleared.has(l.no))
+    || d.lessons.find(l => !cleared.has(l.no))
+    || d.lessons[0];
+  if (target && LampProgress.lessonPlayable(target, d, cleared, skipped).ok) {
     panel.appendChild(el('h3', null, 'ここから始める'));
     panel.appendChild(playLink('講座 ' + pad(target.no) + ' の概要を見る', target.no));
     panel.appendChild(cmdBox(lessonCmd(target)));
@@ -668,6 +713,8 @@ import(LAMP_MAP_MODULE).then(mod => {
     onSelectDomain: (d) => showDomain(d),
     onSelectHub: () => openHubModal(),
     onSelectLesson: (l) => { openLessonModal(l); },
+    canTravelRealm: (realm) => LampProgress.realmAccessible(realm, landOpen).ok,
+    onTravelBlocked: (realm, reason) => { alert(reason || 'まだ行けません。'); },
     onTravelRealm: (realm) => {
       const labels = { sky: '空の諸島', land: '陸地の台地', underground: '地下の砦' };
       const tip = document.querySelector('.world-hint');
@@ -686,7 +733,7 @@ import(LAMP_MAP_MODULE).then(mod => {
       const act = btn.getAttribute('data-nav');
       if (act === 'overview') worldApi.showOverview();
       else if (act === 'hub') openHubModal();
-      else worldApi.travelToRealm(act);
+      else travelToRealmSafe(act);
     });
   }
 

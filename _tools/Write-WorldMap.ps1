@@ -17,8 +17,8 @@ function Write-WorldMapFile {
   $stories = Get-LampDomainStories
   $awards = Get-LampDomainClearTitles
   $advisories = @{
-    underground = '地下は #90 以降が本編です。空の関門 #87〜89 を越えてからだと物語がつながります（強制ではありません）。'
-    land        = '台地は #114 以降の推奨です。地下の深層 #110〜113 まで済ませると安心です（強制ではありません）。'
+    underground = '地下は領域内の順に進みます。手前の砦の灯がすべて点くまで、先の砦へは入れません。'
+    land        = '陸地は空の関門と地下の最深部がすべて灯るまで開通しません。'
   }
 
   $domainOrder = $Lessons | Group-Object Domain | Sort-Object { ($_.Group | Measure-Object CourseNo -Minimum).Minimum }
@@ -50,7 +50,7 @@ function Write-WorldMapFile {
   $gh = Get-LampGithubRepoSlug -RepoRoot $RepoRoot
   $pagesUrl = "https://$($gh.Split('/')[0]).github.io/$($gh.Split('/')[1])/map.html"
   $data = [ordered]@{
-    prologue   = '雲と海の上に浮かぶランプ諸島。拠点の港から道をたどり、島・砦・台地の灯を一つずつ点けていきます。道は推奨順に開きますが、霧の中の土地にも入ることはできます。'
+    prologue   = '雲と海の上に浮かぶランプ諸島。港から空か地下へ出発し、各土地では灯を点けると次へ進めます。陸地は、空の関門と地下の最深部がすべて灯ってから開きます。'
     githubRepo = $gh
     pagesUrl   = $pagesUrl
     domains    = @($domains)

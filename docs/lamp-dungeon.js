@@ -187,8 +187,20 @@ export function mountLampWorld(container, opts) {
     if (!hit || hit.d > 52) return;
     const { n } = hit;
     if (n.kind === 'hub' && opts.onSelectHub) opts.onSelectHub();
-    else if (n.kind === 'domain' && n.d && opts.onSelectDomain) opts.onSelectDomain(n.d);
-    else if (n.kind === 'core' && n.d) opts.onSelectDomain?.(n.d);
+    else if (n.kind === 'domain' && n.d) {
+      if (n.state === 'fog') {
+        if (opts.onTravelBlocked) opts.onTravelBlocked(n.realm, n.d.lockReason || 'この土地はまだ霧の中です。');
+        else if (opts.onSelectDomain) opts.onSelectDomain(n.d);
+        return;
+      }
+      if (opts.onSelectDomain) opts.onSelectDomain(n.d);
+    } else if (n.kind === 'core') {
+      if (n.state === 'fog') {
+        if (opts.onTravelBlocked) opts.onTravelBlocked('land', '諸島の中枢はすべての灯が点いてから開きます。');
+        return;
+      }
+      if (n.d && opts.onSelectDomain) opts.onSelectDomain(n.d);
+    }
   }
 
   function drawFloor(ctx) {
@@ -432,6 +444,10 @@ export function mountLampWorld(container, opts) {
   }
 
   function travelToRealm(realm, duration) {
+    if (typeof opts.canTravelRealm === 'function' && !opts.canTravelRealm(realm)) {
+      if (opts.onTravelBlocked) opts.onTravelBlocked(realm, 'まだこの領域へは進めません。');
+      return null;
+    }
     mode = 'world';
     focusKey = null;
     islandDomain = null;
@@ -623,8 +639,16 @@ export function mountLampWorld(container, opts) {
     py = best._py;
     if (bestD < 40) {
       if (best.kind === 'hub' && opts.onSelectHub) opts.onSelectHub();
-      else if (best.kind === 'domain' && best.d && opts.onSelectDomain) opts.onSelectDomain(best.d);
-      else if (best.kind === 'core' && best.d && opts.onSelectDomain) opts.onSelectDomain(best.d);
+      else if (best.kind === 'domain' && best.d) {
+        if (best.state === 'fog') {
+          if (opts.onTravelBlocked) opts.onTravelBlocked(best.realm, best.d.lockReason || 'この土地はまだ霧の中です。');
+          else if (opts.onSelectDomain) opts.onSelectDomain(best.d);
+        } else if (opts.onSelectDomain) opts.onSelectDomain(best.d);
+      } else if (best.kind === 'core') {
+        if (best.state === 'fog') {
+          if (opts.onTravelBlocked) opts.onTravelBlocked('land', '諸島の中枢はすべての灯が点いてから開きます。');
+        } else if (best.d && opts.onSelectDomain) opts.onSelectDomain(best.d);
+      }
     }
   });
 

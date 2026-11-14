@@ -38,14 +38,19 @@
 
 ## nodes.state（domain 集約）
 
-テンプレート側（`map-template.html`）で算出:
+`lamp-progress.js`（`LampProgress.applyDomainStates`）で算出:
 
-- `cleared` — 分野の全講座クリア
-- `current` — `next.domain` と一致
-- `open` — 推奨順まで開放、または一部クリア / skip あり
-- `fog` — それ以外
+- `cleared` — 分野の全講座クリア（灯が揃った）
+- `current` — いまの推奨講座の domain
+- `open` — 領域内で手前の domain がすべてクリア済み（挑戦可）
+- `fog` — 未開放（**入場不可**）
 
-2D では **部屋の明度・枠色** に反映。fog でも入場可（警告は右パネル）。
+領域ルール:
+
+1. 港から **空** と **地下** へはいつでも行ける（各領域の先頭島が open）
+2. 空／地下／陸の **内部** は、手前の島の灯がすべて点くと次が開く
+3. **陸** 全体は、空の最深（`gate-sky-trial`）と地下の最深（`fortress-deep`）がクリアされるまで fog
+4. 島内の講座も、手前の灯が点くまで挑戦不可（クリア済みは復習可）
 
 ## ルート順（主線・光の道）
 

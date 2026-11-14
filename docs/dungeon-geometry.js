@@ -98,9 +98,9 @@ export function buildDungeonFromNodes(nodes, layoutW, layoutH) {
     const { tx: ax, ty: ay } = tileOf(a._px, a._py);
     const { tx: bx, ty: by } = tileOf(b._px, b._py);
     carveCorridor(walls, tw, th, ax, ay, bx, by);
-    const lit =
-      a.state !== 'fog' || b.state !== 'fog' ||
-      a.kind === 'hub' || b.state === 'current' || a.state === 'current';
+    // 光の道は「開放済み〜挑戦中」の区間だけ（霧への道は暗いまま）
+    const openish = (n) => n && (n.kind === 'hub' || n.state === 'cleared' || n.state === 'current' || n.state === 'open');
+    const lit = openish(a) && openish(b);
     if (lit) {
       let x = ax;
       let y = ay;
