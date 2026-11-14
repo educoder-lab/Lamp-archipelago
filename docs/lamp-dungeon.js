@@ -103,12 +103,17 @@ export function mountLampWorld(container, opts) {
     <button type="button" data-dir="right" aria-label="右">▶</button>`;
   container.appendChild(dpad);
 
-  /** @type {'hub'|'path'|'island'} */
+  /** @type {'hub'|'room'|'map'|'path'} */
   let scene = 'hub';
   let mode = 'world';
   let focusKey = null;
   let islandDomain = null;
   let stagePads = [];
+  /** @type {'shield'|'sword'|'spirit'|null} */
+  let roomPack = null;
+  let roomDomainIdx = 0;
+  /** @type {'door'|'back'|'lessons'} */
+  let roomFocus = 'door';
 
   let camX = 0;
   let camY = 0;
@@ -129,7 +134,7 @@ export function mountLampWorld(container, opts) {
   let raf = 0;
   let hubFocus = 'elder'; // left | right | door | elder
 
-  /** 第１弾拠点アート（読み込み失敗時は手描きフォールバック） */
+  /** 拠点・道・マップ用アート（失敗時は手描き／コード描画） */
   const hubArt = {
     hero: null,
     heroWalk1: null,
@@ -141,7 +146,16 @@ export function mountLampWorld(container, opts) {
     pathSword: null,
     iconShield: null,
     iconSword: null,
-    iconSpirit: null
+    iconSpirit: null,
+    hubBg: null,
+    shieldBg: null,
+    shieldDoor: null,
+    swordBg: null,
+    swordDoor: null,
+    spiritBg: null,
+    spiritDoor: null,
+    mapBg: null,
+    mapHubPin: null
   };
   Promise.all([
     loadHubImage('common/hero-back.jpg').then((i) => { hubArt.hero = i; }),
@@ -152,10 +166,37 @@ export function mountLampWorld(container, opts) {
     loadHubImage('rooms/hub/elder.jpg').then((i) => { hubArt.elder = i; }),
     loadHubImage('rooms/hub/path-shield.jpg').then((i) => { hubArt.pathShield = i; }),
     loadHubImage('rooms/hub/path-sword.jpg').then((i) => { hubArt.pathSword = i; }),
+    loadHubImage('rooms/hub/bg.jpg').then((i) => { hubArt.hubBg = i; }),
+    loadHubImage('rooms/shield/bg.jpg').then((i) => { hubArt.shieldBg = i; }),
+    loadHubImage('rooms/shield/door.jpg').then((i) => { hubArt.shieldDoor = i; }),
+    loadHubImage('rooms/sword/bg.jpg').then((i) => { hubArt.swordBg = i; }),
+    loadHubImage('rooms/sword/door.jpg').then((i) => { hubArt.swordDoor = i; }),
+    loadHubImage('rooms/spirit/bg.jpg').then((i) => { hubArt.spiritBg = i; }),
+    loadHubImage('rooms/spirit/door.jpg').then((i) => { hubArt.spiritDoor = i; }),
+    loadHubImage('map/bg.jpg').then((i) => { hubArt.mapBg = i; }),
+    loadHubImage('map/hub-pin.jpg').then((i) => { hubArt.mapHubPin = i; }),
     loadHubImage('common/icon-shield.jpg').then((i) => { hubArt.iconShield = i; }),
     loadHubImage('common/icon-sword.jpg').then((i) => { hubArt.iconSword = i; }),
     loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; })
   ]).catch(() => {});
+
+  function packForRealm(realm) {
+    if (realm === 'sky') return 'shield';
+    if (realm === 'underground') return 'sword';
+    if (realm === 'land') return 'spirit';
+    return null;
+  }
+
+  function domainsInRealm(realm) {
+    return nodes.filter((n) => n.kind === 'domain' && n.realm === realm);
+  }
+
+  function currentRoomDomain() {
+    const list = domainsInRealm(roomPack === 'shield' ? 'sky' : roomPack === 'sword' ? 'underground' : 'land');
+    if (!list.length) return null;
+    const i = Math.max(0, Math.min(list.length - 1, roomDomainIdx));
+    return list[i];
+  }
 
   function resize() {
     const r = container.getBoundingClientRect();
@@ -204,6 +245,11 @@ export function mountLampWorld(container, opts) {
       interactHub();
       return;
     }
+    if (scene === 'room') {
+      interactRoom();
+      return;
+    }
+    if (scene === 'map' || overview) return;
     if (mode === 'island') {
       const pad = stagePads.find(p => Math.hypot(p.x - px, p.y - py) < 28);
       if (pad && opts.onSelectLesson) opts.onSelectLesson(pad.lesson);
@@ -224,6 +270,46 @@ export function mountLampWorld(container, opts) {
       }
       if (opts.onSelectDomain) opts.onSelectDomain(n.d);
     }
+  }
+
+  function interactRoom() {
+    if (mode === 'island') {
+      returnToRoomPath();
+      return;
+    }
+    if (roomFocus === 'back') {
+      returnToHub(0);
+      return;
+    }
+    const node = currentRoomDomain();
+    if (!node || !node.d) return;
+    if (node.state === 'fog') {
+      if (opts.onTravelBlocked) opts.onTravelBlocked(node.realm, node.d.lockReason || 'この分野はまだ霧の中です。');
+      return;
+    }
+    if (opts.onSelectDomain) opts.onSelectDomain(node.d);
+  }
+
+  function returnToRoomPath() {
+    mode = 'world';
+    islandDomain = null;
+    stagePads = [];
+    focusKey = null;
+    roomFocus = 'door';
+    if (opts.onModeChange) opts.onModeChange('world', null);
+  }
+
+  function shiftRoomDomain(delta) {
+    const realm = roomPack === 'shield' ? 'sky' : roomPack === 'sword' ? 'underground' : 'land';
+    const list = domainsInRealm(realm);
+    if (!list.length) return;
+    roomDomainIdx = (roomDomainIdx + delta + list.length) % list.length;
+    const n = list[roomDomainIdx];
+    if (n && n._px != null) {
+      px = n._px;
+      py = n._py;
+    }
+    focusKey = n && n.d ? n.d.id : null;
   }
 
   function interactHub() {
@@ -403,34 +489,46 @@ export function mountLampWorld(container, opts) {
     });
   }
 
+  function drawHeroSprite(ctx, W, H) {
+    const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
+    const heroImg = walk || hubArt.hero;
+    const heroW = Math.min(W * 0.22, 160);
+    const heroH = heroW * 1.35;
+    const heroX = W * 0.5 - heroW / 2;
+    const heroY = H * 0.62 + Math.sin(pulseT * 2) * 2;
+    if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
+      const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
+      drawHeroBack(ctx, W * 0.5, H * 0.78, s * 1.15, pulseT);
+    }
+  }
+
   /** 後ろ姿視点の拠点シーン（第１弾アート＋手描きフォールバック） */
   function drawHubScene(ctx) {
     const W = canvas.width;
     const H = canvas.height;
     const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
 
-    // 背景：深い紫紺の間
-    const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, '#1a1040');
-    bg.addColorStop(0.45, '#2a1858');
-    bg.addColorStop(1, '#0c1018');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    // 床のタイル（遠近）
-    for (let row = 0; row < 14; row++) {
-      const y = H * 0.42 + row * (H * 0.045);
-      const fade = row / 14;
-      ctx.fillStyle = fade > 0.55 ? '#2a2438' : '#352a4a';
-      ctx.globalAlpha = 0.35 + fade * 0.5;
-      ctx.fillRect(0, y, W, H * 0.045 - 1);
-      ctx.strokeStyle = 'rgba(80,60,120,0.35)';
-      ctx.beginPath();
-      ctx.moveTo(W * 0.5 - (row + 2) * 18, y);
-      ctx.lineTo(W * 0.5 + (row + 2) * 18, y);
-      ctx.stroke();
+    if (!drawArt(ctx, hubArt.hubBg, 0, 0, W, H)) {
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, '#1a1040');
+      bg.addColorStop(0.45, '#2a1858');
+      bg.addColorStop(1, '#0c1018');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+      for (let row = 0; row < 14; row++) {
+        const y = H * 0.42 + row * (H * 0.045);
+        const fade = row / 14;
+        ctx.fillStyle = fade > 0.55 ? '#2a2438' : '#352a4a';
+        ctx.globalAlpha = 0.35 + fade * 0.5;
+        ctx.fillRect(0, y, W, H * 0.045 - 1);
+        ctx.strokeStyle = 'rgba(80,60,120,0.35)';
+        ctx.beginPath();
+        ctx.moveTo(W * 0.5 - (row + 2) * 18, y);
+        ctx.lineTo(W * 0.5 + (row + 2) * 18, y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
     }
-    ctx.globalAlpha = 1;
 
     // 左・盾の道 / 右・剣の道
     const leftLit = hubFocus === 'left';
@@ -489,16 +587,7 @@ export function mountLampWorld(container, opts) {
       ctx.fillText('謎の老人', elderX + elderW / 2, elderY + elderH + 14);
     }
 
-    // 主人公の後ろ姿（手前中央）— 歩行フレーム切替
-    const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
-    const heroImg = walk || hubArt.hero;
-    const heroW = Math.min(W * 0.22, 160);
-    const heroH = heroW * 1.35;
-    const heroX = W * 0.5 - heroW / 2;
-    const heroY = H * 0.62 + Math.sin(pulseT * 2) * 2;
-    if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
-      drawHeroBack(ctx, W * 0.5, H * 0.78, s * 1.15, pulseT);
-    }
+    drawHeroSprite(ctx, W, H);
 
     // フォーカス枠ヒント
     ctx.fillStyle = 'rgba(10,14,28,0.75)';
@@ -515,6 +604,125 @@ export function mountLampWorld(container, opts) {
     ctx.fillText(hints[hubFocus] || '', W / 2, H - 18);
 
     drawGrowthHud(ctx);
+  }
+
+  /** 道中も同じ後ろ姿構図（背景・扉セットだけ差し替え） */
+  function drawRoomScene(ctx) {
+    const W = canvas.width;
+    const H = canvas.height;
+    const pack = roomPack || 'shield';
+    const bgImg = pack === 'sword' ? hubArt.swordBg : pack === 'spirit' ? hubArt.spiritBg : hubArt.shieldBg;
+    const doorImg = pack === 'sword' ? hubArt.swordDoor : pack === 'spirit' ? hubArt.spiritDoor : hubArt.shieldDoor;
+    const accent = pack === 'sword' ? '#d8c8ff' : pack === 'spirit' ? '#b8ffd0' : '#ffe08a';
+    const realmLabel = pack === 'sword' ? '剣の道' : pack === 'spirit' ? '大扉の奥' : '盾の道';
+
+    if (!drawArt(ctx, bgImg, 0, 0, W, H)) {
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, pack === 'spirit' ? '#0e2818' : pack === 'sword' ? '#1a1030' : '#1a2040');
+      bg.addColorStop(1, '#0c1018');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    const doorW = W * 0.32;
+    const doorH = H * 0.52;
+    const doorX = W * 0.5 - doorW / 2;
+    const doorY = H * 0.1;
+    if (!drawArt(ctx, doorImg, doorX, doorY, doorW, doorH)) {
+      ctx.fillStyle = '#2a1a10';
+      ctx.fillRect(doorX, doorY, doorW, doorH);
+      ctx.strokeStyle = accent;
+      ctx.strokeRect(doorX + 8, doorY + 8, doorW - 16, doorH - 16);
+    }
+    if (roomFocus === 'door') {
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(doorX - 4, doorY - 4, doorW + 8, doorH + 8);
+    }
+
+    const node = currentRoomDomain();
+    const title = (node && node.d && node.d.title) || realmLabel;
+    ctx.fillStyle = 'rgba(10,14,28,0.8)';
+    ctx.fillRect(W / 2 - 160, doorY + doorH + 6, 320, 28);
+    ctx.fillStyle = accent;
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(title, W / 2, doorY + doorH + 25);
+    if (node && node.state === 'fog') {
+      ctx.fillStyle = '#9aa0c4';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('霧の中', W / 2, doorY + doorH + 42);
+    }
+
+    if (mode === 'island' && stagePads.length) {
+      const y0 = H * 0.52;
+      stagePads.forEach((pad, i) => {
+        const x = W * 0.5 + (i - (stagePads.length - 1) / 2) * 52;
+        const col = pad.state === 'cleared' ? STATE_COLOR.cleared
+          : pad.state === 'next' ? STATE_COLOR.current
+          : pad.state === 'skipped' ? '#c59bff' : '#3a4568';
+        ctx.beginPath();
+        ctx.arc(x, y0, 18, 0, Math.PI * 2);
+        ctx.fillStyle = col;
+        ctx.fill();
+        ctx.fillStyle = '#0f1226';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(pad.lesson.no), x, y0);
+        pad._sx = x;
+        pad._sy = y0;
+      });
+    }
+
+    drawHeroSprite(ctx, W, H);
+
+    ctx.fillStyle = 'rgba(10,14,28,0.75)';
+    ctx.fillRect(W / 2 - 170, H - 36, 340, 26);
+    ctx.fillStyle = '#c8c4e0';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    const hint = mode === 'island'
+      ? '講座を選ぶ　↓ 道へ戻る'
+      : '←→ 分野　Enter 入る　↓ 拠点へ';
+    ctx.fillText(hint, W / 2, H - 18);
+
+    drawGrowthHud(ctx);
+  }
+
+  /** 全体マップ（俯瞰専用） */
+  function drawMapScene(ctx) {
+    const W = canvas.width;
+    const H = canvas.height;
+    if (drawArt(ctx, hubArt.mapBg, 0, 0, W, H)) {
+      ctx.fillStyle = 'rgba(8,12,28,0.45)';
+      ctx.fillRect(0, 0, W, H);
+    } else {
+      ctx.fillStyle = '#0a1428';
+      ctx.fillRect(0, 0, W, H);
+    }
+    updateCamera(false);
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    ctx.scale(camZoom, camZoom);
+    ctx.translate(-camX, -camY);
+    drawFloor(ctx);
+    drawNodes(ctx);
+    nodes.forEach((n) => {
+      if (n.kind === 'hub' && hubArt.mapHubPin && n._px != null) {
+        const s = 36;
+        ctx.drawImage(hubArt.mapHubPin, n._px - s / 2, n._py - s / 2, s, s);
+      }
+    });
+    drawAvatarDot(ctx, px, py);
+    ctx.restore();
+    drawGrowthHud(ctx);
+    ctx.fillStyle = 'rgba(10,14,28,0.8)';
+    ctx.fillRect(W / 2 - 120, H - 36, 240, 26);
+    ctx.fillStyle = '#c8c4e0';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('全体マップ　クリックで移動', W / 2, H - 18);
   }
 
   function drawPathArch(ctx, x, y, w, h, base, glow, lit, label) {
@@ -695,8 +903,18 @@ export function mountLampWorld(container, opts) {
       ctx.restore();
       return;
     }
+    if (scene === 'room') {
+      drawRoomScene(ctx);
+      ctx.restore();
+      return;
+    }
+    if (scene === 'map' || overview) {
+      drawMapScene(ctx);
+      ctx.restore();
+      return;
+    }
 
-    updateCamera(!overview);
+    updateCamera(true);
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.scale(camZoom, camZoom);
@@ -707,18 +925,6 @@ export function mountLampWorld(container, opts) {
     drawAvatarDot(ctx, px, py);
     ctx.restore();
     drawGrowthHud(ctx);
-
-    if (!overview && !anim) {
-      const hint = nearestNode();
-      if (hint && hint.d < 56) {
-        ctx.fillStyle = 'rgba(15,18,38,0.8)';
-        ctx.fillRect(12, canvas.height - 40, 220, 28);
-        ctx.fillStyle = '#9aa0c4';
-        ctx.font = '12px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText('Enter / タップで入る', 20, canvas.height - 22);
-      }
-    }
     ctx.restore();
   }
 
@@ -757,14 +963,19 @@ export function mountLampWorld(container, opts) {
       if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) hubFocus = 'right';
       if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) hubFocus = 'door';
       if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) hubFocus = 'elder';
-    } else if (!overview && scene === 'path') {
-      let dx = 0;
-      let dy = 0;
-      if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) dy -= 1;
-      if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) dy += 1;
-      if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) dx -= 1;
-      if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) dx += 1;
-      if (dx || dy) tryMove(dx, dy, dt);
+    } else if (scene === 'room') {
+      if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) {
+        keys.delete('ArrowLeft'); keys.delete('a'); keys.delete('A');
+        if (mode !== 'island') shiftRoomDomain(-1);
+        roomFocus = 'door';
+      }
+      if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) {
+        keys.delete('ArrowRight'); keys.delete('d'); keys.delete('D');
+        if (mode !== 'island') shiftRoomDomain(1);
+        roomFocus = 'door';
+      }
+      if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) roomFocus = 'door';
+      if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) roomFocus = 'back';
     }
 
     render();
@@ -773,32 +984,27 @@ export function mountLampWorld(container, opts) {
   raf = requestAnimationFrame(frame);
 
   function enterIsland(domain, lessonStateFn) {
-    scene = 'path';
+    const pack = packForRealm(domain && domain.realm) || roomPack || 'shield';
+    roomPack = pack;
+    scene = 'room';
     mode = 'island';
     islandDomain = domain;
     focusKey = domain && domain.id;
-    const node = nodes.find(n => n.kind === 'domain' && n.d && n.d.id === domain.id);
+    overview = false;
+    roomFocus = 'door';
+    const list = domainsInRealm(domain.realm || (pack === 'shield' ? 'sky' : pack === 'sword' ? 'underground' : 'land'));
+    roomDomainIdx = Math.max(0, list.findIndex((n) => n.d && n.d.id === domain.id));
+    const node = list[roomDomainIdx] || nodes.find(n => n.kind === 'domain' && n.d && n.d.id === domain.id);
     if (node && node._px != null) {
       px = node._px;
       py = node._py;
-      camX = px;
-      camY = py;
     }
-    overview = false;
     stagePads = [];
     const lessons = (domain.lessons || []).slice().sort((a, b) => a.no - b.no);
-    const baseX = (node && node._px) || px;
-    const baseY = (node && node._py) || py;
-    lessons.forEach((l, i) => {
+    lessons.forEach((l) => {
       const st = lessonStateFn ? lessonStateFn(l) : 'todo';
-      stagePads.push({
-        lesson: l,
-        x: baseX + (i - (lessons.length - 1) / 2) * 48,
-        y: baseY + 70,
-        state: st
-      });
+      stagePads.push({ lesson: l, x: 0, y: 0, state: st });
     });
-    camZoom = Math.max(1.4, Math.min(2.4, canvas.width / 480));
     if (opts.onModeChange) opts.onModeChange('island', domain);
   }
 
@@ -824,41 +1030,43 @@ export function mountLampWorld(container, opts) {
       return;
     }
     const n = nodes[findNodeIndexForCourse(courseNo)];
-    if (n && n._px != null) {
-      scene = 'path';
-      px = n._px;
-      py = n._py;
-      camX = px;
-      camY = py;
-      overview = false;
+    if (n && n.realm) {
+      travelToRealm(n.realm, 0);
+      const list = domainsInRealm(n.realm);
+      const idx = list.findIndex((x) => x === n);
+      if (idx >= 0) roomDomainIdx = idx;
+      if (n._px != null) {
+        px = n._px;
+        py = n._py;
+      }
     }
   }
 
   function walkAvatar(fromIdx, toIdx, onDone) {
-    scene = 'path';
-    const a = routeIndexOfNode.get(nodes[fromIdx]) ?? 0;
-    const b = routeIndexOfNode.get(nodes[toIdx]) ?? a;
-    const pts = pathAlongRoute(route, a, b);
-    if (pts.length < 2) {
+    const dest = nodes[toIdx];
+    if (dest && dest.realm && dest.kind === 'domain') {
+      travelToRealm(dest.realm, 0);
+      const list = domainsInRealm(dest.realm);
+      const idx = list.findIndex((x) => x === dest);
+      if (idx >= 0) roomDomainIdx = idx;
       if (onDone) onDone();
       return;
     }
-    overview = false;
-    anim = {
-      kind: 'walk',
-      t0: performance.now(),
-      dur: reduced ? 0 : Math.max(400, pts.length * 280),
-      pts,
-      onDone
-    };
+    if (dest && dest.kind === 'hub') {
+      returnToHub(0);
+      if (onDone) onDone();
+      return;
+    }
+    if (onDone) onDone();
   }
 
   function showOverview(duration) {
-    scene = 'path';
+    scene = 'map';
     mode = 'world';
     focusKey = null;
     islandDomain = null;
     stagePads = [];
+    roomPack = null;
     overview = true;
     if (opts.onModeChange) opts.onModeChange('world', null);
     if (reduced || duration === 0) {
@@ -892,41 +1100,32 @@ export function mountLampWorld(container, opts) {
       if (opts.onTravelBlocked) opts.onTravelBlocked(realm, 'まだこの道へは進めません。');
       return null;
     }
-    scene = 'path';
-    mode = 'world';
-    focusKey = null;
-    islandDomain = null;
-    stagePads = [];
-    if (opts.onModeChange) opts.onModeChange('world', null);
-    const inRealm = nodes.filter(n => n.kind === 'domain' && n.realm === realm);
+    const pack = packForRealm(realm);
+    if (!pack) return null;
+    const inRealm = domainsInRealm(realm);
     const first = inRealm.find(n => n.state === 'open' || n.state === 'current' || n.state === 'cleared')
-      || inRealm[0]
-      || nodes.find(n => n.realm === realm);
-    if (!first || first._px == null) {
+      || inRealm[0];
+    if (!first) {
       if (opts.onTravelBlocked) opts.onTravelBlocked(realm, 'この道の分野がまだマップにありません。');
       return null;
     }
-    px = first._px;
-    py = first._py;
+    roomPack = pack;
+    roomDomainIdx = Math.max(0, inRealm.indexOf(first));
+    roomFocus = 'door';
+    scene = 'room';
+    mode = 'world';
+    focusKey = first.d ? first.d.id : null;
+    islandDomain = null;
+    stagePads = [];
     overview = false;
-    const c = realmCentroid(realm);
-    const dur = duration == null ? (reduced ? 0 : 650) : duration;
-    if (reduced || dur === 0) {
-      camX = c.x;
-      camY = c.y;
-      camZoom = Math.max(1.1, Math.min(2.2, canvas.width / 520));
-      if (opts.onTravelRealm) opts.onTravelRealm(realm, first);
-      return first;
+    anim = null;
+    if (first._px != null) {
+      px = first._px;
+      py = first._py;
     }
-    anim = {
-      kind: 'cam',
-      t0: performance.now(),
-      dur,
-      fromX: camX, fromY: camY, fromZ: camZoom,
-      toX: c.x, toY: c.y,
-      toZ: Math.max(1.1, Math.min(2.2, canvas.width / 520))
-    };
+    if (opts.onModeChange) opts.onModeChange('world', null);
     if (opts.onTravelRealm) opts.onTravelRealm(realm, first);
+    void duration;
     return first;
   }
 
@@ -935,6 +1134,7 @@ export function mountLampWorld(container, opts) {
     mode = 'world';
     islandDomain = null;
     stagePads = [];
+    roomPack = null;
     overview = false;
     hubFocus = 'elder';
     if (hubNode && hubNode._px != null) {
@@ -990,23 +1190,39 @@ export function mountLampWorld(container, opts) {
       }
       return;
     }
-    const w = screenToWorld(sx, sy);
-    if (mode === 'island') {
-      const pad = stagePads.find(p => Math.hypot(p.x - w.x, p.y - w.y) < 24);
-      if (pad && opts.onSelectLesson) opts.onSelectLesson(pad.lesson);
+    if (scene === 'room') {
+      if (mode === 'island' && stagePads.length) {
+        const pad = stagePads.find((p) => p._sx != null && Math.hypot(p._sx - sx, p._sy - sy) < 22);
+        if (pad && opts.onSelectLesson) {
+          opts.onSelectLesson(pad.lesson);
+          return;
+        }
+      }
+      if (sy > canvas.height * 0.85) {
+        roomFocus = 'back';
+        interactRoom();
+        return;
+      }
+      if (sx < canvas.width * 0.25 && mode !== 'island') {
+        shiftRoomDomain(-1);
+        return;
+      }
+      if (sx > canvas.width * 0.75 && mode !== 'island') {
+        shiftRoomDomain(1);
+        return;
+      }
+      roomFocus = 'door';
+      interactRoom();
       return;
     }
+    const w = screenToWorld(sx, sy);
     let best = null;
     let bestD = 48;
     nodes.forEach(n => {
       const d = Math.hypot(n._px - w.x, n._py - w.y);
       if (d < bestD) { bestD = d; best = n; }
     });
-    if (!best) {
-      overview = false;
-      return;
-    }
-    overview = false;
+    if (!best) return;
     px = best._px;
     py = best._py;
     if (bestD < 40) {
@@ -1016,11 +1232,17 @@ export function mountLampWorld(container, opts) {
       } else if (best.kind === 'domain' && best.d) {
         if (best.state === 'fog') {
           if (opts.onTravelBlocked) opts.onTravelBlocked(best.realm, best.d.lockReason || 'この分野はまだ霧の中です。');
-        } else if (opts.onSelectDomain) opts.onSelectDomain(best.d);
+        } else if (opts.onSelectDomain) {
+          travelToRealm(best.realm, 0);
+          opts.onSelectDomain(best.d);
+        }
       } else if (best.kind === 'core') {
         if (best.state === 'fog') {
           if (opts.onTravelBlocked) opts.onTravelBlocked('land', '中枢はすべての灯が点いてから開きます。');
-        } else if (best.d && opts.onSelectDomain) opts.onSelectDomain(best.d);
+        } else if (best.d && opts.onSelectDomain) {
+          travelToRealm('land', 0);
+          opts.onSelectDomain(best.d);
+        }
       }
     }
   });
@@ -1036,17 +1258,17 @@ export function mountLampWorld(container, opts) {
       if (d === 'down') hubFocus = 'elder';
       return;
     }
-    if (overview) return;
-    const step = 28;
-    const map = { up: [0, -step], down: [0, step], left: [-step, 0], right: [step, 0] };
-    const m = map[d];
-    if (!m) return;
-    const nx = px + m[0];
-    const ny = py + m[1];
-    if (!worldToTile(dungeon.walls, dungeon.tw, dungeon.th, nx, ny)) {
-      px = nx;
-      py = ny;
+    if (scene === 'room') {
+      if (d === 'left' && mode !== 'island') shiftRoomDomain(-1);
+      if (d === 'right' && mode !== 'island') shiftRoomDomain(1);
+      if (d === 'up') roomFocus = 'door';
+      if (d === 'down') {
+        roomFocus = 'back';
+        interactRoom();
+      }
+      return;
     }
+    if (scene === 'map' || overview) return;
   });
 
   window.addEventListener('keydown', onKeyDown);

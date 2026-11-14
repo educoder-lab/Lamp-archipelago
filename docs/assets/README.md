@@ -2,7 +2,7 @@
 
 公開マップ（`map.html`）と拠点シーン向けの画像置き場です。  
 トーンの正本は [../ART.md](../ART.md)。物語の正本は [../../WORLD.md](../../WORLD.md)。  
-第１弾プロンプト: [PHASE1-PROMPTS.md](./PHASE1-PROMPTS.md)
+必要画像一覧: [ASSET-INVENTORY.md](./ASSET-INVENTORY.md) · 第１弾プロンプト: [PHASE1-PROMPTS.md](./PHASE1-PROMPTS.md)
 
 ## ディレクトリ
 

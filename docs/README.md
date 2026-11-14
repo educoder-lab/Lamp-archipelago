@@ -29,8 +29,9 @@
 | `lamp-slides.js` · `lamp-slides.css` | スライドプレイヤー |
 | `lamp-save.js` · `lamp-cloud.js` | 端末進捗 / 任意の Google 同期 |
 | `sw.js` · `manifest.webmanifest` | PWA |
-| [ART.md](./ART.md) | マップ／拠点のアート方針（主人公 #1・大扉 #4） |
-| [assets/](./assets/) | ピクセル・ムード画（`common` / `rooms` / `map` / `mood`） |
+| [ART.md](./ART.md) | マップ／拠点のアート方針（主人公 #3・大扉 #4） |
+| [assets/](./assets/) | 後ろ姿構図の素材（`common` / `rooms` / `map` / `mood`） |
+| [assets/ASSET-INVENTORY.md](./assets/ASSET-INVENTORY.md) | 必要画像一覧（優先度 A〜E） |
 
 個人進捗はブラウザ `localStorage`（`lamp-save.js`）。PowerShell 利用時は `save-data.js`（git 管理外）も可。
 

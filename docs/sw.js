@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v23';
+const CACHE = 'lamp-archipelago-v24';
 const PRECACHE = [
   './',
   './index.html',
@@ -31,11 +31,20 @@ const PRECACHE = [
   './assets/common/icon-shield.jpg',
   './assets/common/icon-sword.jpg',
   './assets/common/icon-spirit.jpg',
+  './assets/rooms/hub/bg.jpg',
   './assets/rooms/hub/great-door-closed.jpg',
   './assets/rooms/hub/great-door-ajar.jpg',
   './assets/rooms/hub/elder.jpg',
   './assets/rooms/hub/path-shield.jpg',
-  './assets/rooms/hub/path-sword.jpg'
+  './assets/rooms/hub/path-sword.jpg',
+  './assets/rooms/shield/bg.jpg',
+  './assets/rooms/shield/door.jpg',
+  './assets/rooms/sword/bg.jpg',
+  './assets/rooms/sword/door.jpg',
+  './assets/rooms/spirit/bg.jpg',
+  './assets/rooms/spirit/door.jpg',
+  './assets/map/bg.jpg',
+  './assets/map/hub-pin.jpg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -72,14 +81,14 @@ self.addEventListener('fetch', (event) => {
   }
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      const network = fetch(event.request).then((res) => {
+      if (cached) return cached;
+      return fetch(event.request).then((res) => {
         if (res && res.status === 200) {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(event.request, copy));
         }
         return res;
-      }).catch(() => cached);
-      return cached || network;
+      });
     })
   );
 });
