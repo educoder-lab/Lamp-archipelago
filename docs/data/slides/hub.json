@@ -5,7 +5,14 @@
       "emoji": "🚪",
       "title": "三つの扉の間 — 旅の手引き",
       "subtitle": "基本情報技術者試験（FE）の\n全体像を、まずここでつかもう。",
-      "blocks": []
+      "blocks": [
+        {
+          "t": "img",
+          "src": "assets/slides/fe-overview.jpg",
+          "alt": "三つの扉の拠点イメージ",
+          "caption": "手前に後ろ姿、正面に大扉。左が盾、右が剣。"
+        }
+      ]
     },
     {
       "emoji": "🎯",
@@ -38,6 +45,12 @@
       "emoji": "🛡️",
       "title": "左の道 ＝ 科目A（盾）",
       "blocks": [
+        {
+          "t": "img",
+          "src": "assets/slides/shield-sword.jpg",
+          "alt": "盾と剣",
+          "caption": "左で盾、右で剣を鍛える。"
+        },
         {
           "t": "analogy",
           "icon": "📚",

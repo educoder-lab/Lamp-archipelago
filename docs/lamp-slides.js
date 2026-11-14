@@ -33,6 +33,18 @@
 
   R.big = b => h('div', 'b b-big', fmt(b.text) + (b.sub ? '<span class="sub">' + fmt(b.sub) + '</span>' : ''));
 
+  R.img = b => {
+    const wrap = h('div', 'b b-img');
+    const im = document.createElement('img');
+    im.src = b.src || '';
+    im.alt = b.alt || '';
+    im.loading = 'lazy';
+    im.style.cssText = 'max-width:100%;border-radius:10px;display:block;margin:0 auto';
+    wrap.appendChild(im);
+    if (b.caption) wrap.appendChild(h('div', 'b-cap', fmt(b.caption)));
+    return wrap;
+  };
+
   R.analogy = b => {
     const wrap = h('div', 'b');
     const row = h('div', 'b-analogy');

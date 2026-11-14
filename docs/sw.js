@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v27';
+const CACHE = 'lamp-archipelago-v28';
 const PRECACHE = [
   './',
   './index.html',
@@ -8,6 +8,7 @@ const PRECACHE = [
   './ref.html',
   './manifest.webmanifest',
   './icon.svg',
+  './icon.jpg',
   './lamp-save.js',
   './lamp-cloud.js',
   './lamp-markdown.js',
@@ -40,10 +41,22 @@ const PRECACHE = [
   './assets/rooms/hub/bg.jpg',
   './assets/rooms/hub/great-door-closed.jpg',
   './assets/rooms/hub/great-door-ajar.jpg',
+  './assets/rooms/hub/great-door-open-1.jpg',
+  './assets/rooms/hub/great-door-open-2.jpg',
   './assets/rooms/hub/elder.jpg',
   './assets/rooms/hub/elder-talk.jpg',
+  './assets/rooms/hub/elder-smile.jpg',
   './assets/rooms/hub/path-shield.jpg',
   './assets/rooms/hub/path-sword.jpg',
+  './assets/common/say-frame.jpg',
+  './assets/common/fx-lamp-lit.jpg',
+  './assets/common/fx-level-up.jpg',
+  './assets/common/app-icon.jpg',
+  './assets/map/band-shield.jpg',
+  './assets/map/band-sword.jpg',
+  './assets/map/band-spirit.jpg',
+  './assets/slides/fe-overview.jpg',
+  './assets/slides/shield-sword.jpg',
   './assets/rooms/shield/bg.jpg',
   './assets/rooms/shield/door.jpg',
   './assets/rooms/sword/bg.jpg',

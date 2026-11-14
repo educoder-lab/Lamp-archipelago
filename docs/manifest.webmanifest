@@ -1,7 +1,7 @@
 {
   "name": "Lumina Code — 基本情報網羅コース",
   "short_name": "Lumina Code",
-  "description": "基本情報技術者試験の出題範囲を121講座で学ぶ冒険型コース（舞台：ランプ諸島）",
+  "description": "基本情報技術者試験の出題範囲を121講座で学ぶ冒険型コース（舞台：三つの扉）",
   "start_url": "./map.html",
   "scope": "./",
   "display": "standalone",
@@ -14,6 +14,12 @@
       "src": "icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
       "purpose": "any"
     }
   ]

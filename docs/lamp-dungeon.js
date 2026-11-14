@@ -144,8 +144,11 @@ export function mountLampWorld(container, opts) {
     spiritAura: null,
     doorClosed: null,
     doorAjar: null,
+    doorOpen1: null,
+    doorOpen2: null,
     elder: null,
     elderTalk: null,
+    elderSmile: null,
     pathShield: null,
     pathSword: null,
     iconShield: null,
@@ -165,6 +168,9 @@ export function mountLampWorld(container, opts) {
     pinCurrent: null,
     pinCleared: null,
     mapMarker: null,
+    bandShield: null,
+    bandSword: null,
+    bandSpirit: null,
     /** @type {Record<string, HTMLImageElement|null>} */
     domainDoors: {}
   };
@@ -187,8 +193,11 @@ export function mountLampWorld(container, opts) {
     loadHubImage('common/spirit-aura.jpg').then((i) => { hubArt.spiritAura = i; }),
     loadHubImage('rooms/hub/great-door-closed.jpg').then((i) => { hubArt.doorClosed = i; }),
     loadHubImage('rooms/hub/great-door-ajar.jpg').then((i) => { hubArt.doorAjar = i; }),
+    loadHubImage('rooms/hub/great-door-open-1.jpg').then((i) => { hubArt.doorOpen1 = i; }),
+    loadHubImage('rooms/hub/great-door-open-2.jpg').then((i) => { hubArt.doorOpen2 = i; }),
     loadHubImage('rooms/hub/elder.jpg').then((i) => { hubArt.elder = i; }),
     loadHubImage('rooms/hub/elder-talk.jpg').then((i) => { hubArt.elderTalk = i; }),
+    loadHubImage('rooms/hub/elder-smile.jpg').then((i) => { hubArt.elderSmile = i; }),
     loadHubImage('rooms/hub/path-shield.jpg').then((i) => { hubArt.pathShield = i; }),
     loadHubImage('rooms/hub/path-sword.jpg').then((i) => { hubArt.pathSword = i; }),
     loadHubImage('rooms/hub/bg.jpg').then((i) => { hubArt.hubBg = i; }),
@@ -205,6 +214,9 @@ export function mountLampWorld(container, opts) {
     loadHubImage('map/pin-current.jpg').then((i) => { hubArt.pinCurrent = i; }),
     loadHubImage('map/pin-cleared.jpg').then((i) => { hubArt.pinCleared = i; }),
     loadHubImage('map/marker.jpg').then((i) => { hubArt.mapMarker = i; }),
+    loadHubImage('map/band-shield.jpg').then((i) => { hubArt.bandShield = i; }),
+    loadHubImage('map/band-sword.jpg').then((i) => { hubArt.bandSword = i; }),
+    loadHubImage('map/band-spirit.jpg').then((i) => { hubArt.bandSpirit = i; }),
     loadHubImage('common/icon-shield.jpg').then((i) => { hubArt.iconShield = i; }),
     loadHubImage('common/icon-sword.jpg').then((i) => { hubArt.iconSword = i; }),
     loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; }),
@@ -620,7 +632,13 @@ export function mountLampWorld(container, opts) {
     // 正面の仰々しい大扉
     const doorOpen = landOpen;
     const doorLit = hubFocus === 'door';
-    const doorImg = doorOpen ? (hubArt.doorAjar || hubArt.doorClosed) : hubArt.doorClosed;
+    let doorImg = hubArt.doorClosed;
+    if (doorOpen) {
+      const frame = Math.floor(pulseT * 2.2) % 3;
+      doorImg = frame === 0 ? (hubArt.doorOpen1 || hubArt.doorAjar)
+        : frame === 1 ? (hubArt.doorAjar || hubArt.doorOpen1)
+        : (hubArt.doorOpen2 || hubArt.doorAjar || hubArt.doorClosed);
+    }
     const doorW = W * 0.3;
     const doorH = H * 0.5;
     const doorX = W * 0.5 - doorW / 2;
@@ -639,7 +657,9 @@ export function mountLampWorld(container, opts) {
     const elderH = elderW * 1.35;
     const elderX = W * 0.58;
     const elderY = H * 0.42;
-    const elderImg = elderLit && hubArt.elderTalk ? hubArt.elderTalk : hubArt.elder;
+    const elderImg = elderLit
+      ? (hubArt.elderTalk || hubArt.elder)
+      : (hubArt.elderSmile || hubArt.elder);
     if (!drawArt(ctx, elderImg, elderX, elderY, elderW, elderH)) {
       drawElder(ctx, W * 0.58, H * 0.52, s, elderLit);
     } else {
@@ -759,6 +779,32 @@ export function mountLampWorld(container, opts) {
     drawGrowthHud(ctx);
   }
 
+  function drawRealmBands(ctx) {
+    if (!hubNode || hubNode._px == null) return;
+    const pairs = [
+      { realm: 'sky', img: hubArt.bandShield },
+      { realm: 'underground', img: hubArt.bandSword },
+      { realm: 'land', img: hubArt.bandSpirit }
+    ];
+    pairs.forEach((p) => {
+      if (!p.img || !p.img.naturalWidth) return;
+      const c = realmCentroid(p.realm);
+      const x0 = hubNode._px;
+      const y0 = hubNode._py;
+      const x1 = c.x;
+      const y1 = c.y;
+      const len = Math.hypot(x1 - x0, y1 - y0) || 1;
+      const ang = Math.atan2(y1 - y0, x1 - x0);
+      const h = 28;
+      ctx.save();
+      ctx.translate(x0, y0);
+      ctx.rotate(ang);
+      ctx.globalAlpha = 0.55;
+      ctx.drawImage(p.img, 0, -h / 2, len, h);
+      ctx.restore();
+    });
+  }
+
   /** 全体マップ（俯瞰専用） */
   function drawMapScene(ctx) {
     const W = canvas.width;
@@ -776,6 +822,7 @@ export function mountLampWorld(container, opts) {
     ctx.scale(camZoom, camZoom);
     ctx.translate(-camX, -camY);
     drawFloor(ctx);
+    drawRealmBands(ctx);
     drawNodes(ctx);
     nodes.forEach((n) => {
       if (n.kind === 'hub' && hubArt.mapHubPin && n._px != null) {
