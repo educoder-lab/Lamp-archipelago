@@ -239,16 +239,9 @@ function renderLesson(lesson, quests, deck) {
         if (clearedResult.newTitles && clearedResult.newTitles.length) {
           t += '\n\n称号: ' + clearedResult.newTitles.join('、');
         }
-        if (clearedResult.leveledUp) t += '\n\nレベル ' + clearedResult.save.level + ' にアップ！';
         msg.textContent = t;
-        const q = new URLSearchParams({ arrive: '1', from: String(lesson.courseNo) });
+        const q = new URLSearchParams({ arrive: '1', door: '1', from: String(lesson.courseNo) });
         if (nxt) q.set('to', String(nxt));
-        if (clearedResult.leveledUp || (clearedResult.newTitles && clearedResult.newTitles.length)) {
-          q.set('levelUp', '1');
-          if (clearedResult.newTitles && clearedResult.newTitles.length) {
-            q.set('awards', clearedResult.newTitles.join('|'));
-          }
-        }
         const skipLink = el('div', { style: 'margin-top:10px' });
         skipLink.appendChild(el('a', { href: nxt ? ('lesson.html?no=' + nxt) : 'map.html', style: 'color:var(--open)' }, 'マップ演出をスキップして次へ →'));
         msg.appendChild(skipLink);

@@ -50,7 +50,7 @@ function Write-WorldMapFile {
   $gh = Get-LampGithubRepoSlug -RepoRoot $RepoRoot
   $pagesUrl = "https://$($gh.Split('/')[0]).github.io/$($gh.Split('/')[1])/map.html"
   $data = [ordered]@{
-    prologue   = '三つの扉の間。謎の老人が言う——力を試すなら大扉の奥を目指せ。ただし盾と剣ではまだ不十分だ。盾は左で、剣は右で鍛えよ。分野をクリアするたび武具や精神が光り成長する。'
+    prologue   = '三つの扉の間。謎の老人が言う——今の力を試したいなら、この扉の奥を目指しなさい。強靭な精神を身に付けられるだろう。ただし相手は強い。その盾と剣では不十分だ。盾を鍛えるなら左へ、剣を鍛えるなら右へ進みなさい。講座をクリアするたび、盾・剣・精神が光り成長する。'
     githubRepo = $gh
     pagesUrl   = $pagesUrl
     domains    = @($domains)

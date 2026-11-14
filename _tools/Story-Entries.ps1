@@ -1,31 +1,32 @@
 ﻿function Get-LampDomainStories {
+  # 三つの扉の間トーン（WORLD.md）。諸島・空海・地下帝国の比喩は使わない。
   return @{
-    'island-foundation'  = @{ Npc = '灯台守レン'; Synopsis = '盾の道の入口。0と1から知の灯を点ける。'; EnterLine = '「知は粒から。ここが最初の間だ」とレンが言う。' }
-    'island-algorithm'   = @{ Npc = '時計塔の技師ミラ'; Synopsis = 'アルゴリズムとデータ構造の間。'; EnterLine = '歯車が止まり、ミラが図版を指差す。' }
-    'island-hardware'    = @{ Npc = '工房長ガスト'; Synopsis = '蒸気と歯車。CPUと記憶の話。'; EnterLine = '工房の蒸気が霧となり、ガストが基板を磨く。' }
-    'island-system'      = @{ Npc = '系譜士セラ'; Synopsis = '信頼性と冗長。システム全体の話。'; EnterLine = '系譜の帳が開き、セラが冗長の針を刺す。' }
-    'island-software'    = @{ Npc = '書庫司書オウ'; Synopsis = 'OSとソフトウェアの層。'; EnterLine = '書庫の層が重なり、オウがプロセスの印を求める。' }
-    'island-database'    = @{ Npc = '水晶司ライラ'; Synopsis = '表と関係。データの泉。'; EnterLine = '泉底の水晶が脈打ち、ライラが関係の鎖を示す。' }
-    'island-network'     = @{ Npc = '航路司フェン'; Synopsis = 'プロトコルの通路。'; EnterLine = '航路図がはためき、フェンが灯標を点検する。' }
-    'island-security'    = @{ Npc = '盾商会マスター・クレス'; Synopsis = '脅威と暗号の間。盾が太くなる。'; EnterLine = '盾壁の奥で、クレスが脅威のリストを広げる。' }
-    'island-media'       = @{ Npc = '絵師ティア'; Synopsis = '見え方と体験の話。'; EnterLine = '色の試料が並び、ティアが見え方の封印を語る。' }
-    'island-corporate'   = @{ Npc = '書記ホウ'; Synopsis = '企業と法務の間。'; EnterLine = '帳場に印鑑の列。ホウが企業の帆を数える。' }
-    'island-business'    = @{ Npc = '羅針盤の執事アル'; Synopsis = '経営と戦略の室。'; EnterLine = '羅針盤が一瞬だけ北を指し、アルが戦略の地図を開く。' }
-    'island-system-plan' = @{ Npc = '設計士ナギ'; Synopsis = 'システム化計画の間。'; EnterLine = '企画室に錨が下り、ナギが要件を見る。' }
-    'island-dev-tech'    = @{ Npc = '工房棟梁ディン'; Synopsis = '開発の型と技術。'; EnterLine = '開発工房で型が乾き、ディンが試作の灯を点ける。' }
-    'island-project'     = @{ Npc = '吊橋番ケイ'; Synopsis = '工程とWBSの橋。'; EnterLine = '吊橋が揺れ、ケイが工程表の矢石を並べる。' }
-    'island-service'     = @{ Npc = '灯火番イズミ'; Synopsis = 'サービスと障害復旧。'; EnterLine = 'ベルが鳴り、イズミがSLAの巻を持つ。' }
-    'island-audit'       = @{ Npc = '記録官トモ'; Synopsis = '証跡と監査の書庫。'; EnterLine = '記録庫の灯が点き、トモが証跡の判子を用意する。' }
-    'gate-sky-trial'     = @{ Npc = '関門番トリス'; Synopsis = '盾の関門。三つの総合試練。'; EnterLine = 'トリスが三本の試練の扉を示す。「ここで盾が鍛え直される。」' }
-    'fortress-algorithm' = @{ Npc = '衛兵長ヴェルク'; Synopsis = '剣の道・トレース訓練場。'; EnterLine = '石版室に靴音。ヴェルクが「動きを追え」と囁く。' }
-    'fortress-program'   = @{ Npc = '工房技師ザイン'; Synopsis = '擬似言語と構造の剣房。'; EnterLine = '擬似言語の煙が立ち、ザインが石版コードを渡す。' }
-    'fortress-database'  = @{ Npc = '水晶管理人ダリア'; Synopsis = 'SQLとERの剣房。'; EnterLine = '水晶庫の錠が鳴り、ダリアがERの板を掲げる。' }
-    'fortress-network'   = @{ Npc = '伏線番エルク'; Synopsis = 'サブネットと設計の剣房。'; EnterLine = '伏線が壁を走り、エルクが配線図を灯で照らす。' }
-    'fortress-security'  = @{ Npc = '盾壁団リーゼ'; Synopsis = 'リスクと暗号の剣房。'; EnterLine = '詰所で、リーゼがリスク表を叩く。' }
-    'fortress-deep'      = @{ Npc = '深層司祭オーレ'; Synopsis = '剣の深層。読解の最奥。'; EnterLine = '最奥の読書室。オーレが長文記録を開く。「ここで剣が研がれる。」' }
-    'plateau-mock-am'    = @{ Npc = '教官マコト'; Synopsis = '大扉の奥・科目A模試。'; EnterLine = '演習場に旗。マコトが「精神を試すぞ」と叫ぶ。' }
-    'plateau-mock-pm'    = @{ Npc = '参謀ヒロ'; Synopsis = '大扉の奥・科目B模試。'; EnterLine = '軍議場に石版束。ヒロが号令を待つ。' }
-    'plateau-final'      = @{ Npc = '見張り長'; Synopsis = '最終試練。精神の総仕上げ。'; EnterLine = 'すべての灯が集まり、見張り長が最終線を引く。' }
+    'island-foundation'  = @{ Npc = '灯守レン'; Synopsis = '盾の道の入口。最小の知から灯を点ける間。'; EnterLine = 'レンが言う。「知は粒から。ここが盾の最初の間だ。」' }
+    'island-algorithm'   = @{ Npc = '技師ミラ'; Synopsis = 'アルゴリズムとデータ構造の間。'; EnterLine = 'ミラが図版を指す。「手順を整えれば、盾は軽くなる。」' }
+    'island-hardware'    = @{ Npc = '工房長ガスト'; Synopsis = 'ハードウェアの間。CPUと記憶の鍛錬。'; EnterLine = 'ガストが基板を磨く。「中身を知らねば、盾は割れる。」' }
+    'island-system'      = @{ Npc = '系譜士セラ'; Synopsis = 'システム構成の間。信頼と冗長。'; EnterLine = 'セラが帳を開く。「全体を見渡せ。盾は一枚ではない。」' }
+    'island-software'    = @{ Npc = '書庫司書オウ'; Synopsis = 'ソフトウェアの間。層とプロセス。'; EnterLine = 'オウが言う。「層を間違えぬこと。それが盾の厚みだ。」' }
+    'island-database'    = @{ Npc = '司書ライラ'; Synopsis = 'データベースの間。表と関係。'; EnterLine = 'ライラが鎖を示す。「関係を結べば、記録は守られる。」' }
+    'island-network'     = @{ Npc = '通路番フェン'; Synopsis = 'ネットワークの間。通路と約束。'; EnterLine = 'フェンが灯標を点検する。「約束どおり届けるのが盾だ。」' }
+    'island-security'    = @{ Npc = '盾師クレス'; Synopsis = 'セキュリティの間。脅威と暗号。'; EnterLine = 'クレスが脅威の表を広げる。「ここから盾が本気で育つ。」' }
+    'island-media'       = @{ Npc = '絵師ティア'; Synopsis = 'メディアの間。見え方と体験。'; EnterLine = 'ティアが言う。「正しく見せることも、守りの一部だ。」' }
+    'island-corporate'   = @{ Npc = '書記ホウ'; Synopsis = '企業活動の間。法と組織。'; EnterLine = 'ホウが印を並べる。「決まりを知る者だけが盾を保てる。」' }
+    'island-business'    = @{ Npc = '執事アル'; Synopsis = '経営戦略の間。'; EnterLine = 'アルが地図を開く。「狙いを定めよ。盾は方向を持つ。」' }
+    'island-system-plan' = @{ Npc = '設計士ナギ'; Synopsis = 'システム化計画の間。'; EnterLine = 'ナギが要件を見る。「計画なき盾は、ただの板だ。」' }
+    'island-dev-tech'    = @{ Npc = '棟梁ディン'; Synopsis = '開発技術の間。型と試作。'; EnterLine = 'ディンが試作の灯を点ける。「作り方そのものが鍛錬だ。」' }
+    'island-project'     = @{ Npc = '橋番ケイ'; Synopsis = 'プロジェクトの間。工程とWBS。'; EnterLine = 'ケイが工程表を並べる。「順序を守れ。盾の継ぎ目だ。」' }
+    'island-service'     = @{ Npc = '灯火番イズミ'; Synopsis = 'サービスの間。障害と復旧。'; EnterLine = 'イズミが巻物を持つ。「落ちても立て直せ。それが盾だ。」' }
+    'island-audit'       = @{ Npc = '記録官トモ'; Synopsis = '監査の間。証跡を残す。'; EnterLine = 'トモが判子を用意する。「残りたる証が、最後の盾になる。」' }
+    'gate-sky-trial'     = @{ Npc = '関門番トリス'; Synopsis = '盾の関門。総合の試練。'; EnterLine = 'トリスが三つの扉を示す。「ここで盾を鍛え直せ。」' }
+    'fortress-algorithm' = @{ Npc = '衛兵長ヴェルク'; Synopsis = '剣の道。動きを追う訓練の間。'; EnterLine = 'ヴェルクが囁く。「動きを追え。剣は思考の刃だ。」' }
+    'fortress-program'   = @{ Npc = '技師ザイン'; Synopsis = '擬似言語と構造の剣の間。'; EnterLine = 'ザインが板を渡す。「言葉を刃に変えよ。」' }
+    'fortress-database'  = @{ Npc = '管理人ダリア'; Synopsis = 'SQLとERの剣の間。'; EnterLine = 'ダリアが板を掲げる。「関係を斬り結び直せ。」' }
+    'fortress-network'   = @{ Npc = '配線番エルク'; Synopsis = 'ネットワーク設計の剣の間。'; EnterLine = 'エルクが図を照らす。「通路を誤れば、剣は空を斬る。」' }
+    'fortress-security'  = @{ Npc = '守備長リーゼ'; Synopsis = 'リスクと暗号の剣の間。'; EnterLine = 'リーゼが表を叩く。「脅威を読め。剣の切っ先だ。」' }
+    'fortress-deep'      = @{ Npc = '深層のオーレ'; Synopsis = '剣の深層。読解の最奥。'; EnterLine = 'オーレが長文を開く。「ここで剣が研がれる。」' }
+    'plateau-mock-am'    = @{ Npc = '教官マコト'; Synopsis = '大扉の奥。科目Aの精神試練。'; EnterLine = 'マコトが言う。「精神を試すぞ。盾と剣の先だ。」' }
+    'plateau-mock-pm'    = @{ Npc = '参謀ヒロ'; Synopsis = '大扉の奥。科目Bの精神試練。'; EnterLine = 'ヒロが号令を待つ。「刃と盾を、同時に使え。」' }
+    'plateau-final'      = @{ Npc = '見張り長'; Synopsis = '最終試練。精神の総仕上げ。'; EnterLine = '見張り長が線を引く。「すべての灯が、ここに集まる。」' }
   }
 }
 
@@ -104,12 +105,12 @@ function Get-LampStoryForLesson {
 function Get-LampRealmPrologues {
   return @{
     sky = @'
-**左の道（盾）**。科目Aの知識を四肢択一で鍛え、分野をクリアするたび盾が光り成長します。  
-関門（#87〜89）まで進めば、盾は大きく鍛え直されます。
+**左の道（盾）**。科目Aの知識を四肢択一で鍛え、講座をクリアするたび盾が光り成長します。  
+関門まで進めば、盾は大きく鍛え直されます。
 '@
     underground = @'
-**右の道（剣）**。科目Bの追跡・読解・SQLを剣房ごとに鍛えます。  
-分野クリアで剣が成長します。推奨開始: 講座 **#90** 以降（左の道と並行可）。
+**右の道（剣）**。科目Bの追跡・読解・SQLを間ごとに鍛えます。  
+講座クリアで剣が成長します。推奨開始: 講座 **#90** 以降（左の道と並行可）。
 '@
     land = @'
 **大扉の奥（精神）**。両道の鍛錬が十分になってから開く総仕上げです。  

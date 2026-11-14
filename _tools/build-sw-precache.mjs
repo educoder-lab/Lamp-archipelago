@@ -69,7 +69,7 @@ const all = [...core, ...pngs, ...plates];
 const body = all.map((p) => `  '${p}'`).join(',\n');
 
 const out = `/* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v29';
+const CACHE = 'lamp-archipelago-v34';
 const PRECACHE = [
 ${body}
 ];
@@ -121,4 +121,4 @@ self.addEventListener('fetch', (event) => {
 `;
 
 fs.writeFileSync(path.join(root, 'docs', 'sw.js'), out);
-console.log('sw.js v29:', pngs.length, 'pngs +', plates.length, 'plates');
+console.log('sw.js:', pngs.length, 'pngs +', plates.length, 'plates');

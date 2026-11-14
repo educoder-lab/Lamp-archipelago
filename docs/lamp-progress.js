@@ -27,13 +27,20 @@
     return domainFullyCleared(skyDeep, cleared) && domainFullyCleared(ugDeep, cleared);
   }
 
-  /** 盾・剣・精神の成長度（0〜1）。セーブ項目は増やさない */
+  /** 盾・剣・精神の成長度（0〜1）。道内のクリア講座数／総講座数。セーブ項目は増やさない */
   function growthRanks(domains, cleared) {
     function rank(realm) {
       const list = domainsByRealm(domains, realm);
-      if (!list.length) return { cleared: 0, total: 0, ratio: 0 };
-      const n = list.filter(d => domainFullyCleared(d, cleared)).length;
-      return { cleared: n, total: list.length, ratio: n / list.length };
+      let total = 0;
+      let n = 0;
+      list.forEach((d) => {
+        (d.lessons || []).forEach((l) => {
+          total += 1;
+          if (cleared.has(l.no)) n += 1;
+        });
+      });
+      if (!total) return { cleared: 0, total: 0, ratio: 0 };
+      return { cleared: n, total: total, ratio: n / total };
     }
     return {
       shield: rank('sky'),

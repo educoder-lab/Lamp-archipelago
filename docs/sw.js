@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v33';
+const CACHE = 'lamp-archipelago-v34';
 const PRECACHE = [
   './',
   './index.html',
@@ -26,7 +26,6 @@ const PRECACHE = [
   './data/refs.json',
   './data/hub-quest.json',
   './data/slides/hub.json',
-  './data/map-layout.json',
   './assets/common/fx-lamp-lit.png',
   './assets/common/fx-level-up.png',
   './assets/common/hero-back.png',
@@ -37,8 +36,14 @@ const PRECACHE = [
   './assets/common/icon-lamp.png',
   './assets/common/icon-map.png',
   './assets/common/icon-settings.png',
+  './assets/common/icon-shield-mid.png',
+  './assets/common/icon-shield-strong.png',
   './assets/common/icon-shield.png',
+  './assets/common/icon-spirit-mid.png',
+  './assets/common/icon-spirit-strong.png',
   './assets/common/icon-spirit.png',
+  './assets/common/icon-sword-mid.png',
+  './assets/common/icon-sword-strong.png',
   './assets/common/icon-sword.png',
   './assets/common/spirit-aura.png',
   './assets/map/hub-pin.png',

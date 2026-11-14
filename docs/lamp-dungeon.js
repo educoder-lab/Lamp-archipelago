@@ -177,9 +177,17 @@ export function mountLampWorld(container, opts) {
     bandShield: null,
     bandSword: null,
     bandSpirit: null,
+    iconShieldMid: null,
+    iconShieldStrong: null,
+    iconSwordMid: null,
+    iconSwordStrong: null,
+    iconSpiritMid: null,
+    iconSpiritStrong: null,
     /** @type {Record<string, HTMLImageElement|null>} */
     domainDoors: {}
   };
+  let doorAnim = null;
+  let clearDoorFlash = 0;
   const DOMAIN_DOOR_IDS = [
     'island-foundation', 'island-algorithm', 'island-hardware', 'island-system',
     'island-software', 'island-database', 'island-network', 'island-security',
@@ -226,6 +234,12 @@ export function mountLampWorld(container, opts) {
     loadHubImage('common/icon-shield.jpg').then((i) => { hubArt.iconShield = i; }),
     loadHubImage('common/icon-sword.jpg').then((i) => { hubArt.iconSword = i; }),
     loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; }),
+    loadHubImage('common/icon-shield-mid.png').then((i) => { hubArt.iconShieldMid = i; }),
+    loadHubImage('common/icon-shield-strong.png').then((i) => { hubArt.iconShieldStrong = i; }),
+    loadHubImage('common/icon-sword-mid.png').then((i) => { hubArt.iconSwordMid = i; }),
+    loadHubImage('common/icon-sword-strong.png').then((i) => { hubArt.iconSwordStrong = i; }),
+    loadHubImage('common/icon-spirit-mid.png').then((i) => { hubArt.iconSpiritMid = i; }),
+    loadHubImage('common/icon-spirit-strong.png').then((i) => { hubArt.iconSpiritStrong = i; }),
     ...DOMAIN_DOOR_IDS.map((id) =>
       loadHubImage('rooms/domains/' + id + '.jpg').then((i) => { hubArt.domainDoors[id] = i; })
     )
@@ -236,8 +250,15 @@ export function mountLampWorld(container, opts) {
     const b = (growth.sword && growth.sword.ratio) || 0;
     const c = (growth.spirit && growth.spirit.ratio) || 0;
     const avg = (a + b + c) / 3;
-    if (avg >= 0.55) return 'strong';
-    if (avg >= 0.25) return 'mid';
+    if (avg >= 0.45) return 'strong';
+    if (avg >= 0.15) return 'mid';
+    return 'weak';
+  }
+
+  function growthIconTier(g) {
+    const r = (g && g.ratio) || 0;
+    if (r >= 0.45) return 'strong';
+    if (r >= 0.15) return 'mid';
     return 'weak';
   }
 
@@ -531,9 +552,21 @@ export function mountLampWorld(container, opts) {
 
   function drawGrowthHud(ctx) {
     const bars = [
-      { key: 'shield', label: '盾', color: '#f0a030', glow: '#ffe08a', g: growth.shield, icon: hubArt.iconShield },
-      { key: 'sword', label: '剣', color: '#a070ff', glow: '#e0d0ff', g: growth.sword, icon: hubArt.iconSword },
-      { key: 'spirit', label: '精神', color: '#40c080', glow: '#b8ffd0', g: growth.spirit, icon: hubArt.iconSpirit }
+      {
+        key: 'shield', label: '盾', color: '#f0a030', glow: '#ffe08a', g: growth.shield,
+        icon: growthIconTier(growth.shield) === 'strong' ? (hubArt.iconShieldStrong || hubArt.iconShieldMid || hubArt.iconShield)
+          : growthIconTier(growth.shield) === 'mid' ? (hubArt.iconShieldMid || hubArt.iconShield) : hubArt.iconShield
+      },
+      {
+        key: 'sword', label: '剣', color: '#a070ff', glow: '#e0d0ff', g: growth.sword,
+        icon: growthIconTier(growth.sword) === 'strong' ? (hubArt.iconSwordStrong || hubArt.iconSwordMid || hubArt.iconSword)
+          : growthIconTier(growth.sword) === 'mid' ? (hubArt.iconSwordMid || hubArt.iconSword) : hubArt.iconSword
+      },
+      {
+        key: 'spirit', label: '精神', color: '#40c080', glow: '#b8ffd0', g: growth.spirit,
+        icon: growthIconTier(growth.spirit) === 'strong' ? (hubArt.iconSpiritStrong || hubArt.iconSpiritMid || hubArt.iconSpirit)
+          : growthIconTier(growth.spirit) === 'mid' ? (hubArt.iconSpiritMid || hubArt.iconSpirit) : hubArt.iconSpirit
+      }
     ];
     const x0 = 12;
     let y = 12;
@@ -625,7 +658,7 @@ export function mountLampWorld(container, opts) {
     // 左・盾の道 / 右・剣の道
     const leftLit = hubFocus === 'left';
     const rightLit = hubFocus === 'right';
-    const pathW = W * 0.24;
+    const pathW = W * 0.22;
     const pathH = H * 0.36;
     const pathY = H * 0.36;
     if (!drawArt(ctx, hubArt.pathShield, W * 0.08, pathY, pathW, pathH)) {
@@ -716,7 +749,17 @@ export function mountLampWorld(container, opts) {
     const packDoor = pack === 'sword' ? hubArt.swordDoor : pack === 'spirit' ? hubArt.spiritDoor : hubArt.shieldDoor;
     const domainNode = currentRoomDomain();
     const domainId = domainNode && domainNode.d && domainNode.d.id;
-    const doorImg = (domainId && hubArt.domainDoors[domainId]) || packDoor;
+    let doorImg = (domainId && hubArt.domainDoors[domainId]) || packDoor;
+    if (doorAnim || clearDoorFlash > 0) {
+      const phase = doorAnim
+        ? Math.min(1, (performance.now() - doorAnim.t0) / Math.max(1, doorAnim.dur))
+        : clearDoorFlash;
+      doorImg = phase < 0.35
+        ? (hubArt.doorOpen1 || hubArt.doorAjar || doorImg)
+        : phase < 0.7
+          ? (hubArt.doorAjar || hubArt.doorOpen1 || doorImg)
+          : (hubArt.doorOpen2 || hubArt.doorAjar || doorImg);
+    }
     const accent = pack === 'sword' ? '#d8c8ff' : pack === 'spirit' ? '#b8ffd0' : '#ffe08a';
     const realmLabel = pack === 'sword' ? '剣の道' : pack === 'spirit' ? '大扉の奥' : '盾の道';
 
@@ -1065,6 +1108,17 @@ export function mountLampWorld(container, opts) {
     lastT = now;
     pulseT += dt;
 
+    if (doorAnim) {
+      const u = Math.min(1, (now - doorAnim.t0) / Math.max(1, doorAnim.dur));
+      clearDoorFlash = u;
+      if (u >= 1) {
+        const done = doorAnim.onDone;
+        doorAnim = null;
+        clearDoorFlash = 0;
+        if (done) done();
+      }
+    }
+
     if (anim) {
       const u = Math.min(1, (now - anim.t0) / anim.dur);
       const e = easeInOut(u);
@@ -1226,7 +1280,7 @@ export function mountLampWorld(container, opts) {
     return { x: sx / rs.length, y: sy / rs.length };
   }
 
-  function travelToRealm(realm, duration) {
+  function travelToRealm(realm, duration, targetNode) {
     if (typeof opts.canTravelRealm === 'function' && !opts.canTravelRealm(realm)) {
       if (opts.onTravelBlocked) opts.onTravelBlocked(realm, 'まだこの道へは進めません。');
       return null;
@@ -1234,30 +1288,41 @@ export function mountLampWorld(container, opts) {
     const pack = packForRealm(realm);
     if (!pack) return null;
     const inRealm = domainsInRealm(realm);
-    const first = inRealm.find(n => n.state === 'open' || n.state === 'current' || n.state === 'cleared')
-      || inRealm[0];
-    if (!first) {
+    let target = targetNode && inRealm.includes(targetNode) ? targetNode : null;
+    if (!target && targetNode && targetNode.d) {
+      target = inRealm.find((n) => n.d && n.d.id === targetNode.d.id) || null;
+    }
+    if (!target) {
+      target = inRealm.find(n => n.state === 'open' || n.state === 'current' || n.state === 'cleared')
+        || inRealm[0];
+    }
+    if (!target) {
       if (opts.onTravelBlocked) opts.onTravelBlocked(realm, 'この道の分野がまだマップにありません。');
       return null;
     }
     roomPack = pack;
-    roomDomainIdx = Math.max(0, inRealm.indexOf(first));
+    roomDomainIdx = Math.max(0, inRealm.indexOf(target));
     roomFocus = 'door';
     scene = 'room';
     mode = 'world';
-    focusKey = first.d ? first.d.id : null;
+    focusKey = target.d ? target.d.id : null;
     islandDomain = null;
     stagePads = [];
     overview = false;
     anim = null;
-    if (first._px != null) {
-      px = first._px;
-      py = first._py;
+    if (target._px != null) {
+      px = target._px;
+      py = target._py;
     }
     if (opts.onModeChange) opts.onModeChange('world', null);
-    if (opts.onTravelRealm) opts.onTravelRealm(realm, first);
+    if (opts.onTravelRealm) opts.onTravelRealm(realm, target);
     void duration;
-    return first;
+    return target;
+  }
+
+  function playClearDoorThen(onDone) {
+    doorAnim = { t0: performance.now(), dur: 900, onDone: onDone || null };
+    clearDoorFlash = 0.01;
   }
 
   function returnToHub(duration) {
@@ -1348,32 +1413,34 @@ export function mountLampWorld(container, opts) {
     }
     const w = screenToWorld(sx, sy);
     let best = null;
-    let bestD = 48;
+    let bestD = 1e9;
+    const hitR = Math.max(72, (layoutW / 2800) * 90) / Math.max(0.35, camZoom);
     nodes.forEach(n => {
+      if (n._px == null) return;
       const d = Math.hypot(n._px - w.x, n._py - w.y);
       if (d < bestD) { bestD = d; best = n; }
     });
-    if (!best) return;
+    if (!best || bestD > hitR) return;
     px = best._px;
     py = best._py;
-    if (bestD < 40) {
-      if (best.kind === 'hub') {
-        returnToHub(0);
-        if (opts.onSelectHub) opts.onSelectHub();
-      } else if (best.kind === 'domain' && best.d) {
-        if (best.state === 'fog') {
-          if (opts.onTravelBlocked) opts.onTravelBlocked(best.realm, best.d.lockReason || 'この分野はまだ霧の中です。');
-        } else if (opts.onSelectDomain) {
-          travelToRealm(best.realm, 0);
-          opts.onSelectDomain(best.d);
-        }
-      } else if (best.kind === 'core') {
-        if (best.state === 'fog') {
-          if (opts.onTravelBlocked) opts.onTravelBlocked('land', '中枢はすべての灯が点いてから開きます。');
-        } else if (best.d && opts.onSelectDomain) {
-          travelToRealm('land', 0);
-          opts.onSelectDomain(best.d);
-        }
+    if (best.kind === 'hub') {
+      returnToHub(0);
+      if (opts.onSelectHub) opts.onSelectHub();
+    } else if (best.kind === 'domain' && best.d) {
+      if (best.state === 'fog') {
+        if (opts.onTravelBlocked) opts.onTravelBlocked(best.realm, best.d.lockReason || 'この分野はまだ霧の中です。');
+      } else {
+        travelToRealm(best.realm, 0, best);
+        if (opts.onSelectDomain) opts.onSelectDomain(best.d);
+        if (opts.lessonState) enterIsland(best.d, opts.lessonState);
+        else enterIsland(best.d, null);
+      }
+    } else if (best.kind === 'core') {
+      if (best.state === 'fog') {
+        if (opts.onTravelBlocked) opts.onTravelBlocked('land', '中枢はすべての灯が点いてから開きます。');
+      } else {
+        travelToRealm('land', 0);
+        if (best.d && opts.onSelectDomain) opts.onSelectDomain(best.d);
       }
     }
   });
@@ -1423,6 +1490,7 @@ export function mountLampWorld(container, opts) {
     returnToHub,
     setAvatarLevel,
     setGrowth,
+    playClearDoorThen,
     spawnParticles() {},
     getMode: () => mode,
     getScene: () => scene,

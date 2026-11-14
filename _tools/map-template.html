@@ -855,17 +855,23 @@ function showDomain(d) {
     });
     return;
   }
+  if (worldApi) worldApi.enterIsland(d, lessonState);
   const line = d.enter || (d.synopsis || d.title);
   runSay(line, {
     speaker: d.npc || d.title,
     actions: [
       { label: '講座を選ぶ', primary: true, onClick: () => openDomainSheet(d) },
       { label: 'とじる', onClick: () => {} }
-    ],
-    onDone: () => {
-      if (worldApi) worldApi.enterIsland(d, lessonState);
-    }
+    ]
   });
+}
+
+function refreshGrowthFromSave() {
+  const g = LampProgress.growthRanks(domains, cleared);
+  growth.shield = g.shield;
+  growth.sword = g.sword;
+  growth.spirit = g.spirit;
+  if (worldApi && worldApi.setGrowth) worldApi.setGrowth(growth, landOpen);
 }
 
 function showLevelUp(level, titles) {
@@ -894,10 +900,11 @@ const params = new URLSearchParams(location.search);
 const arrive = params.get('arrive') === '1';
 const fromNo = parseInt(params.get('from'), 10) || 0;
 const toNo = parseInt(params.get('to'), 10) || 0;
-const levelUp = params.get('levelUp') === '1';
-const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
+const doorFx = params.get('door') === '1';
+const levelUp = false; // XPレベルアップ演出は使わない
+const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=4';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=5';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
@@ -943,20 +950,34 @@ import(LAMP_MAP_MODULE).then(mod => {
   }
 
   if (arrive && worldApi) {
-    const fromIdx = worldApi.findNodeIndexForCourse(fromNo);
-    const toIdx = toNo ? worldApi.findNodeIndexForCourse(toNo) : Math.min(fromIdx + 1, nodes.length - 1);
-    worldApi.placeAvatarForProgress(fromNo);
-    worldApi.walkAvatar(fromIdx, toIdx, () => {
+    refreshGrowthFromSave();
+    const fromDom = domains.find(d => d.lessons && d.lessons.some(l => l.no === fromNo));
+    const toDom = toNo ? domains.find(d => d.lessons && d.lessons.some(l => l.no === toNo)) : null;
+    const playDom = toDom || fromDom;
+    const goNext = () => {
       if (toNo) {
-        const dom = domains.find(d => d.lessons.some(l => l.no === toNo));
-        if (dom) showDomain(dom);
+        const L = lessons.find(l => l.no === toNo);
+        if (toDom) {
+          worldApi.enterIsland(toDom, lessonState);
+          if (L) setTimeout(() => openLessonModal(L), 200);
+          else showDomain(toDom);
+        }
+      } else if (fromDom) {
+        showDomain(fromDom);
       }
       history.replaceState({}, '', 'map.html');
-    });
-  }
-
-  if (levelUp || awardTitles.length) {
-    setTimeout(() => showLevelUp(SAVE.level || 1, awardTitles), arrive ? 1600 : 400);
+    };
+    if (playDom) {
+      worldApi.placeAvatarForProgress(fromNo || toNo);
+      worldApi.enterIsland(playDom, lessonState);
+      if (doorFx && worldApi.playClearDoorThen) {
+        worldApi.playClearDoorThen(goNext);
+      } else {
+        goNext();
+      }
+    } else {
+      history.replaceState({}, '', 'map.html');
+    }
   }
 
   // 初回だけ短い案内
