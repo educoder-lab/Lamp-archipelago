@@ -36,6 +36,13 @@ const growthIcons = fs.existsSync(growthDir)
     .sort()
     .map((n) => './assets/common/growth/' + n)
   : [];
+const equipDir = path.join(assetsRoot, 'common', 'equip');
+const equipPlates = fs.existsSync(equipDir)
+  ? fs.readdirSync(equipDir)
+    .filter((n) => /\.jpe?g$/i.test(n))
+    .sort()
+    .map((n) => './assets/common/equip/' + n)
+  : [];
 const plates = [
   './assets/rooms/hub/bg.jpg',
   './assets/rooms/shield/bg.jpg',
@@ -43,6 +50,10 @@ const plates = [
   './assets/rooms/spirit/bg.jpg',
   ...domainBgs,
   ...growthIcons,
+  ...equipPlates,
+  './assets/common/hero-bare.jpg',
+  './assets/common/hero-bare-walk-1.jpg',
+  './assets/common/hero-bare-walk-2.jpg',
   './assets/map/bg.jpg',
   './assets/common/say-frame.jpg',
   './assets/common/app-icon.jpg',
@@ -86,7 +97,7 @@ const all = [...core, ...pngs, ...plates];
 const body = all.map((p) => `  '${p}'`).join(',\n');
 
 const out = `/* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v46';
+const CACHE = 'lamp-archipelago-v47';
 const PRECACHE = [
 ${body}
 ];
