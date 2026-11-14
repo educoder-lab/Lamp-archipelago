@@ -1189,7 +1189,7 @@ export function mountLampWorld(container, opts) {
     if (reduced || duration === 0) {
       camX = dungeon.worldW / 2;
       camY = dungeon.worldH / 2;
-      camZoom = Math.min(canvas.width / dungeon.worldW, canvas.height / dungeon.worldH) * 0.92;
+      camZoom = Math.min(canvas.width / dungeon.worldW, canvas.height / dungeon.worldH) * 0.98;
       return;
     }
     anim = {
@@ -1199,7 +1199,7 @@ export function mountLampWorld(container, opts) {
       fromX: camX, fromY: camY, fromZ: camZoom,
       toX: dungeon.worldW / 2,
       toY: dungeon.worldH / 2,
-      toZ: Math.min(canvas.width / dungeon.worldW, canvas.height / dungeon.worldH) * 0.92
+      toZ: Math.min(canvas.width / dungeon.worldW, canvas.height / dungeon.worldH) * 0.98
     };
   }
 

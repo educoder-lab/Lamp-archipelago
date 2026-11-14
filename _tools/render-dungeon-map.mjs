@@ -71,6 +71,42 @@ function spiritLine(n, origin, cell, gap) {
   return pts;
 }
 
+/** 部屋群を枠内いっぱいに拡大（余白 marginPx） */
+export function fitLayoutToFrame(layout, marginPx = 44) {
+  const rooms = [...layout.shield, ...layout.sword, ...layout.spirit, layout.goal];
+  let minX = layout.hub.x - layout.hub.r;
+  let maxX = layout.hub.x + layout.hub.r;
+  let minY = layout.hub.y - layout.hub.r;
+  let maxY = layout.hub.y + layout.hub.r;
+  for (const r of rooms) {
+    minX = Math.min(minX, r.x - r.w / 2);
+    maxX = Math.max(maxX, r.x + r.w / 2);
+    minY = Math.min(minY, r.y - r.h / 2);
+    maxY = Math.max(maxY, r.y + r.h / 2);
+  }
+  const bw = Math.max(1, maxX - minX);
+  const bh = Math.max(1, maxY - minY);
+  const scale = Math.min((MAP_W - marginPx * 2) / bw, (MAP_H - marginPx * 2) / bh);
+  const ox = (MAP_W - bw * scale) / 2 - minX * scale;
+  const oy = (MAP_H - bh * scale) / 2 - minY * scale;
+  const mapPt = (p) => {
+    const out = { ...p, x: p.x * scale + ox, y: p.y * scale + oy };
+    if (p.w != null) out.w = p.w * scale;
+    if (p.h != null) out.h = p.h * scale;
+    if (p.r != null) out.r = p.r * scale;
+    return out;
+  };
+  return {
+    ...layout,
+    scale,
+    hub: mapPt(layout.hub),
+    shield: layout.shield.map(mapPt),
+    sword: layout.sword.map(mapPt),
+    spirit: layout.spirit.map(mapPt),
+    goal: mapPt(layout.goal)
+  };
+}
+
 export function buildAccordionLayout() {
   const hub = { ...ACCORDION.hub, kind: 'hub' };
   const origin = { x: hub.x, y: hub.y - hub.r };
@@ -96,7 +132,19 @@ export function buildAccordionLayout() {
     h: 58,
     kind: 'goal'
   };
-  return { kind: 'accordion', width: MAP_W, height: MAP_H, hub, shield, sword, spirit, goal };
+  return fitLayoutToFrame(
+    {
+      kind: 'accordion',
+      width: MAP_W,
+      height: MAP_H,
+      hub,
+      shield,
+      sword,
+      spirit,
+      goal
+    },
+    28
+  );
 }
 
 function assertCounts(layout) {
@@ -126,7 +174,7 @@ function assertCounts(layout) {
   return got;
 }
 
-function corridor(x1, y1, x2, y2, thick = 14) {
+function corridor(x1, y1, x2, y2, thick = 18) {
   return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${COLORS.corridor}" stroke-width="${thick}" stroke-linecap="round"/>`;
 }
 
@@ -148,13 +196,12 @@ function toSvg(layout, { numbered = false, label = '' } = {}) {
   const { hub, shield, sword, spirit, goal } = layout;
   let body = '';
   body += `<rect x="0" y="0" width="${MAP_W}" height="${MAP_H}" fill="${COLORS.bg}"/>`;
-  // soft floor wash
-  body += `<rect x="40" y="40" width="${MAP_W - 80}" height="${MAP_H - 80}" rx="12" fill="${COLORS.floor}" opacity="0.55"/>`;
+  body += `<rect x="0" y="0" width="${MAP_W}" height="${MAP_H}" fill="${COLORS.floor}" opacity="0.35"/>`;
 
   body += chainCorridors(hub, shield);
   body += chainCorridors(hub, sword);
   body += chainCorridors(hub, spirit);
-  body += corridor(spirit[spirit.length - 1].x, spirit[spirit.length - 1].y, goal.x, goal.y, 16);
+  body += corridor(spirit[spirit.length - 1].x, spirit[spirit.length - 1].y, goal.x, goal.y, 22);
 
   for (const r of shield) body += roomRect(r, COLORS.shield, COLORS.shieldStroke);
   for (const r of sword) body += roomRect(r, COLORS.sword, COLORS.swordStroke);
@@ -162,21 +209,22 @@ function toSvg(layout, { numbered = false, label = '' } = {}) {
   body += roomRect(goal, COLORS.goal, COLORS.goalStroke, 3.5);
 
   body += `<circle cx="${hub.x}" cy="${hub.y}" r="${hub.r}" fill="${COLORS.hub}" stroke="${COLORS.hubStroke}" stroke-width="3"/>`;
-  body += `<circle cx="${hub.x}" cy="${hub.y}" r="16" fill="none" stroke="${COLORS.hubStroke}" stroke-width="2" opacity="0.75"/>`;
+  body += `<circle cx="${hub.x}" cy="${hub.y}" r="${Math.max(10, hub.r * 0.32)}" fill="none" stroke="${COLORS.hubStroke}" stroke-width="2" opacity="0.75"/>`;
 
   if (numbered) {
+    const fs = Math.max(10, Math.round((layout.scale || 1) * 9));
     const mark = (rooms, color) =>
       rooms
         .map(
           (r, i) =>
-            `<text x="${r.x}" y="${r.y + 3}" text-anchor="middle" font-size="9" font-family="Segoe UI,sans-serif" fill="${color}">${i + 1}</text>`
+            `<text x="${r.x}" y="${r.y + fs * 0.35}" text-anchor="middle" font-size="${fs}" font-family="Segoe UI,sans-serif" fill="${color}">${i + 1}</text>`
         )
         .join('');
     body += mark(shield, '#ffd090');
     body += mark(sword, '#e0d0ff');
     body += mark(spirit, '#b8ffd0');
-    body += `<text x="${goal.x}" y="${goal.y + 4}" text-anchor="middle" font-size="11" font-family="Segoe UI,sans-serif" fill="#ffe9a0">G</text>`;
-    body += `<text x="${hub.x}" y="${hub.y + 4}" text-anchor="middle" font-size="12" font-family="Segoe UI,sans-serif" fill="#ffe9a0">H</text>`;
+    body += `<text x="${goal.x}" y="${goal.y + fs * 0.35}" text-anchor="middle" font-size="${fs + 2}" font-family="Segoe UI,sans-serif" fill="#ffe9a0">G</text>`;
+    body += `<text x="${hub.x}" y="${hub.y + fs * 0.35}" text-anchor="middle" font-size="${fs + 3}" font-family="Segoe UI,sans-serif" fill="#ffe9a0">H</text>`;
     if (label) {
       body += `<text x="24" y="28" font-size="14" font-family="Segoe UI,sans-serif" fill="${COLORS.text}">${label}</text>`;
       body += `<text x="24" y="48" font-size="12" font-family="Segoe UI,sans-serif" fill="${COLORS.text}">H1 · 盾${COUNTS.shield} · 剣${COUNTS.sword} · 精神${COUNTS.spirit}+G1</text>`;
@@ -194,6 +242,7 @@ function layoutJson(layout) {
     kind: 'accordion',
     width: MAP_W,
     height: MAP_H,
+    scale: layout.scale || 1,
     counts: COUNTS,
     // 画像ピクセル座標（ピンは dungeon MARGIN=80 を引いて n.x に入れる）
     hub: { x: layout.hub.x, y: layout.hub.y },

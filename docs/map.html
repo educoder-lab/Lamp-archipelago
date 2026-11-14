@@ -297,7 +297,7 @@ domains.forEach(d => nodes.push({ kind: 'domain', realm: d.realm, label: d.title
 nodes.push({ kind: 'core', realm: 'land', label: '中枢の間', sub: allDone ? '再起動' : '最終目的地', state: allDone ? 'cleared' : 'fog' });
 
 // 案A じゃばら：map/bg.jpg・docs/data/map-layout.json と同一座標（画像px）。MARGIN=80 を引いて n.x へ。
-const MAP_W = 1400, MAP_H = 900, GEO_MARGIN = 80;
+const MAP_W = 1400, MAP_H = 900, GEO_MARGIN = 80, MAP_FIT_MARGIN = 28;
 function accordionCenters(n, origin, opts) {
   const cell = opts.cell, gap = opts.gap, colsPrefer = opts.colsPrefer, side = opts.side, baseOut = opts.baseOut;
   const step = cell + gap;
@@ -309,25 +309,52 @@ function accordionCenters(n, origin, opts) {
     const row = col % 2 === 0 ? rowInCol : rows - 1 - rowInCol;
     pts.push({
       x: origin.x + side * (baseOut + col * step),
-      y: origin.y - (row + 1) * step
+      y: origin.y - (row + 1) * step,
+      w: cell,
+      h: cell
     });
   }
   return pts;
+}
+function fitMapPoints(hub, lists, goal, marginPx) {
+  const rooms = lists.flat().concat([goal]);
+  let minX = hub.x - hub.r, maxX = hub.x + hub.r, minY = hub.y - hub.r, maxY = hub.y + hub.r;
+  rooms.forEach((r) => {
+    const hw = (r.w || 34) / 2, hh = (r.h || 34) / 2;
+    minX = Math.min(minX, r.x - hw); maxX = Math.max(maxX, r.x + hw);
+    minY = Math.min(minY, r.y - hh); maxY = Math.max(maxY, r.y + hh);
+  });
+  const bw = Math.max(1, maxX - minX), bh = Math.max(1, maxY - minY);
+  const scale = Math.min((MAP_W - marginPx * 2) / bw, (MAP_H - marginPx * 2) / bh);
+  const ox = (MAP_W - bw * scale) / 2 - minX * scale;
+  const oy = (MAP_H - bh * scale) / 2 - minY * scale;
+  const map1 = (p) => ({ x: p.x * scale + ox, y: p.y * scale + oy });
+  return {
+    hub: { x: hub.x * scale + ox, y: hub.y * scale + oy },
+    lists: lists.map((arr) => arr.map(map1)),
+    goal: map1(goal)
+  };
 }
 function applyPx(node, px, py) {
   node.x = px - GEO_MARGIN;
   node.y = py - GEO_MARGIN;
 }
-const hubPx = { x: MAP_W / 2, y: MAP_H - 110, r: 48 };
-const originPx = { x: hubPx.x, y: hubPx.y - hubPx.r };
-const shieldPx = accordionCenters(17, originPx, { side: -1, colsPrefer: 3, cell: 34, gap: 12, baseOut: 130 });
-const swordPx = accordionCenters(6, originPx, { side: 1, colsPrefer: 2, cell: 34, gap: 12, baseOut: 130 });
-const spiritPx = [];
+const hubRaw = { x: MAP_W / 2, y: MAP_H - 110, r: 48 };
+const originPx = { x: hubRaw.x, y: hubRaw.y - hubRaw.r };
+const shieldRaw = accordionCenters(17, originPx, { side: -1, colsPrefer: 3, cell: 34, gap: 12, baseOut: 130 });
+const swordRaw = accordionCenters(6, originPx, { side: 1, colsPrefer: 2, cell: 34, gap: 12, baseOut: 130 });
+const spiritRaw = [];
 {
   const cell = 42, gap = 20, step = cell + gap;
-  for (let i = 0; i < 3; i++) spiritPx.push({ x: originPx.x, y: originPx.y - (i + 1) * step - 10 });
+  for (let i = 0; i < 3; i++) spiritRaw.push({ x: originPx.x, y: originPx.y - (i + 1) * step - 10, w: cell, h: cell });
 }
-const goalPx = { x: spiritPx[2].x, y: spiritPx[2].y - 70 };
+const goalRaw = { x: spiritRaw[2].x, y: spiritRaw[2].y - 70, w: 70, h: 58 };
+const fitted = fitMapPoints(hubRaw, [shieldRaw, swordRaw, spiritRaw], goalRaw, MAP_FIT_MARGIN);
+const hubPx = fitted.hub;
+const shieldPx = fitted.lists[0];
+const swordPx = fitted.lists[1];
+const spiritPx = fitted.lists[2];
+const goalPx = fitted.goal;
 
 const hubLayout = nodes.find(n => n.kind === 'hub');
 if (hubLayout) applyPx(hubLayout, hubPx.x, hubPx.y);
