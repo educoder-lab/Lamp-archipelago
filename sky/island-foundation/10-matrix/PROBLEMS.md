@@ -33,7 +33,7 @@ A. 3　B. 5　C. 6　D. 9
 | 前の講座 | [講座 09　確率と統計](../09-prob/README.md) |
 | 次の講座 | [講座 11　計算量とオーダ（問題）](../11-bigo/PROBLEMS.md) |
 | 次（用語） | [講座 11　計算量とオーダ（用語）](../11-bigo/README.md) |
-| この島・砦 | [基礎理論の島](../README.md) |
+| この島・砦 | [基礎理論の間](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

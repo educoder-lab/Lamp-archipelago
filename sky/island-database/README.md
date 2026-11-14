@@ -1,4 +1,4 @@
-﻿# データベースの島
+﻿# データベースの間
 
 [カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
 
@@ -14,7 +14,7 @@
 ## マップ（講座番号）
 
 ```
-40 ─ 41 ─ 42 ─ 43 ─ 44 ─ 45 ─ 46
+40 - 41 - 42 - 43 - 44 - 45 - 46
 40-rdb  41-normal  42-sql-select  43-sql-join  44-sql-update  45-transaction  46-er
 ```
 

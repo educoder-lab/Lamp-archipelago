@@ -1,4 +1,4 @@
-# 講座 105　ネットワーク設計と冗長化
+﻿# 講座 105　ネットワーク設計と冗長化
 
 ## 物語
 
@@ -32,7 +32,7 @@
 | 前の講座 | [講座 104　パケット解析と通信制御](../104-packet/README.md) |
 | 次の講座 | [講座 106　リスクアセスメント演習（問題）](../../fortress-security/106-risk-assess/PROBLEMS.md) |
 | 次（用語） | [講座 106　リスクアセスメント演習（用語）](../../fortress-security/106-risk-assess/README.md) |
-| この島・砦 | [ネットワーク砦](../README.md) |
+| この島・砦 | [ネットワークの剣房](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

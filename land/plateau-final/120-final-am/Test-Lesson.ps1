@@ -1,4 +1,4 @@
-if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
+﻿if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
   $dir = $PSScriptRoot
   $repoRoot = $null
   while ($dir) {

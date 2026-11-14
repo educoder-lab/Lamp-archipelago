@@ -30,7 +30,7 @@
 | 前の講座 | [講座 83　ITサービスマネジメント](../83-itil/README.md) |
 | 次の講座 | [講座 85　システム監査（問題）](../../island-audit/85-audit-base/PROBLEMS.md) |
 | 次（用語） | [講座 85　システム監査（用語）](../../island-audit/85-audit-base/README.md) |
-| この島・砦 | [サービスの島](../README.md) |
+| この島・砦 | [サービスの間](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

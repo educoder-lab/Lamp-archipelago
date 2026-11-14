@@ -1,4 +1,4 @@
-# 講座 112　分野横断演習
+﻿# 講座 112　分野横断演習
 
 ## 物語
 
@@ -31,7 +31,7 @@
 | 前の講座 | [講座 111　システム構成シナリオ](../111-system-scenario/README.md) |
 | 次の講座 | [講座 113　総合戦略と時間管理（問題）](../113-final-strategy/PROBLEMS.md) |
 | 次（用語） | [講座 113　総合戦略と時間管理（用語）](../113-final-strategy/README.md) |
-| この島・砦 | [深層砦](../README.md) |
+| この島・砦 | [剣の深層](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

@@ -1,4 +1,4 @@
-# 講座 98　科目B E-R図の読解
+﻿# 講座 98　科目B E-R図の読解
 
 ## 物語
 
@@ -31,7 +31,7 @@
 | 前の講座 | [講座 97　デバッグと穴埋め対策](../../fortress-program/97-debug/README.md) |
 | 次の講座 | [講座 99　科目B SQL問題演習（問題）](../99-sql-pm/PROBLEMS.md) |
 | 次（用語） | [講座 99　科目B SQL問題演習（用語）](../99-sql-pm/README.md) |
-| この島・砦 | [データベース砦](../README.md) |
+| この島・砦 | [データベースの剣房](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

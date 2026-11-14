@@ -1,4 +1,4 @@
-# 講座 94　擬似言語の読み方
+﻿# 講座 94　擬似言語の読み方
 
 ## 物語
 
@@ -31,7 +31,7 @@
 | 前の講座 | [講座 93　科目Bトレース：再帰と応用](../../fortress-algorithm/93-trace-recurse/README.md) |
 | 次の講座 | [講座 95　コーディングと変数（問題）](../95-coding/PROBLEMS.md) |
 | 次（用語） | [講座 95　コーディングと変数（用語）](../95-coding/README.md) |
-| この島・砦 | [プログラム砦](../README.md) |
+| この島・砦 | [プログラムの剣房](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

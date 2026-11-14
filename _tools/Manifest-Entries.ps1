@@ -1,35 +1,35 @@
-# ---------------------------------------------------------------------------
+﻿# ---------------------------------------------------------------------------
 #  Lamp-archipelago  講座マニフェスト
 #  IPA 基本情報技術者試験 全範囲を学習順に網羅（約 100 講座）
 # ---------------------------------------------------------------------------
 
 $script:LampDomainMeta = @{
-  'island-foundation' = @{ Realm = 'sky'; Title = '基礎理論の島';          Exam = 'テクノロジ・基礎理論' }
-  'island-algorithm'  = @{ Realm = 'sky'; Title = 'アルゴリズムの島';      Exam = 'テクノロジ・アルゴリズム' }
-  'island-hardware'   = @{ Realm = 'sky'; Title = 'ハードウェアの島';      Exam = 'テクノロジ・ハードウェア' }
-  'island-system'     = @{ Realm = 'sky'; Title = 'システム構成の島';      Exam = 'テクノロジ・システム構成' }
-  'island-software'   = @{ Realm = 'sky'; Title = 'ソフトウェアの島';      Exam = 'テクノロジ・ソフトウェア' }
-  'island-database'   = @{ Realm = 'sky'; Title = 'データベースの島';      Exam = 'テクノロジ・データベース' }
-  'island-network'    = @{ Realm = 'sky'; Title = 'ネットワークの島';      Exam = 'テクノロジ・ネットワーク' }
-  'island-security'   = @{ Realm = 'sky'; Title = 'セキュリティの島';      Exam = 'テクノロジ・セキュリティ' }
-  'island-media'      = @{ Realm = 'sky'; Title = 'マルチメディアの島';    Exam = 'テクノロジ・マルチメディア' }
-  'island-corporate'  = @{ Realm = 'sky'; Title = '企業活動の島';          Exam = 'ストラテジ・企業活動' }
-  'island-business'   = @{ Realm = 'sky'; Title = '経営戦略の島';          Exam = 'ストラテジ・経営戦略' }
-  'island-system-plan'= @{ Realm = 'sky'; Title = 'システム企画の島';      Exam = 'ストラテジ・システム企画' }
-  'island-dev-tech'   = @{ Realm = 'sky'; Title = '開発技術の島';          Exam = 'マネジメント・開発技術' }
-  'island-project'    = @{ Realm = 'sky'; Title = 'プロジェクトの島';      Exam = 'マネジメント・プロジェクト管理' }
-  'island-service'    = @{ Realm = 'sky'; Title = 'サービスの島';          Exam = 'マネジメント・サービスマネジメント' }
-  'island-audit'      = @{ Realm = 'sky'; Title = '監査の島';              Exam = 'マネジメント・システム監査' }
-  'gate-sky-trial'    = @{ Realm = 'sky'; Title = '空の関門';              Exam = '科目A・総合演習' }
-  'fortress-algorithm'= @{ Realm = 'underground'; Title = 'アルゴリズム砦'; Exam = '科目B・アルゴリズム' }
-  'fortress-program'  = @{ Realm = 'underground'; Title = 'プログラム砦';   Exam = '科目B・プログラミング' }
-  'fortress-database' = @{ Realm = 'underground'; Title = 'データベース砦'; Exam = '科目B・データベース' }
-  'fortress-network'  = @{ Realm = 'underground'; Title = 'ネットワーク砦'; Exam = '科目B・ネットワーク' }
-  'fortress-security' = @{ Realm = 'underground'; Title = 'セキュリティ砦'; Exam = '科目B・セキュリティ' }
-  'fortress-deep'     = @{ Realm = 'underground'; Title = '深層砦';         Exam = '科目B・総合読解' }
-  'plateau-mock-am'   = @{ Realm = 'land'; Title = '科目A模試の台地';       Exam = '科目A・模擬試験' }
-  'plateau-mock-pm'   = @{ Realm = 'land'; Title = '科目B模試の台地';       Exam = '科目B・模擬試験' }
-  'plateau-final'     = @{ Realm = 'land'; Title = '最終試練の台地';       Exam = '総合・最終模試' }
+  'island-foundation' = @{ Realm = 'sky'; Title = '基礎理論の間';          Exam = 'テクノロジ・基礎理論' }
+  'island-algorithm'  = @{ Realm = 'sky'; Title = 'アルゴリズムの間';      Exam = 'テクノロジ・アルゴリズム' }
+  'island-hardware'   = @{ Realm = 'sky'; Title = 'ハードウェアの間';      Exam = 'テクノロジ・ハードウェア' }
+  'island-system'     = @{ Realm = 'sky'; Title = 'システム構成の間';      Exam = 'テクノロジ・システム構成' }
+  'island-software'   = @{ Realm = 'sky'; Title = 'ソフトウェアの間';      Exam = 'テクノロジ・ソフトウェア' }
+  'island-database'   = @{ Realm = 'sky'; Title = 'データベースの間';      Exam = 'テクノロジ・データベース' }
+  'island-network'    = @{ Realm = 'sky'; Title = 'ネットワークの間';      Exam = 'テクノロジ・ネットワーク' }
+  'island-security'   = @{ Realm = 'sky'; Title = 'セキュリティの間';      Exam = 'テクノロジ・セキュリティ' }
+  'island-media'      = @{ Realm = 'sky'; Title = 'マルチメディアの間';    Exam = 'テクノロジ・マルチメディア' }
+  'island-corporate'  = @{ Realm = 'sky'; Title = '企業活動の間';          Exam = 'ストラテジ・企業活動' }
+  'island-business'   = @{ Realm = 'sky'; Title = '経営戦略の間';          Exam = 'ストラテジ・経営戦略' }
+  'island-system-plan'= @{ Realm = 'sky'; Title = 'システム企画の間';      Exam = 'ストラテジ・システム企画' }
+  'island-dev-tech'   = @{ Realm = 'sky'; Title = '開発技術の間';          Exam = 'マネジメント・開発技術' }
+  'island-project'    = @{ Realm = 'sky'; Title = 'プロジェクトの間';      Exam = 'マネジメント・プロジェクト管理' }
+  'island-service'    = @{ Realm = 'sky'; Title = 'サービスの間';          Exam = 'マネジメント・サービスマネジメント' }
+  'island-audit'      = @{ Realm = 'sky'; Title = '監査の間';              Exam = 'マネジメント・システム監査' }
+  'gate-sky-trial'    = @{ Realm = 'sky'; Title = '盾の関門';              Exam = '科目A・総合演習' }
+  'fortress-algorithm'= @{ Realm = 'underground'; Title = 'アルゴリズムの剣房'; Exam = '科目B・アルゴリズム' }
+  'fortress-program'  = @{ Realm = 'underground'; Title = 'プログラムの剣房';   Exam = '科目B・プログラミング' }
+  'fortress-database' = @{ Realm = 'underground'; Title = 'データベースの剣房'; Exam = '科目B・データベース' }
+  'fortress-network'  = @{ Realm = 'underground'; Title = 'ネットワークの剣房'; Exam = '科目B・ネットワーク' }
+  'fortress-security' = @{ Realm = 'underground'; Title = 'セキュリティの剣房'; Exam = '科目B・セキュリティ' }
+  'fortress-deep'     = @{ Realm = 'underground'; Title = '剣の深層';         Exam = '科目B・総合読解' }
+  'plateau-mock-am'   = @{ Realm = 'land'; Title = '科目A模試の間';       Exam = '科目A・模擬試験' }
+  'plateau-mock-pm'   = @{ Realm = 'land'; Title = '科目B模試の間';       Exam = '科目B・模擬試験' }
+  'plateau-final'     = @{ Realm = 'land'; Title = '最終試練の間';       Exam = '総合・最終模試' }
 }
 
 function Get-LampManifestEntries {

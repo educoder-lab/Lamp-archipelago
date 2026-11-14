@@ -1,4 +1,4 @@
-# 用語図鑑（自動生成）
+﻿# 用語図鑑（自動生成）
 
 [カリキュラム](./CURRICULUM.md) · [WORLD](./WORLD.md)
 
@@ -324,6 +324,8 @@
 | 下線部参照 | 設問が指す本文中の該当箇所を正確に特定する技術 | [長文読解の技法](underground/fortress-deep/110-reading/README.md) |
 | 仮想化 | 物理資源を論理的に分割・統合する技術 | [仮想化とクラウド](sky/island-system/31-virtual/README.md) |
 | 仮想記憶 | 主記憶＋補助記憶で実際より大きなメモリ空間を実現する仕組み | [仮想記憶](sky/island-software/36-vmem/README.md) |
+| 科目Bシナリオ問題 | 具体的な業務シナリオを読み解いて解答する問題形式 | [システム構成シナリオ](underground/fortress-deep/111-system-scenario/README.md) |
+| 科目B問題の構造 | 問題文（状況説明）→設問→選択肢の形式 | [長文読解の技法](underground/fortress-deep/110-reading/README.md) |
 | 稼働率 | MTBF / (MTBF + MTTR)。1 に近いほど高信頼 | [システムの信頼性](sky/island-system/28-reliability/README.md) |
 | 解像度 | 画面のピクセル数。1920×1080 など | [表示装置と解像度](sky/island-hardware/27-display/README.md) |
 | 回帰テスト（リグレッションテスト） | 修正後に他の箇所に影響がないか確認するテスト | [レビューと品質管理](sky/island-dev-tech/78-review/README.md) |
@@ -360,8 +362,6 @@
 | 結合テスト | モジュール間の連携を確認するテスト | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | 見直し | 解答後にケアレスミスや読み違いがないか確認する作業 | [総合戦略と時間管理](underground/fortress-deep/113-final-strategy/README.md) |
 | 個人情報保護法 | 個人情報の取扱いに関する日本の法律 | [インシデント対応と法規](sky/island-security/61-incident/README.md) |
-| 科目Bシナリオ問題 | 具体的な業務シナリオを読み解いて解答する問題形式 | [システム構成シナリオ](underground/fortress-deep/111-system-scenario/README.md) |
-| 科目B問題の構造 | 問題文（状況説明）→設問→選択肢の形式 | [長文読解の技法](underground/fortress-deep/110-reading/README.md) |
 | 公開鍵暗号方式 | 暗号化と復号に異なる鍵を使う方式（RSA など） | [暗号化の基礎](sky/island-security/55-crypto/README.md) |
 | 構造化定理 | あらゆるアルゴリズムは順次・選択・繰返しの組合せで表現できる | [制御構造の組合せ](underground/fortress-program/96-structure/README.md) |
 | 行列 | 数を縦横に並べた配列。行(横)と列(縦)で位置を指定 | [行列と線形代数](sky/island-foundation/10-matrix/README.md) |

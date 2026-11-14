@@ -17,8 +17,8 @@ function Write-WorldMapFile {
   $stories = Get-LampDomainStories
   $awards = Get-LampDomainClearTitles
   $advisories = @{
-    underground = '地下は領域内の順に進みます。手前の砦の灯がすべて点くまで、先の砦へは入れません。'
-    land        = '陸地は空の関門と地下の最深部がすべて灯るまで開通しません。'
+    underground = '右の道は分野の順に進みます。手前の剣房の灯がすべて点くまで、先へは入れません。'
+    land        = '大扉の奥は、盾の関門と剣の深層がすべて灯るまで開通しません。'
   }
 
   $domainOrder = $Lessons | Group-Object Domain | Sort-Object { ($_.Group | Measure-Object CourseNo -Minimum).Minimum }
@@ -50,7 +50,7 @@ function Write-WorldMapFile {
   $gh = Get-LampGithubRepoSlug -RepoRoot $RepoRoot
   $pagesUrl = "https://$($gh.Split('/')[0]).github.io/$($gh.Split('/')[1])/map.html"
   $data = [ordered]@{
-    prologue   = '雲と海の上に浮かぶランプ諸島。港から空か地下へ出発し、各土地では灯を点けると次へ進めます。陸地は、空の関門と地下の最深部がすべて灯ってから開きます。'
+    prologue   = '三つの扉の間。謎の老人が言う——力を試すなら大扉の奥を目指せ。ただし盾と剣ではまだ不十分だ。盾は左で、剣は右で鍛えよ。分野をクリアするたび武具や精神が光り成長する。'
     githubRepo = $gh
     pagesUrl   = $pagesUrl
     domains    = @($domains)

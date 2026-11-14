@@ -33,7 +33,7 @@ A. ASCII　B. EBCDIC　C. Unicode　D. JIS X 0208
 | 前の講座 | [講座 06　浮動小数点と誤差](../06-float/README.md) |
 | 次の講座 | [講座 08　集合と論理（問題）](../08-set/PROBLEMS.md) |
 | 次（用語） | [講座 08　集合と論理（用語）](../08-set/README.md) |
-| この島・砦 | [基礎理論の島](../README.md) |
+| この島・砦 | [基礎理論の間](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

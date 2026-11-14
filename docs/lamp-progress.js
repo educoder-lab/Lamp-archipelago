@@ -1,4 +1,4 @@
-/* 進行ロック: 港→空/地下、領域内は順次、陸は空・地下の最深部クリア後 */
+/* 進行ロック: 左＝盾／右＝剣／大扉の奥＝精神。道内は順次。奥は両道最深クリア後 */
 (function (global) {
   function domainFullyCleared(d, cleared) {
     if (!d || !d.lessons || !d.lessons.length) return false;
@@ -27,8 +27,23 @@
     return domainFullyCleared(skyDeep, cleared) && domainFullyCleared(ugDeep, cleared);
   }
 
+  /** 盾・剣・精神の成長度（0〜1）。セーブ項目は増やさない */
+  function growthRanks(domains, cleared) {
+    function rank(realm) {
+      const list = domainsByRealm(domains, realm);
+      if (!list.length) return { cleared: 0, total: 0, ratio: 0 };
+      const n = list.filter(d => domainFullyCleared(d, cleared)).length;
+      return { cleared: n, total: list.length, ratio: n / list.length };
+    }
+    return {
+      shield: rank('sky'),
+      sword: rank('underground'),
+      spirit: rank('land')
+    };
+  }
+
   /**
-   * 領域内順次開放 + 陸のゲート。
+   * 領域内順次開放 + 大扉ゲート。
    * @returns {{ landOpen: boolean, lockReason: string|null }}
    */
   function applyDomainStates(domains, cleared, nextLesson) {
@@ -38,7 +53,7 @@
       list.forEach((d, i) => {
         if (realm === 'land' && !landOpen) {
           d.state = 'fog';
-          d.lockReason = '空の関門と地下の最深部がすべて灯るまで、陸地へは進めません。';
+          d.lockReason = 'その盾と剣ではまだ不十分だ。左で盾を、右で剣を鍛えなさい。';
           return;
         }
         if (d.total > 0 && domainFullyCleared(d, cleared)) {
@@ -49,7 +64,7 @@
         const prevCleared = i === 0 || domainFullyCleared(list[i - 1], cleared);
         if (!prevCleared) {
           d.state = 'fog';
-          d.lockReason = '手前の土地の灯がすべて点くまで、ここへは進めません。';
+          d.lockReason = '手前の分野の灯がすべて点くまで、ここへは進めません。';
           return;
         }
         if (nextLesson && d.id === nextLesson.domain) d.state = 'current';
@@ -61,7 +76,7 @@
       landOpen,
       lockReason: landOpen
         ? null
-        : '空の関門と地下の最深部がすべて灯るまで、陸地へは進めません。'
+        : 'その盾と剣ではまだ不十分だ。左で盾を、右で剣を鍛えなさい。'
     };
   }
 
@@ -69,7 +84,7 @@
   function lessonPlayable(lesson, domain, cleared, skipped) {
     if (!lesson || !domain) return { ok: false, reason: '講座が見つかりません。' };
     if (domain.state === 'fog') {
-      return { ok: false, reason: domain.lockReason || 'この土地はまだ霧の中です。' };
+      return { ok: false, reason: domain.lockReason || 'この分野はまだ霧の中です。' };
     }
     if (cleared.has(lesson.no)) return { ok: true, reason: null };
     const ls = (domain.lessons || []).slice().sort((a, b) => a.no - b.no);
@@ -90,7 +105,7 @@
     if (realm === 'land') {
       return landOpen
         ? { ok: true, reason: null }
-        : { ok: false, reason: '空の関門と地下の最深部がすべて灯るまで、陸地へは進めません。' };
+        : { ok: false, reason: 'その盾と剣ではまだ不十分だ。左で盾を、右で剣を鍛えなさい。' };
     }
     return { ok: true, reason: null };
   }
@@ -100,6 +115,7 @@
     domainsByRealm,
     deepestDomain,
     landUnlocked,
+    growthRanks,
     applyDomainStates,
     lessonPlayable,
     realmAccessible

@@ -66,6 +66,11 @@ ul.lessons a:hover { color: var(--ink); }
 .back { background: none; border: none; color: var(--open); padding: 0; font-size: 13px; }
 .legend { font-size: 12px; color: var(--muted); line-height: 1.9; }
 .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.hm-growth { margin: 10px 0 14px; display: grid; gap: 6px; }
+.hm-growth-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+.hm-growth-label { min-width: 72px; color: var(--ink); }
+.hm-growth-bar { flex: 1; height: 8px; background: #0b0e1f; border-radius: 4px; overflow: hidden; border: 1px solid #343a6b; }
+.hm-growth-bar i { display: block; height: 100%; }
 @media (max-width: 900px) {
   body { grid-template-columns: 1fr; grid-template-rows: auto 48vh 1fr; }
   aside { border-left: none; border-top: 1px solid #2a2f58; }
@@ -90,15 +95,15 @@ ul.lessons a:hover { color: var(--ink); }
 </header>
 <main>
   <div class="world-wrap" id="world">
-    <button type="button" class="world-back-btn" id="world-back">← 航路へ戻る</button>
-    <div class="world-nav" id="world-nav" role="toolbar" aria-label="航路ナビ">
+    <button type="button" class="world-back-btn" id="world-back">← 間へ戻る</button>
+    <div class="world-nav" id="world-nav" role="toolbar" aria-label="進路ナビ">
       <button type="button" class="world-nav-btn" data-nav="overview">全体図</button>
-      <button type="button" class="world-nav-btn realm sky" data-nav="sky">空</button>
-      <button type="button" class="world-nav-btn realm land" data-nav="land">陸</button>
-      <button type="button" class="world-nav-btn realm underground" data-nav="underground">地下</button>
-      <button type="button" class="world-nav-btn" data-nav="hub">灯台の港</button>
+      <button type="button" class="world-nav-btn realm sky" data-nav="sky">盾の道</button>
+      <button type="button" class="world-nav-btn realm land" data-nav="land">大扉</button>
+      <button type="button" class="world-nav-btn realm underground" data-nav="underground">剣の道</button>
+      <button type="button" class="world-nav-btn" data-nav="hub">三つの扉</button>
     </div>
-    <div class="world-hint">港→空／地下 · 灯を点けると次の土地へ · 陸は最深部クリア後 · Enterで入る</div>
+    <div class="world-hint">手前があなた · 正面は大扉と老人 · 左＝盾 · 右＝剣 · Enterで話す／進む</div>
   </div>
 </main>
 <aside id="panel"></aside>
@@ -130,15 +135,16 @@ ul.lessons a:hover { color: var(--ink); }
 <div class="quest-overlay" id="hub-overlay" role="dialog" aria-modal="true" aria-labelledby="hm-title">
   <div class="quest-modal hub-modal">
     <div class="qm-top">
-      <div class="qm-kicker">陸地の拠点</div>
-      <h2 id="hm-title">灯台の港</h2>
+      <div class="qm-kicker">謎の老人</div>
+      <h2 id="hm-title">三つの扉の間</h2>
     </div>
     <div class="qm-body">
-      <p class="qm-desc" id="hm-desc">試験の全体像を学び、空・地下・陸地へ出発し、つまずいた封印を復習できます。</p>
+      <p class="qm-desc" id="hm-desc">今の力を試したいなら、この扉の奥を目指しなさい…</p>
       <div class="qm-meta" id="hm-meta"></div>
+      <div id="hm-growth" class="hm-growth" aria-label="成長"></div>
       <h3 class="hm-sec">学習</h3>
       <div class="hm-row" id="hm-learn"></div>
-      <h3 class="hm-sec">領域へ飛ぶ</h3>
+      <h3 class="hm-sec">進路</h3>
       <div class="hm-row" id="hm-travel"></div>
       <h3 class="hm-sec">間違い復習</h3>
       <div id="hm-review" class="hm-review"></div>
@@ -240,42 +246,38 @@ if (next) {
 const COLS = 6, DX = 175, DY = 150, MX = 110, BAND_GAP = 46;
 const allDone = lessons.length > 0 && lessons.every(l => cleared.has(l.no));
 
-const nodes = [];
-nodes.push({ kind: 'hub', realm: 'land', label: '灯台の港', sub: '拠点・手引き', state: 'cleared' });
-domains.forEach(d => nodes.push({ kind: 'domain', realm: d.realm, label: d.title, sub: d.done + '/' + d.total, state: d.state, d }));
-nodes.push({ kind: 'core', realm: 'land', label: '諸島の中枢', sub: allDone ? '再起動' : '最終目的地', state: allDone ? 'cleared' : 'fog' });
+const growth = LampProgress.growthRanks(domains, cleared);
 
-const realmOrder = ['sky', 'underground', 'land'];
-let rowIndex = 0, y = 70;
-// 港は領域バンドの手前（空・地下への出発点）
+const nodes = [];
+nodes.push({ kind: 'hub', realm: 'land', label: '三つの扉の間', sub: '老人・手引き', state: 'cleared' });
+domains.forEach(d => nodes.push({ kind: 'domain', realm: d.realm, label: d.title, sub: d.done + '/' + d.total, state: d.state, d }));
+nodes.push({ kind: 'core', realm: 'land', label: '中枢の間', sub: allDone ? '再起動' : '最終目的地', state: allDone ? 'cleared' : 'fog' });
+
+// Y字: 中央に間、左に盾の道、右に剣の道、上に大扉の奥
+const CX = MX + Math.floor((COLS - 1) / 2) * DX;
 const hubLayout = nodes.find(n => n.kind === 'hub');
-if (hubLayout) {
-  hubLayout.x = MX + Math.floor((COLS - 1) / 2) * DX;
-  hubLayout.y = y + 20;
-  y += DY + BAND_GAP;
+if (hubLayout) { hubLayout.x = CX; hubLayout.y = 520; }
+
+function placeChain(list, x0, y0, dy) {
+  list.forEach((n, i) => {
+    n.x = x0;
+    n.y = y0 - i * dy;
+  });
 }
-realmOrder.forEach(realm => {
-  const rs = nodes.filter(n => n.kind === 'domain' && n.realm === realm);
-  const rows = Math.ceil(rs.length / COLS) || 0;
-  for (let r = 0; r < rows; r++) {
-    const chunk = rs.slice(r * COLS, (r + 1) * COLS);
-    const ltr = rowIndex % 2 === 0;
-    chunk.forEach((n, c) => {
-      const col = ltr ? c : (COLS - 1 - c);
-      n.x = MX + col * DX; n.y = y + 20;
-    });
-    rowIndex++;
-    y += DY;
-  }
-  y += BAND_GAP;
-});
+const skyNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'sky');
+const ugNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'underground');
+const landNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'land');
+placeChain(skyNodes, MX + DX * 0.2, 420, 95);
+placeChain(ugNodes, MX + DX * (COLS - 1.2), 420, 95);
+placeChain(landNodes, CX, 380, 110);
 const coreLayout = nodes.find(n => n.kind === 'core');
 if (coreLayout) {
-  coreLayout.x = MX + Math.floor((COLS - 1) / 2) * DX;
-  coreLayout.y = y + 20;
-  y += DY;
+  coreLayout.x = CX;
+  coreLayout.y = landNodes.length ? (landNodes[landNodes.length - 1].y - 120) : 200;
 }
-const layoutW = MX * 2 + (COLS - 1) * DX, layoutH = y + 10;
+const ys = nodes.map(n => n.y).filter(v => v != null);
+const layoutW = MX * 2 + (COLS - 1) * DX;
+const layoutH = Math.max(640, (Math.max(...ys) - Math.min(...ys)) + 200);
 
 document.getElementById('h-name').textContent = SAVE.displayName;
 document.getElementById('h-level').textContent = String(SAVE.level || 1);
@@ -321,7 +323,27 @@ function openHubModal() {
   meta.appendChild(el('span', { class: 'tag' }, '灯 ' + cleared.size + '/' + lessons.length));
   meta.appendChild(el('span', { class: 'tag' }, '復習 ' + missed.size + ' 件'));
   document.getElementById('hm-desc').textContent =
-    'ここは旅の拠点。手引きのあと、空か地下へ出発できます。陸地は空と地下の最深部が灯ってから開きます。各土地では灯を点けると次へ進めます。';
+    '今の力を試したいなら、この扉の奥を目指しなさい。強靭な精神を身に付けられるだろう。ただし相手は強い。その盾と剣では不十分だ。盾を鍛えるなら左へ、剣を鍛えるなら右へ進みなさい。';
+
+  const gEl = document.getElementById('hm-growth');
+  if (gEl) {
+    gEl.innerHTML = '';
+    [
+      ['盾', growth.shield, '#f0a030'],
+      ['剣', growth.sword, '#a070ff'],
+      ['精神', growth.spirit, '#40c080']
+    ].forEach(row => {
+      const line = el('div', { class: 'hm-growth-row' });
+      line.appendChild(el('span', { class: 'hm-growth-label' }, row[0] + ' ' + row[1].cleared + '/' + row[1].total));
+      const bar = el('span', { class: 'hm-growth-bar' });
+      const fill = el('i');
+      fill.style.width = Math.round(row[1].ratio * 100) + '%';
+      fill.style.background = row[2];
+      bar.appendChild(fill);
+      line.appendChild(bar);
+      gEl.appendChild(line);
+    });
+  }
 
   const learn = document.getElementById('hm-learn');
   learn.innerHTML = '';
@@ -339,16 +361,16 @@ function openHubModal() {
   const travel = document.getElementById('hm-travel');
   travel.innerHTML = '';
   [
-    ['sky', '空の諸島へ', 'sky'],
-    ['underground', '地下帝国へ', 'underground'],
-    ['land', '陸地の台地へ', 'land'],
+    ['sky', '左・盾の道へ', 'sky'],
+    ['underground', '右・剣の道へ', 'underground'],
+    ['land', '正面・大扉の奥へ', 'land'],
     ['overview', '全体図', '']
   ].forEach(pair => {
     const b = el('button', { type: 'button', class: pair[2] }, pair[1]);
     if (pair[0] === 'land' && !landOpen) {
       b.disabled = true;
-      b.title = progressGate.lockReason || 'まだ陸地は開いていません';
-      b.textContent = '陸地の台地へ（未開放）';
+      b.title = progressGate.lockReason || 'まだ盾と剣では不十分です';
+      b.textContent = '大扉の奥へ（鍛錬不足）';
     }
     b.onclick = () => {
       closeHubModal();
@@ -505,32 +527,33 @@ function appendSaveTools(panel) {
 
 function showHome() {
   backBtn.classList.remove('visible');
-  if (worldApi && worldApi.getMode() === 'island') worldApi.exitIsland();
+  if (worldApi && worldApi.returnToHub) worldApi.returnToHub(0);
+  else if (worldApi && worldApi.getMode() === 'island') worldApi.exitIsland();
   panel.innerHTML = '';
-  panel.appendChild(el('h2', null, '灯台の港 — 身支度'));
-  panel.appendChild(el('div', { class: 'quote' }, 'ここは陸地の拠点。試験の全体像をスライドと学習プリントで学び、演習で確認してから空の島へ出よう。'));
+  panel.appendChild(el('h2', null, '三つの扉の間 — 身支度'));
+  panel.appendChild(el('div', { class: 'quote' }, '謎の老人が待つ間。手引きを学び、左で盾・右で剣を鍛え、大扉の奥で精神を磨こう。'));
   panel.appendChild(el('div', { class: 'stat' }, DATA.prologue));
 
-  panel.appendChild(el('h3', null, '港の手引き（最初のクエスト）'));
-  panel.appendChild(el('div', { class: 'stat' }, '基本情報技術者試験の概要 — スライド → 学習プリント → 演習。通常の島と同じ型です。'));
+  panel.appendChild(el('h3', null, '手引き（最初のクエスト）'));
+  panel.appendChild(el('div', { class: 'stat' }, '基本情報技術者試験の概要 — スライド → 学習プリント → 演習。どの道も同じ型です。'));
   const hubGo = el('a', { href: 'lesson.html?hub=1', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' },
-    cleared.has(0) ? '港の手引きを見返す →' : 'FE試験の手引きを学ぶ →');
+    cleared.has(0) ? '手引きを見返す →' : 'FE試験の手引きを学ぶ →');
   panel.appendChild(hubGo);
 
-  panel.appendChild(el('h3', null, '領域への門'));
-  panel.appendChild(el('div', { class: 'stat' }, '港の三つの門、またはマップ右上から、空・陸地・地下へジャンプできます（2Dダンジョン）。'));
+  panel.appendChild(el('h3', null, '進路'));
+  panel.appendChild(el('div', { class: 'stat' }, '老人の会話、またはマップ右上から、盾の道・剣の道・大扉へ進めます。'));
   const realmRow = el('div', { class: 'save-row' });
   [
     ['overview', '全体図'],
-    ['sky', '空へ'],
-    ['underground', '地下へ'],
-    ['land', '陸へ']
+    ['sky', '盾の道へ'],
+    ['underground', '剣の道へ'],
+    ['land', '大扉の奥へ']
   ].forEach(pair => {
     const b = el('button', { class: 'panel-btn', type: 'button' }, pair[1]);
     if (pair[0] === 'land' && !landOpen) {
       b.disabled = true;
       b.title = progressGate.lockReason || '';
-      b.textContent = '陸へ（未開放）';
+      b.textContent = '大扉（鍛錬不足）';
     }
     b.onclick = () => {
       if (!worldApi) return;
@@ -613,7 +636,7 @@ function showHome() {
   }
   panel.appendChild(el('h3', null, '凡例'));
   const lg = el('div', { class: 'legend' });
-  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った土地</div><div><i style="background:#7fd1ff"></i>いま挑んでいる土地</div><div><i style="background:#7fa6d8"></i>開いている土地</div><div><i style="background:#3a3f62"></i>霧（未開放）</div><div>港→空／地下。領域内は灯の順。陸は空・地下の最深部クリア後</div>';
+  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った分野</div><div><i style="background:#7fd1ff"></i>いま挑んでいる分野</div><div><i style="background:#7fa6d8"></i>開いている分野</div><div><i style="background:#3a3f62"></i>霧（未開放）</div><div>左＝盾／右＝剣。分野クリアで成長。大扉の奥は両道の鍛錬後</div>';
   panel.appendChild(lg);
 }
 
@@ -711,7 +734,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=2';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=3';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
@@ -720,8 +743,10 @@ import(LAMP_MAP_MODULE).then(mod => {
     layoutW,
     layoutH,
     level: SAVE.level || 1,
-    avatarCourseNo: SAVE.lastCourseNo || (next && next.no) || 1,
+    avatarCourseNo: SAVE.lastCourseNo || 0,
     lessonState,
+    growth,
+    landOpen,
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     onSelectDomain: (d) => showDomain(d),
     onSelectHub: () => openHubModal(),
@@ -729,9 +754,9 @@ import(LAMP_MAP_MODULE).then(mod => {
     canTravelRealm: (realm) => LampProgress.realmAccessible(realm, landOpen).ok,
     onTravelBlocked: (realm, reason) => { alert(reason || 'まだ行けません。'); },
     onTravelRealm: (realm) => {
-      const labels = { sky: '空の諸島', land: '陸地の台地', underground: '地下の砦' };
+      const labels = { sky: '盾の道', land: '大扉の奥', underground: '剣の道' };
       const tip = document.querySelector('.world-hint');
-      if (tip) tip.textContent = (labels[realm] || realm) + ' へジャンプ · 全体図でダンジョン俯瞰';
+      if (tip) tip.textContent = (labels[realm] || realm) + ' へ · ←間に戻る／全体図で俯瞰';
     },
     onModeChange: (mode) => {
       if (mode === 'island') backBtn.classList.add('visible');
@@ -745,8 +770,10 @@ import(LAMP_MAP_MODULE).then(mod => {
       if (!btn || !worldApi) return;
       const act = btn.getAttribute('data-nav');
       if (act === 'overview') worldApi.showOverview();
-      else if (act === 'hub') openHubModal();
-      else travelToRealmSafe(act);
+      else if (act === 'hub') {
+        if (worldApi.returnToHub) worldApi.returnToHub(0);
+        openHubModal();
+      } else travelToRealmSafe(act);
     });
   }
 

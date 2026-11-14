@@ -1,15 +1,16 @@
-/* オーバーワールド2D：nodes.x/y から床・壁・主線を生成 */
+/* オーバーワールド2D：nodes.x/y から床・壁・分岐廊下を生成 */
 
 export const TILE = 32;
 const MARGIN = 80;
 
+/** 分岐ルート: hub→左道 / hub→右道 / hub→大扉の奥→中枢 */
 export function buildRouteOrder(nodes) {
   const hub = nodes.find(n => n.kind === 'hub');
   const core = nodes.find(n => n.kind === 'core');
   const sky = nodes.filter(n => n.kind === 'domain' && n.realm === 'sky');
   const ug = nodes.filter(n => n.kind === 'domain' && n.realm === 'underground');
   const land = nodes.filter(n => n.kind === 'domain' && n.realm === 'land');
-  return [hub, ...sky, ...ug, ...land, core].filter(Boolean);
+  return { hub, core, sky, ug, land };
 }
 
 function carveRect(walls, tw, th, x0, y0, w, h) {
@@ -37,14 +38,47 @@ function carveCorridor(walls, tw, th, ax, ay, bx, by) {
   carveRect(walls, tw, th, x - 1, y - 1, 3, 3);
 }
 
+function linkChain(walls, tw, th, litPath, list, openish) {
+  for (let i = 0; i < list.length - 1; i++) {
+    const a = list[i];
+    const b = list[i + 1];
+    if (!a || !b) continue;
+    const ax = Math.floor(a._px / TILE);
+    const ay = Math.floor(a._py / TILE);
+    const bx = Math.floor(b._px / TILE);
+    const by = Math.floor(b._py / TILE);
+    carveCorridor(walls, tw, th, ax, ay, bx, by);
+    if (openish(a) && openish(b)) {
+      let x = ax;
+      let y = ay;
+      while (x !== bx) {
+        litPath.add(x + ',' + y);
+        x += bx > ax ? 1 : -1;
+      }
+      while (y !== by) {
+        litPath.add(x + ',' + y);
+        y += by > ay ? 1 : -1;
+      }
+      litPath.add(bx + ',' + by);
+    }
+  }
+}
+
 /**
  * @param {object[]} nodes
  * @param {number} layoutW
  * @param {number} layoutH
  */
 export function buildDungeonFromNodes(nodes, layoutW, layoutH) {
-  const route = buildRouteOrder(nodes);
-  route.forEach((n, i) => {
+  const parts = buildRouteOrder(nodes);
+  const flatRoute = [
+    parts.hub,
+    ...parts.sky,
+    ...parts.ug,
+    ...parts.land,
+    parts.core
+  ].filter(Boolean);
+  flatRoute.forEach((n, i) => {
     n._routeIndex = i;
   });
 
@@ -57,7 +91,6 @@ export function buildDungeonFromNodes(nodes, layoutW, layoutH) {
 
   const floorRealm = new Uint8Array(tw * th);
   const litPath = new Set();
-
   const realmCode = { sky: 1, underground: 2, land: 3 };
 
   function tileOf(px, py) {
@@ -68,6 +101,8 @@ export function buildDungeonFromNodes(nodes, layoutW, layoutH) {
   }
 
   const nodeMeta = [];
+  const openish = (n) =>
+    n && (n.kind === 'hub' || n.state === 'cleared' || n.state === 'current' || n.state === 'open');
 
   nodes.forEach((n, idx) => {
     const px = (n.x ?? 0) + MARGIN;
@@ -91,29 +126,18 @@ export function buildDungeonFromNodes(nodes, layoutW, layoutH) {
     nodeMeta.push({ idx, px, py, tx, ty, node: n, radius: Math.max(roomW, roomH) * TILE * 0.45 });
   });
 
-  for (let i = 0; i < route.length - 1; i++) {
-    const a = route[i];
-    const b = route[i + 1];
-    if (!a || !b) continue;
-    const { tx: ax, ty: ay } = tileOf(a._px, a._py);
-    const { tx: bx, ty: by } = tileOf(b._px, b._py);
-    carveCorridor(walls, tw, th, ax, ay, bx, by);
-    // 光の道は「開放済み〜挑戦中」の区間だけ（霧への道は暗いまま）
-    const openish = (n) => n && (n.kind === 'hub' || n.state === 'cleared' || n.state === 'current' || n.state === 'open');
-    const lit = openish(a) && openish(b);
-    if (lit) {
-      let x = ax;
-      let y = ay;
-      while (x !== bx) {
-        litPath.add(x + ',' + y);
-        x += bx > ax ? 1 : -1;
-      }
-      while (y !== by) {
-        litPath.add(x + ',' + y);
-        y += by > ay ? 1 : -1;
-      }
-      litPath.add(bx + ',' + by);
-    }
+  const hub = parts.hub;
+  if (hub) {
+    const chains = [
+      parts.sky[0] ? [hub, ...parts.sky] : null,
+      parts.ug[0] ? [hub, ...parts.ug] : null,
+      parts.land[0] ? [hub, ...parts.land, parts.core].filter(Boolean) : (parts.core ? [hub, parts.core] : null)
+    ];
+    chains.forEach(ch => {
+      if (ch && ch.length > 1) linkChain(walls, tw, th, litPath, ch, openish);
+    });
+  } else {
+    linkChain(walls, tw, th, litPath, flatRoute, openish);
   }
 
   return {
@@ -124,7 +148,8 @@ export function buildDungeonFromNodes(nodes, layoutW, layoutH) {
     walls,
     floorRealm,
     litPath,
-    route,
+    route: flatRoute,
+    parts,
     nodeMeta,
     margin: MARGIN,
     TILE

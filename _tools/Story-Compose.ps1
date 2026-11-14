@@ -1,4 +1,4 @@
-# 講座ごとの依頼文・物語を自動合成（Story-Entries のオーバーライドが無いときに使用）
+﻿# 講座ごとの依頼文・物語を自動合成（Story-Entries のオーバーライドが無いときに使用）
 # 正答・用語定義には触れない。Blurb とドメイン口調だけを使う。
 
 function Get-LampDomainSceneKit {

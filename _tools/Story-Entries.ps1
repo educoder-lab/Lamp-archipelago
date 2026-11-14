@@ -1,31 +1,31 @@
-function Get-LampDomainStories {
+﻿function Get-LampDomainStories {
   return @{
-    'island-foundation'  = @{ Npc = '灯台守レン'; Synopsis = '最古の灯台がある島。0と1から知の灯を点ける。'; EnterLine = '「知は粒から。ここが最初の島だ」とレンが言う。' }
-    'island-algorithm'   = @{ Npc = '時計塔の技師ミラ'; Synopsis = 'アルゴリズムとデータ構造の塔が並ぶ島。'; EnterLine = '塔の歯車が止まり、ミラが図版を指差す。' }
+    'island-foundation'  = @{ Npc = '灯台守レン'; Synopsis = '盾の道の入口。0と1から知の灯を点ける。'; EnterLine = '「知は粒から。ここが最初の間だ」とレンが言う。' }
+    'island-algorithm'   = @{ Npc = '時計塔の技師ミラ'; Synopsis = 'アルゴリズムとデータ構造の間。'; EnterLine = '歯車が止まり、ミラが図版を指差す。' }
     'island-hardware'    = @{ Npc = '工房長ガスト'; Synopsis = '蒸気と歯車。CPUと記憶の話。'; EnterLine = '工房の蒸気が霧となり、ガストが基板を磨く。' }
     'island-system'      = @{ Npc = '系譜士セラ'; Synopsis = '信頼性と冗長。システム全体の話。'; EnterLine = '系譜の帳が開き、セラが冗長の針を刺す。' }
     'island-software'    = @{ Npc = '書庫司書オウ'; Synopsis = 'OSとソフトウェアの層。'; EnterLine = '書庫の層が重なり、オウがプロセスの印を求める。' }
     'island-database'    = @{ Npc = '水晶司ライラ'; Synopsis = '表と関係。データの泉。'; EnterLine = '泉底の水晶が脈打ち、ライラが関係の鎖を示す。' }
-    'island-network'     = @{ Npc = '航路司フェン'; Synopsis = 'プロトコルの風路。'; EnterLine = '航路図が風にはためき、フェンが灯標を点検する。' }
-    'island-security'    = @{ Npc = '盾商会マスター・クレス'; Synopsis = '脅威と暗号の商会。'; EnterLine = '盾壁の奥で、クレスが脅威のリストを広げる。' }
+    'island-network'     = @{ Npc = '航路司フェン'; Synopsis = 'プロトコルの通路。'; EnterLine = '航路図がはためき、フェンが灯標を点検する。' }
+    'island-security'    = @{ Npc = '盾商会マスター・クレス'; Synopsis = '脅威と暗号の間。盾が太くなる。'; EnterLine = '盾壁の奥で、クレスが脅威のリストを広げる。' }
     'island-media'       = @{ Npc = '絵師ティア'; Synopsis = '見え方と体験の話。'; EnterLine = '色の試料が並び、ティアが見え方の封印を語る。' }
-    'island-corporate'   = @{ Npc = '港の書記ホウ'; Synopsis = '企業と法務の港。'; EnterLine = '港の帳場に印鑑の列。ホウが企業の帆を数える。' }
+    'island-corporate'   = @{ Npc = '書記ホウ'; Synopsis = '企業と法務の間。'; EnterLine = '帳場に印鑑の列。ホウが企業の帆を数える。' }
     'island-business'    = @{ Npc = '羅針盤の執事アル'; Synopsis = '経営と戦略の室。'; EnterLine = '羅針盤が一瞬だけ北を指し、アルが戦略の地図を開く。' }
-    'island-system-plan' = @{ Npc = '設計士ナギ'; Synopsis = 'システム化計画の港。'; EnterLine = '企画港に錨が下り、ナギが要件の潮を見る。' }
+    'island-system-plan' = @{ Npc = '設計士ナギ'; Synopsis = 'システム化計画の間。'; EnterLine = '企画室に錨が下り、ナギが要件を見る。' }
     'island-dev-tech'    = @{ Npc = '工房棟梁ディン'; Synopsis = '開発の型と技術。'; EnterLine = '開発工房で型が乾き、ディンが試作の灯を点ける。' }
     'island-project'     = @{ Npc = '吊橋番ケイ'; Synopsis = '工程とWBSの橋。'; EnterLine = '吊橋が揺れ、ケイが工程表の矢石を並べる。' }
-    'island-service'     = @{ Npc = '灯火番イズミ'; Synopsis = 'サービスと障害復旧。'; EnterLine = '灯火番小屋のベルが鳴り、イズミがSLAの巻を持つ。' }
+    'island-service'     = @{ Npc = '灯火番イズミ'; Synopsis = 'サービスと障害復旧。'; EnterLine = 'ベルが鳴り、イズミがSLAの巻を持つ。' }
     'island-audit'       = @{ Npc = '記録官トモ'; Synopsis = '証跡と監査の書庫。'; EnterLine = '記録庫の灯が点き、トモが証跡の判子を用意する。' }
-    'gate-sky-trial'     = @{ Npc = '関門番トリス'; Synopsis = '空を裂く三つの試練。'; EnterLine = '雲が裂け、トリスが三本の試練の扉を示す。' }
-    'fortress-algorithm' = @{ Npc = '衛兵長ヴェルク'; Synopsis = '帝国石版のトレース訓練場。'; EnterLine = '石版室に靴音。ヴェルクが「動きを追え」と囁く。' }
-    'fortress-program'   = @{ Npc = '工房技師ザイン'; Synopsis = '擬似言語と構造の工房。'; EnterLine = '擬似言語の煙が立ち、ザインが石版コードを渡す。' }
-    'fortress-database'  = @{ Npc = '水晶管理人ダリア'; Synopsis = '地下のSQLとER。'; EnterLine = '地下水晶庫の錠が鳴り、ダリアがERの板を掲げる。' }
-    'fortress-network'   = @{ Npc = '伏線番エルク'; Synopsis = 'サブネットと設計の要塞。'; EnterLine = '伏線が壁を走り、エルクが配線図を灯で照らす。' }
-    'fortress-security'  = @{ Npc = '盾壁団リーゼ'; Synopsis = 'リスクと暗号の科目B。'; EnterLine = '盾壁団の詰所で、リーゼがリスク表を叩く。' }
-    'fortress-deep'      = @{ Npc = '深層司祭オーレ'; Synopsis = '読解とシナリオの最奥。'; EnterLine = '最奥の読書室。オーレが帝国の長文記録を開く。' }
-    'plateau-mock-am'    = @{ Npc = '連合教官マコト'; Synopsis = '科目A模試の台地。'; EnterLine = '科目A演習場に旗。マコトが「演習開始」と叫ぶ。' }
-    'plateau-mock-pm'    = @{ Npc = '参謀ヒロ'; Synopsis = '科目B模試の台地。'; EnterLine = '軍議場に石版束。ヒロが科目Bの号令を待つ。' }
-    'plateau-final'      = @{ Npc = '大陸の見張り長'; Synopsis = '最終演習。'; EnterLine = '地平にすべての灯が集まり、見張り長が最終線を引く。' }
+    'gate-sky-trial'     = @{ Npc = '関門番トリス'; Synopsis = '盾の関門。三つの総合試練。'; EnterLine = 'トリスが三本の試練の扉を示す。「ここで盾が鍛え直される。」' }
+    'fortress-algorithm' = @{ Npc = '衛兵長ヴェルク'; Synopsis = '剣の道・トレース訓練場。'; EnterLine = '石版室に靴音。ヴェルクが「動きを追え」と囁く。' }
+    'fortress-program'   = @{ Npc = '工房技師ザイン'; Synopsis = '擬似言語と構造の剣房。'; EnterLine = '擬似言語の煙が立ち、ザインが石版コードを渡す。' }
+    'fortress-database'  = @{ Npc = '水晶管理人ダリア'; Synopsis = 'SQLとERの剣房。'; EnterLine = '水晶庫の錠が鳴り、ダリアがERの板を掲げる。' }
+    'fortress-network'   = @{ Npc = '伏線番エルク'; Synopsis = 'サブネットと設計の剣房。'; EnterLine = '伏線が壁を走り、エルクが配線図を灯で照らす。' }
+    'fortress-security'  = @{ Npc = '盾壁団リーゼ'; Synopsis = 'リスクと暗号の剣房。'; EnterLine = '詰所で、リーゼがリスク表を叩く。' }
+    'fortress-deep'      = @{ Npc = '深層司祭オーレ'; Synopsis = '剣の深層。読解の最奥。'; EnterLine = '最奥の読書室。オーレが長文記録を開く。「ここで剣が研がれる。」' }
+    'plateau-mock-am'    = @{ Npc = '教官マコト'; Synopsis = '大扉の奥・科目A模試。'; EnterLine = '演習場に旗。マコトが「精神を試すぞ」と叫ぶ。' }
+    'plateau-mock-pm'    = @{ Npc = '参謀ヒロ'; Synopsis = '大扉の奥・科目B模試。'; EnterLine = '軍議場に石版束。ヒロが号令を待つ。' }
+    'plateau-final'      = @{ Npc = '見張り長'; Synopsis = '最終試練。精神の総仕上げ。'; EnterLine = 'すべての灯が集まり、見張り長が最終線を引く。' }
   }
 }
 
@@ -104,19 +104,16 @@ function Get-LampStoryForLesson {
 function Get-LampRealmPrologues {
   return @{
     sky = @'
-雲海の上。**ランプ諸島** は学問の島々です。  
-あなたは灯台から旅を始め、テクノロジ・マネジメント・ストラテジの空へ進みます。  
-関門（#87〜89）を越えると、雲の下が見えてきます。
+**左の道（盾）**。科目Aの知識を四肢択一で鍛え、分野をクリアするたび盾が光り成長します。  
+関門（#87〜89）まで進めば、盾は大きく鍛え直されます。
 '@
     underground = @'
-空の下に沈んだ **地下帝国**。知は石版と機械に封印されています。  
-科目B試験の型――追跡・読解・SQL――を砦ごとに叩き込みます。  
-推奨開始: 講座 **#90** 以降（空の関門後でも可。強制はしません）。
+**右の道（剣）**。科目Bの追跡・読解・SQLを剣房ごとに鍛えます。  
+分野クリアで剣が成長します。推奨開始: 講座 **#90** 以降（左の道と並行可）。
 '@
     land = @'
-空と地下を経て、ようやく **大陸の台地**。  
-ここは連合による模擬戦です。本試験に近い長さの問いに挑みます。  
-推奨: **#114** 以降。
+**大扉の奥（精神）**。両道の鍛錬が十分になってから開く総仕上げです。  
+模擬に近い問いで精神が成長します。推奨: **#114** 以降。
 '@
   }
 }

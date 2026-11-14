@@ -1,4 +1,4 @@
-# 講座 113　総合戦略と時間管理
+﻿# 講座 113　総合戦略と時間管理
 
 ## できた状態
 
@@ -36,7 +36,7 @@ A. 鉛筆の濃さ　B. ずれなくマークされているか　C. 回答速�
 | 前の講座 | [講座 112　分野横断演習](../112-cross-domain/README.md) |
 | 次の講座 | [講座 114　科目A模試 第1回（問題）](../../../land/plateau-mock-am/114-mock-am-1/PROBLEMS.md) |
 | 次（用語） | [講座 114　科目A模試 第1回（用語）](../../../land/plateau-mock-am/114-mock-am-1/README.md) |
-| この島・砦 | [深層砦](../README.md) |
+| この島・砦 | [剣の深層](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

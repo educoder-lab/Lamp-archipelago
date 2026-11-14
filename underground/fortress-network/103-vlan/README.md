@@ -1,4 +1,4 @@
-# 講座 103　VLANとVPN
+﻿# 講座 103　VLANとVPN
 
 ## 物語
 
@@ -32,7 +32,7 @@
 | 前の講座 | [講座 102　サブネット計算](../102-subnet-calc/README.md) |
 | 次の講座 | [講座 104　パケット解析と通信制御（問題）](../104-packet/PROBLEMS.md) |
 | 次（用語） | [講座 104　パケット解析と通信制御（用語）](../104-packet/README.md) |
-| この島・砦 | [ネットワーク砦](../README.md) |
+| この島・砦 | [ネットワークの剣房](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

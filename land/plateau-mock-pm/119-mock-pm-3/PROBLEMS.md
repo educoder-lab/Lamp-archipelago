@@ -1,4 +1,4 @@
-# 講座 119　科目B模試 第3回
+﻿# 講座 119　科目B模試 第3回
 
 ## できた状態
 
@@ -36,7 +36,7 @@ A. 除外される　B. NULL で埋められる　C. エラーになる　D. デ
 | 前の講座 | [講座 118　科目B模試 第2回](../118-mock-pm-2/README.md) |
 | 次の講座 | [講座 120　最終模試：科目A（問題）](../../plateau-final/120-final-am/PROBLEMS.md) |
 | 次（用語） | [講座 120　最終模試：科目A（用語）](../../plateau-final/120-final-am/README.md) |
-| この島・砦 | [科目B模試の台地](../README.md) |
+| この島・砦 | [科目B模試の間](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

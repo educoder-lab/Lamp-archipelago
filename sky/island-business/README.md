@@ -1,4 +1,4 @@
-﻿# 経営戦略の島
+﻿# 経営戦略の間
 
 [カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
 
@@ -14,7 +14,7 @@
 ## マップ（講座番号）
 
 ```
-68 ─ 69 ─ 70 ─ 71
+68 - 69 - 70 - 71
 68-strategy  69-marketing  70-it-strategy  71-contract
 ```
 

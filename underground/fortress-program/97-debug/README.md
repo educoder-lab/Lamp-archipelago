@@ -1,4 +1,4 @@
-# 講座 97　デバッグと穴埋め対策
+﻿# 講座 97　デバッグと穴埋め対策
 
 ## 物語
 
@@ -32,7 +32,7 @@
 | 前の講座 | [講座 96　制御構造の組合せ](../96-structure/README.md) |
 | 次の講座 | [講座 98　科目B E-R図の読解（問題）](../../fortress-database/98-er-read/PROBLEMS.md) |
 | 次（用語） | [講座 98　科目B E-R図の読解（用語）](../../fortress-database/98-er-read/README.md) |
-| この島・砦 | [プログラム砦](../README.md) |
+| この島・砦 | [プログラムの剣房](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

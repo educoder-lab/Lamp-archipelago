@@ -1,4 +1,4 @@
-# 講座 99　科目B SQL問題演習
+﻿# 講座 99　科目B SQL問題演習
 
 ## できた状態
 
@@ -36,7 +36,7 @@ A. DEFAULT　B. OTHERWISE　C. ELSE　D. THEN
 | 前の講座 | [講座 98　科目B E-R図の読解](../98-er-read/README.md) |
 | 次の講座 | [講座 100　ロックと同時実行制御（問題）](../100-lock/PROBLEMS.md) |
 | 次（用語） | [講座 100　ロックと同時実行制御（用語）](../100-lock/README.md) |
-| この島・砦 | [データベース砦](../README.md) |
+| この島・砦 | [データベースの剣房](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |
 | 用語図鑑 | [GLOSSARY.md](../../../GLOSSARY.md) |

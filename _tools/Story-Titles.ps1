@@ -1,4 +1,4 @@
-# 称号マスタ（Phase 3）— Build が Test-Lesson / TITLES.md に反映
+﻿# 称号マスタ（Phase 3）— Build が Test-Lesson / TITLES.md に反映
 
 function Get-LampMilestoneTitles {
   return @{
