@@ -164,8 +164,18 @@ export function mountLampWorld(container, opts) {
     pinOpen: null,
     pinCurrent: null,
     pinCleared: null,
-    mapMarker: null
+    mapMarker: null,
+    /** @type {Record<string, HTMLImageElement|null>} */
+    domainDoors: {}
   };
+  const DOMAIN_DOOR_IDS = [
+    'island-foundation',
+    'gate-sky-trial',
+    'fortress-algorithm',
+    'fortress-deep',
+    'plateau-mock-am',
+    'plateau-final'
+  ];
   Promise.all([
     loadHubImage('common/hero-back.jpg').then((i) => { hubArt.hero = i; }),
     loadHubImage('common/hero-walk-1.jpg').then((i) => { hubArt.heroWalk1 = i; }),
@@ -195,7 +205,10 @@ export function mountLampWorld(container, opts) {
     loadHubImage('map/marker.jpg').then((i) => { hubArt.mapMarker = i; }),
     loadHubImage('common/icon-shield.jpg').then((i) => { hubArt.iconShield = i; }),
     loadHubImage('common/icon-sword.jpg').then((i) => { hubArt.iconSword = i; }),
-    loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; })
+    loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; }),
+    ...DOMAIN_DOOR_IDS.map((id) =>
+      loadHubImage('rooms/domains/' + id + '.jpg').then((i) => { hubArt.domainDoors[id] = i; })
+    )
   ]).catch(() => {});
 
   function growthGearTier() {
@@ -664,7 +677,10 @@ export function mountLampWorld(container, opts) {
     const H = canvas.height;
     const pack = roomPack || 'shield';
     const bgImg = pack === 'sword' ? hubArt.swordBg : pack === 'spirit' ? hubArt.spiritBg : hubArt.shieldBg;
-    const doorImg = pack === 'sword' ? hubArt.swordDoor : pack === 'spirit' ? hubArt.spiritDoor : hubArt.shieldDoor;
+    const packDoor = pack === 'sword' ? hubArt.swordDoor : pack === 'spirit' ? hubArt.spiritDoor : hubArt.shieldDoor;
+    const domainNode = currentRoomDomain();
+    const domainId = domainNode && domainNode.d && domainNode.d.id;
+    const doorImg = (domainId && hubArt.domainDoors[domainId]) || packDoor;
     const accent = pack === 'sword' ? '#d8c8ff' : pack === 'spirit' ? '#b8ffd0' : '#ffe08a';
     const realmLabel = pack === 'sword' ? '剣の道' : pack === 'spirit' ? '大扉の奥' : '盾の道';
 
@@ -692,15 +708,14 @@ export function mountLampWorld(container, opts) {
       ctx.strokeRect(doorX - 4, doorY - 4, doorW + 8, doorH + 8);
     }
 
-    const node = currentRoomDomain();
-    const title = (node && node.d && node.d.title) || realmLabel;
+    const title = (domainNode && domainNode.d && domainNode.d.title) || realmLabel;
     ctx.fillStyle = 'rgba(10,14,28,0.8)';
     ctx.fillRect(W / 2 - 160, doorY + doorH + 6, 320, 28);
     ctx.fillStyle = accent;
     ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(title, W / 2, doorY + doorH + 25);
-    if (node && node.state === 'fog') {
+    if (domainNode && domainNode.state === 'fog') {
       ctx.fillStyle = '#9aa0c4';
       ctx.font = '11px sans-serif';
       ctx.fillText('霧の中', W / 2, doorY + doorH + 42);

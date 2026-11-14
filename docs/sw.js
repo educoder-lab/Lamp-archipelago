@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v25';
+const CACHE = 'lamp-archipelago-v26';
 const PRECACHE = [
   './',
   './index.html',
@@ -56,7 +56,13 @@ const PRECACHE = [
   './assets/map/pin-open.jpg',
   './assets/map/pin-current.jpg',
   './assets/map/pin-cleared.jpg',
-  './assets/map/marker.jpg'
+  './assets/map/marker.jpg',
+  './assets/rooms/domains/island-foundation.jpg',
+  './assets/rooms/domains/gate-sky-trial.jpg',
+  './assets/rooms/domains/fortress-algorithm.jpg',
+  './assets/rooms/domains/fortress-deep.jpg',
+  './assets/rooms/domains/plateau-mock-am.jpg',
+  './assets/rooms/domains/plateau-final.jpg'
 ];
 
 self.addEventListener('install', (event) => {

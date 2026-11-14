@@ -49,13 +49,24 @@
 
 ## 優先度 C — 分野扉（段階）
 
-| 段階 | 内容 | 枚数 |
+| 段階 | 内容 | 状態 |
 |------|------|------|
-| C1 | 節目 6 | 後続（第2弾） |
+| C1 | 節目 6 | **済** |
 | C2 | 主要分野 +10〜15 | 後続 |
 | C3 | 全 26 | 後続 |
 
 置き場: `rooms/domains/`
+
+### C1 対応
+
+| 役割 | 分野 ID | ファイル |
+|------|---------|----------|
+| 盾入口 | `island-foundation` | `island-foundation.jpg` |
+| 盾関門 | `gate-sky-trial` | `gate-sky-trial.jpg` |
+| 剣入口 | `fortress-algorithm` | `fortress-algorithm.jpg` |
+| 剣深層 | `fortress-deep` | `fortress-deep.jpg` |
+| 精神入口 | `plateau-mock-am` | `plateau-mock-am.jpg` |
+| 最終 | `plateau-final` | `plateau-final.jpg` |
 
 ## 優先度 D — マップ画面
 
@@ -77,5 +88,5 @@
 | 段階 | 内容 | 状態 |
 |------|------|------|
 | **第1弾** | A ＋ B 拠点・3道 ＋ D | **実装済** |
-| **第2弾** | ＋ C1 節目 6 | 後続 |
+| **第2弾** | ＋ C1 節目 6 | **実装済** |
 | **完成形** | ＋分野全26・演出充実 | 後続 |
