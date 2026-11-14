@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v26';
+const CACHE = 'lamp-archipelago-v27';
 const PRECACHE = [
   './',
   './index.html',
@@ -58,10 +58,30 @@ const PRECACHE = [
   './assets/map/pin-cleared.jpg',
   './assets/map/marker.jpg',
   './assets/rooms/domains/island-foundation.jpg',
+  './assets/rooms/domains/island-algorithm.jpg',
+  './assets/rooms/domains/island-hardware.jpg',
+  './assets/rooms/domains/island-system.jpg',
+  './assets/rooms/domains/island-software.jpg',
+  './assets/rooms/domains/island-database.jpg',
+  './assets/rooms/domains/island-network.jpg',
+  './assets/rooms/domains/island-security.jpg',
+  './assets/rooms/domains/island-media.jpg',
+  './assets/rooms/domains/island-corporate.jpg',
+  './assets/rooms/domains/island-business.jpg',
+  './assets/rooms/domains/island-system-plan.jpg',
+  './assets/rooms/domains/island-dev-tech.jpg',
+  './assets/rooms/domains/island-project.jpg',
+  './assets/rooms/domains/island-service.jpg',
+  './assets/rooms/domains/island-audit.jpg',
   './assets/rooms/domains/gate-sky-trial.jpg',
   './assets/rooms/domains/fortress-algorithm.jpg',
+  './assets/rooms/domains/fortress-program.jpg',
+  './assets/rooms/domains/fortress-database.jpg',
+  './assets/rooms/domains/fortress-network.jpg',
+  './assets/rooms/domains/fortress-security.jpg',
   './assets/rooms/domains/fortress-deep.jpg',
   './assets/rooms/domains/plateau-mock-am.jpg',
+  './assets/rooms/domains/plateau-mock-pm.jpg',
   './assets/rooms/domains/plateau-final.jpg'
 ];
 

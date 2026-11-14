@@ -169,12 +169,14 @@ export function mountLampWorld(container, opts) {
     domainDoors: {}
   };
   const DOMAIN_DOOR_IDS = [
-    'island-foundation',
+    'island-foundation', 'island-algorithm', 'island-hardware', 'island-system',
+    'island-software', 'island-database', 'island-network', 'island-security',
+    'island-media', 'island-corporate', 'island-business', 'island-system-plan',
+    'island-dev-tech', 'island-project', 'island-service', 'island-audit',
     'gate-sky-trial',
-    'fortress-algorithm',
-    'fortress-deep',
-    'plateau-mock-am',
-    'plateau-final'
+    'fortress-algorithm', 'fortress-program', 'fortress-database',
+    'fortress-network', 'fortress-security', 'fortress-deep',
+    'plateau-mock-am', 'plateau-mock-pm', 'plateau-final'
   ];
   Promise.all([
     loadHubImage('common/hero-back.jpg').then((i) => { hubArt.hero = i; }),
