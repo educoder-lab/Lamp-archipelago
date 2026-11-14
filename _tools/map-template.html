@@ -850,15 +850,18 @@ function showDomain(d) {
   if (d.state === 'fog') {
     if (worldApi && worldApi.getMode && worldApi.getMode() === 'island') worldApi.exitIsland();
     runSay(d.lockReason || 'まだ霧の中だ。', {
-      speaker: d.npc || '案内',
+      speaker: d.npc || '謎の老人',
       actions: [{ label: 'とじる', onClick: () => {} }]
     });
     return;
   }
   if (worldApi) worldApi.enterIsland(d, lessonState);
-  const line = d.enter || (d.synopsis || d.title);
+  const base = d.enter || (d.synopsis || d.title);
+  const line = d.state === 'cleared'
+    ? base + ' その扉は、すでに開いている。'
+    : base;
   runSay(line, {
-    speaker: d.npc || d.title,
+    speaker: d.npc || '謎の老人',
     actions: [
       { label: '講座を選ぶ', primary: true, onClick: () => openDomainSheet(d) },
       { label: 'とじる', onClick: () => {} }
@@ -904,7 +907,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=5';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=6';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }

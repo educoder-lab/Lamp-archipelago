@@ -490,15 +490,33 @@ export function mountLampWorld(container, opts) {
         ctx.fill();
         ctx.globalAlpha = 1;
       }
+      if (st === 'cleared' && n.kind === 'domain') {
+        ctx.beginPath();
+        ctx.arc(nx, ny, r + 10 * u, 0, Math.PI * 2);
+        ctx.strokeStyle = STATE_COLOR.cleared;
+        ctx.lineWidth = 3 * u;
+        ctx.globalAlpha = 0.95;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = STATE_COLOR.cleared;
+        ctx.font = 'bold ' + Math.round(12 * u) + 'px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✓', nx + r * 0.75, ny - r * 0.75);
+      }
 
       const labelPx = Math.round(11 * u);
       const subPx = Math.round(10 * u);
-      ctx.fillStyle = '#ece9f5';
+      ctx.fillStyle = st === 'cleared' ? STATE_COLOR.cleared : '#ece9f5';
       ctx.font = '600 ' + labelPx + 'px "Segoe UI", "Yu Gothic UI", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText((n.label || '').slice(0, onMap ? 10 : 8), nx, ny + r + 12 * u);
-      if (n.sub) {
+      if (st === 'cleared' && n.kind === 'domain') {
+        ctx.font = subPx + 'px sans-serif';
+        ctx.fillStyle = '#c8e090';
+        ctx.fillText('解錠済み', nx, ny + r + 24 * u);
+      } else if (n.sub) {
         ctx.font = subPx + 'px sans-serif';
         ctx.fillStyle = '#9aa0c4';
         ctx.fillText(n.sub, nx, ny + r + 24 * u);
@@ -749,7 +767,11 @@ export function mountLampWorld(container, opts) {
     const packDoor = pack === 'sword' ? hubArt.swordDoor : pack === 'spirit' ? hubArt.spiritDoor : hubArt.shieldDoor;
     const domainNode = currentRoomDomain();
     const domainId = domainNode && domainNode.d && domainNode.d.id;
+    const domainCleared = !!(domainNode && domainNode.state === 'cleared');
     let doorImg = (domainId && hubArt.domainDoors[domainId]) || packDoor;
+    if (domainCleared && !(doorAnim || clearDoorFlash > 0)) {
+      doorImg = hubArt.doorOpen2 || hubArt.doorAjar || doorImg;
+    }
     if (doorAnim || clearDoorFlash > 0) {
       const phase = doorAnim
         ? Math.min(1, (performance.now() - doorAnim.t0) / Math.max(1, doorAnim.dur))
@@ -761,6 +783,7 @@ export function mountLampWorld(container, opts) {
           : (hubArt.doorOpen2 || hubArt.doorAjar || doorImg);
     }
     const accent = pack === 'sword' ? '#d8c8ff' : pack === 'spirit' ? '#b8ffd0' : '#ffe08a';
+    const clearAccent = '#ffe08a';
     const realmLabel = pack === 'sword' ? '剣の道' : pack === 'spirit' ? '大扉の奥' : '盾の道';
 
     if (!drawArt(ctx, bgImg, 0, 0, W, H)) {
@@ -781,8 +804,36 @@ export function mountLampWorld(container, opts) {
       ctx.strokeStyle = accent;
       ctx.strokeRect(doorX + 8, doorY + 8, doorW - 16, doorH - 16);
     }
+    if (domainCleared) {
+      // 解錠済みの印（開いた扉＋金の光＋札）
+      ctx.save();
+      const glow = ctx.createRadialGradient(
+        doorX + doorW * 0.5, doorY + doorH * 0.45, doorW * 0.08,
+        doorX + doorW * 0.5, doorY + doorH * 0.45, doorW * 0.7
+      );
+      glow.addColorStop(0, 'rgba(255, 224, 138, 0.28)');
+      glow.addColorStop(1, 'rgba(255, 224, 138, 0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(doorX - 20, doorY - 20, doorW + 40, doorH + 40);
+      ctx.strokeStyle = clearAccent;
+      ctx.lineWidth = 4;
+      ctx.globalAlpha = 0.95;
+      ctx.strokeRect(doorX - 6, doorY - 6, doorW + 12, doorH + 12);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = 'rgba(20, 28, 12, 0.88)';
+      ctx.fillRect(doorX + doorW * 0.18, doorY + doorH * 0.42, doorW * 0.64, 36);
+      ctx.strokeStyle = clearAccent;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(doorX + doorW * 0.18, doorY + doorH * 0.42, doorW * 0.64, 36);
+      ctx.fillStyle = clearAccent;
+      ctx.font = 'bold 16px "Segoe UI", "Yu Gothic UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('解錠済み', doorX + doorW * 0.5, doorY + doorH * 0.42 + 18);
+      ctx.restore();
+    }
     if (roomFocus === 'door') {
-      ctx.strokeStyle = accent;
+      ctx.strokeStyle = domainCleared ? clearAccent : accent;
       ctx.lineWidth = 3;
       ctx.strokeRect(doorX - 4, doorY - 4, doorW + 8, doorH + 8);
     }
@@ -790,14 +841,18 @@ export function mountLampWorld(container, opts) {
     const title = (domainNode && domainNode.d && domainNode.d.title) || realmLabel;
     ctx.fillStyle = 'rgba(10,14,28,0.8)';
     ctx.fillRect(W / 2 - 160, doorY + doorH + 6, 320, 28);
-    ctx.fillStyle = accent;
+    ctx.fillStyle = domainCleared ? clearAccent : accent;
     ctx.font = 'bold 14px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(title, W / 2, doorY + doorH + 25);
+    ctx.fillText(title + (domainCleared ? '　✓' : ''), W / 2, doorY + doorH + 25);
     if (domainNode && domainNode.state === 'fog') {
       ctx.fillStyle = '#9aa0c4';
       ctx.font = '11px sans-serif';
       ctx.fillText('霧の中', W / 2, doorY + doorH + 42);
+    } else if (domainCleared) {
+      ctx.fillStyle = '#c8e090';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('この扉はすでに開いている', W / 2, doorY + doorH + 42);
     }
 
     if (mode === 'island' && stagePads.length) {
