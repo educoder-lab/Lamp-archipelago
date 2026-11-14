@@ -1,4 +1,4 @@
-﻿function Get-LampDomainStories {
+function Get-LampDomainStories {
   return @{
     'island-foundation'  = @{ Npc = '灯台守レン'; Synopsis = '最古の灯台がある島。0と1から知の灯を点ける。'; EnterLine = '「知は粒から。ここが最初の島だ」とレンが言う。' }
     'island-algorithm'   = @{ Npc = '時計塔の技師ミラ'; Synopsis = 'アルゴリズムとデータ構造の塔が並ぶ島。'; EnterLine = '塔の歯車が止まり、ミラが図版を指差す。' }
@@ -21,10 +21,10 @@
     'fortress-program'   = @{ Npc = '工房技師ザイン'; Synopsis = '擬似言語と構造の工房。'; EnterLine = '擬似言語の煙が立ち、ザインが石版コードを渡す。' }
     'fortress-database'  = @{ Npc = '水晶管理人ダリア'; Synopsis = '地下のSQLとER。'; EnterLine = '地下水晶庫の錠が鳴り、ダリアがERの板を掲げる。' }
     'fortress-network'   = @{ Npc = '伏線番エルク'; Synopsis = 'サブネットと設計の要塞。'; EnterLine = '伏線が壁を走り、エルクが配線図を灯で照らす。' }
-    'fortress-security'  = @{ Npc = '盾壁団リーゼ'; Synopsis = 'リスクと暗号の午後。'; EnterLine = '盾壁団の詰所で、リーゼがリスク表を叩く。' }
+    'fortress-security'  = @{ Npc = '盾壁団リーゼ'; Synopsis = 'リスクと暗号の科目B。'; EnterLine = '盾壁団の詰所で、リーゼがリスク表を叩く。' }
     'fortress-deep'      = @{ Npc = '深層司祭オーレ'; Synopsis = '読解とシナリオの最奥。'; EnterLine = '最奥の読書室。オーレが帝国の長文記録を開く。' }
-    'plateau-mock-am'    = @{ Npc = '連合教官マコト'; Synopsis = '午前模試の台地。'; EnterLine = '午前演習場に旗。マコトが「演習開始」と叫ぶ。' }
-    'plateau-mock-pm'    = @{ Npc = '参謀ヒロ'; Synopsis = '午後模試の台地。'; EnterLine = '軍議場に石版束。ヒロが午後の号令を待つ。' }
+    'plateau-mock-am'    = @{ Npc = '連合教官マコト'; Synopsis = '科目A模試の台地。'; EnterLine = '科目A演習場に旗。マコトが「演習開始」と叫ぶ。' }
+    'plateau-mock-pm'    = @{ Npc = '参謀ヒロ'; Synopsis = '科目B模試の台地。'; EnterLine = '軍議場に石版束。ヒロが科目Bの号令を待つ。' }
     'plateau-final'      = @{ Npc = '大陸の見張り長'; Synopsis = '最終演習。'; EnterLine = '地平にすべての灯が集まり、見張り長が最終線を引く。' }
   }
 }
@@ -110,7 +110,7 @@ function Get-LampRealmPrologues {
 '@
     underground = @'
 空の下に沈んだ **地下帝国**。知は石版と機械に封印されています。  
-午後試験の型――追跡・読解・SQL――を砦ごとに叩き込みます。  
+科目B試験の型――追跡・読解・SQL――を砦ごとに叩き込みます。  
 推奨開始: 講座 **#90** 以降（空の関門後でも可。強制はしません）。
 '@
     land = @'

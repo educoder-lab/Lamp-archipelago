@@ -1,4 +1,4 @@
-﻿# 講座ごとの依頼文・物語を自動合成（Story-Entries のオーバーライドが無いときに使用）
+# 講座ごとの依頼文・物語を自動合成（Story-Entries のオーバーライドが無いときに使用）
 # 正答・用語定義には触れない。Blurb とドメイン口調だけを使う。
 
 function Get-LampDomainSceneKit {
@@ -26,8 +26,8 @@ function Get-LampDomainSceneKit {
     'fortress-network'     = @{ Place = '伏線要塞'; Motif = '配線と設計'; Hook = 'パケットの矢が壁を描く' }
     'fortress-security'    = @{ Place = '盾壁団詰所'; Motif = 'リスクと証跡'; Hook = '暗号の霧が通路を覆う' }
     'fortress-deep'        = @{ Place = '深層読書室'; Motif = '長文と戦略'; Hook = '帝国の記録が一冊に束ねられる' }
-    'plateau-mock-am'      = @{ Place = '午前演習場'; Motif = '連合演習'; Hook = '旗が午前の鉄砲煙のように上がる' }
-    'plateau-mock-pm'      = @{ Place = '午後軍議場'; Motif = '模擬軍議'; Hook = '石版束が机に並ぶ' }
+    'plateau-mock-am'      = @{ Place = '科目A演習場'; Motif = '連合演習'; Hook = '旗が科目Aの鉄砲煙のように上がる' }
+    'plateau-mock-pm'      = @{ Place = '科目B軍議場'; Motif = '模擬軍議'; Hook = '石版束が机に並ぶ' }
     'plateau-final'        = @{ Place = '大陸の最終線'; Motif = '総力戦'; Hook = 'すべての灯が一つの地平に集まる' }
   }
 }

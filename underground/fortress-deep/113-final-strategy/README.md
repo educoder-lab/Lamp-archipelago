@@ -1,4 +1,4 @@
-﻿# 講座 113　総合戦略と時間管理
+# 講座 113　総合戦略と時間管理
 
 ## 物語
 
@@ -7,7 +7,7 @@
 
 ## 分野
 
-午後・総合読解
+科目B・総合読解
 
 ## 今日の用語
 
@@ -29,8 +29,8 @@
 | | リンク |
 |---|--------|
 | 前の講座 | [講座 112　分野横断演習](../112-cross-domain/README.md) |
-| 次の講座 | [講座 114　午前模試 第1回（問題）](../../../land/plateau-mock-am/114-mock-am-1/PROBLEMS.md) |
-| 次（用語） | [講座 114　午前模試 第1回（用語）](../../../land/plateau-mock-am/114-mock-am-1/README.md) |
+| 次の講座 | [講座 114　科目A模試 第1回（問題）](../../../land/plateau-mock-am/114-mock-am-1/PROBLEMS.md) |
+| 次（用語） | [講座 114　科目A模試 第1回（用語）](../../../land/plateau-mock-am/114-mock-am-1/README.md) |
 | この島・砦 | [深層砦](../README.md) |
 | 全体一覧 | [カリキュラム（全講座）](../../../CURRICULUM.md) |
 | 世界 | [WORLD.md](../../../WORLD.md) |

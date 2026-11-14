@@ -4,7 +4,7 @@
     "117": {
       "slides": [
         {
-          "layout": "title", "emoji": "🔐", "title": "午後模試 第1回",
+          "layout": "title", "emoji": "🔐", "title": "科目B模試 第1回",
           "subtitle": "設問から先に。図表は必要な所だけ。",
           "blocks": []
         },
@@ -13,7 +13,7 @@
           "blocks": [
             { "t": "analogy", "icon": "🗺️",
               "real": "宝探し。\n先に**何を探すか**を知る。",
-              "tech": "午後は**設問を先に**確認してから読む。" }
+              "tech": "科目Bは**設問を先に**確認してから読む。" }
           ]
         },
         {
@@ -73,7 +73,7 @@
           ]
         },
         {
-          "emoji": "⚠️", "title": "午後の落とし穴",
+          "emoji": "⚠️", "title": "科目Bの落とし穴",
           "blocks": [
             { "t": "callout", "kind": "warn",
               "text": "一般論が正しくても、\n==この問題の条件==に合わないことがある。" }
@@ -85,7 +85,7 @@
             { "t": "compare",
               "left": { "title": "NG", "items": ["知識だけで選ぶ"] },
               "right": { "title": "OK", "items": ["本文の条件で選ぶ"] },
-              "vs": "午後" }
+              "vs": "科目B" }
           ]
         },
         {
@@ -113,7 +113,7 @@
     "118": {
       "slides": [
         {
-          "layout": "title", "emoji": "🧮", "title": "午後模試 第2回",
+          "layout": "title", "emoji": "🧮", "title": "科目B模試 第2回",
           "subtitle": "変数の変化を手で追う。",
           "blocks": []
         },
@@ -217,7 +217,7 @@
     "119": {
       "slides": [
         {
-          "layout": "title", "emoji": "🗄️", "title": "午後模試 第3回",
+          "layout": "title", "emoji": "🗄️", "title": "科目B模試 第3回",
           "subtitle": "SQL は表を描く。IP は切れ目。",
           "blocks": []
         },

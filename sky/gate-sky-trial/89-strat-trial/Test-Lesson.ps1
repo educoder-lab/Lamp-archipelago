@@ -1,4 +1,4 @@
-﻿if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
+if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
   $dir = $PSScriptRoot
   $repoRoot = $null
   while ($dir) {
@@ -15,5 +15,5 @@
   exit $LASTEXITCODE
 }
 Start-LessonTest "講座 89　空の関門：ストラテジ総合"
-$r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'a78626d08291908e3d76d43988a05c65bf35935b4208f6103237fba6d8ca19d9' 'ストラテジ全域の午前問題レベル'
+$r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') 'a78626d08291908e3d76d43988a05c65bf35935b4208f6103237fba6d8ca19d9' 'ストラテジ全域の科目A問題レベル'
 exit (Complete-LessonTest -Results @($r) -LessonId 'sky/gate-sky-trial/89-strat-trial' -NextLesson 'fortress-algorithm/90-trace-basic' -CourseNo 89 -ClearLine '三扉すべてが開き、雲の下に帝国の尖塔が見えた。' -TitleAwards '雲裂き・略|空裂きの誓約')

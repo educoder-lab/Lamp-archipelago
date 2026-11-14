@@ -1,4 +1,4 @@
-﻿if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
+if (-not (Get-Command Start-LessonTest -ErrorAction SilentlyContinue)) {
   $dir = $PSScriptRoot
   $repoRoot = $null
   while ($dir) {
@@ -14,6 +14,6 @@
   & (Join-Path $repoRoot 'Test-Lesson.ps1') -Lesson $rel -Realm $realm
   exit $LASTEXITCODE
 }
-Start-LessonTest "講座 119　午後模試 第3回"
+Start-LessonTest "講座 119　科目B模試 第3回"
 $r = Assert-AnswerHash (Join-Path $PSScriptRoot '演習結果\answers.txt') '17cdd7d65744855608fb82b79828b10a93cdc1b4eca904f30a6bcf13c1c324f4' 'COUNT(*)=行数,/25→ホスト7bit→126'
-exit (Complete-LessonTest -Results @($r) -LessonId 'land/plateau-mock-pm/119-mock-pm-3' -NextLesson 'plateau-final/120-final-am' -CourseNo 119 -ClearLine '台地の旗が一瞬だけ高く上がり、講座 119 の灯が炎に加わった。' -TitleAwards '午後軍議章')
+exit (Complete-LessonTest -Results @($r) -LessonId 'land/plateau-mock-pm/119-mock-pm-3' -NextLesson 'plateau-final/120-final-am' -CourseNo 119 -ClearLine '台地の旗が一瞬だけ高く上がり、講座 119 の灯が炎に加わった。' -TitleAwards '科目B軍議章')

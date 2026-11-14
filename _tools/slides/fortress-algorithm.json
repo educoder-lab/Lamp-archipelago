@@ -4,7 +4,7 @@
     "90": {
       "slides": [
         {
-          "layout": "title", "emoji": "✍️", "title": "午後トレース基礎",
+          "layout": "title", "emoji": "✍️", "title": "科目Bトレース基礎",
           "subtitle": "コードを 1 行ずつ、\n変数の変化を追う。",
           "blocks": []
         },
@@ -25,7 +25,7 @@
         {
           "emoji": "📝", "title": "擬似言語の見た目",
           "blocks": [
-            { "t": "example", "label": "具体例", "title": "午後でよく見る形",
+            { "t": "example", "label": "具体例", "title": "科目Bでよく見る形",
               "rows": [
                 { "label": "代入", "value": "x ← 5" },
                 { "label": "分岐", "value": "if x > 0 then …" }
@@ -229,7 +229,7 @@
           ]
         },
         {
-          "emoji": "🔢", "title": "午後の添字に注意",
+          "emoji": "🔢", "title": "科目Bの添字に注意",
           "blocks": [
             { "t": "big", "text": "擬似言語は ==1 始まり== が多い", "sub": "問題文の注意を必ず見る" }
           ]
@@ -308,7 +308,7 @@
         {
           "emoji": "🏁", "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["午後は **1 始まり**が多い", "走査で全要素を処理", "番兵 … 終了判定を簡単に"] }
+            { "t": "bullets", "items": ["科目Bは **1 始まり**が多い", "走査で全要素を処理", "番兵 … 終了判定を簡単に"] }
           ]
         }
       ]

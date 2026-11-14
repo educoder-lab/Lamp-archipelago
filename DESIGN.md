@@ -13,7 +13,7 @@
       演習結果/                 # gitignore
 ```
 
-| 層 | 空（午前） | 地下（午後） | 陸地 |
+| 層 | 空（科目A） | 地下（科目B） | 陸地 |
 |----|------------|--------------|------|
 | realm | `sky/` | `underground/` | `land/` |
 | 分野フォルダ | `island-*` / `gate-sky-trial` | `fortress-*` | `plateau-*` |
@@ -34,14 +34,14 @@
 | ファイル | 役割 |
 |----------|------|
 | `README.md` | 用語・定義だけ |
-| `PROBLEMS.md` | RPG + 選択問題 3〜5 問（午後は追跡・記述） |
+| `PROBLEMS.md` | RPG + 選択問題 3〜5 問（科目Bは追跡・記述） |
 | `Test-Lesson.ps1` | 自動採点（ハッシュ） |
 | `演習結果/answers.txt` | 学習者作成 |
 
-午前: `answers.txt`（`1:B`）  
-午後: 講座ごとに PROBLEMS で指定（`answers.txt` / `answer.txt` / コード）
+科目A: `answers.txt`（`1:B`）  
+科目B: 講座ごとに PROBLEMS で指定（`answers.txt` / `answer.txt` / コード）
 
-## 空の島 ↔ 試験分野（IPA 午前）
+## 空の島 ↔ 試験分野（IPA 科目A）
 
 | 島フォルダ | 分野 |
 |------------|------|
@@ -61,7 +61,7 @@
 | island-network | ネットワーク |
 | island-security | 情報セキュリティ |
 | island-media | 情報デザイン・情報メディア |
-| gate-sky-trial | 午前ミニ模試 |
+| gate-sky-trial | 科目Aミニ模試 |
 
 推奨プレイ順（一例）: **foundation → algorithm → hardware → … → ストラテジ系 → gate**  
 すべてを一本道にしなくてよい。島 README に「おすすめ順」を書いてよい。
@@ -83,15 +83,15 @@
 | 03 | unit | バイト・単位 |
 | 04 | logic | 論理演算 |
 
-## 地下の砦 ↔ 午後
+## 地下の砦 ↔ 科目B
 
 | 砦 | 内容 |
 |----|------|
 | fortress-algorithm | 追跡・フロー |
 | fortress-program | 読解 |
 | fortress-database | SQL |
-| fortress-network | NW 午後 |
-| fortress-security | セキュリティ午後 |
+| fortress-network | NW 科目B |
+| fortress-security | セキュリティ科目B |
 | fortress-deep | 総合大問 |
 
 ## 陸地の台地

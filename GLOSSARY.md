@@ -1,4 +1,4 @@
-﻿# 用語図鑑（自動生成）
+# 用語図鑑（自動生成）
 
 [カリキュラム](./CURRICULUM.md) · [WORLD](./WORLD.md)
 
@@ -24,7 +24,7 @@
 | BNF 記法 | プログラミング言語の文法をルールで定義する記法 | [オートマトンと形式言語](sky/island-foundation/12-automata/README.md) |
 | BPR（ビジネスプロセスリエンジニアリング） | 業務プロセスを抜本的に再設計すること | [IT戦略とガバナンス](sky/island-business/70-it-strategy/README.md) |
 | BSC（バランススコアカード） | 4 つの視点（財務・顧客・業務・学習）で経営を評価する手法 | [企業分析と標準化](sky/island-corporate/67-analysis/README.md) |
-| CASE 式 | 条件に応じて値を切り替える式 | [午後SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
+| CASE 式 | 条件に応じて値を切り替える式 | [科目B SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
 | CHECK 制約 | 列の値が条件を満たすことを保証する制約 | [SQL 更新系と制約](sky/island-database/44-sql-update/README.md) |
 | CI/CD | 継続的インテグレーション / 継続的デリバリの略 | [運用・保守とDevOps](sky/island-dev-tech/79-devops/README.md) |
 | CIDR | クラスに依存しない柔軟なアドレス割当て方式 | [IPアドレスとサブネット](sky/island-network/48-ip/README.md) |
@@ -49,10 +49,10 @@
 | EA（エンタープライズアーキテクチャ） | 組織全体の業務と IT を 4 つの体系で設計する手法 | [IT投資評価](sky/island-system-plan/73-eval/README.md) |
 | EC（電子商取引） | インターネットを通じた商品・サービスの取引 | [マーケティングとe-Biz](sky/island-business/69-marketing/README.md) |
 | E-R 図 | エンティティ（実体）とリレーションシップ（関連）でデータ構造を表す図 | [E-R図と概念設計](sky/island-database/46-er/README.md) |
-| E-R 図の読み方 | エンティティ間の多重度（1:N, M:N）を正しく読む | [午後E-R図の読解](underground/fortress-database/98-er-read/README.md) |
+| E-R 図の読み方 | エンティティ間の多重度（1:N, M:N）を正しく読む | [科目B E-R図の読解](underground/fortress-database/98-er-read/README.md) |
 | ERP | 企業資源を統合管理する基幹業務システム | [IT戦略とガバナンス](sky/island-business/70-it-strategy/README.md) |
 | EVM（アーンドバリューマネジメント） | 出来高でコストとスケジュールの進捗を管理する手法 | [リスクと品質管理](sky/island-project/82-risk/README.md) |
-| EXISTS | 副問合せが結果を返すかどうかを判定する述語 | [午後SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
+| EXISTS | 副問合せが結果を返すかどうかを判定する述語 | [科目B SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
 | GB（ギガバイト） | 約 10 億バイト | [情報量の単位](sky/island-foundation/03-unit/README.md) |
 | GPL | 改変物にも同じライセンスを要求するコピーレフト型ライセンス | [OSSとライセンス](sky/island-software/39-oss/README.md) |
 | GROUP BY | 指定列でグループ化し集約関数を適用する | [SQL 結合と副問合せ](sky/island-database/43-sql-join/README.md) |
@@ -188,7 +188,7 @@
 | クリティカルパス法 (CPM) | 最長経路から最短工期を算出する手法 | [スケジュールと工数](sky/island-project/81-schedule/README.md) |
 | クロック周波数 | CPU の動作速度。GHz 単位で表す | [CPU の仕組み](sky/island-hardware/22-cpu/README.md) |
 | コアコンピタンス | 競合に模倣されにくい企業独自の強み | [経営戦略](sky/island-business/68-strategy/README.md) |
-| コールスタック | 関数呼出しの履歴を管理するスタック構造 | [午後トレース：再帰と応用](underground/fortress-algorithm/93-trace-recurse/README.md) |
+| コールスタック | 関数呼出しの履歴を管理するスタック構造 | [科目Bトレース：再帰と応用](underground/fortress-algorithm/93-trace-recurse/README.md) |
 | コールドスタンバイ | 待機系は停止状態。障害時に起動する | [冗長化と多重化](sky/island-system/29-redundancy/README.md) |
 | コミット | トランザクションの結果を確定する操作 | [トランザクションと障害回復](sky/island-database/45-transaction/README.md) |
 | コンパイラ | ソースコードを一括して機械語に翻訳するプログラム | [コンパイラとリンカ](sky/island-software/38-compiler/README.md) |
@@ -217,7 +217,7 @@
 | センサ | 温度・圧力・光などの物理量を電気信号に変換する装置 | [組込みとIoT](sky/island-system/33-embed/README.md) |
 | ソーシャルエンジニアリング | 人間の心理的弱点を突いて情報を入手する手法 | [脅威と攻撃手法](sky/island-security/54-threat/README.md) |
 | ターンアラウンドタイム | ジョブ投入から結果受取りまでの全時間 | [性能評価](sky/island-system/30-perf/README.md) |
-| タイムスタンプ | データの存在時刻を第三者が証明する仕組み | [暗号と認証の午後対策](underground/fortress-security/107-crypto-pm/README.md) |
+| タイムスタンプ | データの存在時刻を第三者が証明する仕組み | [暗号と認証の科目B対策](underground/fortress-security/107-crypto-pm/README.md) |
 | チェイン法 | 衝突時にリンクリストでつなげる方法 | [ハッシュ法](sky/island-algorithm/20-hash/README.md) |
 | チェックポイント | ある時点でメモリ上のデータをディスクに書き出すこと | [障害回復と性能](underground/fortress-database/101-recovery/README.md) |
 | ディレクトリ（フォルダ） | ファイルを階層的に整理する入れ物 | [ファイルシステム](sky/island-software/37-file/README.md) |
@@ -236,14 +236,14 @@
 | デュプレックスシステム | 現用系と待機系の 2 系統で構成 | [冗長化と多重化](sky/island-system/29-redundancy/README.md) |
 | トランザクション | 一連の処理をまとめた不可分な単位 | [トランザクションと障害回復](sky/island-database/45-transaction/README.md) |
 | トランスポート層 | 端末間の信頼性ある通信。TCP/UDP を使用 | [OSI参照モデル](sky/island-network/47-osi/README.md) |
-| トレース | 擬似言語のコードを 1 行ずつ実行し変数の変化を追うこと | [午後トレース基礎](underground/fortress-algorithm/90-trace-basic/README.md) |
+| トレース | 擬似言語のコードを 1 行ずつ実行し変数の変化を追うこと | [科目Bトレース基礎](underground/fortress-algorithm/90-trace-basic/README.md) |
 | ネットワークアドレス | ホスト部がすべて 0 のアドレス | [サブネット計算](underground/fortress-network/102-subnet-calc/README.md) |
 | ネットワーク層 | 異なるネットワーク間のルーティング。IP アドレスを使用 | [OSI参照モデル](sky/island-network/47-osi/README.md) |
 | バイト (byte) | 8 ビットをまとめた単位。1 バイト = 8 ビット | [ビットとバイト](sky/island-foundation/01-bit/README.md) |
 | ハイパーバイザ | 仮想マシンを管理するソフトウェア層 | [仮想化とクラウド](sky/island-system/31-virtual/README.md) |
 | パイプラインハザード | データ依存や分岐で流れが停止する問題 | [パイプラインと高速化](sky/island-hardware/23-pipeline/README.md) |
 | パイプライン処理 | 命令の各段階をずらして並行実行する高速化手法 | [パイプラインと高速化](sky/island-hardware/23-pipeline/README.md) |
-| ハイブリッド暗号 | 共通鍵暗号で本文を、公開鍵暗号で共通鍵を暗号化する方式 | [暗号と認証の午後対策](underground/fortress-security/107-crypto-pm/README.md) |
+| ハイブリッド暗号 | 共通鍵暗号で本文を、公開鍵暗号で共通鍵を暗号化する方式 | [暗号と認証の科目B対策](underground/fortress-security/107-crypto-pm/README.md) |
 | パケットキャプチャ | ネットワーク上のパケットを取得して分析する手法 | [パケット解析と通信制御](underground/fortress-network/104-packet/README.md) |
 | パケットフィルタリング | IPアドレス・ポート番号でパケットの通過を制御する方式 | [ファイアウォールとDMZ](sky/island-security/57-firewall/README.md) |
 | ハッシュ関数 | キーを配列の添字に変換する関数 | [ハッシュ法](sky/island-algorithm/20-hash/README.md) |
@@ -287,7 +287,7 @@
 | マルウェア | 悪意あるソフトウェアの総称（ウイルス・ワーム・トロイの木馬など） | [脅威と攻撃手法](sky/island-security/54-threat/README.md) |
 | マルチタスク | 複数のタスクを切り替えて並行実行する仕組み | [OSの役割とプロセス](sky/island-software/34-os/README.md) |
 | メインメモリ (RAM) | CPU が直接アクセスする主記憶。電源 OFF で消える | [記憶装置の階層](sky/island-hardware/24-memory/README.md) |
-| メッセージ認証コード (MAC) | 通信内容の改ざんを検出するための認証データ | [暗号と認証の午後対策](underground/fortress-security/107-crypto-pm/README.md) |
+| メッセージ認証コード (MAC) | 通信内容の改ざんを検出するための認証データ | [暗号と認証の科目B対策](underground/fortress-security/107-crypto-pm/README.md) |
 | モジュール結合度・凝集度 | 結合度は低いほど、凝集度は高いほど良い設計 | [設計手法とUML](sky/island-dev-tech/75-design/README.md) |
 | ユースケース図 | 利用者（アクタ）がシステムで行うことを表す UML 図 | [設計手法とUML](sky/island-dev-tech/75-design/README.md) |
 | ユニバーサルデザイン | 年齢・能力に関わらず誰でも使えるデザイン | [ヒューマンインタフェース](sky/island-media/63-ux/README.md) |
@@ -305,8 +305,8 @@
 | リンカ | オブジェクトファイルやライブラリを結合して実行ファイルを作る | [コンパイラとリンカ](sky/island-software/38-compiler/README.md) |
 | ルータ | 異なるネットワーク間でパケットを転送する装置（L3） | [ルーティングとスイッチ](sky/island-network/51-routing/README.md) |
 | ルーティングテーブル | パケットの転送先を管理する経路表 | [ルーティングとスイッチ](sky/island-network/51-routing/README.md) |
-| ループカウンタ | 繰返し回数を数える変数 | [午後トレース：繰返し](underground/fortress-algorithm/91-trace-loop/README.md) |
-| ループ不変条件 | ループの各反復の前後で常に成り立つ条件 | [午後トレース：繰返し](underground/fortress-algorithm/91-trace-loop/README.md) |
+| ループカウンタ | 繰返し回数を数える変数 | [科目Bトレース：繰返し](underground/fortress-algorithm/91-trace-loop/README.md) |
+| ループ不変条件 | ループの各反復の前後で常に成り立つ条件 | [科目Bトレース：繰返し](underground/fortress-algorithm/91-trace-loop/README.md) |
 | レジスタ | CPU 内部の高速な記憶領域 | [CPU の仕組み](sky/island-hardware/22-cpu/README.md) |
 | レスポンスタイム | 要求を出してから応答が返るまでの時間 | [性能評価](sky/island-system/30-perf/README.md) |
 | ローダ | 実行ファイルをメモリに読み込んで実行準備をする | [コンパイラとリンカ](sky/island-software/38-compiler/README.md) |
@@ -338,11 +338,11 @@
 | 関係データベース (RDB) | データを表（テーブル）で管理するデータベース | [関係データベースの基礎](sky/island-database/40-rdb/README.md) |
 | 丸め誤差 | 有限桁で表せない値を丸めることで生じる誤差 | [浮動小数点と誤差](sky/island-foundation/06-float/README.md) |
 | 基数変換 | ある基数の数を別の基数に直すこと | [基数変換](sky/island-foundation/02-base/README.md) |
-| 基底条件（ベースケース） | 再帰の終了条件 | [午後トレース：再帰と応用](underground/fortress-algorithm/93-trace-recurse/README.md) |
+| 基底条件（ベースケース） | 再帰の終了条件 | [科目Bトレース：再帰と応用](underground/fortress-algorithm/93-trace-recurse/README.md) |
 | 期待値 | 確率を重みとした値の加重平均 | [確率と統計](sky/island-foundation/09-prob/README.md) |
 | 機能要件 | システムが実現すべき処理や入出力 | [システム企画と要件定義](sky/island-system-plan/72-plan/README.md) |
 | 機密性・完全性・可用性 | 情報セキュリティの 3 要素（CIA） | [情報セキュリティ管理](sky/island-security/59-policy/README.md) |
-| 擬似言語 | IPA 午後問題で使われるプログラム記述用の疑似コード | [午後トレース基礎](underground/fortress-algorithm/90-trace-basic/README.md) |
+| 擬似言語 | IPA 科目B問題で使われるプログラム記述用の疑似コード | [科目Bトレース基礎](underground/fortress-algorithm/90-trace-basic/README.md) |
 | 逆ポーランド記法 | 演算子を被演算子の後に書く。スタックで評価可能 | [オートマトンと形式言語](sky/island-foundation/12-automata/README.md) |
 | 逆行列 | 元の行列と掛けると単位行列になる行列 | [行列と線形代数](sky/island-foundation/10-matrix/README.md) |
 | 共通フレーム | ソフトウェアライフサイクルの標準プロセス体系（JIS X 0160） | [IT投資評価](sky/island-system-plan/73-eval/README.md) |
@@ -351,30 +351,30 @@
 | 境界値 | ループや条件分岐の境界でバグが起きやすい値 | [デバッグと穴埋め対策](underground/fortress-program/97-debug/README.md) |
 | 強制アクセス制御 (MAC) | システムが機密レベルで強制的に制御する方式 | [アクセス制御と認証技術](sky/island-security/60-accessctl/README.md) |
 | 繰返し | 条件が成立する間処理を繰り返す構造 | [制御構造の組合せ](underground/fortress-program/96-structure/README.md) |
-| 繰返し（ループ） | 条件が成立する間、処理を繰り返す構造 | [午後トレース：繰返し](underground/fortress-algorithm/91-trace-loop/README.md) |
+| 繰返し（ループ） | 条件が成立する間、処理を繰り返す構造 | [科目Bトレース：繰返し](underground/fortress-algorithm/91-trace-loop/README.md) |
 | 型変換（キャスト） | あるデータ型を別の型に変換すること | [コーディングと変数](underground/fortress-program/95-coding/README.md) |
 | 経営戦略 | 企業が競争優位を確立するための方針と計画 | [経営戦略](sky/island-business/68-strategy/README.md) |
 | 継承（インヘリタンス） | 既存クラスの性質を引き継いで新クラスを作ること | [オブジェクト指向](sky/island-dev-tech/76-oop/README.md) |
 | 桁落ち | 近い値の引き算で有効桁数が減る現象 | [浮動小数点と誤差](sky/island-foundation/06-float/README.md) |
-| 穴埋め問題 | 擬似言語の空欄に正しいコードを選ぶ午後の出題形式 | [デバッグと穴埋め対策](underground/fortress-program/97-debug/README.md) |
+| 穴埋め問題 | 擬似言語の空欄に正しいコードを選ぶ科目Bの出題形式 | [デバッグと穴埋め対策](underground/fortress-program/97-debug/README.md) |
 | 結合テスト | モジュール間の連携を確認するテスト | [テスト技法](sky/island-dev-tech/77-test/README.md) |
 | 見直し | 解答後にケアレスミスや読み違いがないか確認する作業 | [総合戦略と時間管理](underground/fortress-deep/113-final-strategy/README.md) |
 | 個人情報保護法 | 個人情報の取扱いに関する日本の法律 | [インシデント対応と法規](sky/island-security/61-incident/README.md) |
-| 午後シナリオ問題 | 具体的な業務シナリオを読み解いて解答する問題形式 | [システム構成シナリオ](underground/fortress-deep/111-system-scenario/README.md) |
-| 午後問題の構造 | 問題文（状況説明）→設問→選択肢の形式 | [長文読解の技法](underground/fortress-deep/110-reading/README.md) |
+| 科目Bシナリオ問題 | 具体的な業務シナリオを読み解いて解答する問題形式 | [システム構成シナリオ](underground/fortress-deep/111-system-scenario/README.md) |
+| 科目B問題の構造 | 問題文（状況説明）→設問→選択肢の形式 | [長文読解の技法](underground/fortress-deep/110-reading/README.md) |
 | 公開鍵暗号方式 | 暗号化と復号に異なる鍵を使う方式（RSA など） | [暗号化の基礎](sky/island-security/55-crypto/README.md) |
 | 構造化定理 | あらゆるアルゴリズムは順次・選択・繰返しの組合せで表現できる | [制御構造の組合せ](underground/fortress-program/96-structure/README.md) |
 | 行列 | 数を縦横に並べた配列。行(横)と列(縦)で位置を指定 | [行列と線形代数](sky/island-foundation/10-matrix/README.md) |
 | 根（ルート） | 木の最上位ノード | [木構造と二分木](sky/island-algorithm/19-tree/README.md) |
 | 左シフト | ビット列を左にずらす。1 回で値が 2 倍 | [シフト演算と補数](sky/island-foundation/05-shift/README.md) |
-| 再帰 | 関数が自分自身を呼び出す手法 | [午後トレース：再帰と応用](underground/fortress-algorithm/93-trace-recurse/README.md) |
+| 再帰 | 関数が自分自身を呼び出す手法 | [科目Bトレース：再帰と応用](underground/fortress-algorithm/93-trace-recurse/README.md) |
 | 最小権限の原則 | 必要最小限のアクセス権だけを与える原則 | [セキュア設計とゼロトラスト](underground/fortress-security/109-secure-design/README.md) |
 | 在庫管理（EOQ） | 発注費と保管費の合計を最小にする経済的発注量 | [OR・在庫管理](sky/island-corporate/66-or/README.md) |
 | 算術シフト | 符号ビットを保持したままシフトする操作 | [シフト演算と補数](sky/island-foundation/05-shift/README.md) |
 | 残余リスク | 対策後に残るリスク | [リスクアセスメント演習](underground/fortress-security/106-risk-assess/README.md) |
 | 試験戦略 | 出題傾向と自分の得意分野を踏まえた解答順序の計画 | [総合戦略と時間管理](underground/fortress-deep/113-final-strategy/README.md) |
 | 時間計算量 | アルゴリズムの実行ステップ数がデータ量でどう増えるか | [計算量とオーダ](sky/island-foundation/11-bigo/README.md) |
-| 時間配分 | 午後試験で各問題に適切な時間を割り当てる戦略 | [分野横断演習](underground/fortress-deep/112-cross-domain/README.md) |
+| 時間配分 | 科目B試験で各問題に適切な時間を割り当てる戦略 | [分野横断演習](underground/fortress-deep/112-cross-domain/README.md) |
 | 実効アクセス時間 | ヒット率を加味した平均アクセス時間 | [記憶装置の階層](sky/island-hardware/24-memory/README.md) |
 | 主キー | 行を一意に識別する列。NULL 不可 | [関係データベースの基礎](sky/island-database/40-rdb/README.md) |
 | 手続き・関数 | 処理のまとまり。引数を受け取り値を返すことがある | [擬似言語の読み方](underground/fortress-program/94-pseudo/README.md) |
@@ -403,11 +403,11 @@
 | 前提条件 | 二分探索はデータが整列済みでなければならない | [二分探索](sky/island-algorithm/14-bsearch/README.md) |
 | 組込みシステム | 特定の機能を実行するために機器に内蔵されたコンピュータシステム | [組込みとIoT](sky/island-system/33-embed/README.md) |
 | 双方向リスト | 前後両方の要素を指すリスト | [リスト構造](sky/island-algorithm/18-list/README.md) |
-| 相関副問合せ | 外側のクエリの値を参照する副問合せ | [午後SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
+| 相関副問合せ | 外側のクエリの値を参照する副問合せ | [科目B SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
 | 相対パス | 現在地からの経路指定 | [ファイルシステム](sky/island-software/37-file/README.md) |
 | 走査（トラバーサル） | 木の全ノードを一定の順序で訪問すること | [木構造と二分木](sky/island-algorithm/19-tree/README.md) |
 | 属性（アトリビュート） | エンティティが持つデータ項目 | [E-R図と概念設計](sky/island-database/46-er/README.md) |
-| 属性の導出 | E-R図とテーブル定義から適切な列を特定する技法 | [午後E-R図の読解](underground/fortress-database/98-er-read/README.md) |
+| 属性の導出 | E-R図とテーブル定義から適切な列を特定する技法 | [科目B E-R図の読解](underground/fortress-database/98-er-read/README.md) |
 | 損益計算書（P/L） | 一定期間の収益と費用から利益を示す書類 | [財務と会計の基礎](sky/island-corporate/64-accounting/README.md) |
 | 損益分岐点 | 売上高と費用が等しくなり利益ゼロとなる点 | [財務と会計の基礎](sky/island-corporate/64-accounting/README.md) |
 | 多態性（ポリモーフィズム） | 同じメッセージで異なる動作をする性質 | [オブジェクト指向](sky/island-dev-tech/76-oop/README.md) |
@@ -438,10 +438,10 @@
 | 排他ロック | 他のトランザクションの読書きを禁止するロック | [ロックと同時実行制御](underground/fortress-database/100-lock/README.md) |
 | 排他制御 | 共有資源に同時アクセスさせないための制御 | [スケジューリングと排他](sky/island-software/35-sched/README.md) |
 | 配列 | 同じ型のデータを連続して格納するデータ構造 | [配列と線形探索](sky/island-algorithm/13-array/README.md) |
-| 配列の走査 | 配列の全要素を順に処理すること | [午後トレース：配列操作](underground/fortress-algorithm/92-trace-array/README.md) |
-| 配列の添字 | 要素位置を示す番号。擬似言語では 1 始まりが多い | [午後トレース：配列操作](underground/fortress-algorithm/92-trace-array/README.md) |
+| 配列の走査 | 配列の全要素を順に処理すること | [科目Bトレース：配列操作](underground/fortress-algorithm/92-trace-array/README.md) |
+| 配列の添字 | 要素位置を示す番号。擬似言語では 1 始まりが多い | [科目Bトレース：配列操作](underground/fortress-algorithm/92-trace-array/README.md) |
 | 売上総利益 | 売上高 − 売上原価 | [財務と会計の基礎](sky/island-corporate/64-accounting/README.md) |
-| 番兵 | 配列末尾にダミー値を置いて探索の終了判定を簡略化する手法 | [午後トレース：配列操作](underground/fortress-algorithm/92-trace-array/README.md) |
+| 番兵 | 配列末尾にダミー値を置いて探索の終了判定を簡略化する手法 | [科目Bトレース：配列操作](underground/fortress-algorithm/92-trace-array/README.md) |
 | 番兵法 | 末尾にダミーを置いて終了判定を省略する手法 | [配列と線形探索](sky/island-algorithm/13-array/README.md) |
 | 非機能要件 | 性能・信頼性・セキュリティなどの品質要件 | [システム企画と要件定義](sky/island-system-plan/72-plan/README.md) |
 | 標準偏差 | 分散の正の平方根 | [確率と統計](sky/island-foundation/09-prob/README.md) |
@@ -459,7 +459,7 @@
 | 分散 | データのばらつきの指標。偏差の二乗の平均 | [確率と統計](sky/island-foundation/09-prob/README.md) |
 | 分野横断問題 | セキュリティ＋ネットワーク等、複数分野にまたがる問題 | [分野横断演習](underground/fortress-deep/112-cross-domain/README.md) |
 | 変更管理 | 変更によるリスクを最小化する管理プロセス | [ITサービスマネジメント](sky/island-service/83-itil/README.md) |
-| 変数テーブル | トレース時に各変数の値を記録する表 | [午後トレース基礎](underground/fortress-algorithm/90-trace-basic/README.md) |
+| 変数テーブル | トレース時に各変数の値を記録する表 | [科目Bトレース基礎](underground/fortress-algorithm/90-trace-basic/README.md) |
 | 変数のスコープ | 変数が参照可能な範囲（局所変数・大域変数） | [コーディングと変数](underground/fortress-program/95-coding/README.md) |
 | 保守 | リリース後の不具合修正や機能追加を行う活動 | [運用・保守とDevOps](sky/island-dev-tech/79-devops/README.md) |
 | 補集合 | 全体集合のうちその集合に属さない要素 | [集合と論理](sky/island-foundation/08-set/README.md) |
@@ -475,6 +475,6 @@
 | 要件の読み取り | 問題文から機能要件・非機能要件を抽出する技術 | [システム構成シナリオ](underground/fortress-deep/111-system-scenario/README.md) |
 | 要件定義 | システムに求められる機能・性能を明確にする工程 | [システム企画と要件定義](sky/island-system-plan/72-plan/README.md) |
 | 量子化 | 標本化した値を有限ビットで近似する工程 | [画像と音声のデータ](sky/island-media/62-image/README.md) |
-| 連関エンティティ | M:N 関連を解消するために追加する中間エンティティ | [午後E-R図の読解](underground/fortress-database/98-er-read/README.md) |
+| 連関エンティティ | M:N 関連を解消するために追加する中間エンティティ | [科目B E-R図の読解](underground/fortress-database/98-er-read/README.md) |
 | 連結リスト | 各要素がデータと次の要素へのポインタを持つ構造 | [リスト構造](sky/island-algorithm/18-list/README.md) |
 | 和集合（A∪B） | A か B の少なくとも一方に属する要素の集合 | [集合と論理](sky/island-foundation/08-set/README.md) |

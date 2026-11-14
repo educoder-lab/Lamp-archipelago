@@ -5,7 +5,7 @@
       "slides": [
         {
           "layout": "title", "emoji": "⚖️", "title": "リスクアセスメント演習",
-          "subtitle": "リスクを数字にして優先順位をつける。\n午後の定番の流れ。",
+          "subtitle": "リスクを数字にして優先順位をつける。\n科目Bの定番の流れ。",
           "blocks": []
         },
         {
@@ -105,7 +105,7 @@
     "107": {
       "slides": [
         {
-          "layout": "title", "emoji": "🧬", "title": "暗号と認証の午後対策",
+          "layout": "title", "emoji": "🧬", "title": "暗号と認証の科目B対策",
           "subtitle": "いいとこ取りの暗号から、\n改ざん検出・時刻証明まで。",
           "blocks": []
         },

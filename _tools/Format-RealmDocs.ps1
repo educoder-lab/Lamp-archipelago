@@ -1,4 +1,4 @@
-﻿function Format-LessonAsciiMap {
+function Format-LessonAsciiMap {
   param([object[]]$Lessons)
   $nums = $Lessons | Sort-Object CourseNo | ForEach-Object { $_.CourseNo.ToString('00') }
   $line = ($nums -join ' ─ ')
@@ -39,7 +39,7 @@ $prologue
 
 $( switch ($realm) {
     'sky' { '下の **島** フォルダを、カリキュラム順に巡ってください。' }
-    'underground' { '**砦** ごとに午後型の訓練があります。' }
+    'underground' { '**砦** ごとに科目B型の訓練があります。' }
     'land' { '**台地** で模擬試験に挑みます。' }
   } )
 "@

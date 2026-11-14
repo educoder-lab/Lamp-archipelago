@@ -4,7 +4,7 @@
     "114": {
       "slides": [
         {
-          "layout": "title", "emoji": "📝", "title": "午前模試 第1回",
+          "layout": "title", "emoji": "📝", "title": "科目A模試 第1回",
           "subtitle": "全分野を通しで解く練習。",
           "blocks": []
         },
@@ -13,7 +13,7 @@
           "blocks": [
             { "t": "analogy", "icon": "🏅",
               "real": "運動会の総合種目。\n走る・跳ぶ・投げるを少しずつ。",
-              "tech": "午前は **3 分野**から幅広く出る。" }
+              "tech": "科目Aは **3 分野**から幅広く出る。" }
           ]
         },
         {
@@ -100,7 +100,7 @@
           "emoji": "🏁", "title": "まとめ",
           "blocks": [
             { "t": "bullets", "items": [
-              "午前は **3 分野**",
+              "科目Aは **3 分野**",
               "合格は **60%**",
               "**1 問 2 分**が目安"
             ] }
@@ -111,7 +111,7 @@
     "115": {
       "slides": [
         {
-          "layout": "title", "emoji": "🔥", "title": "午前模試 第2回",
+          "layout": "title", "emoji": "🔥", "title": "科目A模試 第2回",
           "subtitle": "苦手を見つけて、計算は落ち着いて。",
           "blocks": []
         },
@@ -215,7 +215,7 @@
     "116": {
       "slides": [
         {
-          "layout": "title", "emoji": "🏁", "title": "午前模試 第3回",
+          "layout": "title", "emoji": "🏁", "title": "科目A模試 第3回",
           "subtitle": "本番と同じ条件で通し解く。",
           "blocks": []
         },

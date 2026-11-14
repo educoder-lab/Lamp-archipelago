@@ -1,10 +1,10 @@
-﻿# セキュリティ砦
+# セキュリティ砦
 
 [カリキュラム全体](../../CURRICULUM.md) · [WORLD](../../WORLD.md) · [冒険状況](../../Show-Status.ps1)
 
 ## あらすじ
 
-**盾壁団リーゼ** — リスクと暗号の午後。
+**盾壁団リーゼ** — リスクと暗号の科目B。
 
 ## 入場
 
@@ -23,7 +23,7 @@
 | 講座# | フォルダ | ねらい | 次へ |
 |-------|----------|--------|------|
 | 106 | [106-risk-assess](./106-risk-assess/README.md) | リスクアセスメント演習 | [次: 講座 107](../107-crypto-pm/README.md) |
-| 107 | [107-crypto-pm](./107-crypto-pm/README.md) | 暗号と認証の午後対策 | [次: 講座 108](../108-log-forensic/README.md) |
+| 107 | [107-crypto-pm](./107-crypto-pm/README.md) | 暗号と認証の科目B対策 | [次: 講座 108](../108-log-forensic/README.md) |
 | 108 | [108-log-forensic](./108-log-forensic/README.md) | ログ管理とフォレンジック | [次: 講座 109](../109-secure-design/README.md) |
 | 109 | [109-secure-design](./109-secure-design/README.md) | セキュア設計とゼロトラスト | [次: 講座 110](../110-reading/README.md) |
 

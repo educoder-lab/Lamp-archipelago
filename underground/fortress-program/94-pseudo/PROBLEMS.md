@@ -1,4 +1,4 @@
-﻿# 講座 94　擬似言語の読み方
+# 講座 94　擬似言語の読み方
 
 ## できた状態
 
@@ -33,7 +33,7 @@ A. then 節　B. else 節　C. 何も実行されない　D. エラー
 
 | | リンク |
 |---|--------|
-| 前の講座 | [講座 93　午後トレース：再帰と応用](../../fortress-algorithm/93-trace-recurse/README.md) |
+| 前の講座 | [講座 93　科目Bトレース：再帰と応用](../../fortress-algorithm/93-trace-recurse/README.md) |
 | 次の講座 | [講座 95　コーディングと変数（問題）](../95-coding/PROBLEMS.md) |
 | 次（用語） | [講座 95　コーディングと変数（用語）](../95-coding/README.md) |
 | この島・砦 | [プログラム砦](../README.md) |

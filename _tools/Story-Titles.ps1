@@ -1,4 +1,4 @@
-﻿# 称号マスタ（Phase 3）— Build が Test-Lesson / TITLES.md に反映
+# 称号マスタ（Phase 3）— Build が Test-Lesson / TITLES.md に反映
 
 function Get-LampMilestoneTitles {
   return @{
@@ -41,8 +41,8 @@ function Get-LampDomainClearTitles {
     'fortress-network'   = '伏線要塞の印'
     'fortress-security'  = '盾壁団の楯'
     'fortress-deep'      = '深層の解読者'
-    'plateau-mock-am'    = '午前演習章'
-    'plateau-mock-pm'    = '午後軍議章'
+    'plateau-mock-am'    = '科目A演習章'
+    'plateau-mock-pm'    = '科目B軍議章'
     'plateau-final'      = '大陸の征戦者'
   }
 }

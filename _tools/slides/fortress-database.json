@@ -6,7 +6,7 @@
         {
           "layout": "title",
           "emoji": "🗺️",
-          "title": "午後 E-R 図の読解",
+          "title": "科目B E-R 図の読解",
           "subtitle": "箱と線の図から、\n「何対何」を読み取る。",
           "blocks": []
         },
@@ -173,7 +173,7 @@
         {
           "layout": "title",
           "emoji": "🧾",
-          "title": "午後 SQL 問題演習",
+          "title": "科目B SQL 問題演習",
           "subtitle": "相関副問合せ・EXISTS・CASE を、\n短く使い分ける。",
           "blocks": []
         },
