@@ -20,23 +20,46 @@ html, body { margin: 0; height: 100%; }
 body {
   font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Sans", "Meiryo", sans-serif;
   background: var(--bg); color: var(--ink);
-  display: grid; grid-template-rows: auto 1fr; grid-template-columns: 1fr 400px;
+  display: grid; grid-template-rows: auto 1fr; grid-template-columns: 1fr;
 }
 header {
-  grid-column: 1 / -1; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-  padding: 12px 20px; background: var(--panel); border-bottom: 1px solid #2a2f58;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 8px 14px; background: var(--panel); border-bottom: 1px solid #2a2f58;
 }
-header h1 { font-size: 18px; margin: 0; letter-spacing: .05em; }
-.stat { font-size: 13px; color: var(--muted); }
-.stat.nav a { color: var(--open); margin-left: 8px; text-decoration: none; font-size: 12px; }
-.stat.nav a:hover { text-decoration: underline; }
-.stat b { color: var(--ink); font-size: 15px; }
-.bar { width: 120px; height: 6px; background: #2a2f58; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 6px; }
+header h1 { font-size: 15px; margin: 0; letter-spacing: .04em; flex: 1; min-width: 120px; }
+.stat { font-size: 12px; color: var(--muted); }
+.stat b { color: var(--ink); font-size: 13px; }
+.bar { width: 72px; height: 5px; background: #2a2f58; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 4px; }
 .bar i { display: block; height: 100%; background: var(--gold); }
+.xp-bar { width: 56px; height: 5px; background: #2a2f58; border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 4px; }
+.xp-bar i { display: block; height: 100%; background: var(--open); }
 main { overflow: hidden; position: relative; min-height: 0; }
-aside { background: var(--panel); border-left: 1px solid #2a2f58; overflow-y: auto; padding: 18px 20px 40px; }
-aside h2 { font-size: 18px; margin: 4px 0 6px; }
-aside h3 { font-size: 13px; color: var(--muted); margin: 18px 0 8px; font-weight: 600; letter-spacing: .08em; }
+.settings-btn {
+  margin-left: auto; background: var(--panel2); color: var(--ink);
+  border: 1px solid #343a6b; border-radius: 8px; padding: 6px 12px; font-size: 13px;
+}
+.settings-btn:hover { border-color: #7fd1ff; }
+.sheet-body { max-height: min(52vh, 420px); overflow-y: auto; padding: 8px 4px; }
+.sheet-body h3 { font-size: 12px; color: var(--muted); margin: 14px 0 6px; letter-spacing: .06em; }
+.say-box {
+  position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 6;
+  background: rgba(12, 14, 28, 0.92); border: 1px solid #3a4068; border-radius: 12px;
+  padding: 12px 14px 10px; display: none; pointer-events: auto;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+}
+.say-box.show { display: block; }
+.say-speaker { font-size: 11px; color: var(--gold); margin-bottom: 4px; letter-spacing: .08em; }
+.say-text { font-size: 15px; line-height: 1.55; min-height: 3.2em; color: var(--ink); white-space: pre-wrap; }
+.say-cursor { display: inline-block; width: 0.55em; color: var(--open); animation: blink 0.9s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.say-hint { margin-top: 6px; font-size: 11px; color: var(--muted); text-align: right; }
+.say-actions { display: none; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.say-actions.show { display: flex; }
+.say-actions button, .say-actions a {
+  font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 8px;
+  border: 1px solid #343a6b; background: var(--panel2); color: var(--ink); text-decoration: none; cursor: pointer;
+}
+.say-actions button.primary, .say-actions a.primary { border-color: var(--open); color: #dff6ff; }
 .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--panel2); color: var(--muted); margin-right: 6px; }
 .tag.cleared { color: #1a1300; background: var(--gold); }
 .tag.current { color: #00121d; background: var(--open); }
@@ -72,41 +95,45 @@ ul.lessons a:hover { color: var(--ink); }
 .hm-growth-bar { flex: 1; height: 8px; background: #0b0e1f; border-radius: 4px; overflow: hidden; border: 1px solid #343a6b; }
 .hm-growth-bar i { display: block; height: 100%; }
 @media (max-width: 900px) {
-  body { grid-template-columns: 1fr; grid-template-rows: auto 48vh 1fr; }
-  aside { border-left: none; border-top: 1px solid #2a2f58; }
+  header h1 { font-size: 14px; }
+  .say-box { left: 8px; right: 8px; bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .say-cursor { animation: none; }
 }
 </style>
 </head>
 <body>
 <header>
-  <h1>Lumina Code — ワールドマップ</h1>
-  <span class="stat">旅人 <b id="h-name"></b></span>
+  <h1>三つの扉</h1>
   <span class="stat">Lv <b id="h-level">1</b><span class="xp-bar"><i id="h-xp"></i></span></span>
   <span class="stat">灯 <b id="h-lamps"></b><span class="bar"><i id="h-bar"></i></span></span>
-  <span class="stat">称号 <b id="h-titles"></b></span>
-  <span class="stat" id="h-sync"></span>
-  <span class="stat" id="h-auth"></span>
-  <span class="stat nav">
-    <a href="ref.html?p=curriculum">一覧</a>
-    <a href="ref.html?p=glossary">用語</a>
-    <a href="ref.html?p=world">世界</a>
-    <a href="ref.html?p=titles">称号</a>
-  </span>
+  <span class="stat" id="h-name" hidden></span>
+  <span class="stat" id="h-titles" hidden></span>
+  <span class="stat" id="h-sync" hidden></span>
+  <span class="stat" id="h-auth" hidden></span>
+  <button type="button" class="settings-btn" id="settings-btn" aria-haspopup="dialog">設定</button>
 </header>
 <main>
   <div class="world-wrap" id="world">
-    <button type="button" class="world-back-btn" id="world-back">← 間へ戻る</button>
+    <button type="button" class="world-back-btn" id="world-back">← 間へ</button>
     <div class="world-nav" id="world-nav" role="toolbar" aria-label="進路ナビ">
-      <button type="button" class="world-nav-btn" data-nav="overview">全体図</button>
-      <button type="button" class="world-nav-btn realm sky" data-nav="sky">盾の道</button>
-      <button type="button" class="world-nav-btn realm land" data-nav="land">大扉</button>
-      <button type="button" class="world-nav-btn realm underground" data-nav="underground">剣の道</button>
-      <button type="button" class="world-nav-btn" data-nav="hub">三つの扉</button>
+      <button type="button" class="world-nav-btn" data-nav="overview">全体</button>
+      <button type="button" class="world-nav-btn realm sky" data-nav="sky">盾</button>
+      <button type="button" class="world-nav-btn realm land" data-nav="land">扉</button>
+      <button type="button" class="world-nav-btn realm underground" data-nav="underground">剣</button>
+      <button type="button" class="world-nav-btn" data-nav="hub">間</button>
     </div>
-    <div class="world-hint">手前があなた · 正面は大扉と老人 · 左＝盾 · 右＝剣 · Enterで話す／進む</div>
+    <div class="world-hint" id="world-hint">←盾　扉↑　剣→　老人に話す</div>
+    <div class="say-box" id="say-box" role="dialog" aria-live="polite">
+      <div class="say-speaker" id="say-speaker"></div>
+      <div class="say-text" id="say-text"></div>
+      <div class="say-hint" id="say-hint">クリック／Enter で進む</div>
+      <div class="say-actions" id="say-actions"></div>
+    </div>
   </div>
 </main>
-<aside id="panel"></aside>
+<aside id="panel" hidden aria-hidden="true"></aside>
 <div class="lv-overlay" id="lv-overlay" role="dialog" aria-modal="true" aria-labelledby="lv-title">
   <div class="lv-card">
     <div class="lv-emoji">✦</div>
@@ -132,26 +159,31 @@ ul.lessons a:hover { color: var(--ink); }
     </div>
   </div>
 </div>
-<div class="quest-overlay" id="hub-overlay" role="dialog" aria-modal="true" aria-labelledby="hm-title">
+<div class="quest-overlay" id="hub-overlay" hidden aria-hidden="true"></div>
+<div class="quest-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="st-title">
   <div class="quest-modal hub-modal">
     <div class="qm-top">
-      <div class="qm-kicker">謎の老人</div>
-      <h2 id="hm-title">三つの扉の間</h2>
+      <div class="qm-kicker">メニュー</div>
+      <h2 id="st-title">設定</h2>
+    </div>
+    <div class="qm-body sheet-body" id="settings-body"></div>
+    <div class="qm-actions">
+      <button type="button" class="ghost" id="settings-close">とじる</button>
+    </div>
+  </div>
+</div>
+<div class="quest-overlay" id="domain-overlay" role="dialog" aria-modal="true" aria-labelledby="dm-title">
+  <div class="quest-modal hub-modal">
+    <div class="qm-top">
+      <div class="qm-kicker" id="dm-kicker">分野</div>
+      <h2 id="dm-title">分野</h2>
     </div>
     <div class="qm-body">
-      <p class="qm-desc" id="hm-desc">今の力を試したいなら、この扉の奥を目指しなさい…</p>
-      <div class="qm-meta" id="hm-meta"></div>
-      <div id="hm-growth" class="hm-growth" aria-label="成長"></div>
-      <h3 class="hm-sec">学習</h3>
-      <div class="hm-row" id="hm-learn"></div>
-      <h3 class="hm-sec">進路</h3>
-      <div class="hm-row" id="hm-travel"></div>
-      <h3 class="hm-sec">間違い復習</h3>
-      <div id="hm-review" class="hm-review"></div>
+      <div class="qm-meta" id="dm-meta"></div>
+      <div class="sheet-body" id="dm-list"></div>
     </div>
     <div class="qm-actions">
-      <button type="button" class="ghost" id="hm-close">とじる</button>
-      <button type="button" class="primary" id="hm-panel">詳細パネルを開く</button>
+      <button type="button" class="ghost" id="dm-close">とじる</button>
     </div>
   </div>
 </div>
@@ -279,18 +311,12 @@ const ys = nodes.map(n => n.y).filter(v => v != null);
 const layoutW = MX * 2 + (COLS - 1) * DX;
 const layoutH = Math.max(640, (Math.max(...ys) - Math.min(...ys)) + 200);
 
-document.getElementById('h-name').textContent = SAVE.displayName;
+document.getElementById('h-name').textContent = SAVE.displayName || '旅人';
 document.getElementById('h-level').textContent = String(SAVE.level || 1);
 document.getElementById('h-xp').style.width = (LampSave.xpProgress(SAVE) * 100) + '%';
-document.getElementById('h-lamps').textContent = cleared.size + ' / ' + lessons.length;
+document.getElementById('h-lamps').textContent = cleared.size + '/' + lessons.length;
 document.getElementById('h-bar').style.width = (lessons.length ? cleared.size / lessons.length * 100 : 0) + '%';
-document.getElementById('h-titles').textContent = (SAVE.titles || []).length;
-const syncEl = document.getElementById('h-sync');
-syncEl.textContent = LampSave.saveSourceLabel(SAVE) + (SAVE.updatedAt ? ' · ' + new Date(SAVE.updatedAt).toLocaleString('ja-JP') : '');
-if (window.LampPwa) LampPwa.markOffline(syncEl);
-if (window.LampCloud) {
-  LampCloud.mountAuthControls(document.getElementById('h-auth'), { btnClass: 'panel-btn', showDisabledHint: false });
-}
+document.getElementById('h-titles').textContent = String((SAVE.titles || []).length);
 
 const panel = document.getElementById('panel');
 const backBtn = document.getElementById('world-back');
@@ -307,102 +333,264 @@ function playLink(text, no) {
   return b;
 }
 
+const sayBox = document.getElementById('say-box');
+const saySpeaker = document.getElementById('say-speaker');
+const sayText = document.getElementById('say-text');
+const sayHint = document.getElementById('say-hint');
+const sayActions = document.getElementById('say-actions');
+const reducedSay = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let sayJob = null;
+
+function splitSayPages(text) {
+  const raw = String(text || '').replace(/\s+/g, ' ').trim();
+  if (!raw) return [''];
+  const parts = [];
+  let chunk = '';
+  for (let n = 0; n < raw.length; n++) {
+    chunk += raw[n];
+    if (/[。！？!?]/.test(raw[n])) {
+      parts.push(chunk.trim());
+      chunk = '';
+    }
+  }
+  if (chunk.trim()) parts.push(chunk.trim());
+  const pages = [];
+  let buf = '';
+  parts.forEach(p => {
+    if ((buf + p).length > 42 && buf) {
+      pages.push(buf);
+      buf = p;
+    } else buf += p;
+  });
+  if (buf) pages.push(buf);
+  return pages.length ? pages : [raw];
+}
+
+function stopSay() {
+  if (sayJob && sayJob.timer) clearInterval(sayJob.timer);
+  sayJob = null;
+}
+
+function hideSay() {
+  stopSay();
+  sayBox.classList.remove('show');
+  sayActions.classList.remove('show');
+  sayActions.innerHTML = '';
+  sayHint.style.display = '';
+}
+
+function renderSayActions(actions) {
+  sayActions.innerHTML = '';
+  (actions || []).forEach(a => {
+    const b = a.href
+      ? el('a', { href: a.href, class: a.primary ? 'primary' : '' }, a.label)
+      : el('button', { type: 'button', class: a.primary ? 'primary' : '' }, a.label);
+    if (!a.href) b.onclick = () => { hideSay(); if (a.onClick) a.onClick(); };
+    else b.onclick = () => hideSay();
+    sayActions.appendChild(b);
+  });
+  sayActions.classList.add('show');
+  sayHint.style.display = 'none';
+}
+
+function runSay(pages, opts) {
+  opts = opts || {};
+  stopSay();
+  closeLessonModal();
+  closeSettings();
+  closeDomainSheet();
+  const list = Array.isArray(pages) ? pages.filter(Boolean) : splitSayPages(pages);
+  saySpeaker.textContent = opts.speaker || '';
+  sayBox.classList.add('show');
+  sayActions.classList.remove('show');
+  sayActions.innerHTML = '';
+  sayHint.style.display = '';
+  sayHint.textContent = 'クリック／Enter で進む';
+  let page = 0;
+  let i = 0;
+  let full = list[0] || '';
+  sayJob = { page, list, opts, done: false, timer: null };
+
+  function paint(partial) {
+    sayText.textContent = partial;
+    if (!sayJob.done && partial.length < full.length) {
+      const cur = el('span', { class: 'say-cursor' }, '▍');
+      sayText.appendChild(cur);
+    }
+  }
+
+  function startPage() {
+    full = list[page] || '';
+    i = 0;
+    sayJob.done = false;
+    if (reducedSay || !full) {
+      paint(full);
+      sayJob.done = true;
+      return;
+    }
+    paint('');
+    sayJob.timer = setInterval(() => {
+      i += 1;
+      paint(full.slice(0, i));
+      if (i >= full.length) {
+        clearInterval(sayJob.timer);
+        sayJob.timer = null;
+        sayJob.done = true;
+      }
+    }, 28);
+  }
+
+  function finishAll() {
+    stopSay();
+    sayJob = { done: true, finished: true };
+    paint(list[list.length - 1] || '');
+    if (opts.actions && opts.actions.length) renderSayActions(opts.actions);
+    else {
+      sayHint.textContent = 'クリックで閉じる';
+      sayJob.closeOnNext = true;
+    }
+    if (opts.onDone) opts.onDone();
+  }
+
+  function advance() {
+    if (!sayBox.classList.contains('show')) return;
+    if (sayJob && sayJob.closeOnNext) { hideSay(); return; }
+    if (!sayJob || sayJob.finished) return;
+    if (!sayJob.done) {
+      if (sayJob.timer) clearInterval(sayJob.timer);
+      sayJob.timer = null;
+      paint(full);
+      sayJob.done = true;
+      return;
+    }
+    if (page < list.length - 1) {
+      page += 1;
+      sayJob.page = page;
+      startPage();
+      return;
+    }
+    finishAll();
+  }
+
+  sayJob.advance = advance;
+  startPage();
+}
+
 function closeLessonModal() {
   document.getElementById('quest-overlay').classList.remove('show');
 }
-function closeHubModal() {
-  document.getElementById('hub-overlay').classList.remove('show');
+function closeHubModal() { hideSay(); }
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('show');
 }
+function closeDomainSheet() {
+  document.getElementById('domain-overlay').classList.remove('show');
+}
+
 function openHubModal() {
   closeLessonModal();
+  closeSettings();
+  closeDomainSheet();
   if (worldApi && worldApi.returnToHub) worldApi.returnToHub(0);
-  const meta = document.getElementById('hm-meta');
-  meta.innerHTML = '';
-  meta.appendChild(el('span', { class: 'tag cleared' }, '拠点'));
-  meta.appendChild(el('span', { class: 'tag' }, 'Lv ' + (SAVE.level || 1)));
-  meta.appendChild(el('span', { class: 'tag' }, '灯 ' + cleared.size + '/' + lessons.length));
-  meta.appendChild(el('span', { class: 'tag' }, '復習 ' + missed.size + ' 件'));
-  document.getElementById('hm-desc').textContent =
-    '今の力を試したいなら、この扉の奥を目指しなさい。強靭な精神を身に付けられるだろう。ただし相手は強い。その盾と剣では不十分だ。盾を鍛えるなら左へ、剣を鍛えるなら右へ進みなさい。';
-
-  const gEl = document.getElementById('hm-growth');
-  if (gEl) {
-    gEl.innerHTML = '';
-    [
-      ['盾', growth.shield, '#f0a030'],
-      ['剣', growth.sword, '#a070ff'],
-      ['精神', growth.spirit, '#40c080']
-    ].forEach(row => {
-      const line = el('div', { class: 'hm-growth-row' });
-      line.appendChild(el('span', { class: 'hm-growth-label' }, row[0] + ' ' + row[1].cleared + '/' + row[1].total));
-      const bar = el('span', { class: 'hm-growth-bar' });
-      const fill = el('i');
-      fill.style.width = Math.round(row[1].ratio * 100) + '%';
-      fill.style.background = row[2];
-      bar.appendChild(fill);
-      line.appendChild(bar);
-      gEl.appendChild(line);
+  const actions = [
+    {
+      label: cleared.has(0) ? '手引きを見返す' : '手引きを学ぶ',
+      href: 'lesson.html?hub=1',
+      primary: true
+    }
+  ];
+  if (next) {
+    actions.push({
+      label: '次 #' + pad(next.no),
+      primary: true,
+      onClick: () => openLessonModal(next)
     });
   }
+  actions.push({ label: 'とじる', onClick: () => {} });
+  runSay([
+    '今の力を試したいなら、この扉の奥を目指しなさい。',
+    '強靭な精神を身に付けられるだろう。ただし相手は強い。',
+    'その盾と剣では不十分だ。盾を鍛えるなら左へ、剣を鍛えるなら右へ進みなさい。'
+  ], { speaker: '謎の老人', actions });
+}
 
-  const learn = document.getElementById('hm-learn');
-  learn.innerHTML = '';
-  const hubLearn = el('a', {
-    href: 'lesson.html?hub=1',
-    class: 'primary'
-  }, cleared.has(0) ? 'FE手引きを見返す' : 'FE試験の手引きを学ぶ');
-  learn.appendChild(hubLearn);
-  if (next) {
-    const nextBtn = el('button', { type: 'button', class: 'primary' }, '次の推奨 #' + pad(next.no));
-    nextBtn.onclick = () => { closeHubModal(); openLessonModal(next); };
-    learn.appendChild(nextBtn);
-  }
-
-  const travel = document.getElementById('hm-travel');
-  travel.innerHTML = '';
+function openSettings() {
+  hideSay();
+  closeLessonModal();
+  closeDomainSheet();
+  const body = document.getElementById('settings-body');
+  body.innerHTML = '';
+  body.appendChild(el('div', { class: 'stat' },
+    '旅人 ' + (SAVE.displayName || '旅人') + '　／　称号 ' + ((SAVE.titles || []).length) +
+    '　／　復習 ' + missed.size));
+  const g = el('div', { class: 'hm-growth' });
   [
-    ['sky', '左・盾の道へ', 'sky'],
-    ['underground', '右・剣の道へ', 'underground'],
-    ['land', '正面・大扉の奥へ', 'land'],
-    ['overview', '全体図', '']
+    ['盾', growth.shield, '#f0a030'],
+    ['剣', growth.sword, '#a070ff'],
+    ['精神', growth.spirit, '#40c080']
+  ].forEach(row => {
+    const line = el('div', { class: 'hm-growth-row' });
+    line.appendChild(el('span', { class: 'hm-growth-label' }, row[0] + ' ' + row[1].cleared + '/' + row[1].total));
+    const bar = el('span', { class: 'hm-growth-bar' });
+    const fill = el('i');
+    fill.style.width = Math.round(row[1].ratio * 100) + '%';
+    fill.style.background = row[2];
+    bar.appendChild(fill);
+    line.appendChild(bar);
+    g.appendChild(line);
+  });
+  body.appendChild(g);
+
+  body.appendChild(el('h3', null, '手引き・進路'));
+  const prep = el('div', { class: 'save-row' });
+  prep.appendChild(el('a', { href: 'lesson.html?hub=1', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' },
+    cleared.has(0) ? '手引き' : '手引きを学ぶ'));
+  [
+    ['sky', '盾の道'],
+    ['underground', '剣の道'],
+    ['land', '大扉']
   ].forEach(pair => {
-    const b = el('button', { type: 'button', class: pair[2] }, pair[1]);
+    const b = el('button', { class: 'panel-btn', type: 'button' }, pair[1]);
     if (pair[0] === 'land' && !landOpen) {
       b.disabled = true;
-      b.title = progressGate.lockReason || 'まだ盾と剣では不十分です';
-      b.textContent = '大扉の奥へ（鍛錬不足）';
+      b.textContent = '大扉（不足）';
     }
-    b.onclick = () => {
-      closeHubModal();
-      if (!worldApi) return;
-      if (pair[0] === 'overview') worldApi.showOverview();
-      else travelToRealmSafe(pair[0]);
-    };
-    travel.appendChild(b);
+    b.onclick = () => { closeSettings(); travelToRealmSafe(pair[0]); };
+    prep.appendChild(b);
   });
+  body.appendChild(prep);
 
-  const review = document.getElementById('hm-review');
-  review.innerHTML = '';
-  const missList = lessons.filter(l => missed.has(l.no));
-  if (missList.length === 0) {
-    review.appendChild(el('div', { class: 'stat' }, 'まだ復習候補はありません。未合格になるとここに溜まります。'));
-  } else {
-    missList.slice(0, 10).forEach(l => {
-      const a = el('a', { href: '#' }, '講座 ' + pad(l.no) + '　' + l.title);
-      a.onclick = (ev) => { ev.preventDefault(); closeHubModal(); openLessonModal(l); };
-      review.appendChild(a);
-    });
-    if (missList.length > 10) {
-      review.appendChild(el('div', { class: 'stat' }, 'ほか ' + (missList.length - 10) + ' 件は詳細パネルへ'));
-    }
+  if (next) {
+    body.appendChild(el('h3', null, '次の講座'));
+    body.appendChild(playLink(pad(next.no) + '　' + next.title, next.no));
   }
-  document.getElementById('hub-overlay').classList.add('show');
+
+  const missList = lessons.filter(l => missed.has(l.no));
+  body.appendChild(el('h3', null, '復習'));
+  if (!missList.length) body.appendChild(el('div', { class: 'stat' }, 'なし'));
+  else {
+    const ul = el('ul', { class: 'lessons' });
+    missList.slice(0, 8).forEach(l => ul.appendChild(lessonRow(l)));
+    body.appendChild(ul);
+  }
+
+  body.appendChild(el('h3', null, 'リンク'));
+  const links = el('div', { class: 'save-row' });
+  links.appendChild(el('a', { href: 'ref.html?p=curriculum', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '一覧'));
+  links.appendChild(el('a', { href: 'ref.html?p=glossary', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '用語'));
+  links.appendChild(el('a', { href: 'ref.html?p=world', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '世界'));
+  links.appendChild(el('a', { href: 'ref.html?p=titles', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '称号'));
+  body.appendChild(links);
+
+  appendTravelerPanel(body);
+  appendSaveTools(body);
+  document.getElementById('settings-overlay').classList.add('show');
 }
 
 function travelToRealmSafe(realm) {
   const gate = LampProgress.realmAccessible(realm, landOpen);
   if (!gate.ok) {
-    alert(gate.reason);
+    runSay(gate.reason || 'まだ進めない。', { speaker: '謎の老人', actions: [{ label: 'とじる', onClick: () => {} }] });
     return;
   }
   if (worldApi) worldApi.travelToRealm(realm);
@@ -411,6 +599,9 @@ function travelToRealmSafe(realm) {
 async function openLessonModal(noOrLesson) {
   const l = typeof noOrLesson === 'object' ? noOrLesson : lessons.find(x => x.no === noOrLesson);
   if (!l) return;
+  closeSettings();
+  closeDomainSheet();
+  hideSay();
   const dom = domains.find(d => d.id === l.domain);
   const play = LampProgress.lessonPlayable(l, dom, cleared, skipped);
   const st = lessonState(l);
@@ -424,52 +615,70 @@ async function openLessonModal(noOrLesson) {
   if (missed.has(l.no)) meta.appendChild(el('span', { class: 'tag' }, '復習候補'));
   if (!play.ok) meta.appendChild(el('span', { class: 'tag fog' }, '未開放'));
   const desc = document.getElementById('qm-desc');
-  desc.textContent = '読み込み中…';
+  desc.textContent = '';
   const quote = document.getElementById('qm-quote');
   quote.hidden = true;
-  if (dom && dom.enter) {
-    quote.hidden = false;
-    quote.textContent = (dom.npc ? dom.npc + ' — ' : '') + dom.enter;
-  }
   const go = document.getElementById('qm-go');
   if (!play.ok) {
     go.removeAttribute('href');
-    go.textContent = 'まだ挑戦できません';
-    go.onclick = (ev) => { ev.preventDefault(); alert(play.reason); };
+    go.textContent = 'まだ挑戦できない';
+    go.onclick = (ev) => { ev.preventDefault(); runSay(play.reason, { speaker: '案内', actions: [{ label: 'とじる', onClick: () => {} }] }); };
   } else {
     go.onclick = null;
     go.href = lessonPlayHref(l.no);
-    go.textContent = st === 'cleared' ? 'もう一度挑戦する' : '挑戦する';
+    go.textContent = st === 'cleared' ? 'もう一度' : '挑戦する';
   }
   document.getElementById('quest-overlay').classList.add('show');
 
   const quests = await loadQuests();
   const full = (quests.lessons || []).find(q => q.courseNo === l.no || q.no === l.no);
-  if (!play.ok) {
-    desc.textContent = play.reason;
-  } else if (full) {
-    const qCount = (full.questions && full.questions.length) || 0;
-    let body = full.blurb ? full.blurb + '。' : (l.title + '。');
-    if (dom && dom.synopsis) body += ' ' + dom.synopsis;
-    if (qCount) body += '（封印の問い ' + qCount + ' 問）';
-    if (st === 'cleared') body += ' すでに灯は点いています。復習としてやり直せます。';
-    else if (missed.has(l.no)) body += ' 以前つまずいた記録があります。用語を確認してから挑みましょう。';
-    desc.textContent = body;
-  } else {
-    desc.textContent = (dom && dom.synopsis ? dom.synopsis + ' ' : '') + 'スライドで学び、封印の問いに答えて灯を点けます。';
+  let body = '';
+  if (!play.ok) body = play.reason;
+  else if (full && full.blurb) body = full.blurb;
+  else body = 'スライドで学び、問いに答えて灯を点ける。';
+  if (st === 'cleared') body += '（復習可）';
+  // モーダル内も流して表示
+  let i = 0;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) desc.textContent = body;
+  else {
+    const t = setInterval(() => {
+      i += 1;
+      desc.textContent = body.slice(0, i);
+      if (i >= body.length) clearInterval(t);
+    }, 22);
   }
 }
 document.getElementById('qm-close').onclick = closeLessonModal;
 document.getElementById('quest-overlay').addEventListener('click', (ev) => {
   if (ev.target.id === 'quest-overlay') closeLessonModal();
 });
-document.getElementById('hm-close').onclick = closeHubModal;
-document.getElementById('hm-panel').onclick = () => { closeHubModal(); showHome(); };
-document.getElementById('hub-overlay').addEventListener('click', (ev) => {
-  if (ev.target.id === 'hub-overlay') closeHubModal();
+document.getElementById('settings-close').onclick = closeSettings;
+document.getElementById('settings-btn').onclick = openSettings;
+document.getElementById('settings-overlay').addEventListener('click', (ev) => {
+  if (ev.target.id === 'settings-overlay') closeSettings();
+});
+document.getElementById('dm-close').onclick = closeDomainSheet;
+document.getElementById('domain-overlay').addEventListener('click', (ev) => {
+  if (ev.target.id === 'domain-overlay') closeDomainSheet();
+});
+sayBox.addEventListener('click', () => {
+  if (sayJob && sayJob.advance) sayJob.advance();
 });
 document.addEventListener('keydown', (ev) => {
-  if (ev.key === 'Escape') { closeLessonModal(); closeHubModal(); }
+  if (ev.key === 'Escape') {
+    closeLessonModal();
+    closeSettings();
+    closeDomainSheet();
+    hideSay();
+    return;
+  }
+  if ((ev.key === 'Enter' || ev.key === ' ') && sayBox.classList.contains('show')) {
+    if (document.getElementById('quest-overlay').classList.contains('show')) return;
+    if (document.getElementById('settings-overlay').classList.contains('show')) return;
+    ev.preventDefault();
+    if (sayJob && sayJob.advance) sayJob.advance();
+  }
 });
 function appendTravelerPanel(panel) {
   panel.appendChild(el('h3', null, '旅人'));
@@ -483,15 +692,14 @@ function appendTravelerPanel(panel) {
   row.appendChild(inp);
   row.appendChild(saveBtn);
   panel.appendChild(row);
-  panel.appendChild(el('h3', null, 'クラウド同期（任意）'));
-  panel.appendChild(el('div', { class: 'stat' }, 'Google でログインすると、別の端末でも同じ灯を共有できます。未ログインでもこの端末だけで学べます。'));
+  panel.appendChild(el('h3', null, 'クラウド'));
   const authBox = el('div', { class: 'save-row', id: 'panel-auth' });
   panel.appendChild(authBox);
   if (window.LampCloud) LampCloud.mountAuthControls(authBox, { btnClass: 'panel-btn', showDisabledHint: true });
 }
 function appendSaveTools(panel) {
-  panel.appendChild(el('h3', null, '冒険記録（この端末）'));
-  panel.appendChild(el('div', { class: 'stat' }, 'JSON の出し入れでバックアップできます。インポートはブラウザ内の記録を上書きします。'));
+  panel.appendChild(el('h3', null, '記録'));
+  panel.appendChild(el('div', { class: 'stat' }, 'バックアップ／復元／消去'));
   const row = el('div', { class: 'save-row' });
   const ex = el('button', { class: 'panel-btn', type: 'button' }, 'エクスポート');
   ex.onclick = () => LampSave.downloadExport();
@@ -527,117 +735,12 @@ function appendSaveTools(panel) {
 
 function showHome() {
   backBtn.classList.remove('visible');
+  closeDomainSheet();
+  hideSay();
   if (worldApi && worldApi.returnToHub) worldApi.returnToHub(0);
-  else if (worldApi && worldApi.getMode() === 'island') worldApi.exitIsland();
-  panel.innerHTML = '';
-  panel.appendChild(el('h2', null, '三つの扉の間 — 身支度'));
-  panel.appendChild(el('div', { class: 'quote' }, '謎の老人が待つ間。手引きを学び、左で盾・右で剣を鍛え、大扉の奥で精神を磨こう。'));
-  panel.appendChild(el('div', { class: 'stat' }, DATA.prologue));
-
-  panel.appendChild(el('h3', null, '手引き（最初のクエスト）'));
-  panel.appendChild(el('div', { class: 'stat' }, '基本情報技術者試験の概要 — スライド → 学習プリント → 演習。どの道も同じ型です。'));
-  const hubGo = el('a', { href: 'lesson.html?hub=1', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' },
-    cleared.has(0) ? '手引きを見返す →' : 'FE試験の手引きを学ぶ →');
-  panel.appendChild(hubGo);
-
-  panel.appendChild(el('h3', null, '進路'));
-  panel.appendChild(el('div', { class: 'stat' }, '老人の会話、またはマップ右上から、盾の道・剣の道・大扉へ進めます。'));
-  const realmRow = el('div', { class: 'save-row' });
-  [
-    ['overview', '全体図'],
-    ['sky', '盾の道へ'],
-    ['underground', '剣の道へ'],
-    ['land', '大扉の奥へ']
-  ].forEach(pair => {
-    const b = el('button', { class: 'panel-btn', type: 'button' }, pair[1]);
-    if (pair[0] === 'land' && !landOpen) {
-      b.disabled = true;
-      b.title = progressGate.lockReason || '';
-      b.textContent = '大扉（鍛錬不足）';
-    }
-    b.onclick = () => {
-      if (!worldApi) return;
-      if (pair[0] === 'overview') worldApi.showOverview();
-      else travelToRealmSafe(pair[0]);
-    };
-    realmRow.appendChild(b);
-  });
-  if (!landOpen) {
-    panel.appendChild(el('div', { class: 'warn' }, progressGate.lockReason));
-  }
-  panel.appendChild(realmRow);
-
-  panel.appendChild(el('h3', null, 'いまの旅人'));
-  panel.appendChild(el('div', { class: 'stat' },
-    'Lv ' + (SAVE.level || 1) + '　／　灯 ' + cleared.size + '/' + lessons.length +
-    '　／　称号 ' + ((SAVE.titles || []).length) +
-    '　／　復習リスト ' + missed.size + ' 件'));
-
-  panel.appendChild(el('h3', null, '次の推奨クエスト'));
-  if (next) {
-    panel.appendChild(el('div', null, '講座 ' + pad(next.no) + '　' + next.title));
-    const dom = domains.find(d => d.id === next.domain);
-    if (dom) panel.appendChild(el('div', { class: 'stat' }, dom.title + ' ／ ' + dom.npc));
-    panel.appendChild(playLink('概要を見て出発する →', next.no));
-    if (!cleared.has(next.no)) {
-      const skipBtn = el('button', { class: 'panel-btn warn', type: 'button' }, '迂回して先へ（↷）');
-      skipBtn.onclick = () => {
-        if (confirm('講座 ' + pad(next.no) + ' を迂回します。あとで一覧から戻れます。')) {
-          LampSave.registerSkip(LampSave.loadLocal(), next.no);
-          const to = lessons.find(l => l.no > next.no && !cleared.has(l.no) && !skipped.has(l.no) && l.no !== next.no);
-          location.href = 'map.html?arrive=1&from=' + next.no + (to ? '&to=' + to.no : '') + '&skip=1';
-        }
-      };
-      panel.appendChild(skipBtn);
-    }
-  } else {
-    panel.appendChild(el('div', null, 'すべての灯が揃いました。諸島の中枢が目を覚まします。'));
-  }
-
-  panel.appendChild(el('h3', null, '復習（間違えた封印）'));
-  const missList = lessons.filter(l => missed.has(l.no));
-  if (missList.length === 0) {
-    panel.appendChild(el('div', { class: 'stat' }, 'まだ復習候補はありません。未合格になるとここに溜まります。'));
-  } else {
-    panel.appendChild(el('div', { class: 'stat' }, 'つまずいた講座を、スライドからやり直せます。'));
-    const ul = el('ul', { class: 'lessons' });
-    missList.slice(0, 12).forEach(l => ul.appendChild(lessonRow(l)));
-    panel.appendChild(ul);
-    if (missList.length > 12) panel.appendChild(el('div', { class: 'stat' }, 'ほか ' + (missList.length - 12) + ' 件…'));
-  }
-
-  if (skipped.size > 0) {
-    panel.appendChild(el('h3', null, '迂回中（あとで戻る）'));
-    const ul = el('ul', { class: 'lessons' });
-    lessons.filter(l => skipped.has(l.no)).forEach(l => ul.appendChild(lessonRow(l)));
-    panel.appendChild(ul);
-  }
-
-  panel.appendChild(el('h3', null, '身支度リンク'));
-  const prep = el('div', { class: 'save-row' });
-  prep.appendChild(el('a', { href: 'ref.html?p=glossary', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '用語図鑑'));
-  prep.appendChild(el('a', { href: 'ref.html?p=curriculum', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '全講座一覧'));
-  prep.appendChild(el('a', { href: 'ref.html?p=titles', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '称号'));
-  prep.appendChild(el('a', { href: 'ref.html?p=world', class: 'panel-btn', style: 'text-decoration:none;display:inline-block' }, '世界設定'));
-  panel.appendChild(prep);
-
-  panel.appendChild(el('h3', null, '称号'));
-  const t = el('div', { class: 'titles' });
-  if ((SAVE.titles || []).length === 0) t.appendChild(el('div', { class: 'stat' }, 'まだありません。'));
-  (SAVE.titles || []).forEach(x => t.appendChild(el('span', null, x)));
-  panel.appendChild(t);
-
-  appendTravelerPanel(panel);
-  appendSaveTools(panel);
-
-  if (next) {
-    panel.appendChild(el('h3', null, 'ローカル（PowerShell）'));
-    panel.appendChild(cmdBox(lessonCmd(next)));
-  }
-  panel.appendChild(el('h3', null, '凡例'));
-  const lg = el('div', { class: 'legend' });
-  lg.innerHTML = '<div><i style="background:#f5c451"></i>灯が揃った分野</div><div><i style="background:#7fd1ff"></i>いま挑んでいる分野</div><div><i style="background:#7fa6d8"></i>開いている分野</div><div><i style="background:#3a3f62"></i>霧（未開放）</div><div>左＝盾／右＝剣。分野クリアで成長。大扉の奥は両道の鍛錬後</div>';
-  panel.appendChild(lg);
+  else if (worldApi && worldApi.getMode && worldApi.getMode() === 'island') worldApi.exitIsland();
+  const tip = document.getElementById('world-hint');
+  if (tip) tip.textContent = '←盾　扉↑　剣→　老人に話す';
 }
 
 function lessonRow(l, domain) {
@@ -665,44 +768,44 @@ function lessonRow(l, domain) {
   return li;
 }
 
-function showDomain(d) {
-  backBtn.classList.add('visible');
-  panel.innerHTML = '';
-  const back = el('button', { class: 'back' }, '← 拠点へ');
-  back.onclick = showHome;
-  panel.appendChild(back);
-  panel.appendChild(el('h2', null, d.title));
-  const tags = el('div');
-  const stLabel = { cleared: '灯が揃った', current: '挑戦中', open: '開いている', fog: '霧（未開放）' }[d.state];
-  tags.appendChild(el('span', { class: 'tag ' + d.state }, stLabel));
-  tags.appendChild(el('span', { class: 'tag' }, d.exam));
-  tags.appendChild(el('span', { class: 'tag' }, '灯 ' + d.done + '/' + d.total));
-  panel.appendChild(tags);
-  if (d.state === 'fog') {
-    panel.appendChild(el('div', { class: 'warn' }, d.lockReason || 'この土地はまだ開いていません。手前の灯を点けてから来てください。'));
-    if (d.synopsis) panel.appendChild(el('div', { class: 'stat' }, d.synopsis));
-    if (worldApi && worldApi.getMode && worldApi.getMode() === 'island') worldApi.exitIsland();
-    return;
-  }
-  if (d.enter) panel.appendChild(el('div', { class: 'quote' }, d.enter));
-  panel.appendChild(el('div', { class: 'stat' }, '守り手: ' + d.npc + '　／　' + d.synopsis));
-  if (d.award) {
-    panel.appendChild(el('h3', null, '完走の称号'));
-    const t = el('div', { class: 'titles' }); t.appendChild(el('span', null, d.award)); panel.appendChild(t);
-  }
-  panel.appendChild(el('h3', null, '講座（島のステージ）'));
+function openDomainSheet(d) {
+  document.getElementById('dm-kicker').textContent = d.exam || '分野';
+  document.getElementById('dm-title').textContent = d.title;
+  const meta = document.getElementById('dm-meta');
+  meta.innerHTML = '';
+  const stLabel = { cleared: 'クリア', current: '挑戦中', open: '開放', fog: '霧' }[d.state];
+  meta.appendChild(el('span', { class: 'tag ' + d.state }, stLabel));
+  meta.appendChild(el('span', { class: 'tag' }, '灯 ' + d.done + '/' + d.total));
+  if (d.npc) meta.appendChild(el('span', { class: 'tag' }, d.npc));
+  const list = document.getElementById('dm-list');
+  list.innerHTML = '';
   const ul = el('ul', { class: 'lessons' });
   d.lessons.forEach(l => ul.appendChild(lessonRow(l, d)));
-  panel.appendChild(ul);
-  const target = d.lessons.find(l => LampProgress.lessonPlayable(l, d, cleared, skipped).ok && !cleared.has(l.no))
-    || d.lessons.find(l => !cleared.has(l.no))
-    || d.lessons[0];
-  if (target && LampProgress.lessonPlayable(target, d, cleared, skipped).ok) {
-    panel.appendChild(el('h3', null, 'ここから始める'));
-    panel.appendChild(playLink('講座 ' + pad(target.no) + ' の概要を見る', target.no));
-    panel.appendChild(cmdBox(lessonCmd(target)));
+  list.appendChild(ul);
+  document.getElementById('domain-overlay').classList.add('show');
+}
+
+function showDomain(d) {
+  backBtn.classList.add('visible');
+  if (d.state === 'fog') {
+    if (worldApi && worldApi.getMode && worldApi.getMode() === 'island') worldApi.exitIsland();
+    runSay(d.lockReason || 'まだ霧の中だ。', {
+      speaker: d.npc || '案内',
+      actions: [{ label: 'とじる', onClick: () => {} }]
+    });
+    return;
   }
-  if (worldApi) worldApi.enterIsland(d, lessonState);
+  const line = d.enter || (d.synopsis || d.title);
+  runSay(line, {
+    speaker: d.npc || d.title,
+    actions: [
+      { label: '講座を選ぶ', primary: true, onClick: () => openDomainSheet(d) },
+      { label: 'とじる', onClick: () => {} }
+    ],
+    onDone: () => {
+      if (worldApi) worldApi.enterIsland(d, lessonState);
+    }
+  });
 }
 
 function showLevelUp(level, titles) {
@@ -734,7 +837,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=3';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=4';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
@@ -752,11 +855,13 @@ import(LAMP_MAP_MODULE).then(mod => {
     onSelectHub: () => openHubModal(),
     onSelectLesson: (l) => { openLessonModal(l); },
     canTravelRealm: (realm) => LampProgress.realmAccessible(realm, landOpen).ok,
-    onTravelBlocked: (realm, reason) => { alert(reason || 'まだ行けません。'); },
+    onTravelBlocked: (realm, reason) => {
+      runSay(reason || 'まだ行けない。', { speaker: '謎の老人', actions: [{ label: 'とじる', onClick: () => {} }] });
+    },
     onTravelRealm: (realm) => {
       const labels = { sky: '盾の道', land: '大扉の奥', underground: '剣の道' };
-      const tip = document.querySelector('.world-hint');
-      if (tip) tip.textContent = (labels[realm] || realm) + ' へ · ←間に戻る／全体図で俯瞰';
+      const tip = document.getElementById('world-hint');
+      if (tip) tip.textContent = (labels[realm] || realm);
     },
     onModeChange: (mode) => {
       if (mode === 'island') backBtn.classList.add('visible');
@@ -788,21 +893,28 @@ import(LAMP_MAP_MODULE).then(mod => {
       }
       history.replaceState({}, '', 'map.html');
     });
-  } else if (next) {
-    const dom = domains.find(d => d.id === next.domain);
-    if (dom) {
-      /* stay on world overview; optional soft highlight via current state already */
-    }
   }
 
   if (levelUp || awardTitles.length) {
     setTimeout(() => showLevelUp(SAVE.level || 1, awardTitles), arrive ? 1600 : 400);
   }
+
+  // 初回だけ短い案内
+  if (!SAVE.lastCourseNo && !arrive) {
+    setTimeout(() => {
+      if (!sayBox.classList.contains('show')) {
+        runSay(['ここは三つの扉の間。', '老人に話しかけてみよう。'], {
+          speaker: '案内',
+          actions: [{ label: 'わかった', onClick: () => {} }]
+        });
+      }
+    }, 500);
+  }
 }).catch(err => {
   console.error(err);
   const msg = (err && err.message) ? String(err.message) : 'unknown';
   document.getElementById('world').appendChild(el('div', { class: 'warn', style: 'margin:16px' },
-    'ダンジョンマップを読み込めませんでした。回線またはキャッシュを確認し、ページを再読み込みしてください。（' + msg + '）'));
+    'マップを読めませんでした。再読み込みしてください。（' + msg + '）'));
 });
 </script>
 </body>

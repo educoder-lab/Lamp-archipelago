@@ -409,10 +409,10 @@ export function mountLampWorld(container, opts) {
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
     const hints = {
-      elder: 'Enter … 老人に話しかける',
-      left: 'Enter … 盾の道へ',
-      right: 'Enter … 剣の道へ',
-      door: landOpen ? 'Enter … 大扉の奥へ' : 'Enter … 大扉（まだ不十分）'
+      elder: 'Enter … 話す',
+      left: 'Enter … 盾の道',
+      right: 'Enter … 剣の道',
+      door: landOpen ? 'Enter … 大扉' : 'Enter … まだ不十分'
     };
     ctx.fillText(hints[hubFocus] || '', W / 2, H - 18);
 
