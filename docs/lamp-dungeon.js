@@ -76,12 +76,12 @@ function drawArt(ctx, img, x, y, w, h) {
 function doorNicheRect(W, H, kind) {
   if (kind === 'hub') {
     const w = W * 0.30;
-    const h = H * 0.70;
-    return { x: W * 0.5 - w / 2, y: H * 0.055, w, h };
+    const h = H * 0.76;
+    return { x: W * 0.5 - w / 2, y: H * 0.045, w, h };
   }
   const w = W * 0.305;
-  const h = H * 0.74;
-  return { x: W * 0.5 - w / 2, y: H * 0.03, w, h };
+  const h = H * 0.80;
+  return { x: W * 0.5 - w / 2, y: H * 0.025, w, h };
 }
 
 /**
@@ -1436,7 +1436,7 @@ export function mountLampWorld(container, opts) {
     const H = canvas.height;
     if (sx > W * 0.1 && sx < W * 0.36 && sy > H * 0.35 && sy < H * 0.82) return 'left';
     if (sx > W * 0.64 && sx < W * 0.9 && sy > H * 0.35 && sy < H * 0.82) return 'right';
-    if (sx > W * 0.35 && sx < W * 0.65 && sy > H * 0.05 && sy < H * 0.72) return 'door';
+    if (sx > W * 0.35 && sx < W * 0.65 && sy > H * 0.04 && sy < H * 0.78) return 'door';
     if (sx > W * 0.5 && sx < W * 0.72 && sy > H * 0.45 && sy < H * 0.7) return 'elder';
     if (sy > H * 0.7) return 'elder';
     return null;
