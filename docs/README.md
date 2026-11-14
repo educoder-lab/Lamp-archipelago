@@ -29,6 +29,8 @@
 | `lamp-slides.js` · `lamp-slides.css` | スライドプレイヤー |
 | `lamp-save.js` · `lamp-cloud.js` | 端末進捗 / 任意の Google 同期 |
 | `sw.js` · `manifest.webmanifest` | PWA |
+| [ART.md](./ART.md) | マップ／拠点のアート方針（主人公 #1・大扉 #4） |
+| [assets/](./assets/) | ピクセル・ムード画（`common` / `rooms` / `map` / `mood`） |
 
 個人進捗はブラウザ `localStorage`（`lamp-save.js`）。PowerShell 利用時は `save-data.js`（git 管理外）も可。
 

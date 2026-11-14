@@ -111,6 +111,18 @@
 3. `LessonId` と `NextLesson` は `island-…/NN-slug` 形式
 4. 島の README.md の表を更新
 
+## マップ素材（docs/assets）
+
+```text
+docs/assets/
+  common/              # 主人公など共通
+  rooms/{hub,shield,sword,spirit,domains}/
+  map/                 # 俯瞰マップ用
+  mood/{chosen,explore}/  # ムード正本 / 不採用アーカイブ
+```
+
+トーンは [docs/ART.md](./docs/ART.md)。採用: 主人公ドット後ろ姿・装飾封印の大扉。
+
 ## AI 採点
 
 `.cursor/rules/grading.mdc` を参照。
