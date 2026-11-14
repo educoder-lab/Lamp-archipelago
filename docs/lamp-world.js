@@ -1,4 +1,4 @@
-/* Lumina Code — Three.js 航路ワールド（X軸三領域・リッチビジュアル） */
+/* Lumina Code — Three.js 航路ワールド（非推奨: 既定は lamp-dungeon.js） */
 import * as THREE from 'three';
 import { themeFor as islandThemeFor } from './island-themes.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';

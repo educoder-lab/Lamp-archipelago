@@ -2,13 +2,13 @@
 
 公開サイト: https://educoder-lab.github.io/Lamp-archipelago/
 
-箱庭型の **3D ワールドマップ**と、**121 講座＋港の手引き**をブラウザだけで学べます。
+**2D ダンジョン・オーバーワールド**（既定）と **121 講座＋港の手引き**をブラウザだけで学べます。
 
 ## 入口
 
 | URL | 内容 |
 |-----|------|
-| [map.html](./map.html) | 3D 航路・港モーダル・光の橋・領域ナビ |
+| [map.html](./map.html) | 2D ダンジョン・港モーダル・光の道・領域ナビ |
 | [lesson.html?hub=1](./lesson.html?hub=1) | 灯台の港 — FE 試験の概要（スライド／プリント／演習） |
 | [lesson.html?no=1](./lesson.html?no=1) | 講座 01 から |
 | [ref.html](./ref.html) | 世界・用語・カリキュラム・称号 |
@@ -18,7 +18,9 @@
 | ファイル | 役割 |
 |----------|------|
 | `map.html` | マップ（`_tools/map-template.html` から生成） |
-| `lamp-world.js` · `lamp-world.css` | Three.js 箱庭（空の光の橋・地下ブルーム・陸地の影） |
+| `lamp-dungeon.js` · `dungeon-geometry.js` · `lamp-dungeon.css` | 2D オーバーワールド（既定） |
+| `lamp-world.js` · `lamp-world.css` | Three.js 箱庭（ロールバック用・非推奨） |
+| `world-api-contract.md` | map-template とワールド API の契約 |
 | `island-themes.js` | 島ごとのテーマ色・代表オブジェクト |
 | `lesson.html` | 講座プレイヤー（`?hub=1` / `?no=`） |
 | `data/hub-quest.json` · `data/slides/hub.json` | 港クエスト |
