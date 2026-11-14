@@ -69,5 +69,13 @@ function Write-WorldMapFile {
   New-Item -ItemType Directory -Path $docs -Force | Out-Null
   $out = Join-Path $docs 'map.html'
   $utf8Bom = New-Object System.Text.UTF8Encoding $true
-  [System.IO.File]::WriteAllText($out, $html, $utf8Bom)
+  for ($n = 1; $n -le 6; $n++) {
+    try {
+      [System.IO.File]::WriteAllText($out, $html, $utf8Bom)
+      break
+    } catch {
+      if ($n -eq 6) { throw }
+      Start-Sleep -Milliseconds (80 * $n)
+    }
+  }
 }

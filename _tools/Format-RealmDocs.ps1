@@ -48,6 +48,20 @@ $hint
 "@
     $outPath = Join-Path $RepoRoot (Join-Path $realm "README.md")
     $utf8bom = New-Object System.Text.UTF8Encoding $true
-    try { [System.IO.File]::WriteAllText($outPath, $content, $utf8bom) } catch { Write-Warning ("skip " + $outPath + ": " + $_.Exception.Message) }
+    $wrote = $false
+    for ($n = 1; $n -le 6; $n++) {
+      try {
+        [System.IO.File]::WriteAllText($outPath, $content, $utf8bom)
+        $wrote = $true
+        break
+      } catch {
+        if ($n -eq 6) {
+          Write-Warning ("skip " + $outPath + ": " + $_.Exception.Message)
+        } else {
+          Start-Sleep -Milliseconds (80 * $n)
+        }
+      }
+    }
+    if (-not $wrote) { continue }
   }
 }

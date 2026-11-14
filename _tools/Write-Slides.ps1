@@ -83,13 +83,18 @@ function Write-SlidesFile {
   $srcDir = Join-Path $PSScriptRoot 'slides'
   $outDir = Join-Path $RepoRoot 'docs/data/slides'
   New-Item -ItemType Directory -Path $outDir -Force | Out-Null
-  Get-ChildItem -LiteralPath $outDir -Filter '*.json' -ErrorAction SilentlyContinue | Remove-Item -Force
+  # 講座デッキ（数字.json）だけ消す。hub.json は港の手引き用で残す／後でソースから再配置する
+  Get-ChildItem -LiteralPath $outDir -Filter '*.json' -ErrorAction SilentlyContinue |
+    Where-Object { $_.BaseName -match '^\d+$' } |
+    Remove-Item -Force
 
   $authored = @{}
   if (Test-Path -LiteralPath $srcDir) {
     foreach ($f in (Get-ChildItem -LiteralPath $srcDir -Filter '*.json')) {
+      if ($f.BaseName -eq 'hub') { continue }
       $text = Get-Content -LiteralPath $f.FullName -Raw -Encoding UTF8
       $data = ConvertFrom-LampJsonText -Text $text
+      if (-not $data['lessons']) { continue }
       foreach ($key in $data['lessons'].Keys) {
         $authored[[int]$key] = $data['lessons'][$key]['slides']
       }
@@ -113,6 +118,16 @@ function Write-SlidesFile {
     $utf8 = New-Object System.Text.UTF8Encoding($false)
     [System.IO.File]::WriteAllText((Join-Path $outDir ('{0}.json' -f $no)), $json, $utf8)
   }
+
+  $hubSrc = Join-Path $srcDir 'hub.json'
+  $hubOut = Join-Path $outDir 'hub.json'
+  if (Test-Path -LiteralPath $hubSrc) {
+    Copy-Item -LiteralPath $hubSrc -Destination $hubOut -Force
+    Write-Host "Wrote docs/data/slides/hub.json (from _tools/slides/hub.json)"
+  } elseif (-not (Test-Path -LiteralPath $hubOut)) {
+    Write-Warning "hub.json がありません（港の手引きスライド）。_tools/slides/hub.json を置いてください。"
+  }
+
   Write-Host "Wrote docs/data/slides ($($Lessons.Count) decks, authored: $nAuth, lite: $($Lessons.Count - $nAuth))"
 }
 
