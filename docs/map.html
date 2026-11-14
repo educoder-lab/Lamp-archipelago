@@ -287,7 +287,6 @@ if (next) {
   if (nd && nd.state === 'open') nd.state = 'current';
 }
 
-const COLS = 6, DX = 175, DY = 150, MX = 110, BAND_GAP = 46;
 const allDone = lessons.length > 0 && lessons.every(l => cleared.has(l.no));
 
 const growth = LampProgress.growthRanks(domains, cleared);
@@ -297,31 +296,53 @@ nodes.push({ kind: 'hub', realm: 'land', label: '三つの扉の間', sub: '老�
 domains.forEach(d => nodes.push({ kind: 'domain', realm: d.realm, label: d.title, sub: d.done + '/' + d.total, state: d.state, d }));
 nodes.push({ kind: 'core', realm: 'land', label: '中枢の間', sub: allDone ? '再起動' : '最終目的地', state: allDone ? 'cleared' : 'fog' });
 
-// Y字: 中央に間、左に盾の道、右に剣の道、上に大扉の奥
-const CX = MX + Math.floor((COLS - 1) / 2) * DX;
-const hubLayout = nodes.find(n => n.kind === 'hub');
-if (hubLayout) { hubLayout.x = CX; hubLayout.y = 520; }
-
-function placeChain(list, x0, y0, dy) {
-  list.forEach((n, i) => {
-    n.x = x0;
-    n.y = y0 - i * dy;
-  });
+// 案A じゃばら：map/bg.jpg・docs/data/map-layout.json と同一座標（画像px）。MARGIN=80 を引いて n.x へ。
+const MAP_W = 1400, MAP_H = 900, GEO_MARGIN = 80;
+function accordionCenters(n, origin, opts) {
+  const cell = opts.cell, gap = opts.gap, colsPrefer = opts.colsPrefer, side = opts.side, baseOut = opts.baseOut;
+  const step = cell + gap;
+  const rows = Math.ceil(n / Math.max(1, colsPrefer));
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const col = Math.floor(i / rows);
+    const rowInCol = i % rows;
+    const row = col % 2 === 0 ? rowInCol : rows - 1 - rowInCol;
+    pts.push({
+      x: origin.x + side * (baseOut + col * step),
+      y: origin.y - (row + 1) * step
+    });
+  }
+  return pts;
 }
+function applyPx(node, px, py) {
+  node.x = px - GEO_MARGIN;
+  node.y = py - GEO_MARGIN;
+}
+const hubPx = { x: MAP_W / 2, y: MAP_H - 110, r: 48 };
+const originPx = { x: hubPx.x, y: hubPx.y - hubPx.r };
+const shieldPx = accordionCenters(17, originPx, { side: -1, colsPrefer: 3, cell: 34, gap: 12, baseOut: 130 });
+const swordPx = accordionCenters(6, originPx, { side: 1, colsPrefer: 2, cell: 34, gap: 12, baseOut: 130 });
+const spiritPx = [];
+{
+  const cell = 42, gap = 20, step = cell + gap;
+  for (let i = 0; i < 3; i++) spiritPx.push({ x: originPx.x, y: originPx.y - (i + 1) * step - 10 });
+}
+const goalPx = { x: spiritPx[2].x, y: spiritPx[2].y - 70 };
+
+const hubLayout = nodes.find(n => n.kind === 'hub');
+if (hubLayout) applyPx(hubLayout, hubPx.x, hubPx.y);
+
 const skyNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'sky');
 const ugNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'underground');
 const landNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'land');
-placeChain(skyNodes, MX + DX * 0.2, 420, 120);
-placeChain(ugNodes, MX + DX * (COLS - 1.2), 420, 120);
-placeChain(landNodes, CX, 380, 130);
+skyNodes.forEach((n, i) => { if (shieldPx[i]) applyPx(n, shieldPx[i].x, shieldPx[i].y); });
+ugNodes.forEach((n, i) => { if (swordPx[i]) applyPx(n, swordPx[i].x, swordPx[i].y); });
+landNodes.forEach((n, i) => { if (spiritPx[i]) applyPx(n, spiritPx[i].x, spiritPx[i].y); });
 const coreLayout = nodes.find(n => n.kind === 'core');
-if (coreLayout) {
-  coreLayout.x = CX;
-  coreLayout.y = landNodes.length ? (landNodes[landNodes.length - 1].y - 120) : 200;
-}
-const ys = nodes.map(n => n.y).filter(v => v != null);
-const layoutW = MX * 2 + (COLS - 1) * DX;
-const layoutH = Math.max(640, (Math.max(...ys) - Math.min(...ys)) + 200);
+if (coreLayout) applyPx(coreLayout, goalPx.x, goalPx.y);
+
+const layoutW = MAP_W;
+const layoutH = MAP_H;
 
 document.getElementById('h-name').textContent = SAVE.displayName || '旅人';
 document.getElementById('h-level').textContent = String(SAVE.level || 1);

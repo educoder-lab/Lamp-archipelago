@@ -822,9 +822,8 @@ export function mountLampWorld(container, opts) {
     ctx.translate(-camX, -camY);
     const hasMapBg = !!(hubArt.mapBg && hubArt.mapBg.naturalWidth);
     if (hasMapBg) {
-      // 論理レイアウト全体を覆うプレート（ピンと同じカメラ空間）
-      const pad = 80;
-      drawArt(ctx, hubArt.mapBg, -pad, -pad, layoutW + pad * 2, layoutH + pad * 2);
+      // 案A じゃばら：bg は layout と同じ座標。ピンは n.x+MARGIN なので画像px = n.x+MARGIN
+      drawArt(ctx, hubArt.mapBg, 0, 0, layoutW, layoutH);
     } else {
       ctx.fillStyle = '#0a1428';
       ctx.fillRect(-40, -40, layoutW + 80, layoutH + 80);
