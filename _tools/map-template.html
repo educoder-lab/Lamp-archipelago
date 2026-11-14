@@ -247,9 +247,16 @@ nodes.push({ kind: 'core', realm: 'land', label: '諸島の中枢', sub: allDone
 
 const realmOrder = ['sky', 'underground', 'land'];
 let rowIndex = 0, y = 70;
+// 港は領域バンドの手前（空・地下への出発点）
+const hubLayout = nodes.find(n => n.kind === 'hub');
+if (hubLayout) {
+  hubLayout.x = MX + Math.floor((COLS - 1) / 2) * DX;
+  hubLayout.y = y + 20;
+  y += DY + BAND_GAP;
+}
 realmOrder.forEach(realm => {
-  const rs = nodes.filter(n => n.realm === realm);
-  const rows = Math.ceil(rs.length / COLS);
+  const rs = nodes.filter(n => n.kind === 'domain' && n.realm === realm);
+  const rows = Math.ceil(rs.length / COLS) || 0;
   for (let r = 0; r < rows; r++) {
     const chunk = rs.slice(r * COLS, (r + 1) * COLS);
     const ltr = rowIndex % 2 === 0;
@@ -262,7 +269,13 @@ realmOrder.forEach(realm => {
   }
   y += BAND_GAP;
 });
-const layoutW = MX * 2 + (COLS - 1) * DX, layoutH = y - BAND_GAP + 10;
+const coreLayout = nodes.find(n => n.kind === 'core');
+if (coreLayout) {
+  coreLayout.x = MX + Math.floor((COLS - 1) / 2) * DX;
+  coreLayout.y = y + 20;
+  y += DY;
+}
+const layoutW = MX * 2 + (COLS - 1) * DX, layoutH = y + 10;
 
 document.getElementById('h-name').textContent = SAVE.displayName;
 document.getElementById('h-level').textContent = String(SAVE.level || 1);
@@ -698,7 +711,7 @@ const toNo = parseInt(params.get('to'), 10) || 0;
 const levelUp = params.get('levelUp') === '1';
 const awardTitles = (params.get('awards') || '').split('|').filter(Boolean);
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=1';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=2';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }

@@ -56,6 +56,10 @@ function Write-WorldMapFile {
     domains    = @($domains)
     lessons    = @($lessonData)
   }
+  if (-not $domains -or @($domains).Count -eq 0 -or -not $lessonData -or @($lessonData).Count -eq 0) {
+    throw "Write-WorldMapFile: domains/lessons が空です。カタログ読込失敗のまま map.html を上書きしません。"
+  }
+
   $json = $data | ConvertTo-Json -Depth 6 -Compress
 
   $template = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'map-template.html') -Raw -Encoding UTF8
@@ -63,5 +67,7 @@ function Write-WorldMapFile {
 
   $docs = Join-Path $RepoRoot 'docs'
   New-Item -ItemType Directory -Path $docs -Force | Out-Null
-  Set-Content -LiteralPath (Join-Path $docs 'map.html') -Value $html -Encoding UTF8
+  $out = Join-Path $docs 'map.html'
+  $utf8Bom = New-Object System.Text.UTF8Encoding $true
+  [System.IO.File]::WriteAllText($out, $html, $utf8Bom)
 }

@@ -453,12 +453,17 @@ export function mountLampWorld(container, opts) {
     islandDomain = null;
     stagePads = [];
     if (opts.onModeChange) opts.onModeChange('world', null);
-    const first = nodes.find(n => n.realm === realm && n.kind === 'domain')
+    // 領域の「先頭の挑戦可」島へ（霧の島や後段を拾わない）
+    const inRealm = nodes.filter(n => n.kind === 'domain' && n.realm === realm);
+    const first = inRealm.find(n => n.state === 'open' || n.state === 'current' || n.state === 'cleared')
+      || inRealm[0]
       || nodes.find(n => n.realm === realm);
-    if (first && first._px != null) {
-      px = first._px;
-      py = first._py;
+    if (!first || first._px == null) {
+      if (opts.onTravelBlocked) opts.onTravelBlocked(realm, 'この領域の島がまだマップにありません。');
+      return null;
     }
+    px = first._px;
+    py = first._py;
     overview = false;
     const c = realmCentroid(realm);
     const dur = duration == null ? (reduced ? 0 : 650) : duration;
