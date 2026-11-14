@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v24';
+const CACHE = 'lamp-archipelago-v25';
 const PRECACHE = [
   './',
   './index.html',
@@ -28,13 +28,20 @@ const PRECACHE = [
   './assets/common/hero-back.jpg',
   './assets/common/hero-walk-1.jpg',
   './assets/common/hero-walk-2.jpg',
+  './assets/common/hero-mid.jpg',
+  './assets/common/hero-strong.jpg',
+  './assets/common/spirit-aura.jpg',
   './assets/common/icon-shield.jpg',
   './assets/common/icon-sword.jpg',
   './assets/common/icon-spirit.jpg',
+  './assets/common/icon-settings.jpg',
+  './assets/common/icon-map.jpg',
+  './assets/common/icon-lamp.jpg',
   './assets/rooms/hub/bg.jpg',
   './assets/rooms/hub/great-door-closed.jpg',
   './assets/rooms/hub/great-door-ajar.jpg',
   './assets/rooms/hub/elder.jpg',
+  './assets/rooms/hub/elder-talk.jpg',
   './assets/rooms/hub/path-shield.jpg',
   './assets/rooms/hub/path-sword.jpg',
   './assets/rooms/shield/bg.jpg',
@@ -44,7 +51,12 @@ const PRECACHE = [
   './assets/rooms/spirit/bg.jpg',
   './assets/rooms/spirit/door.jpg',
   './assets/map/bg.jpg',
-  './assets/map/hub-pin.jpg'
+  './assets/map/hub-pin.jpg',
+  './assets/map/pin-fog.jpg',
+  './assets/map/pin-open.jpg',
+  './assets/map/pin-current.jpg',
+  './assets/map/pin-cleared.jpg',
+  './assets/map/marker.jpg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -65,7 +77,6 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-  // HTML/JS/CSS はネットワーク優先（テーマ更新がすぐ見える）
   const netFirst = /\.(?:html?|js|css|webmanifest)$/i.test(url.pathname) || url.pathname.endsWith('/');
   if (netFirst) {
     event.respondWith(

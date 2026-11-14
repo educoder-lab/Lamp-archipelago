@@ -139,9 +139,13 @@ export function mountLampWorld(container, opts) {
     hero: null,
     heroWalk1: null,
     heroWalk2: null,
+    heroMid: null,
+    heroStrong: null,
+    spiritAura: null,
     doorClosed: null,
     doorAjar: null,
     elder: null,
+    elderTalk: null,
     pathShield: null,
     pathSword: null,
     iconShield: null,
@@ -155,15 +159,24 @@ export function mountLampWorld(container, opts) {
     spiritBg: null,
     spiritDoor: null,
     mapBg: null,
-    mapHubPin: null
+    mapHubPin: null,
+    pinFog: null,
+    pinOpen: null,
+    pinCurrent: null,
+    pinCleared: null,
+    mapMarker: null
   };
   Promise.all([
     loadHubImage('common/hero-back.jpg').then((i) => { hubArt.hero = i; }),
     loadHubImage('common/hero-walk-1.jpg').then((i) => { hubArt.heroWalk1 = i; }),
     loadHubImage('common/hero-walk-2.jpg').then((i) => { hubArt.heroWalk2 = i; }),
+    loadHubImage('common/hero-mid.jpg').then((i) => { hubArt.heroMid = i; }),
+    loadHubImage('common/hero-strong.jpg').then((i) => { hubArt.heroStrong = i; }),
+    loadHubImage('common/spirit-aura.jpg').then((i) => { hubArt.spiritAura = i; }),
     loadHubImage('rooms/hub/great-door-closed.jpg').then((i) => { hubArt.doorClosed = i; }),
     loadHubImage('rooms/hub/great-door-ajar.jpg').then((i) => { hubArt.doorAjar = i; }),
     loadHubImage('rooms/hub/elder.jpg').then((i) => { hubArt.elder = i; }),
+    loadHubImage('rooms/hub/elder-talk.jpg').then((i) => { hubArt.elderTalk = i; }),
     loadHubImage('rooms/hub/path-shield.jpg').then((i) => { hubArt.pathShield = i; }),
     loadHubImage('rooms/hub/path-sword.jpg').then((i) => { hubArt.pathSword = i; }),
     loadHubImage('rooms/hub/bg.jpg').then((i) => { hubArt.hubBg = i; }),
@@ -175,10 +188,32 @@ export function mountLampWorld(container, opts) {
     loadHubImage('rooms/spirit/door.jpg').then((i) => { hubArt.spiritDoor = i; }),
     loadHubImage('map/bg.jpg').then((i) => { hubArt.mapBg = i; }),
     loadHubImage('map/hub-pin.jpg').then((i) => { hubArt.mapHubPin = i; }),
+    loadHubImage('map/pin-fog.jpg').then((i) => { hubArt.pinFog = i; }),
+    loadHubImage('map/pin-open.jpg').then((i) => { hubArt.pinOpen = i; }),
+    loadHubImage('map/pin-current.jpg').then((i) => { hubArt.pinCurrent = i; }),
+    loadHubImage('map/pin-cleared.jpg').then((i) => { hubArt.pinCleared = i; }),
+    loadHubImage('map/marker.jpg').then((i) => { hubArt.mapMarker = i; }),
     loadHubImage('common/icon-shield.jpg').then((i) => { hubArt.iconShield = i; }),
     loadHubImage('common/icon-sword.jpg').then((i) => { hubArt.iconSword = i; }),
     loadHubImage('common/icon-spirit.jpg').then((i) => { hubArt.iconSpirit = i; })
   ]).catch(() => {});
+
+  function growthGearTier() {
+    const a = (growth.shield && growth.shield.ratio) || 0;
+    const b = (growth.sword && growth.sword.ratio) || 0;
+    const c = (growth.spirit && growth.spirit.ratio) || 0;
+    const avg = (a + b + c) / 3;
+    if (avg >= 0.55) return 'strong';
+    if (avg >= 0.25) return 'mid';
+    return 'weak';
+  }
+
+  function pinForState(st) {
+    if (st === 'fog') return hubArt.pinFog;
+    if (st === 'cleared') return hubArt.pinCleared;
+    if (st === 'current') return hubArt.pinCurrent;
+    return hubArt.pinOpen;
+  }
 
   function packForRealm(realm) {
     if (realm === 'sky') return 'shield';
@@ -377,37 +412,42 @@ export function mountLampWorld(container, opts) {
       const st = n.state || 'open';
       const r = n.kind === 'hub' ? 36 : n.kind === 'core' ? 40 : 30;
       const foggy = st === 'fog';
+      const pin = n.kind === 'hub' ? hubArt.mapHubPin : pinForState(st);
+      const pinSize = r * 2.1;
 
-      ctx.beginPath();
-      ctx.arc(nx, ny, r + 6, 0, Math.PI * 2);
-      ctx.fillStyle = foggy ? 'rgba(58,63,98,0.55)' : 'rgba(15,18,38,0.65)';
-      ctx.fill();
-      ctx.strokeStyle = STATE_COLOR[st] || STATE_COLOR.open;
-      ctx.lineWidth = n.state === 'current' ? 4 : 2;
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(nx, ny, r, 0, Math.PI * 2);
-      ctx.fillStyle = foggy ? '#2a3050' : accent;
-      ctx.globalAlpha = foggy ? 0.5 : 0.85;
-      ctx.fill();
-      ctx.globalAlpha = 1;
+      if (!drawArt(ctx, pin, nx - pinSize / 2, ny - pinSize / 2, pinSize, pinSize)) {
+        ctx.beginPath();
+        ctx.arc(nx, ny, r + 6, 0, Math.PI * 2);
+        ctx.fillStyle = foggy ? 'rgba(58,63,98,0.55)' : 'rgba(15,18,38,0.65)';
+        ctx.fill();
+        ctx.strokeStyle = STATE_COLOR[st] || STATE_COLOR.open;
+        ctx.lineWidth = n.state === 'current' ? 4 : 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(nx, ny, r, 0, Math.PI * 2);
+        ctx.fillStyle = foggy ? '#2a3050' : accent;
+        ctx.globalAlpha = foggy ? 0.5 : 0.85;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
 
       ctx.fillStyle = '#ece9f5';
       ctx.font = '600 11px "Segoe UI", "Yu Gothic UI", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText((n.label || '').slice(0, 8), nx, ny);
+      ctx.fillText((n.label || '').slice(0, 8), nx, ny + r + 12);
       if (n.sub) {
         ctx.font = '10px sans-serif';
         ctx.fillStyle = '#9aa0c4';
-        ctx.fillText(n.sub, nx, ny + 14);
+        ctx.fillText(n.sub, nx, ny + r + 24);
       }
     });
     ctx.globalAlpha = 1;
   }
 
   function drawAvatarDot(ctx, x, y) {
+    const size = 28;
+    if (drawArt(ctx, hubArt.mapMarker, x - size / 2, y - size / 2, size, size)) return;
     const tier = avatarTier(playerLevel);
     const colors = {
       novice: '#f5c451',
@@ -415,13 +455,13 @@ export function mountLampWorld(container, opts) {
       keeper: '#c59bff',
       ascendant: '#ffe08a'
     };
-    const size = tier === 'ascendant' ? 14 : tier === 'keeper' ? 12 : 10;
+    const s = tier === 'ascendant' ? 14 : tier === 'keeper' ? 12 : 10;
     ctx.beginPath();
-    ctx.arc(x, y, size + 4, 0, Math.PI * 2);
+    ctx.arc(x, y, s + 4, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(245,196,81,0.25)';
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.arc(x, y, s, 0, Math.PI * 2);
     ctx.fillStyle = colors[tier] || colors.novice;
     ctx.fill();
     ctx.strokeStyle = '#ece9f5';
@@ -490,12 +530,23 @@ export function mountLampWorld(container, opts) {
   }
 
   function drawHeroSprite(ctx, W, H) {
-    const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
-    const heroImg = walk || hubArt.hero;
+    const gear = growthGearTier();
+    let heroImg = hubArt.hero;
+    if (gear === 'strong' && hubArt.heroStrong) heroImg = hubArt.heroStrong;
+    else if (gear === 'mid' && hubArt.heroMid) heroImg = hubArt.heroMid;
+    else {
+      const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
+      heroImg = walk || hubArt.hero;
+    }
     const heroW = Math.min(W * 0.22, 160);
     const heroH = heroW * 1.35;
     const heroX = W * 0.5 - heroW / 2;
     const heroY = H * 0.62 + Math.sin(pulseT * 2) * 2;
+    const sp = (growth.spirit && growth.spirit.ratio) || 0;
+    if (sp > 0.05 && hubArt.spiritAura) {
+      const aw = heroW * (0.9 + sp * 0.35);
+      drawArt(ctx, hubArt.spiritAura, W * 0.5 - aw / 2, heroY - aw * 0.35, aw, aw);
+    }
     if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
       const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
       drawHeroBack(ctx, W * 0.5, H * 0.78, s * 1.15, pulseT);
@@ -573,7 +624,8 @@ export function mountLampWorld(container, opts) {
     const elderH = elderW * 1.35;
     const elderX = W * 0.58;
     const elderY = H * 0.42;
-    if (!drawArt(ctx, hubArt.elder, elderX, elderY, elderW, elderH)) {
+    const elderImg = elderLit && hubArt.elderTalk ? hubArt.elderTalk : hubArt.elder;
+    if (!drawArt(ctx, elderImg, elderX, elderY, elderW, elderH)) {
       drawElder(ctx, W * 0.58, H * 0.52, s, elderLit);
     } else {
       if (elderLit) {
