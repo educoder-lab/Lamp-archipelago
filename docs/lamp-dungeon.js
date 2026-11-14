@@ -90,10 +90,16 @@ function doorNicheRect(W, H, kind) {
 }
 
 function growthLevelOf(g) {
+  if (g && g.level != null) return Math.max(1, parseInt(g.level, 10) || 1);
   const r = (g && g.ratio) || 0;
   if (r >= 0.45) return 3;
   if (r >= 0.15) return 2;
   return 1;
+}
+
+function growthIconRel(key, level) {
+  const n = String(Math.max(1, level || 1)).padStart(2, '0');
+  return 'common/growth/' + key + '-' + n + '.jpg';
 }
 
 /**
@@ -138,10 +144,11 @@ export function mountLampWorld(container, opts) {
   doorNav.setAttribute('role', 'toolbar');
   doorNav.setAttribute('aria-label', '扉ナビ');
   doorNav.innerHTML = `
-    <button type="button" data-door="prev">◀ 前の扉 <kbd>[</kbd></button>
-    <button type="button" class="primary" data-door="current">この扉 <kbd>F</kbd></button>
-    <button type="button" data-door="next">次の扉 ▶ <kbd>]</kbd></button>`;
+    <button type="button" data-door="prev" data-nav-idx="0">◀ 前の扉 <kbd>[</kbd>/<kbd>Enter</kbd></button>
+    <button type="button" class="primary" data-door="current" data-nav-idx="1">この扉 <kbd>Enter</kbd></button>
+    <button type="button" data-door="next" data-nav-idx="2">次の扉 ▶ <kbd>]</kbd>/<kbd>Enter</kbd></button>`;
   container.appendChild(doorNav);
+  let doorNavFocus = 1;
 
   /** @type {'hub'|'room'|'map'|'path'} */
   let scene = 'hub';
@@ -338,14 +345,7 @@ export function mountLampWorld(container, opts) {
   resize();
 
   function growthIconSrc(key, level) {
-    const base = {
-      shield: ['common/icon-shield.png', 'common/icon-shield-mid.png', 'common/icon-shield-strong.png'],
-      sword: ['common/icon-sword.png', 'common/icon-sword-mid.png', 'common/icon-sword-strong.png'],
-      spirit: ['common/icon-spirit.png', 'common/icon-spirit-mid.png', 'common/icon-spirit-strong.png']
-    };
-    const list = base[key] || base.shield;
-    const idx = Math.max(0, Math.min(2, (level || 1) - 1));
-    return new URL(list[idx], HUB_ASSET_BASE).href;
+    return new URL(growthIconRel(key, level), HUB_ASSET_BASE).href;
   }
 
   function refreshGrowthHud() {
@@ -357,11 +357,36 @@ export function mountLampWorld(container, opts) {
       const row = growthHud.querySelector('[data-key="' + key + '"]');
       if (!row) return;
       const lv = growthLevelOf(g);
+      const maxLv = (g && g.maxLevel) || (key === 'shield' ? 17 : key === 'sword' ? 6 : 3);
       const img = row.querySelector('img');
       const lvEl = row.querySelector('.g-lv');
       if (img) img.src = growthIconSrc(key, lv);
-      if (lvEl) lvEl.textContent = 'Lv' + lv;
+      if (lvEl) lvEl.textContent = 'Lv' + lv + '/' + maxLv;
+      row.title = 'ギャラリーを開く（' + (key === 'shield' ? '盾' : key === 'sword' ? '剣' : '精神') + '）';
+      row.style.pointerEvents = 'auto';
+      row.style.cursor = 'pointer';
     });
+  }
+
+  function syncDoorNavFocus() {
+    doorNav.querySelectorAll('[data-door]').forEach((btn) => {
+      const idx = parseInt(btn.getAttribute('data-nav-idx'), 10);
+      btn.classList.toggle('is-focus', idx === doorNavFocus);
+    });
+  }
+
+  function activateDoorNavFocus() {
+    if (doorNavFocus === 0) {
+      if (mode !== 'island') shiftRoomDomain(-1);
+      roomFocus = 'door';
+      return;
+    }
+    if (doorNavFocus === 2) {
+      if (mode !== 'island') shiftRoomDomain(1);
+      roomFocus = 'door';
+      return;
+    }
+    enterCurrentDoor();
   }
 
   function setGrowth(g, open) {
@@ -371,8 +396,9 @@ export function mountLampWorld(container, opts) {
   }
 
   function syncDoorNav() {
-    const show = scene === 'room' && mode !== 'island';
+    const show = scene === 'room';
     doorNav.classList.toggle('show', show);
+    if (show) syncDoorNavFocus();
   }
 
   function enterCurrentDoor() {
@@ -666,11 +692,11 @@ export function mountLampWorld(container, opts) {
       const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
       heroImg = walk || hubArt.hero;
     }
-    // 手前＝床に足、奥の扉から離す
-    const heroW = Math.min(W * 0.195, 142);
+    // 手前＝床に足、存在感を出すため大きめ
+    const heroW = Math.min(W * 0.30, 220);
     const heroH = heroW * 1.35;
     const heroX = W * 0.5 - heroW / 2;
-    const footY = H * 0.935;
+    const footY = H * 0.955;
     const heroY = footY - heroH + Math.sin(pulseT * 2) * 1.5;
     const sp = (growth.spirit && growth.spirit.ratio) || 0;
     if (sp > 0.05 && hubArt.spiritAura) {
@@ -770,10 +796,10 @@ export function mountLampWorld(container, opts) {
 
     // 謎の老人（扉の右・床に足）
     const elderLit = hubFocus === 'elder';
-    const elderW = Math.min(W * 0.155, 122);
+    const elderW = Math.min(W * 0.24, 180);
     const elderH = elderW * 1.35;
-    const elderX = W * 0.63;
-    const elderFootY = H * 0.86;
+    const elderX = W * 0.62;
+    const elderFootY = H * 0.90;
     const elderY = elderFootY - elderH;
     const elderImg = elderLit
       ? (hubArt.elderTalk || hubArt.elder)
@@ -1485,29 +1511,48 @@ export function mountLampWorld(container, opts) {
   }
 
   function onKeyDown(e) {
+    if (scene === 'room' && doorNav.classList.contains('show')) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        doorNavFocus = (doorNavFocus + (e.shiftKey ? 2 : 1)) % 3;
+        syncDoorNavFocus();
+        return;
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activateDoorNavFocus();
+        return;
+      }
+      if (mode !== 'island') {
+        if (e.key === '[' || e.key === 'q' || e.key === 'Q' || e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          doorNavFocus = 0;
+          syncDoorNavFocus();
+          shiftRoomDomain(-1);
+          roomFocus = 'door';
+          return;
+        }
+        if (e.key === ']' || e.key === 'e' || e.key === 'E' || e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+          e.preventDefault();
+          doorNavFocus = 2;
+          syncDoorNavFocus();
+          shiftRoomDomain(1);
+          roomFocus = 'door';
+          return;
+        }
+      }
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        doorNavFocus = 1;
+        syncDoorNavFocus();
+        enterCurrentDoor();
+        return;
+      }
+    }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       interact();
       return;
-    }
-    if (scene === 'room' && mode !== 'island') {
-      if (e.key === '[' || e.key === 'q' || e.key === 'Q') {
-        e.preventDefault();
-        shiftRoomDomain(-1);
-        roomFocus = 'door';
-        return;
-      }
-      if (e.key === ']' || e.key === 'e' || e.key === 'E') {
-        e.preventDefault();
-        shiftRoomDomain(1);
-        roomFocus = 'door';
-        return;
-      }
-      if (e.key === 'f' || e.key === 'F') {
-        e.preventDefault();
-        enterCurrentDoor();
-        return;
-      }
     }
     keys.add(e.key);
   }
@@ -1587,6 +1632,11 @@ export function mountLampWorld(container, opts) {
   doorNav.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-door]');
     if (!btn || scene !== 'room') return;
+    const idx = parseInt(btn.getAttribute('data-nav-idx'), 10);
+    if (!isNaN(idx)) {
+      doorNavFocus = idx;
+      syncDoorNavFocus();
+    }
     const act = btn.getAttribute('data-door');
     if (act === 'prev' && mode !== 'island') {
       shiftRoomDomain(-1);
@@ -1599,6 +1649,13 @@ export function mountLampWorld(container, opts) {
       return;
     }
     if (act === 'current') enterCurrentDoor();
+  });
+
+  growthHud.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-key]');
+    if (!row) return;
+    const key = row.getAttribute('data-key');
+    if (opts.onOpenGrowthGallery) opts.onOpenGrowthGallery(key, growth);
   });
 
   window.addEventListener('keydown', onKeyDown);
@@ -1622,6 +1679,7 @@ export function mountLampWorld(container, opts) {
     returnToHub,
     setAvatarLevel,
     setGrowth,
+    getGrowth: () => growth,
     playClearDoorThen,
     spawnParticles() {},
     getMode: () => mode,

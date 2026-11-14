@@ -34,7 +34,7 @@
   border-radius: 12px;
   border: 1px solid #343a6b;
   background: rgba(12, 14, 28, 0.88);
-  pointer-events: none;
+  pointer-events: auto;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 .lamp-growth-row {
@@ -64,19 +64,20 @@
 .lamp-growth-row[data-key="shield"] .g-lv { color: #f0a030; }
 .lamp-growth-row[data-key="sword"] .g-lv { color: #c59bff; }
 .lamp-growth-row[data-key="spirit"] .g-lv { color: #7fd1a8; }
+.lamp-growth-row:hover { filter: brightness(1.15); }
 
-/* 扉ナビ（部屋シーンのみ） */
+/* 扉ナビ（部屋シーン — Enterでフォーカス中を決定） */
 .lamp-door-nav {
   position: absolute;
   left: 50%;
   top: 12px;
   transform: translateX(-50%);
-  z-index: 4;
+  z-index: 7;
   display: none;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: min(520px, calc(100% - 24px));
+  max-width: min(560px, calc(100% - 24px));
   pointer-events: auto;
 }
 .lamp-door-nav.show { display: flex; }
@@ -98,6 +99,11 @@
 .lamp-door-nav button.primary {
   border-color: #7fd1ff;
   color: #dff6ff;
+}
+.lamp-door-nav button.is-focus {
+  outline: 2px solid #f5c451;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(245, 196, 81, 0.25);
 }
 .lamp-door-nav kbd {
   font: inherit;

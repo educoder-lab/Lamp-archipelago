@@ -27,25 +27,46 @@
     return domainFullyCleared(skyDeep, cleared) && domainFullyCleared(ugDeep, cleared);
   }
 
-  /** 盾・剣・精神の成長度（0〜1）。道内のクリア講座数／総講座数。セーブ項目は増やさない */
+  /** 道の最大表示レベル（分野数に対応） */
+  const GROWTH_MAX = { shield: 17, sword: 6, spirit: 3 };
+
+  /**
+   * 盾・剣・精神の成長度。
+   * level は分野クリア数+1（開始=1）。maxLevel は分野数（盾17・剣6・精神3）。
+   * セーブ項目は増やさない。
+   */
   function growthRanks(domains, cleared) {
-    function rank(realm) {
+    function rank(realm, key) {
       const list = domainsByRealm(domains, realm);
       let total = 0;
       let n = 0;
+      let domainCleared = 0;
       list.forEach((d) => {
-        (d.lessons || []).forEach((l) => {
+        const ls = d.lessons || [];
+        let ok = ls.length > 0;
+        ls.forEach((l) => {
           total += 1;
           if (cleared.has(l.no)) n += 1;
+          else ok = false;
         });
+        if (ok) domainCleared += 1;
       });
-      if (!total) return { cleared: 0, total: 0, ratio: 0 };
-      return { cleared: n, total: total, ratio: n / total };
+      const maxLevel = GROWTH_MAX[key] || Math.max(1, list.length);
+      const level = Math.max(1, Math.min(maxLevel, domainCleared + 1));
+      if (!total) return { cleared: 0, total: 0, ratio: 0, level: 1, maxLevel, domainCleared: 0 };
+      return {
+        cleared: n,
+        total: total,
+        ratio: n / total,
+        level: level,
+        maxLevel: maxLevel,
+        domainCleared: domainCleared
+      };
     }
     return {
-      shield: rank('sky'),
-      sword: rank('underground'),
-      spirit: rank('land')
+      shield: rank('sky', 'shield'),
+      sword: rank('underground', 'sword'),
+      spirit: rank('land', 'spirit')
     };
   }
 
