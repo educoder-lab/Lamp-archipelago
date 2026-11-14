@@ -17,6 +17,9 @@
   z-index: 1;
   image-rendering: pixelated;
 }
+.lamp-dungeon-canvas.map-hires {
+  image-rendering: auto;
+}
 
 .lamp-dungeon-dpad {
   position: absolute;

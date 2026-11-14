@@ -266,10 +266,14 @@ export function mountLampWorld(container, opts) {
     return list[i];
   }
 
+  let viewDpr = 1;
   function resize() {
     const r = container.getBoundingClientRect();
-    canvas.width = Math.max(320, Math.floor(r.width));
-    canvas.height = Math.max(240, Math.floor(r.height));
+    viewDpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(320, Math.floor(r.width * viewDpr));
+    canvas.height = Math.max(240, Math.floor(r.height * viewDpr));
+    canvas.style.width = Math.max(1, Math.floor(r.width)) + 'px';
+    canvas.style.height = Math.max(1, Math.floor(r.height)) + 'px';
   }
   resize();
 
@@ -434,6 +438,8 @@ export function mountLampWorld(container, opts) {
   }
 
   function drawNodes(ctx) {
+    const onMap = scene === 'map' || overview;
+    const u = onMap ? Math.max(1.6, layoutW / 1400) : 1;
     dungeon.nodeMeta.forEach(({ node: n, px: nx, py: ny }) => {
       if (mode === 'island' && islandDomain && n.kind === 'domain' && n.d && n.d.id !== islandDomain.id) {
         ctx.globalAlpha = 0.12;
@@ -443,7 +449,7 @@ export function mountLampWorld(container, opts) {
       const theme = themeFor(n);
       const accent = hexFromTheme(theme.accent);
       const st = n.state || 'open';
-      const r = n.kind === 'hub' ? 36 : n.kind === 'core' ? 40 : 30;
+      const r = (n.kind === 'hub' ? 36 : n.kind === 'core' ? 40 : 30) * u;
       const foggy = st === 'fog';
       const pin = n.kind === 'hub' ? hubArt.mapHubPin : pinForState(st);
       const pinSize = r * 2.1;
@@ -464,15 +470,17 @@ export function mountLampWorld(container, opts) {
         ctx.globalAlpha = 1;
       }
 
+      const labelPx = Math.round(11 * u);
+      const subPx = Math.round(10 * u);
       ctx.fillStyle = '#ece9f5';
-      ctx.font = '600 11px "Segoe UI", "Yu Gothic UI", sans-serif';
+      ctx.font = '600 ' + labelPx + 'px "Segoe UI", "Yu Gothic UI", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText((n.label || '').slice(0, 8), nx, ny + r + 12);
+      ctx.fillText((n.label || '').slice(0, onMap ? 10 : 8), nx, ny + r + 12 * u);
       if (n.sub) {
-        ctx.font = '10px sans-serif';
+        ctx.font = subPx + 'px sans-serif';
         ctx.fillStyle = '#9aa0c4';
-        ctx.fillText(n.sub, nx, ny + r + 24);
+        ctx.fillText(n.sub, nx, ny + r + 24 * u);
       }
     });
     ctx.globalAlpha = 1;
@@ -815,6 +823,9 @@ export function mountLampWorld(container, opts) {
   function drawMapScene(ctx) {
     const W = canvas.width;
     const H = canvas.height;
+    canvas.classList.add('map-hires');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
     updateCamera(false);
     ctx.save();
     ctx.translate(W / 2, H / 2);
@@ -837,9 +848,9 @@ export function mountLampWorld(container, opts) {
     ctx.fillStyle = 'rgba(10,14,28,0.8)';
     ctx.fillRect(W / 2 - 120, H - 36, 240, 26);
     ctx.fillStyle = '#c8c4e0';
-    ctx.font = '12px sans-serif';
+    ctx.font = Math.round(13 * viewDpr) + 'px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('全体マップ　クリックで移動', W / 2, H - 18);
+    ctx.fillText('全体マップ　クリックで移動', W / 2, H - 18 * viewDpr);
   }
 
   function drawPathArch(ctx, x, y, w, h, base, glow, lit, label) {
@@ -1010,7 +1021,10 @@ export function mountLampWorld(container, opts) {
 
   function render() {
     const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
+    const mapView = scene === 'map' || overview;
+    if (!mapView) canvas.classList.remove('map-hires');
+    ctx.imageSmoothingEnabled = !!mapView;
+    if (mapView) ctx.imageSmoothingQuality = 'high';
     ctx.save();
     ctx.fillStyle = '#0a1428';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1025,7 +1039,7 @@ export function mountLampWorld(container, opts) {
       ctx.restore();
       return;
     }
-    if (scene === 'map' || overview) {
+    if (mapView) {
       drawMapScene(ctx);
       ctx.restore();
       return;
@@ -1297,8 +1311,8 @@ export function mountLampWorld(container, opts) {
 
   canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
-    const sx = e.clientX - rect.left;
-    const sy = e.clientY - rect.top;
+    const sx = (e.clientX - rect.left) * viewDpr;
+    const sy = (e.clientY - rect.top) * viewDpr;
     if (scene === 'hub') {
       const hit = hubHitTest(sx, sy);
       if (hit) {

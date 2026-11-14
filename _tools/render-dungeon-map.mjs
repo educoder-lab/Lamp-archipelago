@@ -15,17 +15,17 @@ import sharp from 'sharp';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 
-export const MAP_W = 1400;
-export const MAP_H = 900;
+export const MAP_W = 2800;
+export const MAP_H = 1800;
 export const COUNTS = { hub: 1, shield: 17, sword: 6, spirit: 3, goal: 1 };
 
-/** 本番・ピン共通のじゃばらパラメータ */
+/** 本番・ピン共通のじゃばらパラメータ（高解像度） */
 export const ACCORDION = {
-  shield: { side: -1, colsPrefer: 3, cell: 34, gap: 12, baseOut: 130 },
-  sword: { side: 1, colsPrefer: 2, cell: 34, gap: 12, baseOut: 130 },
-  spirit: { cell: 42, gap: 20 },
-  hub: { x: MAP_W / 2, y: MAP_H - 110, r: 48 },
-  goalOffsetY: 70
+  shield: { side: -1, colsPrefer: 3, cell: 68, gap: 24, baseOut: 260 },
+  sword: { side: 1, colsPrefer: 2, cell: 68, gap: 24, baseOut: 260 },
+  spirit: { cell: 84, gap: 40 },
+  hub: { x: MAP_W / 2, y: MAP_H - 220, r: 96 },
+  goalOffsetY: 140
 };
 
 const COLORS = {
@@ -128,8 +128,8 @@ export function buildAccordionLayout() {
   const goal = {
     x: last.x,
     y: last.y - ACCORDION.goalOffsetY,
-    w: 70,
-    h: 58,
+    w: 140,
+    h: 116,
     kind: 'goal'
   };
   return fitLayoutToFrame(
@@ -143,7 +143,7 @@ export function buildAccordionLayout() {
       spirit,
       goal
     },
-    28
+    56
   );
 }
 
@@ -174,12 +174,12 @@ function assertCounts(layout) {
   return got;
 }
 
-function corridor(x1, y1, x2, y2, thick = 18) {
+function corridor(x1, y1, x2, y2, thick = 36) {
   return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${COLORS.corridor}" stroke-width="${thick}" stroke-linecap="round"/>`;
 }
 
-function roomRect(r, fill, stroke, sw = 2.5) {
-  return `<rect x="${r.x - r.w / 2}" y="${r.y - r.h / 2}" width="${r.w}" height="${r.h}" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+function roomRect(r, fill, stroke, sw = 4) {
+  return `<rect x="${r.x - r.w / 2}" y="${r.y - r.h / 2}" width="${r.w}" height="${r.h}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
 }
 
 function chainCorridors(hub, rooms) {
@@ -201,18 +201,18 @@ function toSvg(layout, { numbered = false, label = '' } = {}) {
   body += chainCorridors(hub, shield);
   body += chainCorridors(hub, sword);
   body += chainCorridors(hub, spirit);
-  body += corridor(spirit[spirit.length - 1].x, spirit[spirit.length - 1].y, goal.x, goal.y, 22);
+  body += corridor(spirit[spirit.length - 1].x, spirit[spirit.length - 1].y, goal.x, goal.y, 44);
 
   for (const r of shield) body += roomRect(r, COLORS.shield, COLORS.shieldStroke);
   for (const r of sword) body += roomRect(r, COLORS.sword, COLORS.swordStroke);
   for (const r of spirit) body += roomRect(r, COLORS.spirit, COLORS.spiritStroke);
-  body += roomRect(goal, COLORS.goal, COLORS.goalStroke, 3.5);
+  body += roomRect(goal, COLORS.goal, COLORS.goalStroke, 6);
 
-  body += `<circle cx="${hub.x}" cy="${hub.y}" r="${hub.r}" fill="${COLORS.hub}" stroke="${COLORS.hubStroke}" stroke-width="3"/>`;
-  body += `<circle cx="${hub.x}" cy="${hub.y}" r="${Math.max(10, hub.r * 0.32)}" fill="none" stroke="${COLORS.hubStroke}" stroke-width="2" opacity="0.75"/>`;
+  body += `<circle cx="${hub.x}" cy="${hub.y}" r="${hub.r}" fill="${COLORS.hub}" stroke="${COLORS.hubStroke}" stroke-width="5"/>`;
+  body += `<circle cx="${hub.x}" cy="${hub.y}" r="${Math.max(16, hub.r * 0.32)}" fill="none" stroke="${COLORS.hubStroke}" stroke-width="3" opacity="0.75"/>`;
 
   if (numbered) {
-    const fs = Math.max(10, Math.round((layout.scale || 1) * 9));
+    const fs = Math.max(18, Math.round((layout.scale || 1) * 16));
     const mark = (rooms, color) =>
       rooms
         .map(
@@ -254,7 +254,7 @@ function layoutJson(layout) {
 }
 
 async function writeJpeg(svg, filePath) {
-  await sharp(Buffer.from(svg)).jpeg({ quality: 92 }).toFile(filePath);
+  await sharp(Buffer.from(svg)).jpeg({ quality: 95, mozjpeg: true }).toFile(filePath);
 }
 
 async function main() {
