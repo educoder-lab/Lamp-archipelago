@@ -143,7 +143,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground"><img src="assets/common/icon-sword.png" alt="">剣</button>
       <button type="button" class="world-nav-btn" data-nav="hub">間</button>
     </div>
-    <div class="world-hint" id="world-hint">[ ] 前後の扉　F この扉　←盾　剣→</div>
+    <div class="world-hint" id="world-hint">←盾の通路　剣の通路→　[ ] 前後　F 入る</div>
     <div class="say-box" id="say-box" role="dialog" aria-live="polite">
       <div class="say-speaker" id="say-speaker"></div>
       <div class="say-text" id="say-text"></div>
@@ -911,7 +911,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=12';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=13';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }

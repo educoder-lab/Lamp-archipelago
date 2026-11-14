@@ -711,25 +711,38 @@ export function mountLampWorld(container, opts) {
       ctx.globalAlpha = 1;
     }
 
-    // 左・盾の道 / 右・剣の道
+    // 左・盾の通路 / 右・剣の通路（扉ではなく奥が見える開いた通路。背景に焼き込み）
     const leftLit = hubFocus === 'left';
     const rightLit = hubFocus === 'right';
-    const pathW = W * 0.22;
-    const pathH = H * 0.36;
-    const pathY = H * 0.36;
-    if (!drawArt(ctx, hubArt.pathShield, W * 0.08, pathY, pathW, pathH)) {
-      drawPathArch(ctx, W * 0.14, H * 0.38, W * 0.22, H * 0.42, '#c47820', '#ffe08a', leftLit, '盾');
-    } else if (leftLit) {
+    const pathL = { x: W * 0.03, y: H * 0.20, w: W * 0.28, h: H * 0.55 };
+    const pathR = { x: W * 0.69, y: H * 0.20, w: W * 0.28, h: H * 0.55 };
+    // 背景に通路が無い場合のみスプライトで補完（扉パネル無しの通路絵）
+    const hasHubBg = !!(hubArt.hubBg && hubArt.hubBg.naturalWidth);
+    if (!hasHubBg) {
+      if (!drawArt(ctx, hubArt.pathShield, pathL.x, pathL.y, pathL.w, pathL.h)) {
+        drawPathArch(ctx, pathL.x + pathL.w * 0.1, pathL.y, pathL.w * 0.8, pathL.h, '#c47820', '#ffe08a', leftLit, '盾');
+      }
+      if (!drawArt(ctx, hubArt.pathSword, pathR.x, pathR.y, pathR.w, pathR.h)) {
+        drawPathArch(ctx, pathR.x + pathR.w * 0.1, pathR.y, pathR.w * 0.8, pathR.h, '#7040c0', '#d8c8ff', rightLit, '剣');
+      }
+    }
+    if (leftLit) {
       ctx.strokeStyle = '#ffe08a';
       ctx.lineWidth = 3;
-      ctx.strokeRect(W * 0.08 + 2, pathY + 2, pathW - 4, pathH - 4);
+      ctx.strokeRect(pathL.x + 2, pathL.y + 2, pathL.w - 4, pathL.h - 4);
+      ctx.fillStyle = '#ffe08a';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('盾の通路', pathL.x + pathL.w / 2, pathL.y + pathL.h + 16);
     }
-    if (!drawArt(ctx, hubArt.pathSword, W * 0.68, pathY, pathW, pathH)) {
-      drawPathArch(ctx, W * 0.64, H * 0.38, W * 0.22, H * 0.42, '#7040c0', '#d8c8ff', rightLit, '剣');
-    } else if (rightLit) {
+    if (rightLit) {
       ctx.strokeStyle = '#d8c8ff';
       ctx.lineWidth = 3;
-      ctx.strokeRect(W * 0.68 + 2, pathY + 2, pathW - 4, pathH - 4);
+      ctx.strokeRect(pathR.x + 2, pathR.y + 2, pathR.w - 4, pathR.h - 4);
+      ctx.fillStyle = '#d8c8ff';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('剣の通路', pathR.x + pathR.w / 2, pathR.y + pathR.h + 16);
     }
 
     // 正面の仰々しい大扉
@@ -789,8 +802,8 @@ export function mountLampWorld(container, opts) {
     ctx.textAlign = 'center';
     const hints = {
       elder: 'Enter … 話す',
-      left: 'Enter … 盾の道',
-      right: 'Enter … 剣の道',
+      left: 'Enter … 盾の通路へ',
+      right: 'Enter … 剣の通路へ',
       door: landOpen ? 'Enter … 大扉' : 'Enter … まだ不十分'
     };
     ctx.fillText(hints[hubFocus] || '', W / 2, H - 18);
@@ -1463,8 +1476,8 @@ export function mountLampWorld(container, opts) {
   function hubHitTest(sx, sy) {
     const W = canvas.width;
     const H = canvas.height;
-    if (sx > W * 0.1 && sx < W * 0.36 && sy > H * 0.35 && sy < H * 0.82) return 'left';
-    if (sx > W * 0.64 && sx < W * 0.9 && sy > H * 0.35 && sy < H * 0.82) return 'right';
+    if (sx > W * 0.02 && sx < W * 0.32 && sy > H * 0.18 && sy < H * 0.78) return 'left';
+    if (sx > W * 0.68 && sx < W * 0.98 && sy > H * 0.18 && sy < H * 0.78) return 'right';
     if (sx > W * 0.35 && sx < W * 0.65 && sy > H * 0.04 && sy < H * 0.78) return 'door';
     if (sx > W * 0.58 && sx < W * 0.82 && sy > H * 0.55 && sy < H * 0.9) return 'elder';
     if (sy > H * 0.88) return 'elder';
