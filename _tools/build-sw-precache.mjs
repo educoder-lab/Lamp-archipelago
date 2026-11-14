@@ -86,7 +86,7 @@ const all = [...core, ...pngs, ...plates];
 const body = all.map((p) => `  '${p}'`).join(',\n');
 
 const out = `/* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v45';
+const CACHE = 'lamp-archipelago-v46';
 const PRECACHE = [
 ${body}
 ];

@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v45';
+const CACHE = 'lamp-archipelago-v46';
 const PRECACHE = [
   './',
   './index.html',
@@ -137,15 +137,18 @@ const PRECACHE = [
   './assets/common/growth/shield-15.jpg',
   './assets/common/growth/shield-16.jpg',
   './assets/common/growth/shield-17.jpg',
+  './assets/common/growth/shield-18.jpg',
   './assets/common/growth/spirit-01.jpg',
   './assets/common/growth/spirit-02.jpg',
   './assets/common/growth/spirit-03.jpg',
+  './assets/common/growth/spirit-04.jpg',
   './assets/common/growth/sword-01.jpg',
   './assets/common/growth/sword-02.jpg',
   './assets/common/growth/sword-03.jpg',
   './assets/common/growth/sword-04.jpg',
   './assets/common/growth/sword-05.jpg',
   './assets/common/growth/sword-06.jpg',
+  './assets/common/growth/sword-07.jpg',
   './assets/map/bg.jpg',
   './assets/common/say-frame.jpg',
   './assets/common/app-icon.jpg',

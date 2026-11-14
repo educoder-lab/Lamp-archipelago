@@ -142,6 +142,28 @@
     return true;
   }
 
+  /** 特定講座のクリア記録だけ取り消す（分野の初期化用） */
+  function unregisterClear(save, courseNos) {
+    const drop = new Set([].concat(courseNos || []).map((n) => parseInt(n, 10)).filter((n) => n > 0));
+    if (!drop.size) return save;
+    save.clearedNos = (save.clearedNos || []).filter((n) => !drop.has(n));
+    save.clearedIds = (save.clearedIds || []).filter((id) => {
+      const s = String(id || '');
+      for (const n of drop) {
+        // lessonId 例: sky/island-media/62-image （番号の部分一致に注意）
+        if (new RegExp('(^|/)' + n + '(-|/|$)').test(s)) return false;
+      }
+      return true;
+    });
+    if (drop.has(save.lastCourseNo)) {
+      save.lastCourseNo = 0;
+      save.lastLessonId = null;
+    }
+    syncLevel(save);
+    writeLocal(save);
+    return save;
+  }
+
   function setDisplayName(save, name) {
     save.displayName = (String(name || '').trim()) || '旅人';
     writeLocal(save);
@@ -210,6 +232,7 @@
     registerSkip,
     registerMiss,
     unregisterSkip,
+    unregisterClear,
     setDisplayName,
     exportLocalJson,
     importFromJson,

@@ -144,11 +144,10 @@ export function mountLampWorld(container, opts) {
   doorNav.setAttribute('role', 'toolbar');
   doorNav.setAttribute('aria-label', '扉ナビ');
   doorNav.innerHTML = `
-    <button type="button" data-door="prev" data-nav-idx="0">◀ 前の扉 <kbd>[</kbd>/<kbd>Enter</kbd></button>
-    <button type="button" class="primary" data-door="current" data-nav-idx="1">この扉 <kbd>Enter</kbd></button>
-    <button type="button" data-door="next" data-nav-idx="2">次の扉 ▶ <kbd>]</kbd>/<kbd>Enter</kbd></button>`;
+    <button type="button" data-door="prev">◀ 前の扉 <kbd>[</kbd></button>
+    <button type="button" class="primary" data-door="current">この扉 <kbd>F</kbd></button>
+    <button type="button" data-door="next">次の扉 ▶ <kbd>]</kbd></button>`;
   container.appendChild(doorNav);
-  let doorNavFocus = 1;
 
   /** @type {'hub'|'room'|'map'|'path'} */
   let scene = 'hub';
@@ -292,19 +291,15 @@ export function mountLampWorld(container, opts) {
   ]).catch(() => {});
 
   function growthGearTier() {
-    const a = (growth.shield && growth.shield.ratio) || 0;
-    const b = (growth.sword && growth.sword.ratio) || 0;
-    const c = (growth.spirit && growth.spirit.ratio) || 0;
-    const avg = (a + b + c) / 3;
-    if (avg >= 0.45) return 'strong';
-    if (avg >= 0.15) return 'mid';
-    return 'weak';
-  }
-
-  function growthIconTier(g) {
-    const r = (g && g.ratio) || 0;
-    if (r >= 0.45) return 'strong';
-    if (r >= 0.15) return 'mid';
+    // 現在レベルの装備を必ず反映（道の平均レベルで見た目段階を決める）
+    const levels = [
+      growthLevelOf(growth.shield),
+      growthLevelOf(growth.sword),
+      growthLevelOf(growth.spirit)
+    ];
+    const avg = levels.reduce((s, n) => s + n, 0) / levels.length;
+    if (avg >= 8) return 'strong';
+    if (avg >= 3) return 'mid';
     return 'weak';
   }
 
@@ -348,6 +343,17 @@ export function mountLampWorld(container, opts) {
     return new URL(growthIconRel(key, level), HUB_ASSET_BASE).href;
   }
 
+  function ensureEquippedIcons() {
+    ['shield', 'sword', 'spirit'].forEach((key) => {
+      const lv = growthLevelOf(growth[key]);
+      const artKey = 'eq_' + key + '_' + lv;
+      if (hubArt[artKey] && hubArt[artKey].naturalWidth) return;
+      loadHubImage(growthIconRel(key, lv)).then((im) => {
+        if (im) hubArt[artKey] = im;
+      });
+    });
+  }
+
   function refreshGrowthHud() {
     [
       ['shield', growth.shield],
@@ -357,36 +363,17 @@ export function mountLampWorld(container, opts) {
       const row = growthHud.querySelector('[data-key="' + key + '"]');
       if (!row) return;
       const lv = growthLevelOf(g);
-      const maxLv = (g && g.maxLevel) || (key === 'shield' ? 17 : key === 'sword' ? 6 : 3);
+      const maxLv = (g && g.maxLevel) || (key === 'shield' ? 18 : key === 'sword' ? 7 : 4);
       const img = row.querySelector('img');
       const lvEl = row.querySelector('.g-lv');
+      // 現在レベルの成長デザインを必ず装備（HUD）
       if (img) img.src = growthIconSrc(key, lv);
       if (lvEl) lvEl.textContent = 'Lv' + lv + '/' + maxLv;
       row.title = 'ギャラリーを開く（' + (key === 'shield' ? '盾' : key === 'sword' ? '剣' : '精神') + '）';
       row.style.pointerEvents = 'auto';
       row.style.cursor = 'pointer';
     });
-  }
-
-  function syncDoorNavFocus() {
-    doorNav.querySelectorAll('[data-door]').forEach((btn) => {
-      const idx = parseInt(btn.getAttribute('data-nav-idx'), 10);
-      btn.classList.toggle('is-focus', idx === doorNavFocus);
-    });
-  }
-
-  function activateDoorNavFocus() {
-    if (doorNavFocus === 0) {
-      if (mode !== 'island') shiftRoomDomain(-1);
-      roomFocus = 'door';
-      return;
-    }
-    if (doorNavFocus === 2) {
-      if (mode !== 'island') shiftRoomDomain(1);
-      roomFocus = 'door';
-      return;
-    }
-    enterCurrentDoor();
+    ensureEquippedIcons();
   }
 
   function setGrowth(g, open) {
@@ -398,7 +385,6 @@ export function mountLampWorld(container, opts) {
   function syncDoorNav() {
     const show = scene === 'room';
     doorNav.classList.toggle('show', show);
-    if (show) syncDoorNavFocus();
   }
 
   function enterCurrentDoor() {
@@ -707,6 +693,17 @@ export function mountLampWorld(container, opts) {
       const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
       drawHeroBack(ctx, W * 0.5, footY - H * 0.02, s * 1.05, pulseT);
     }
+    // 現在レベルの盾・剣・精神を必ず装備表示
+    const sz = Math.max(22, Math.min(36, heroW * 0.16));
+    [
+      { key: 'shield', g: growth.shield, x: heroX - sz * 0.15, y: heroY + heroH * 0.42 },
+      { key: 'sword', g: growth.sword, x: heroX + heroW - sz * 0.85, y: heroY + heroH * 0.40 },
+      { key: 'spirit', g: growth.spirit, x: heroX + heroW * 0.5 - sz * 0.5, y: heroY - sz * 0.25 }
+    ].forEach((e) => {
+      const lv = growthLevelOf(e.g);
+      const pre = hubArt['eq_' + e.key + '_' + lv];
+      if (pre && pre.naturalWidth) drawArt(ctx, pre, e.x, e.y, sz, sz);
+    });
   }
 
   /** 後ろ姿視点の拠点シーン（第１弾アート＋手描きフォールバック） */
@@ -971,7 +968,7 @@ export function mountLampWorld(container, opts) {
     ctx.textAlign = 'center';
     const hint = mode === 'island'
       ? '講座を選ぶ　↓ 道へ戻る'
-      : '←→ 分野　Enter 入る　↓ 拠点へ';
+      : '[ ] 前後の扉　F 入る　↓ 拠点へ';
     ctx.fillText(hint, W / 2, H - 18);
 
     drawGrowthHud(ctx);
@@ -1290,18 +1287,9 @@ export function mountLampWorld(container, opts) {
       if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) hubFocus = 'door';
       if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) hubFocus = 'elder';
     } else if (scene === 'room') {
-      if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) {
-        keys.delete('ArrowLeft'); keys.delete('a'); keys.delete('A');
-        if (mode !== 'island') shiftRoomDomain(-1);
-        roomFocus = 'door';
-      }
-      if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) {
-        keys.delete('ArrowRight'); keys.delete('d'); keys.delete('D');
-        if (mode !== 'island') shiftRoomDomain(1);
-        roomFocus = 'door';
-      }
-      if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) roomFocus = 'door';
+      // 矢印では扉移動しない（ボタン / [ ] / F のみ）
       if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) roomFocus = 'back';
+      if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) roomFocus = 'door';
     }
 
     render();
@@ -1511,45 +1499,32 @@ export function mountLampWorld(container, opts) {
   }
 
   function onKeyDown(e) {
-    if (scene === 'room' && doorNav.classList.contains('show')) {
-      if (e.key === 'Tab') {
+    // 前／次の扉はショートカットのみ（矢印・Enter では動かさない）
+    if (scene === 'room' && doorNav.classList.contains('show') && mode !== 'island') {
+      if (e.key === '[' || e.key === 'q' || e.key === 'Q') {
         e.preventDefault();
-        doorNavFocus = (doorNavFocus + (e.shiftKey ? 2 : 1)) % 3;
-        syncDoorNavFocus();
+        shiftRoomDomain(-1);
+        roomFocus = 'door';
         return;
       }
-      if (e.key === 'Enter' || e.key === ' ') {
+      if (e.key === ']' || e.key === 'e' || e.key === 'E') {
         e.preventDefault();
-        activateDoorNavFocus();
+        shiftRoomDomain(1);
+        roomFocus = 'door';
         return;
-      }
-      if (mode !== 'island') {
-        if (e.key === '[' || e.key === 'q' || e.key === 'Q' || e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-          e.preventDefault();
-          doorNavFocus = 0;
-          syncDoorNavFocus();
-          shiftRoomDomain(-1);
-          roomFocus = 'door';
-          return;
-        }
-        if (e.key === ']' || e.key === 'e' || e.key === 'E' || e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-          e.preventDefault();
-          doorNavFocus = 2;
-          syncDoorNavFocus();
-          shiftRoomDomain(1);
-          roomFocus = 'door';
-          return;
-        }
       }
       if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
-        doorNavFocus = 1;
-        syncDoorNavFocus();
         enterCurrentDoor();
         return;
       }
     }
     if (e.key === 'Enter' || e.key === ' ') {
+      // セリフ操作中は map.html 側へ任せる
+      if (typeof document !== 'undefined') {
+        const say = document.getElementById('say-box');
+        if (say && say.classList.contains('show')) return;
+      }
       e.preventDefault();
       interact();
       return;
@@ -1583,14 +1558,7 @@ export function mountLampWorld(container, opts) {
         interactRoom();
         return;
       }
-      if (sx < canvas.width * 0.25 && mode !== 'island') {
-        shiftRoomDomain(-1);
-        return;
-      }
-      if (sx > canvas.width * 0.75 && mode !== 'island') {
-        shiftRoomDomain(1);
-        return;
-      }
+      // 前後の扉はボタン／ショートカットのみ（画面端クリックでは動かさない）
       roomFocus = 'door';
       interactRoom();
       return;
@@ -1632,11 +1600,6 @@ export function mountLampWorld(container, opts) {
   doorNav.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-door]');
     if (!btn || scene !== 'room') return;
-    const idx = parseInt(btn.getAttribute('data-nav-idx'), 10);
-    if (!isNaN(idx)) {
-      doorNavFocus = idx;
-      syncDoorNavFocus();
-    }
     const act = btn.getAttribute('data-door');
     if (act === 'prev' && mode !== 'island') {
       shiftRoomDomain(-1);

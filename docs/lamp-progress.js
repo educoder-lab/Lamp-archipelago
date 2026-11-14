@@ -27,12 +27,12 @@
     return domainFullyCleared(skyDeep, cleared) && domainFullyCleared(ugDeep, cleared);
   }
 
-  /** 道の最大表示レベル（分野数に対応） */
-  const GROWTH_MAX = { shield: 17, sword: 6, spirit: 3 };
+  /** 道の最大表示レベル（分野数+1：全クリアで最終装備） */
+  const GROWTH_MAX = { shield: 18, sword: 7, spirit: 4 };
 
   /**
    * 盾・剣・精神の成長度。
-   * level は分野クリア数+1（開始=1）。maxLevel は分野数（盾17・剣6・精神3）。
+   * level は分野クリア数+1（開始=1）。maxLevel は盾18・剣7・精神4。
    * セーブ項目は増やさない。
    */
   function growthRanks(domains, cleared) {

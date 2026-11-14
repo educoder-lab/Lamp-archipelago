@@ -30,7 +30,7 @@ function parseDomainAwards(ps1) {
   return awards;
 }
 
-const quests = JSON.parse(fs.readFileSync(questsPath, 'utf8'));
+const quests = JSON.parse(fs.readFileSync(questsPath, 'utf8').replace(/^\uFEFF/, ''));
 const lessons = quests.lessons || [];
 if (!lessons.length) throw new Error('quests.json has no lessons');
 

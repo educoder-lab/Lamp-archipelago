@@ -76,6 +76,10 @@ main { overflow: hidden; position: relative; min-height: 0; }
   border: 1px solid #343a6b; background: var(--panel2); color: var(--ink); text-decoration: none; cursor: pointer;
 }
 .say-actions button.primary, .say-actions a.primary { border-color: var(--open); color: #dff6ff; }
+.say-actions button.is-focus, .say-actions a.is-focus {
+  outline: 2px solid var(--gold); outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(245, 196, 81, 0.28);
+}
 .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--panel2); color: var(--muted); margin-right: 6px; }
 .tag.cleared { color: #1a1300; background: var(--gold); }
 .tag.current { color: #00121d; background: var(--open); }
@@ -183,7 +187,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground"><img src="assets/common/icon-sword.png" alt="">剣</button>
       <button type="button" class="world-nav-btn" data-nav="hub">間</button>
     </div>
-    <div class="world-hint" id="world-hint">Tabで前後/この扉を選択　Enterで決定　[ ]でも前後</div>
+    <div class="world-hint" id="world-hint">[ ] 前後の扉　F この扉　セリフは↑↓とEnter</div>
     <div class="say-box" id="say-box" role="dialog" aria-live="polite">
       <div class="say-speaker" id="say-speaker"></div>
       <div class="say-text" id="say-text"></div>
@@ -283,6 +287,24 @@ ul.lessons a:hover { color: var(--ink); }
 const DATA = /*__LAMP_DATA__*/null;
 const SAVE = LampSave.loadMerged();
 LampSave.syncLevel(SAVE);
+// マルチメディアの間だけクリア記録を初期化（一度だけ）
+(function resetIslandMediaOnce() {
+  const FLAG = 'lamp_reset_island_media_v1';
+  try {
+    if (localStorage.getItem(FLAG)) return;
+    const nos = [62, 63];
+    (DATA.lessons || []).forEach((l) => {
+      const p = String(l.path || l.lessonId || '');
+      if (p.indexOf('island-media') >= 0 && l.no) nos.push(l.no);
+    });
+    LampSave.unregisterClear(SAVE, nos);
+    const s = LampSave.loadLocal();
+    s.clearedIds = (s.clearedIds || []).filter((id) => String(id).indexOf('island-media') < 0);
+    LampSave.writeLocal(s);
+    Object.assign(SAVE, s);
+    localStorage.setItem(FLAG, '1');
+  } catch (_) { /* ignore */ }
+})();
 const cleared = new Set(SAVE.clearedNos || []);
 const skipped = new Set((SAVE.skippedNos || []).filter(n => !cleared.has(n)));
 const missed = new Set(SAVE.missedNos || []);
@@ -509,18 +531,39 @@ function hideSay() {
   sayHint.style.display = '';
 }
 
+let sayActionFocus = 0;
 function renderSayActions(actions) {
   sayActions.innerHTML = '';
-  (actions || []).forEach(a => {
+  const list = actions || [];
+  sayActionFocus = Math.max(0, list.findIndex((a) => a.primary));
+  if (sayActionFocus < 0) sayActionFocus = 0;
+  list.forEach((a, idx) => {
     const b = a.href
       ? el('a', { href: a.href, class: a.primary ? 'primary' : '' }, a.label)
       : el('button', { type: 'button', class: a.primary ? 'primary' : '' }, a.label);
+    b.setAttribute('data-say-idx', String(idx));
     if (!a.href) b.onclick = () => { hideSay(); if (a.onClick) a.onClick(); };
     else b.onclick = () => hideSay();
     sayActions.appendChild(b);
   });
   sayActions.classList.add('show');
-  sayHint.style.display = 'none';
+  sayHint.style.display = '';
+  sayHint.textContent = '↑↓で選択　Enterで決定';
+  syncSayActionFocus();
+}
+function syncSayActionFocus() {
+  const btns = Array.from(sayActions.querySelectorAll('button, a'));
+  if (!btns.length) return;
+  sayActionFocus = Math.max(0, Math.min(btns.length - 1, sayActionFocus));
+  btns.forEach((b, i) => {
+    b.classList.toggle('is-focus', i === sayActionFocus);
+    if (i === sayActionFocus) b.focus();
+  });
+}
+function activateSayActionFocus() {
+  const btns = Array.from(sayActions.querySelectorAll('button, a'));
+  const b = btns[sayActionFocus];
+  if (b) b.click();
 }
 
 function runSay(pages, opts) {
@@ -824,7 +867,7 @@ function openGrowthGallery(key, gObj) {
   galleryKey = key || 'shield';
   const g = (gObj && gObj[galleryKey]) || growth[galleryKey] || { level: 1, maxLevel: 3 };
   const cur = Math.max(1, g.level || 1);
-  const max = Math.max(cur, g.maxLevel || (galleryKey === 'shield' ? 17 : galleryKey === 'sword' ? 6 : 3));
+  const max = Math.max(cur, g.maxLevel || (galleryKey === 'shield' ? 18 : galleryKey === 'sword' ? 7 : 4));
   document.querySelectorAll('#gallery-tabs button').forEach((b) => {
     b.classList.toggle('active', b.getAttribute('data-gkey') === galleryKey);
   });
@@ -871,9 +914,34 @@ document.addEventListener('keydown', (ev) => {
     hideSay();
     return;
   }
-  if ((ev.key === 'Enter' || ev.key === ' ') && sayBox.classList.contains('show')) {
-    if (document.getElementById('quest-overlay').classList.contains('show')) return;
-    if (document.getElementById('settings-overlay').classList.contains('show')) return;
+  if (!sayBox.classList.contains('show')) return;
+  if (document.getElementById('quest-overlay').classList.contains('show')) return;
+  if (document.getElementById('settings-overlay').classList.contains('show')) return;
+  if (document.getElementById('notes-overlay') && document.getElementById('notes-overlay').classList.contains('show')) return;
+  if (document.getElementById('gallery-overlay') && document.getElementById('gallery-overlay').classList.contains('show')) return;
+
+  const actionsOpen = sayActions.classList.contains('show') && sayActions.children.length > 0;
+  if (actionsOpen) {
+    if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+      ev.preventDefault();
+      sayActionFocus -= 1;
+      syncSayActionFocus();
+      return;
+    }
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+      ev.preventDefault();
+      sayActionFocus += 1;
+      syncSayActionFocus();
+      return;
+    }
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      activateSayActionFocus();
+      return;
+    }
+    return;
+  }
+  if (ev.key === 'Enter' || ev.key === ' ') {
     ev.preventDefault();
     if (sayJob && sayJob.advance) sayJob.advance();
   }
@@ -1044,7 +1112,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=14';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=15';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
@@ -1069,7 +1137,7 @@ import(LAMP_MAP_MODULE).then(mod => {
     onTravelRealm: (realm) => {
       const labels = { sky: '盾の道', land: '大扉の奥', underground: '剣の道' };
       const tip = document.getElementById('world-hint');
-      if (tip) tip.textContent = (labels[realm] || realm) + '　Tabで前後選択　Enterで決定';
+      if (tip) tip.textContent = (labels[realm] || realm) + '　[ ] 前後の扉　F この扉';
     },
     onModeChange: (mode) => {
       if (mode === 'island') backBtn.classList.add('visible');
