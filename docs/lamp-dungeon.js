@@ -864,7 +864,7 @@ export function mountLampWorld(container, opts) {
 
     // 扉がニッチいっぱいに伸びるので、ラベルは扉下端ではなく手前帯に置く
     const title = (domainNode && domainNode.d && domainNode.d.title) || realmLabel;
-    const labelY = H * 0.545;
+    const labelY = H * 0.395;
     ctx.fillStyle = 'rgba(10,14,28,0.8)';
     ctx.fillRect(W / 2 - 160, labelY, 320, 28);
     ctx.fillStyle = domainCleared ? clearAccent : accent;
@@ -881,8 +881,11 @@ export function mountLampWorld(container, opts) {
       ctx.fillText('この扉はすでに開いている', W / 2, labelY + 36);
     }
 
+    drawHeroSprite(ctx, W, H);
+
+    // 講座番号はキャラ頭上（手前帯の上）に置き、被りを避ける
     if (mode === 'island' && stagePads.length) {
-      const y0 = H * 0.88;
+      const y0 = H * 0.48;
       stagePads.forEach((pad, i) => {
         const x = W * 0.5 + (i - (stagePads.length - 1) / 2) * 52;
         const col = pad.state === 'cleared' ? STATE_COLOR.cleared
@@ -892,6 +895,9 @@ export function mountLampWorld(container, opts) {
         ctx.arc(x, y0, 18, 0, Math.PI * 2);
         ctx.fillStyle = col;
         ctx.fill();
+        ctx.strokeStyle = 'rgba(15,18,38,0.85)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
         ctx.fillStyle = '#0f1226';
         ctx.font = 'bold 12px sans-serif';
         ctx.textAlign = 'center';
@@ -901,8 +907,6 @@ export function mountLampWorld(container, opts) {
         pad._sy = y0;
       });
     }
-
-    drawHeroSprite(ctx, W, H);
 
     ctx.fillStyle = 'rgba(10,14,28,0.75)';
     ctx.fillRect(W / 2 - 170, H - 36, 340, 26);
