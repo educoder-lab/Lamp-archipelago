@@ -20,12 +20,12 @@
 
 | # | 用途 | パス | 状態 |
 |---|------|------|------|
-| A1 | 主人公・後ろ姿 | `common/hero-back.jpg` | 済 |
-| A1b | 歩行 | `hero-walk-1/2.jpg` | 済 |
-| A2 | 成長差分 | `hero-mid.jpg` · `hero-strong.jpg` | 済 |
-| A3 | 精神光輪 | `spirit-aura.jpg` | 済 |
-| A4 | セリフ枠 | `common/say-frame.jpg` | 済 |
-| A5 | UI アイコン | `icon-*.jpg`（6） | 済 |
+| A1 | 主人公・後ろ姿 | `common/hero-back.png`（JPG フォールバック可） | 済・透過 |
+| A1b | 歩行 | `hero-walk-1/2.png` | 済・透過 |
+| A2 | 成長差分 | `hero-mid.png` · `hero-strong.png` | 済・透過 |
+| A3 | 精神光輪 | `spirit-aura.png` | 済・透過 |
+| A4 | セリフ枠 | `common/say-frame.jpg`（プレート） | 済 |
+| A5 | UI アイコン | `icon-*.png`（6） | 済・透過 |
 
 ## 優先度 B — 場所セット
 
@@ -33,23 +33,24 @@
 
 ## 優先度 C — 分野扉
 
-全 26 分野 → `rooms/domains/<id>.jpg` **済**
+全 26 分野 → `rooms/domains/<id>.png` **済・透過**
 
 ## 優先度 D — マップ
 
 | # | 用途 | パス | 状態 |
 |---|------|------|------|
-| D1–D3, D5 | 背景・ピン・現在地 | `map/*` | 済 |
-| D4 | 道の色帯 | `map/band-shield/sword/spirit.jpg` | 済 |
+| D1 | 背景 | `map/bg.jpg`（プレート） | 済 |
+| D2–D3, D5 | ピン・現在地 | `map/*.png` | 済・透過 |
+| D4 | 道の色帯 | `map/band-*.jpg`（フォールバック用・通常非表示） | 済 |
 | D6 | 凡例 | UI テキスト | 代替済 |
 
 ## 優先度 E — 演出
 
 | 用途 | パス | 状態 |
 |------|------|------|
-| 扉開閉フレーム | `rooms/hub/great-door-open-1/2.jpg`（＋既存 ajar） | 済 |
-| 灯／Lv 演出 | `common/fx-lamp-lit.jpg` · `fx-level-up.jpg` | 済 |
-| 老人表情 | `elder.jpg` · `elder-talk.jpg` · `elder-smile.jpg` | 済 |
+| 扉開閉フレーム | `rooms/hub/great-door-*.png` | 済・透過 |
+| 灯／Lv 演出 | `common/fx-lamp-lit.png` · `fx-level-up.png` | 済・透過 |
+| 老人表情 | `elder.png` · `elder-talk.png` · `elder-smile.png` | 済・透過 |
 | 手引き挿絵 | `slides/fe-overview.jpg` · `shield-sword.jpg` | 済 |
 | アプリアイコン | `common/app-icon.jpg` · `docs/icon.jpg` | 済 |
 
@@ -61,3 +62,5 @@
 | 第2弾 C1 | **実装済** |
 | 完成形 C3＋成長 | **実装済** |
 | 演出 E | **実装済** |
+| スプライト透過 PNG | **実装済**（プレートは JPG） |
+| 全体マップ干渉解消 | **実装済**（`map/bg` 正・旧タイル非表示） |

@@ -5,3 +5,5 @@ docs/save-data.js
 _tmp-hash.ps1
 _verify-test.ps1
 _move-tree.ps1
+_tools/node_modules/
+_tools/package-lock.json

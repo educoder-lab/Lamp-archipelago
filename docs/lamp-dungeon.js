@@ -50,7 +50,7 @@ function pxRect(ctx, x, y, w, h, color, scale) {
 
 const HUB_ASSET_BASE = new URL('./assets/', import.meta.url);
 
-function loadHubImage(rel) {
+function loadOneImage(rel) {
   return new Promise((resolve) => {
     const img = new Image();
     img.decoding = 'async';
@@ -58,6 +58,12 @@ function loadHubImage(rel) {
     img.onerror = () => resolve(null);
     img.src = new URL(rel, HUB_ASSET_BASE).href;
   });
+}
+
+/** PNG 優先、なければ JPG（スプライト透過／プレート両対応） */
+function loadHubImage(rel) {
+  const bare = String(rel || '').replace(/\.(png|jpe?g|webp)$/i, '');
+  return loadOneImage(bare + '.png').then((png) => png || loadOneImage(bare + '.jpg'));
 }
 
 function drawArt(ctx, img, x, y, w, h) {
@@ -805,31 +811,27 @@ export function mountLampWorld(container, opts) {
     });
   }
 
-  /** 全体マップ（俯瞰専用） */
+  /** 全体マップ（俯瞰専用）— map/bg を正とし、旧タイル／道帯は非表示 */
   function drawMapScene(ctx) {
     const W = canvas.width;
     const H = canvas.height;
-    if (drawArt(ctx, hubArt.mapBg, 0, 0, W, H)) {
-      ctx.fillStyle = 'rgba(8,12,28,0.45)';
-      ctx.fillRect(0, 0, W, H);
-    } else {
-      ctx.fillStyle = '#0a1428';
-      ctx.fillRect(0, 0, W, H);
-    }
     updateCamera(false);
     ctx.save();
     ctx.translate(W / 2, H / 2);
     ctx.scale(camZoom, camZoom);
     ctx.translate(-camX, -camY);
-    drawFloor(ctx);
-    drawRealmBands(ctx);
+    const hasMapBg = !!(hubArt.mapBg && hubArt.mapBg.naturalWidth);
+    if (hasMapBg) {
+      // 論理レイアウト全体を覆うプレート（ピンと同じカメラ空間）
+      const pad = 80;
+      drawArt(ctx, hubArt.mapBg, -pad, -pad, layoutW + pad * 2, layoutH + pad * 2);
+    } else {
+      ctx.fillStyle = '#0a1428';
+      ctx.fillRect(-40, -40, layoutW + 80, layoutH + 80);
+      drawFloor(ctx);
+      drawRealmBands(ctx);
+    }
     drawNodes(ctx);
-    nodes.forEach((n) => {
-      if (n.kind === 'hub' && hubArt.mapHubPin && n._px != null) {
-        const s = 36;
-        ctx.drawImage(hubArt.mapHubPin, n._px - s / 2, n._py - s / 2, s, s);
-      }
-    });
     drawAvatarDot(ctx, px, py);
     ctx.restore();
     drawGrowthHud(ctx);

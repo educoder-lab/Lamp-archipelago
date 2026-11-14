@@ -25,18 +25,23 @@ docs/assets/
 
 | 役割 | パス | 由来 |
 |------|------|------|
-| 主人公・成長 | `common/hero-back.jpg` · `hero-mid.jpg` · `hero-strong.jpg` · 歩行 | #3 |
-| UI | `common/icon-*.jpg`（盾／剣／精神／設定／地図／灯） | 第１弾 |
-| 拠点 | `rooms/hub/*`（背景・大扉・老人・道口） | #4 |
-| 道タイプ | `rooms/shield|sword|spirit/{bg,door}.jpg` | 第１弾 |
-| マップ | `map/bg.jpg` · `hub-pin` · `pin-*` · `marker.jpg` | 第１弾 |
+| 主人公・成長 | `common/hero-*.png`（透過） | #3 |
+| UI | `common/icon-*.png`（盾／剣／精神／設定／地図／灯） | 第１弾 |
+| 拠点 | `rooms/hub/bg.jpg` ＋ 扉・老人・道口 `.png` | #4 |
+| 道タイプ | `{shield,sword,spirit}/bg.jpg` ＋ `door.png` | 第１弾 |
+| マップ | `map/bg.jpg` ＋ `hub-pin` / `pin-*` / `marker` `.png` | 第１弾 |
 | ムード正本 | `mood/chosen/hero-back-clean-rpg.jpg` · `great-door-ornate.jpg` | #3 / #4 |
 
-`mood/explore/` は参照用アーカイブです。ゲーム本体からは読みません。  
-※ 生成ツールが JPG を返すため、本番ファイルも `.jpg`（同内容の `.png` 別名あり）。
+`mood/explore/` は参照用アーカイブです。ゲーム本体からは読みません。
+
+**フォーマット方針**
+
+- **スプライト**（主人公・扉・老人・道口・分野扉・ピン・UI アイコン）→ **透過 PNG**（JPG はフォールバック）
+- **プレート**（各 `bg.jpg`・`map/bg.jpg`・`say-frame.jpg`・スライド・アプリアイコン）→ **JPG**
+- マット除去: `../_tools/Remove-AssetMattes.ps1`（既存 JPG から背景だけ抜く）
 
 ## 命名
 
 - 小文字・ハイフン（例: `great-door-open.png`）
 - 状態があるものは接尾辞（`-closed` / `-open` / `-glow`）
-- 本番向けは透過 PNG を優先（ムード JPG はフォールバック可）
+- 重ねる絵は透過 PNG を正とする
