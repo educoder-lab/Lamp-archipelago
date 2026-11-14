@@ -311,9 +311,9 @@ function placeChain(list, x0, y0, dy) {
 const skyNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'sky');
 const ugNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'underground');
 const landNodes = nodes.filter(n => n.kind === 'domain' && n.realm === 'land');
-placeChain(skyNodes, MX + DX * 0.2, 420, 95);
-placeChain(ugNodes, MX + DX * (COLS - 1.2), 420, 95);
-placeChain(landNodes, CX, 380, 110);
+placeChain(skyNodes, MX + DX * 0.2, 420, 120);
+placeChain(ugNodes, MX + DX * (COLS - 1.2), 420, 120);
+placeChain(landNodes, CX, 380, 130);
 const coreLayout = nodes.find(n => n.kind === 'core');
 if (coreLayout) {
   coreLayout.x = CX;

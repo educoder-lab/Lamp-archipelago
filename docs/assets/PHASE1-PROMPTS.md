@@ -22,6 +22,7 @@
 | 9 | `common/icon-shield.png` | Small UI icon round bronze shield, amber rim, simple |
 | 10 | `common/icon-sword.png` | Small UI icon short sword, purple silver |
 | 11 | `common/icon-spirit.png` | Small UI icon green-gold spirit flame / lamp |
+| 12 | `map/bg.jpg` | Top-down stone dungeon floor plan, Y-layout hub bottom / shield left amber-blue / sword right purple-silver / spirit up green-gold, rectangular rooms with clear corridor gaps, indoor only no outdoor parchment world, no text |
 
 無料枠内では 1 プロンプトあたり出力を抑え、上表の順で止める。
 

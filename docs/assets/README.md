@@ -29,7 +29,7 @@ docs/assets/
 | UI | `common/icon-*.png`（盾／剣／精神／設定／地図／灯） | 第１弾 |
 | 拠点 | `rooms/hub/bg.jpg` ＋ 扉・老人・道口 `.png` | #4 |
 | 道タイプ | `{shield,sword,spirit}/bg.jpg` ＋ `door.png` | 第１弾 |
-| マップ | `map/bg.jpg` ＋ `hub-pin` / `pin-*` / `marker` `.png` | 第１弾 |
+| マップ | `map/bg.jpg`（石造ダンジョン俯瞰）＋ `hub-pin` / `pin-*` / `marker` `.png` | 俯瞰差し替え |
 | ムード正本 | `mood/chosen/hero-back-clean-rpg.jpg` · `great-door-ornate.jpg` | #3 / #4 |
 
 `mood/explore/` は参照用アーカイブです。ゲーム本体からは読みません。
