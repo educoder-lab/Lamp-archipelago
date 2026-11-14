@@ -647,10 +647,12 @@ export function mountLampWorld(container, opts) {
       const walk = Math.floor(pulseT * 2) % 2 === 0 ? hubArt.heroWalk1 : hubArt.heroWalk2;
       heroImg = walk || hubArt.hero;
     }
-    const heroW = Math.min(W * 0.22, 160);
+    // 手前＝床に足、奥の扉から離す
+    const heroW = Math.min(W * 0.195, 142);
     const heroH = heroW * 1.35;
     const heroX = W * 0.5 - heroW / 2;
-    const heroY = H * 0.62 + Math.sin(pulseT * 2) * 2;
+    const footY = H * 0.935;
+    const heroY = footY - heroH + Math.sin(pulseT * 2) * 1.5;
     const sp = (growth.spirit && growth.spirit.ratio) || 0;
     if (sp > 0.05 && hubArt.spiritAura) {
       const aw = heroW * (0.9 + sp * 0.35);
@@ -658,7 +660,7 @@ export function mountLampWorld(container, opts) {
     }
     if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
       const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
-      drawHeroBack(ctx, W * 0.5, H * 0.78, s * 1.15, pulseT);
+      drawHeroBack(ctx, W * 0.5, footY - H * 0.02, s * 1.05, pulseT);
     }
   }
 
@@ -734,17 +736,18 @@ export function mountLampWorld(container, opts) {
       ctx.strokeRect(doorX - 4, doorY - 4, doorW + 8, doorH + 8);
     }
 
-    // 謎の老人（扉の右前）
+    // 謎の老人（扉の右・床に足）
     const elderLit = hubFocus === 'elder';
-    const elderW = Math.min(W * 0.18, 140);
+    const elderW = Math.min(W * 0.155, 122);
     const elderH = elderW * 1.35;
-    const elderX = W * 0.58;
-    const elderY = H * 0.42;
+    const elderX = W * 0.63;
+    const elderFootY = H * 0.86;
+    const elderY = elderFootY - elderH;
     const elderImg = elderLit
       ? (hubArt.elderTalk || hubArt.elder)
       : (hubArt.elderSmile || hubArt.elder);
     if (!drawArt(ctx, elderImg, elderX, elderY, elderW, elderH)) {
-      drawElder(ctx, W * 0.58, H * 0.52, s, elderLit);
+      drawElder(ctx, elderX + elderW * 0.35, elderFootY - H * 0.08, s, elderLit);
     } else {
       if (elderLit) {
         ctx.strokeStyle = '#7fd1ff';
@@ -754,7 +757,7 @@ export function mountLampWorld(container, opts) {
       ctx.fillStyle = '#c8c4e0';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('謎の老人', elderX + elderW / 2, elderY + elderH + 14);
+      ctx.fillText('謎の老人', elderX + elderW / 2, elderY - 6);
     }
 
     drawHeroSprite(ctx, W, H);
@@ -879,7 +882,7 @@ export function mountLampWorld(container, opts) {
     }
 
     if (mode === 'island' && stagePads.length) {
-      const y0 = H * 0.78;
+      const y0 = H * 0.88;
       stagePads.forEach((pad, i) => {
         const x = W * 0.5 + (i - (stagePads.length - 1) / 2) * 52;
         const col = pad.state === 'cleared' ? STATE_COLOR.cleared
@@ -1437,8 +1440,8 @@ export function mountLampWorld(container, opts) {
     if (sx > W * 0.1 && sx < W * 0.36 && sy > H * 0.35 && sy < H * 0.82) return 'left';
     if (sx > W * 0.64 && sx < W * 0.9 && sy > H * 0.35 && sy < H * 0.82) return 'right';
     if (sx > W * 0.35 && sx < W * 0.65 && sy > H * 0.04 && sy < H * 0.78) return 'door';
-    if (sx > W * 0.5 && sx < W * 0.72 && sy > H * 0.45 && sy < H * 0.7) return 'elder';
-    if (sy > H * 0.7) return 'elder';
+    if (sx > W * 0.58 && sx < W * 0.82 && sy > H * 0.55 && sy < H * 0.9) return 'elder';
+    if (sy > H * 0.88) return 'elder';
     return null;
   }
 
