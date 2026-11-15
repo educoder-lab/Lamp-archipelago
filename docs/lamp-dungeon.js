@@ -73,29 +73,76 @@ function drawArt(ctx, img, x, y, w, h) {
 }
 
 /**
- * 主人公ローカル座標の装備アタッチメント（単位: 幅/高さ 100 基準）。
- * 剣=右手周辺、盾=左腕・背中周辺。facing で X と scaleX を連動反転。
+ * 主人公ローカル座標の装備アタッチメント（単位: 幅/高さ 100 基準、原点=胴体中心）。
+ * 後ろ姿基準: 剣=右手（画面右・腰〜手）、盾=左腕外側（画面左）。
+ * facing で X と scaleX を連動反転。
  */
 const HERO_EQUIP_ATTACH = {
   shield: {
-    lx: -15,
-    ly: 0,
-    w: 46,
-    h: 48,
-    rot: -0.10,
+    lx: -28,
+    ly: 6,
+    w: 38,
+    h: 42,
+    rot: -0.08,
     z: 'back',
     flipWithFacing: true
   },
   sword: {
-    lx: 15,
-    ly: -5,
-    w: 42,
-    h: 55,
-    rot: 0.08,
+    lx: 30,
+    ly: 14,
+    w: 34,
+    h: 52,
+    rot: 0.05,
     z: 'front',
     flipWithFacing: true
   }
 };
+
+/** 黒背景フォールバック用（JPG 時）。PNG はアルファをそのまま使う */
+const _keyedCanvasCache = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+function keyedCanvasFor(img, threshold) {
+  const thr = threshold == null ? 28 : threshold;
+  if (_keyedCanvasCache) {
+    const hit = _keyedCanvasCache.get(img);
+    if (hit && hit.thr === thr) return hit.canvas;
+  }
+  const oc = document.createElement('canvas');
+  oc.width = img.naturalWidth;
+  oc.height = img.naturalHeight;
+  const octx = oc.getContext('2d');
+  octx.drawImage(img, 0, 0);
+  const data = octx.getImageData(0, 0, oc.width, oc.height);
+  const d = data.data;
+  const soft = 18;
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i];
+    const g = d[i + 1];
+    const b = d[i + 2];
+    const mx = Math.max(r, g, b);
+    // 真の黒背景のみ透過（暗い紺コート等は残す）
+    if (mx <= thr) d[i + 3] = 0;
+    else if (mx <= thr + soft && r <= thr + soft && g <= thr + soft && b <= thr + soft) {
+      d[i + 3] = Math.max(0, Math.min(255, Math.round(255 * ((mx - thr) / soft))));
+    }
+  }
+  octx.putImageData(data, 0, 0);
+  if (_keyedCanvasCache) _keyedCanvasCache.set(img, { thr, canvas: oc });
+  return oc;
+}
+function spriteHasAlpha(img) {
+  return !!(img && /\.png($|\?)/i.test(img.src || ''));
+}
+function drawSpriteAlpha(ctx, img, x, y, w, h) {
+  if (!img || !img.naturalWidth) return false;
+  ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.globalCompositeOperation = 'source-over';
+  if (spriteHasAlpha(img)) ctx.drawImage(img, x, y, w, h);
+  else ctx.drawImage(keyedCanvasFor(img, 28), x, y, w, h);
+  ctx.restore();
+  return true;
+}
 
 /** PNG アルファをそのまま描く（アルファブレンド有効）。親子変換付き */
 function drawChildSprite(ctx, img, parent, attach, facing) {
@@ -109,6 +156,7 @@ function drawChildSprite(ctx, img, parent, attach, facing) {
   const dh = (attach.h || 40) * uy;
   const rot = (attach.rot || 0) * face;
   const flipX = attach.flipWithFacing ? face : 1;
+  const src = spriteHasAlpha(img) ? img : keyedCanvasFor(img, 26);
 
   ctx.save();
   // 親原点（主人公中心）→ ローカルオフセット → 左右反転
@@ -117,9 +165,8 @@ function drawChildSprite(ctx, img, parent, attach, facing) {
   ctx.scale(flipX, 1);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  // Canvas 2D はデフォルトで source-over アルファブレンド
   ctx.globalCompositeOperation = 'source-over';
-  ctx.drawImage(img, -dw / 2, -dh / 2, dw, dh);
+  ctx.drawImage(src, -dw / 2, -dh / 2, dw, dh);
   ctx.restore();
   return true;
 }
@@ -325,12 +372,12 @@ export function mountLampWorld(container, opts) {
     'plateau-mock-am', 'plateau-mock-pm', 'plateau-final'
   ];
   Promise.all([
-    loadHubImage('common/hero-bare.jpg').then((i) => { hubArt.heroBare = i; }),
-    loadHubImage('common/hero-bare-walk-1.jpg').then((i) => { hubArt.heroBareWalk1 = i; }),
-    loadHubImage('common/hero-bare-walk-2.jpg').then((i) => { hubArt.heroBareWalk2 = i; }),
-    loadHubImage('common/hero-back.jpg').then((i) => { hubArt.hero = i; }),
-    loadHubImage('common/hero-walk-1.jpg').then((i) => { hubArt.heroWalk1 = i; }),
-    loadHubImage('common/hero-walk-2.jpg').then((i) => { hubArt.heroWalk2 = i; }),
+    loadHubImage('common/hero-bare.png').then((i) => { hubArt.heroBare = i; }),
+    loadHubImage('common/hero-bare-walk-1.png').then((i) => { hubArt.heroBareWalk1 = i; }),
+    loadHubImage('common/hero-bare-walk-2.png').then((i) => { hubArt.heroBareWalk2 = i; }),
+    loadHubImage('common/hero-back.png').then((i) => { hubArt.hero = i; }),
+    loadHubImage('common/hero-walk-1.png').then((i) => { hubArt.heroWalk1 = i; }),
+    loadHubImage('common/hero-walk-2.png').then((i) => { hubArt.heroWalk2 = i; }),
     loadHubImage('common/hero-mid.jpg').then((i) => { hubArt.heroMid = i; }),
     loadHubImage('common/hero-strong.jpg').then((i) => { hubArt.heroStrong = i; }),
     loadHubImage('common/spirit-aura.jpg').then((i) => { hubArt.spiritAura = i; }),
@@ -832,16 +879,18 @@ export function mountLampWorld(container, opts) {
       drawChildSprite(ctx, shieldImg, parent, HERO_EQUIP_ATTACH.shield, heroFacing);
     }
 
+    // 体は透過 PNG（なければ黒抜き）。不透明な黒四角で盾を隠さない
     ctx.save();
     ctx.translate(parent.cx, parent.cy);
     ctx.scale(heroFacing, 1);
     ctx.translate(-parent.cx, -parent.cy);
-    if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
+    if (!drawSpriteAlpha(ctx, heroImg, heroX, heroY, heroW, heroH)) {
       const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
       drawHeroBack(ctx, W * 0.5, footY - H * 0.02, s * 1.05, pulseT);
     }
     ctx.restore();
 
+    // 剣は右手前（体の後に描いて「持っている」）
     if (swordImg) {
       drawChildSprite(ctx, swordImg, parent, HERO_EQUIP_ATTACH.sword, heroFacing);
     }

@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v49';
+const CACHE = 'lamp-archipelago-v50';
 const PRECACHE = [
   './',
   './index.html',
@@ -59,6 +59,9 @@ const PRECACHE = [
   './assets/common/fx-lamp-lit.png',
   './assets/common/fx-level-up.png',
   './assets/common/hero-back.png',
+  './assets/common/hero-bare-walk-1.png',
+  './assets/common/hero-bare-walk-2.png',
+  './assets/common/hero-bare.png',
   './assets/common/hero-mid.png',
   './assets/common/hero-strong.png',
   './assets/common/hero-walk-1.png',
