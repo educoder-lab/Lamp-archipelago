@@ -4,108 +4,214 @@
     "117": {
       "slides": [
         {
-          "layout": "title", "emoji": "🔐", "title": "科目B模試 第1回",
+          "layout": "title",
+          "emoji": "🔐",
+          "title": "科目B模試 第1回",
           "subtitle": "設問から先に。図表は必要な所だけ。",
           "blocks": []
         },
         {
-          "emoji": "🗺️", "title": "たとえ話から",
+          "emoji": "🗺️",
+          "title": "設問を先にとは",
           "blocks": [
-            { "t": "analogy", "icon": "🗺️",
+            {
+              "t": "analogy",
+              "icon": "🗺️",
               "real": "宝探し。\n先に**何を探すか**を知る。",
-              "tech": "科目Bは**設問を先に**確認してから読む。" }
+              "tech": "科目Bは**設問を先に**確認してから読む。"
+            }
           ]
         },
         {
-          "emoji": "🧭", "title": "読む順番",
+          "emoji": "🧭",
+          "title": "読む順番",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "label": "設問" },
-              { "label": "本文に線" },
-              { "label": "図表の関連部" },
-              { "label": "選択肢" }
-            ] }
+            {
+              "t": "flow",
+              "steps": [
+                {
+                  "label": "設問"
+                },
+                {
+                  "label": "本文に線"
+                },
+                {
+                  "label": "図表の関連部"
+                },
+                {
+                  "label": "選択肢"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🛡️", "title": "セキュリティは必須",
+          "emoji": "🛡️",
+          "title": "セキュリティは必須",
           "blocks": [
-            { "t": "anim", "caption": "▶ 4 ステップ",
+            {
+              "t": "anim",
+              "caption": "▶ 4 ステップ",
               "frames": [
-                { "visual": "💎 資産", "text": "何を守る？" },
-                { "visual": "👿 脅威", "text": "何が危ない？" },
-                { "visual": "🧰 対策", "text": "弱点に効くものを" }
-              ] }
+                {
+                  "visual": "💎 資産",
+                  "text": "何を守る？"
+                },
+                {
+                  "visual": "👿 脅威",
+                  "text": "何が危ない？"
+                },
+                {
+                  "visual": "🧰 対策",
+                  "text": "弱点に効くものを"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "💎", "title": "4 つの視点",
+          "emoji": "💎",
+          "title": "4 つの視点",
           "blocks": [
-            { "t": "cards", "items": [
-              { "icon": "💎", "title": "守るもの" },
-              { "icon": "👿", "title": "脅威" },
-              { "icon": "🕳️", "title": "弱点" },
-              { "icon": "🧰", "title": "対策" }
-            ] }
+            {
+              "t": "cards",
+              "items": [
+                {
+                  "icon": "💎",
+                  "title": "守るもの"
+                },
+                {
+                  "icon": "👿",
+                  "title": "脅威"
+                },
+                {
+                  "icon": "🕳️",
+                  "title": "弱点"
+                },
+                {
+                  "icon": "🧰",
+                  "title": "対策"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "📈", "title": "稼働率の式",
+          "emoji": "📈",
+          "title": "稼働率の式",
           "blocks": [
-            { "t": "example", "label": "具体例", "title": "MTBF 380・MTTR 20",
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "MTBF 380・MTTR 20",
               "before": "380 ÷ (380+20)",
               "after": "==0.95==",
-              "why": "動く ÷（動く＋直す）。" }
+              "why": "動く ÷（動く＋直す）。"
+            }
           ]
         },
         {
-          "emoji": "📊", "title": "図表は行を絞る",
+          "emoji": "📊",
+          "title": "図表は行を絞る",
           "blocks": [
-            { "t": "callout", "kind": "tip",
-              "text": "設問が指す**行だけ**を式に入れる。\n全部読まない。" }
+            {
+              "t": "callout",
+              "kind": "tip",
+              "text": "設問が指す**行だけ**を式に入れる。\n全部読まない。"
+            }
           ]
         },
         {
-          "emoji": "🏷️", "title": "設問タイプ別",
+          "emoji": "🏷️",
+          "title": "設問タイプ別",
           "blocks": [
-            { "t": "table", "head": ["タイプ", "見る所"],
-              "rows": [["理由", "前後の文"], ["計算", "表と単位"], ["対策", "弱点の記述"]] }
+            {
+              "t": "table",
+              "head": [
+                "タイプ",
+                "見る所"
+              ],
+              "rows": [
+                [
+                  "理由",
+                  "前後の文"
+                ],
+                [
+                  "計算",
+                  "表と単位"
+                ],
+                [
+                  "対策",
+                  "弱点の記述"
+                ]
+              ]
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "科目Bの落とし穴",
+          "emoji": "⚠️",
+          "title": "科目Bの落とし穴",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "一般論が正しくても、\n==この問題の条件==に合わないことがある。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "一般論が正しくても、\n==この問題の条件==に合わないことがある。"
+            }
           ]
         },
         {
-          "emoji": "📖", "title": "根拠は本文",
+          "emoji": "📖",
+          "title": "根拠は本文",
           "blocks": [
-            { "t": "compare",
-              "left": { "title": "NG", "items": ["知識だけで選ぶ"] },
-              "right": { "title": "OK", "items": ["本文の条件で選ぶ"] },
-              "vs": "科目B" }
+            {
+              "t": "compare",
+              "left": {
+                "title": "NG",
+                "items": [
+                  "知識だけで選ぶ"
+                ]
+              },
+              "right": {
+                "title": "OK",
+                "items": [
+                  "本文の条件で選ぶ"
+                ]
+              },
+              "vs": "科目B"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認",
+          "emoji": "✅",
+          "title": "確認",
           "blocks": [
-            { "t": "check", "q": "MTBF 380、MTTR 20。稼働率は？",
-              "choices": ["0.90", "0.95", "0.05", "0.99"],
+            {
+              "t": "check",
+              "q": "MTBF 380、MTTR 20。稼働率は？",
+              "choices": [
+                "0.90",
+                "0.95",
+                "0.05",
+                "0.99"
+              ],
               "answer": 1,
               "explain": "380 ÷ 400 = ==0.95==。",
-              "hint": "動く ÷（動く＋直す）。" }
+              "hint": "動く ÷（動く＋直す）。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": [
-              "**設問を先に**読む",
-              "セキュは守るものから",
-              "根拠は**本文の条件**"
-            ] }
+            {
+              "t": "bullets",
+              "items": [
+                "**設問を先に**読む",
+                "セキュは守るものから",
+                "根拠は**本文の条件**"
+              ]
+            }
           ]
         }
       ]
@@ -113,103 +219,196 @@
     "118": {
       "slides": [
         {
-          "layout": "title", "emoji": "🧮", "title": "科目B模試 第2回",
+          "layout": "title",
+          "emoji": "🧮",
+          "title": "科目B模試 第2回",
           "subtitle": "変数の変化を手で追う。",
           "blocks": []
         },
         {
-          "emoji": "🍳", "title": "たとえ話から",
+          "emoji": "🍳",
+          "title": "トレースとは",
           "blocks": [
-            { "t": "analogy", "icon": "🍳",
+            {
+              "t": "analogy",
+              "icon": "🍳",
               "real": "レシピを読むだけじゃなく、\n鍋の中身をメモする。",
-              "tech": "**トレース** = 変数の変化を表に書く。" }
+              "tech": "**トレース** = 変数の変化を表に書く。"
+            }
           ]
         },
         {
-          "emoji": "📋", "title": "変数テーブルを書く",
+          "emoji": "📋",
+          "title": "変数テーブルを書く",
           "blocks": [
-            { "t": "big", "text": "トレースは ==表を必ず書く==",
-              "sub": "頭の中だけだと途中でズレる" }
+            {
+              "t": "big",
+              "text": "トレースは ==表を必ず書く==",
+              "sub": "頭の中だけだと途中でズレる"
+            }
           ]
         },
         {
-          "emoji": "👆", "title": "1 歩ずつの例",
+          "emoji": "👆",
+          "title": "1 歩ずつの例",
           "blocks": [
-            { "t": "trace", "vars": ["i", "sum"],
-              "rows": [["-", "0"], ["1", "1"], ["2", "3"], ["3", "6"]],
-              "notes": ["初期", "0+1", "1+2", "3+3"],
-              "caption": "sum ← sum + i の例" }
+            {
+              "t": "trace",
+              "vars": [
+                "i",
+                "sum"
+              ],
+              "rows": [
+                [
+                  "-",
+                  "0"
+                ],
+                [
+                  "1",
+                  "1"
+                ],
+                [
+                  "2",
+                  "3"
+                ],
+                [
+                  "3",
+                  "6"
+                ]
+              ],
+              "notes": [
+                "初期",
+                "0+1",
+                "1+2",
+                "3+3"
+              ],
+              "caption": "sum ← sum + i の例"
+            }
           ]
         },
         {
-          "emoji": "🧪", "title": "穴埋めのコツ",
+          "emoji": "🧪",
+          "title": "穴埋めのコツ",
           "blocks": [
-            { "t": "big", "text": "穴埋めは ==具体値で確かめる==",
-              "sub": "小さい数を入れて結果を見る" }
+            {
+              "t": "big",
+              "text": "穴埋めは ==具体値で確かめる==",
+              "sub": "小さい数を入れて結果を見る"
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "ずれるポイント",
+          "emoji": "⚠️",
+          "title": "ずれるポイント",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "ループの回数と開始の値。\n「以上／未満」で ==1 ずれる==。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "ループの回数と開始の値。\n「以上／未満」で ==1 ずれる==。"
+            }
           ]
         },
         {
-          "emoji": "🫧", "title": "バブルソートとは",
+          "emoji": "🫧",
+          "title": "バブルソートとは",
           "blocks": [
-            { "t": "anim", "caption": "▶ 3, 1, 4 を整える",
+            {
+              "t": "anim",
+              "caption": "▶ 3, 1, 4 を整える",
               "frames": [
-                { "visual": "[3,1,4]", "text": "1 と 3 を入れ替え" },
-                { "visual": "[1,3,4]", "text": "隣比較を続ける" },
-                { "visual": "最大が右へ", "text": "1 パスで大きい方が ==端==" }
-              ] }
+                {
+                  "visual": "[3,1,4]",
+                  "text": "1 と 3 を入れ替え"
+                },
+                {
+                  "visual": "[1,3,4]",
+                  "text": "隣比較を続ける"
+                },
+                {
+                  "visual": "最大が右へ",
+                  "text": "1 パスで大きい方が ==端=="
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🥞", "title": "スタック",
+          "emoji": "🥞",
+          "title": "スタック",
           "blocks": [
-            { "t": "analogy", "icon": "🥞",
+            {
+              "t": "analogy",
+              "icon": "🥞",
               "real": "皿を積む。\n**上から**取る。",
-              "tech": "**スタック** = 後入れ先出し（LIFO）" }
+              "tech": "**スタック** = 後入れ先出し（LIFO）"
+            }
           ]
         },
         {
-          "emoji": "🚶", "title": "キュー",
+          "emoji": "🚶",
+          "title": "キュー",
           "blocks": [
-            { "t": "analogy", "icon": "🚶",
+            {
+              "t": "analogy",
+              "icon": "🚶",
               "real": "行列。\n**先に並んだ人**から。",
-              "tech": "**キュー** = 先入れ先出し（FIFO）" }
+              "tech": "**キュー** = 先入れ先出し（FIFO）"
+            }
           ]
         },
         {
-          "emoji": "🪆", "title": "再帰のイメージ",
+          "emoji": "🪆",
+          "title": "再帰のイメージ",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "label": "潜る", "sub": "自分を呼ぶ" },
-              { "label": "底", "sub": "終了条件" },
-              { "label": "戻りながら計算" }
-            ] }
+            {
+              "t": "flow",
+              "steps": [
+                {
+                  "label": "潜る",
+                  "sub": "自分を呼ぶ"
+                },
+                {
+                  "label": "底",
+                  "sub": "終了条件"
+                },
+                {
+                  "label": "戻りながら計算"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認",
+          "emoji": "✅",
+          "title": "確認",
           "blocks": [
-            { "t": "check", "q": "x=10。i=1〜3 で x←x−i。終わりの x は？",
-              "choices": ["4", "6", "7", "10"],
+            {
+              "t": "check",
+              "q": "x=10。i=1〜3 で x←x−i。終わりの x は？",
+              "choices": [
+                "4",
+                "6",
+                "7",
+                "10"
+              ],
               "answer": 0,
               "explain": "10−1→9、−2→7、−3→==4==。",
-              "hint": "表に書いて 1 回ずつ。" }
+              "hint": "表に書いて 1 回ずつ。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": [
-              "トレースは**表を書く**",
-              "穴埋めは**具体値**",
-              "スタック LIFO／キュー FIFO"
-            ] }
+            {
+              "t": "bullets",
+              "items": [
+                "トレースは**表を書く**",
+                "穴埋めは**具体値**",
+                "スタック LIFO／キュー FIFO"
+              ]
+            }
           ]
         }
       ]
@@ -217,97 +416,209 @@
     "119": {
       "slides": [
         {
-          "layout": "title", "emoji": "🗄️", "title": "科目B模試 第3回",
+          "layout": "title",
+          "emoji": "🗄️",
+          "title": "科目B模試 第3回",
           "subtitle": "SQL は表を描く。IP は切れ目。",
           "blocks": []
         },
         {
-          "emoji": "📒", "title": "たとえ話から",
+          "emoji": "📒",
+          "title": "依頼文とは",
           "blocks": [
-            { "t": "analogy", "icon": "📒",
+            {
+              "t": "analogy",
+              "icon": "📒",
               "real": "名簿から「東支店だけ数えて」。",
-              "tech": "SQL は表への**依頼文**。" }
+              "tech": "SQL は表への**依頼文**。"
+            }
           ]
         },
         {
-          "emoji": "🧭", "title": "考える順番",
+          "emoji": "🧭",
+          "title": "考える順番",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "label": "FROM", "sub": "どの表" },
-              { "label": "WHERE", "sub": "どの行" },
-              { "label": "SELECT", "sub": "何を出す" }
-            ] }
+            {
+              "t": "flow",
+              "steps": [
+                {
+                  "label": "FROM",
+                  "sub": "どの表"
+                },
+                {
+                  "label": "WHERE",
+                  "sub": "どの行"
+                },
+                {
+                  "label": "SELECT",
+                  "sub": "何を出す"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🔢", "title": "COUNT とは",
+          "emoji": "🔢",
+          "title": "COUNT とは",
           "blocks": [
-            { "t": "table", "head": ["支店", "売上"],
-              "rows": [["東", "100"], ["東", "120"], ["西", "90"]],
-              "caption": "東だけ 2 行 → COUNT = **2**" }
+            {
+              "t": "table",
+              "head": [
+                "支店",
+                "売上"
+              ],
+              "rows": [
+                [
+                  "東",
+                  "100"
+                ],
+                [
+                  "東",
+                  "120"
+                ],
+                [
+                  "西",
+                  "90"
+                ]
+              ],
+              "caption": "東だけ 2 行 → COUNT = **2**"
+            }
           ]
         },
         {
-          "emoji": "🖼️", "title": "WHERE の前後",
+          "emoji": "🖼️",
+          "title": "WHERE の前後",
           "blocks": [
-            { "t": "example", "label": "具体例", "title": "東支店だけ",
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "東支店だけ",
               "before": "3 行すべて",
               "after": "印 2 行 → **2**",
-              "why": "印を付けてから ==数える==。" }
+              "why": "印を付けてから ==数える==。"
+            }
           ]
         },
         {
-          "emoji": "🔗", "title": "JOIN の前後",
+          "emoji": "🔗",
+          "title": "JOIN の前後",
           "blocks": [
-            { "t": "table", "head": ["JOIN", "残る行"],
-              "rows": [["INNER", "両方にあるだけ"], ["LEFT", "左は全部・右なしは NULL"]],
-              "caption": "頭の中で **2 表** を並べる" }
-          ]
-        },
-        {
-          "emoji": "🧮", "title": "/26 のホスト数",
-          "blocks": [
-            { "t": "trace", "vars": ["式", "値"],
-              "rows": [["32−26", "6"], ["2⁶", "64"], ["64−2", "==62=="]],
-              "notes": ["ホスト部", "総数", "使える数"] }
-          ]
-        },
-        {
-          "emoji": "🌐", "title": "IP の切れ目",
-          "blocks": [
-            { "t": "example", "label": "具体例", "title": "/26",
-              "rows": [
-                { "label": "ネット", "value": "26 ビット" },
-                { "label": "ホスト", "value": "==6== ビット" }
+            {
+              "t": "table",
+              "head": [
+                "JOIN",
+                "残る行"
               ],
-              "why": "残りが機器の番号。" }
+              "rows": [
+                [
+                  "INNER",
+                  "両方にあるだけ"
+                ],
+                [
+                  "LEFT",
+                  "左は全部・右なしは NULL"
+                ]
+              ],
+              "caption": "頭の中で **2 表** を並べる"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "−2 する理由",
+          "emoji": "🧮",
+          "title": "/26 のホスト数",
           "blocks": [
-            { "t": "callout", "kind": "memo",
-              "text": "全部 0 と全部 1 は予約。\n==個数 − 2== が使えるホスト。" }
+            {
+              "t": "trace",
+              "vars": [
+                "式",
+                "値"
+              ],
+              "rows": [
+                [
+                  "32−26",
+                  "6"
+                ],
+                [
+                  "2⁶",
+                  "64"
+                ],
+                [
+                  "64−2",
+                  "==62=="
+                ]
+              ],
+              "notes": [
+                "ホスト部",
+                "総数",
+                "使える数"
+              ]
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認",
+          "emoji": "🌐",
+          "title": "IP の切れ目",
           "blocks": [
-            { "t": "check", "q": "192.168.5.0/26 の使えるホスト数は？",
-              "choices": ["30", "62", "64", "126"],
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "/26",
+              "rows": [
+                {
+                  "label": "ネット",
+                  "value": "26 ビット"
+                },
+                {
+                  "label": "ホスト",
+                  "value": "==6== ビット"
+                }
+              ],
+              "why": "残りが機器の番号。"
+            }
+          ]
+        },
+        {
+          "emoji": "📝",
+          "title": "−2 する理由",
+          "blocks": [
+            {
+              "t": "callout",
+              "kind": "memo",
+              "text": "全部 0 と全部 1 は予約。\n==個数 − 2== が使えるホスト。"
+            }
+          ]
+        },
+        {
+          "emoji": "✅",
+          "title": "確認",
+          "blocks": [
+            {
+              "t": "check",
+              "q": "192.168.5.0/26 の使えるホスト数は？",
+              "choices": [
+                "30",
+                "62",
+                "64",
+                "126"
+              ],
               "answer": 1,
               "explain": "32−26=6。2⁶=64。64−2===62==。",
-              "hint": "ホスト部 → 2 の累乗 → 2 を引く。" }
+              "hint": "ホスト部 → 2 の累乗 → 2 を引く。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": [
-              "SQL は **FROM→WHERE→SELECT**",
-              "LEFT は左を残し NULL",
-              "ホスト数は **2^(32−n) − 2**"
-            ] }
+            {
+              "t": "bullets",
+              "items": [
+                "SQL は **FROM→WHERE→SELECT**",
+                "LEFT は左を残し NULL",
+                "ホスト数は **2^(32−n) − 2**"
+              ]
+            }
           ]
         }
       ]

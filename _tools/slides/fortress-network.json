@@ -4,89 +4,184 @@
     "102": {
       "slides": [
         {
-          "layout": "title", "emoji": "🧮", "title": "サブネット計算",
+          "layout": "title",
+          "emoji": "🧮",
+          "title": "サブネット計算",
           "subtitle": "ホスト数と特別な住所を、\n==1 歩ずつ== 求める。",
           "blocks": []
         },
         {
-          "emoji": "🏘️", "title": "たとえ話から",
+          "emoji": "🏘️",
+          "title": "ホスト部が大きいほどとは",
           "blocks": [
-            { "t": "analogy", "icon": "🏘️",
+            {
+              "t": "analogy",
+              "icon": "🏘️",
               "real": "区画が大きいほど\n**建てられる家**が多い。",
-              "tech": "ホスト部が大きいほど\n==使える IP== が多い。" }
+              "tech": "ホスト部が大きいほど\n==使える IP== が多い。"
+            }
           ]
         },
         {
-          "emoji": "✂️", "title": "ステップ1：ホスト部の長さ",
+          "emoji": "✂️",
+          "title": "ステップ1：ホスト部の長さ",
           "blocks": [
-            { "t": "example", "label": "具体例", "title": "/26 のとき",
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "/26 のとき",
               "before": "32 − 26",
               "after": "ホスト部 = **6** ビット",
-              "why": "/n の **n** がネットワーク部の長さ。" }
+              "why": "/n の **n** がネットワーク部の長さ。"
+            }
           ]
         },
         {
-          "emoji": "👀", "title": "例：/26 なら",
+          "emoji": "👀",
+          "title": "例：/26 なら",
           "blocks": [
-            { "t": "table", "head": ["CIDR", "ホスト部"],
-              "rows": [["/24", "8"], ["/26", "==6=="], ["/28", "4"]],
-              "caption": "32 から引き算するだけ" }
+            {
+              "t": "table",
+              "head": [
+                "CIDR",
+                "ホスト部"
+              ],
+              "rows": [
+                [
+                  "/24",
+                  "8"
+                ],
+                [
+                  "/26",
+                  "==6=="
+                ],
+                [
+                  "/28",
+                  "4"
+                ]
+              ],
+              "caption": "32 から引き算するだけ"
+            }
           ]
         },
         {
-          "emoji": "🔢", "title": "ステップ2〜3まとめ",
+          "emoji": "🔢",
+          "title": "ステップ2〜3まとめ",
           "blocks": [
-            { "t": "anim", "caption": "▶ /26 で数える",
+            {
+              "t": "anim",
+              "caption": "▶ /26 で数える",
               "frames": [
-                { "visual": "h = 6", "text": "ホスト部のビット数" },
-                { "visual": "2⁶ = **64**", "text": "全部の住所" },
-                { "visual": "64 − 2 = **62**", "text": "==使える== ホスト数" }
-              ] }
+                {
+                  "visual": "h = 6",
+                  "text": "ホスト部のビット数"
+                },
+                {
+                  "visual": "2⁶ = **64**",
+                  "text": "全部の住所"
+                },
+                {
+                  "visual": "64 − 2 = **62**",
+                  "text": "==使える== ホスト数"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "⛔", "title": "−2 する理由",
+          "emoji": "⛔",
+          "title": "−2 する理由",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🏷️", "title": "全 0", "items": ["ネットワークアドレス"] },
-              "right": { "icon": "📢", "title": "全 1", "items": ["ブロードキャスト"] },
-              "vs": "使えない" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🏷️",
+                "title": "全 0",
+                "items": [
+                  "ネットワークアドレス"
+                ]
+              },
+              "right": {
+                "icon": "📢",
+                "title": "全 1",
+                "items": [
+                  "ブロードキャスト"
+                ]
+              },
+              "vs": "使えない"
+            }
           ]
         },
         {
-          "emoji": "⏩", "title": "近道：刻み幅",
+          "emoji": "⏩",
+          "title": "近道：刻み幅",
           "blocks": [
-            { "t": "p", "text": "刻み幅 = ==256 − マスクの区切り==。\n先頭＝ネット、末尾＝一斉送信。" }
+            {
+              "t": "p",
+              "text": "刻み幅 = ==256 − マスクの区切り==。\n先頭＝ネット、末尾＝一斉送信。"
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "まちがえやすい点",
+          "emoji": "⚠️",
+          "title": "まちがえやすい点",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "**−2 を忘れる**のが定番ミス。\n全 0・全 1 は使えない。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "**−2 を忘れる**のが定番ミス。\n全 0・全 1 は使えない。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "/29 で使えるホスト数は？",
-              "choices": ["2", "6", "8", "14"],
-              "answer": 1, "explain": "ホスト部 3。2³−2 = ==6==。",
-              "hint": "まず 32−29。" }
+            {
+              "t": "check",
+              "q": "/29 で使えるホスト数は？",
+              "choices": [
+                "2",
+                "6",
+                "8",
+                "14"
+              ],
+              "answer": 1,
+              "explain": "ホスト部 3。2³−2 = ==6==。",
+              "hint": "まず 32−29。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "ホスト部が全部 1 の住所の名前は？",
-              "choices": ["ネットワーク", "ブロードキャスト", "ゲートウェイ", "ループバック"],
-              "answer": 1, "explain": "**ブロードキャストアドレス**。" }
+            {
+              "t": "check",
+              "q": "ホスト部が全部 1 の住所の名前は？",
+              "choices": [
+                "ネットワーク",
+                "ブロードキャスト",
+                "ゲートウェイ",
+                "ループバック"
+              ],
+              "answer": 1,
+              "explain": "**ブロードキャストアドレス**。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["ホスト部 = **32−n**", "使える数 = **2^h−2**", "全0 / 全1 は特別"] }
+            {
+              "t": "bullets",
+              "items": [
+                "ホスト部 = **32−n**",
+                "使える数 = **2^h−2**",
+                "全0 / 全1 は特別"
+              ]
+            }
           ]
         }
       ]
@@ -94,104 +189,213 @@
     "103": {
       "slides": [
         {
-          "layout": "title", "emoji": "🛡️", "title": "VLAN と VPN",
+          "layout": "title",
+          "emoji": "🛡️",
+          "title": "VLAN と VPN",
           "subtitle": "論理で分ける。\nトンネルで守る。",
           "blocks": []
         },
         {
-          "emoji": "🏢", "title": "VLAN のたとえ",
+          "emoji": "🏢",
+          "title": "VLAN のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🏢",
+            {
+              "t": "analogy",
+              "icon": "🏢",
               "real": "同じフロアでも\n**間仕切り**で声が届かない。",
-              "tech": "**VLAN** は\n==論理的にネットを分割==。" }
+              "tech": "**VLAN** は\n==論理的にネットを分割==。"
+            }
           ]
         },
         {
-          "emoji": "✂️", "title": "VLAN の効果",
+          "emoji": "✂️",
+          "title": "VLAN の効果",
           "blocks": [
-            { "t": "compare",
-              "left": { "title": "なし", "items": ["全員が同じネット"] },
-              "right": { "title": "あり", "items": ["部署ごとに分離"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "title": "なし",
+                "items": [
+                  "全員が同じネット"
+                ]
+              },
+              "right": {
+                "title": "あり",
+                "items": [
+                  "部署ごとに分離"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "🔌", "title": "別 VLAN どうしは？",
+          "emoji": "🔌",
+          "title": "別 VLAN どうしは？",
           "blocks": [
-            { "t": "anim", "caption": "▶ VLAN 10 と 20",
+            {
+              "t": "anim",
+              "caption": "▶ VLAN 10 と 20",
               "frames": [
-                { "visual": "VLAN 10 ⇄ 20", "text": "L2 では直接不可" },
-                { "visual": "🧱 **L3**", "text": "ルータで中継" },
-                { "visual": "届いた！", "text": "==論理分割== をまたぐ" }
-              ] }
+                {
+                  "visual": "VLAN 10 ⇄ 20",
+                  "text": "L2 では直接不可"
+                },
+                {
+                  "visual": "🧱 **L3**",
+                  "text": "ルータで中継"
+                },
+                {
+                  "visual": "届いた！",
+                  "text": "==論理分割== をまたぐ"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🚇", "title": "VPN のたとえ",
+          "emoji": "🚇",
+          "title": "VPN のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🚇",
+            {
+              "t": "analogy",
+              "icon": "🚇",
               "real": "人混みの道でも\n**封印した輸送車**なら安心。",
-              "tech": "**VPN** は\n==暗号化トンネル== で安全な道。" }
+              "tech": "**VPN** は\n==暗号化トンネル== で安全な道。"
+            }
           ]
         },
         {
-          "emoji": "🎯", "title": "VPN の目的",
+          "emoji": "🎯",
+          "title": "VPN の目的",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "icon": "🌐", "label": "公共の回線" },
-              { "icon": "🔒", "label": "暗号トンネル" },
-              { "icon": "🏢", "label": "社内へ", "sub": "安全な経路" }
-            ] }
+            {
+              "t": "flow",
+              "steps": [
+                {
+                  "icon": "🌐",
+                  "label": "公共の回線"
+                },
+                {
+                  "icon": "🔒",
+                  "label": "暗号トンネル"
+                },
+                {
+                  "icon": "🏢",
+                  "label": "社内へ",
+                  "sub": "安全な経路"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🔐", "title": "IPsec とは",
+          "emoji": "🔐",
+          "title": "IPsec とは",
           "blocks": [
-            { "t": "big", "text": "**IPsec** = IP 層で暗号化", "sub": "拠点間 VPN でよく使う" }
+            {
+              "t": "big",
+              "text": "**IPsec** = IP 層で暗号化",
+              "sub": "拠点間 VPN でよく使う"
+            }
           ]
         },
         {
-          "emoji": "🌐", "title": "SSL-VPN とは",
+          "emoji": "🌐",
+          "title": "SSL-VPN とは",
           "blocks": [
-            { "t": "big", "text": "**SSL-VPN** = SSL/TLS 利用", "sub": "==ブラウザ== でつなげる" }
+            {
+              "t": "big",
+              "text": "**SSL-VPN** = SSL/TLS 利用",
+              "sub": "==ブラウザ== でつなげる"
+            }
           ]
         },
         {
-          "emoji": "⚖️", "title": "2 方式のちがい",
+          "emoji": "⚖️",
+          "title": "2 方式のちがい",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🔗", "title": "IPsec", "items": ["IP 層", "拠点間向き"] },
-              "right": { "icon": "🌐", "title": "SSL-VPN", "items": ["SSL/TLS", "在宅向き"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🔗",
+                "title": "IPsec",
+                "items": [
+                  "IP 層",
+                  "拠点間向き"
+                ]
+              },
+              "right": {
+                "icon": "🌐",
+                "title": "SSL-VPN",
+                "items": [
+                  "SSL/TLS",
+                  "在宅向き"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "**VLAN = 分ける**。\n**VPN = 安全に通す**。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "**VLAN = 分ける**。\n**VPN = 安全に通す**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "ブラウザだけで社内へ安全接続向きは？",
-              "choices": ["VLAN", "SSL-VPN", "DHCP", "STP"],
-              "answer": 1, "explain": "**SSL-VPN**。" }
+            {
+              "t": "check",
+              "q": "ブラウザだけで社内へ安全接続向きは？",
+              "choices": [
+                "VLAN",
+                "SSL-VPN",
+                "DHCP",
+                "STP"
+              ],
+              "answer": 1,
+              "explain": "**SSL-VPN**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "論理的にネットを分ける技術は？",
-              "choices": ["NAT", "VLAN", "DHCP", "DNS"],
-              "answer": 1, "explain": "**VLAN**。" }
+            {
+              "t": "check",
+              "q": "論理的にネットを分ける技術は？",
+              "choices": [
+                "NAT",
+                "VLAN",
+                "DHCP",
+                "DNS"
+              ],
+              "answer": 1,
+              "explain": "**VLAN**。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**VLAN** … 論理分割", "**VPN** … 暗号化トンネル", "**IPsec / SSL-VPN**"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**VLAN** … 論理分割",
+                "**VPN** … 暗号化トンネル",
+                "**IPsec / SSL-VPN**"
+              ]
+            }
           ]
         }
       ]
@@ -199,96 +403,178 @@
     "104": {
       "slides": [
         {
-          "layout": "title", "emoji": "🔬", "title": "パケット解析と通信制御",
+          "layout": "title",
+          "emoji": "🔬",
+          "title": "パケット解析と通信制御",
           "subtitle": "通信をのぞき、\n診断と量の調整を知る。",
           "blocks": []
         },
         {
-          "emoji": "📹", "title": "パケットキャプチャ",
+          "emoji": "📹",
+          "title": "パケットキャプチャ",
           "blocks": [
-            { "t": "analogy", "icon": "📹",
+            {
+              "t": "analogy",
+              "icon": "📹",
               "real": "ドライブレコーダで\n**後から原因を調べる**。",
-              "tech": "**パケットキャプチャ** =\n流れるパケットを ==取得して分析==。" }
+              "tech": "**パケットキャプチャ** =\n流れるパケットを ==取得して分析==。"
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "注意",
+          "emoji": "⚠️",
+          "title": "注意",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "許可なく他人の通信を\nのぞくのは ==禁止==。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "許可なく他人の通信を\nのぞくのは ==禁止==。"
+            }
           ]
         },
         {
-          "emoji": "📣", "title": "ARP のたとえ",
+          "emoji": "📣",
+          "title": "ARP のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🏫",
+            {
+              "t": "analogy",
+              "icon": "🏫",
               "real": "教室で名前を呼び\n**席を聞く**。",
-              "tech": "**ARP** は\n==IP → MAC== を調べる。" }
+              "tech": "**ARP** は\n==IP → MAC== を調べる。"
+            }
           ]
         },
         {
-          "emoji": "🙋", "title": "ARP の流れ",
+          "emoji": "🙋",
+          "title": "ARP の流れ",
           "blocks": [
-            { "t": "anim", "caption": "▶ 192.168.0.5 は誰？",
+            {
+              "t": "anim",
+              "caption": "▶ 192.168.0.5 は誰？",
               "frames": [
-                { "visual": "📣 **全員へ** 要求", "text": "ブロードキャスト" },
-                { "visual": "🙋 0.5 だけ応答", "text": "MAC を返す" },
-                { "visual": "📝 表に記録", "text": "IP → MAC" }
-              ] }
+                {
+                  "visual": "📣 **全員へ** 要求",
+                  "text": "ブロードキャスト"
+                },
+                {
+                  "visual": "🙋 0.5 だけ応答",
+                  "text": "MAC を返す"
+                },
+                {
+                  "visual": "📝 表に記録",
+                  "text": "IP → MAC"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "📡", "title": "ICMP と ping",
+          "emoji": "📡",
+          "title": "ICMP と ping",
           "blocks": [
-            { "t": "analogy", "icon": "🔊",
+            {
+              "t": "analogy",
+              "icon": "🔊",
               "real": "山で「やっほー」。\n**こだまが返るか**で分かる。",
-              "tech": "**ICMP**。\n==ping== が使う診断用。" }
+              "tech": "**ICMP**。\n==ping== が使う診断用。"
+            }
           ]
         },
         {
-          "emoji": "🥤", "title": "フロー制御のたとえ",
+          "emoji": "🥤",
+          "title": "フロー制御のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🥤",
+            {
+              "t": "analogy",
+              "icon": "🥤",
               "real": "相手のコップに合わせて\n**注ぐ量を変える**。",
-              "tech": "**フロー制御** =\n==受信側の能力== に合わせる。" }
+              "tech": "**フロー制御** =\n==受信側の能力== に合わせる。"
+            }
           ]
         },
         {
-          "emoji": "🚗", "title": "輻輳制御とのちがい",
+          "emoji": "🚗",
+          "title": "輻輳制御とのちがい",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🥤", "title": "フロー制御", "items": ["受信側を見る"] },
-              "right": { "icon": "🚗", "title": "輻輳制御", "items": ["ネットの混雑を見る"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🥤",
+                "title": "フロー制御",
+                "items": [
+                  "受信側を見る"
+                ]
+              },
+              "right": {
+                "icon": "🚗",
+                "title": "輻輳制御",
+                "items": [
+                  "ネットの混雑を見る"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "**誰に合わせる？**\n受信側か、ネットか。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "**誰に合わせる？**\n受信側か、ネットか。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "ARP 要求はどこへ送る？",
-              "choices": ["1 台だけ", "同じネットの全員", "DNS サーバ", "全世界"],
-              "answer": 1, "explain": "**ブロードキャスト**。" }
+            {
+              "t": "check",
+              "q": "ARP 要求はどこへ送る？",
+              "choices": [
+                "1 台だけ",
+                "同じネットの全員",
+                "DNS サーバ",
+                "全世界"
+              ],
+              "answer": 1,
+              "explain": "**ブロードキャスト**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "ping が使うプロトコルは？",
-              "choices": ["TCP", "UDP", "ICMP", "ARP"],
-              "answer": 2, "explain": "**ICMP**。" }
+            {
+              "t": "check",
+              "q": "ping が使うプロトコルは？",
+              "choices": [
+                "TCP",
+                "UDP",
+                "ICMP",
+                "ARP"
+              ],
+              "answer": 2,
+              "explain": "**ICMP**。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**ARP** … IP→MAC", "**ICMP** … ping", "**フロー制御** … 受信側に合わせる"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**ARP** … IP→MAC",
+                "**ICMP** … ping",
+                "**フロー制御** … 受信側に合わせる"
+              ]
+            }
           ]
         }
       ]
@@ -296,104 +582,208 @@
     "105": {
       "slides": [
         {
-          "layout": "title", "emoji": "🏗️", "title": "ネットワーク設計と冗長化",
+          "layout": "title",
+          "emoji": "🏗️",
+          "title": "ネットワーク設計と冗長化",
           "subtitle": "止まらない設計と、\n帯域・優先の基本。",
           "blocks": []
         },
         {
-          "emoji": "🛞", "title": "冗長化のたとえ",
+          "emoji": "🛞",
+          "title": "冗長化のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🛞",
+            {
+              "t": "analogy",
+              "icon": "🛞",
               "real": "車の **予備タイヤ**。",
-              "tech": "**冗長構成** =\n経路や機器を ==二重化==。" }
+              "tech": "**冗長構成** =\n経路や機器を ==二重化==。"
+            }
           ]
         },
         {
-          "emoji": "⚖️", "title": "あり / なし",
+          "emoji": "⚖️",
+          "title": "あり / なし",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "⚠️", "title": "なし", "items": ["1 本切れたら停止"] },
-              "right": { "icon": "✅", "title": "あり", "items": ["もう一方で継続"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "⚠️",
+                "title": "なし",
+                "items": [
+                  "1 本切れたら停止"
+                ]
+              },
+              "right": {
+                "icon": "✅",
+                "title": "あり",
+                "items": [
+                  "もう一方で継続"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "♾️", "title": "ループの危険",
+          "emoji": "♾️",
+          "title": "ループの危険",
           "blocks": [
-            { "t": "anim", "caption": "▶ ブロードキャストが増殖",
+            {
+              "t": "anim",
+              "caption": "▶ ブロードキャストが増殖",
               "frames": [
-                { "visual": "1 本の放送", "text": "スイッチ A へ" },
-                { "visual": "輪をぐるぐる", "text": "同じパケットが増える" },
-                { "visual": "💥 ストーム", "text": "==STP== で防ぐ" }
-              ] }
+                {
+                  "visual": "1 本の放送",
+                  "text": "スイッチ A へ"
+                },
+                {
+                  "visual": "輪をぐるぐる",
+                  "text": "同じパケットが増える"
+                },
+                {
+                  "visual": "💥 ストーム",
+                  "text": "==STP== で防ぐ"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🌲", "title": "STP とは",
+          "emoji": "🌲",
+          "title": "STP とは",
           "blocks": [
-            { "t": "big", "text": "**STP** = ループ防止", "sub": "一部ポートを待機にして木の形に" }
+            {
+              "t": "big",
+              "text": "**STP** = ループ防止",
+              "sub": "一部ポートを待機にして木の形に"
+            }
           ]
         },
         {
-          "emoji": "📐", "title": "帯域計算の式",
+          "emoji": "📐",
+          "title": "帯域計算の式",
           "blocks": [
-            { "t": "big", "text": "時間 = ==データ量 ÷ 速度==", "sub": "単位をそろえてから割る" }
+            {
+              "t": "big",
+              "text": "時間 = ==データ量 ÷ 速度==",
+              "sub": "単位をそろえてから割る"
+            }
           ]
         },
         {
-          "emoji": "8️⃣", "title": "ステップ：×8",
+          "emoji": "8️⃣",
+          "title": "ステップ：×8",
           "blocks": [
-            { "t": "p", "text": "ファイルは **バイト**。\n回線は ==ビット==。\nだから **× 8** する。" }
+            {
+              "t": "p",
+              "text": "ファイルは **バイト**。\n回線は ==ビット==。\nだから **× 8** する。"
+            }
           ]
         },
         {
-          "emoji": "🧪", "title": "例：50 MB / 200 Mbps",
+          "emoji": "🧪",
+          "title": "例：50 MB / 200 Mbps",
           "blocks": [
-            { "t": "trace", "vars": ["ステップ", "値"],
-              "rows": [
-                ["データ量", "50 MB"],
-                ["× 8", "400 Mbit"],
-                ["÷ 200", "==2 秒=="]
+            {
+              "t": "trace",
+              "vars": [
+                "ステップ",
+                "値"
               ],
-              "notes": ["バイトで与えられる", "ビットにそろえる", "割り算"] }
+              "rows": [
+                [
+                  "データ量",
+                  "50 MB"
+                ],
+                [
+                  "× 8",
+                  "400 Mbit"
+                ],
+                [
+                  "÷ 200",
+                  "==2 秒=="
+                ]
+              ],
+              "notes": [
+                "バイトで与えられる",
+                "ビットにそろえる",
+                "割り算"
+              ]
+            }
           ]
         },
         {
-          "emoji": "🚑", "title": "QoS のたとえ",
+          "emoji": "🚑",
+          "title": "QoS のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🚑",
+            {
+              "t": "analogy",
+              "icon": "🚑",
               "real": "渋滞でも **救急車を優先**。",
-              "tech": "**QoS** は\n通信の ==優先度を制御==。" }
+              "tech": "**QoS** は\n通信の ==優先度を制御==。"
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "まちがえやすい点",
+          "emoji": "⚠️",
+          "title": "まちがえやすい点",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "帯域計算で\n==× 8 を忘れる== のが定番ミス。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "帯域計算で\n==× 8 を忘れる== のが定番ミス。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "25 MB を 100 Mbps で送る最短は？",
-              "choices": ["0.25 秒", "2 秒", "8 秒", "25 秒"],
-              "answer": 1, "explain": "25×8=200。200÷100= ==2 秒==。",
-              "hint": "×8 を忘れずに。" }
+            {
+              "t": "check",
+              "q": "25 MB を 100 Mbps で送る最短は？",
+              "choices": [
+                "0.25 秒",
+                "2 秒",
+                "8 秒",
+                "25 秒"
+              ],
+              "answer": 1,
+              "explain": "25×8=200。200÷100= ==2 秒==。",
+              "hint": "×8 を忘れずに。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "L2 のループ防止プロトコルは？",
-              "choices": ["OSPF", "STP", "RIP", "BGP"],
-              "answer": 1, "explain": "**STP**。" }
+            {
+              "t": "check",
+              "q": "L2 のループ防止プロトコルは？",
+              "choices": [
+                "OSPF",
+                "STP",
+                "RIP",
+                "BGP"
+              ],
+              "answer": 1,
+              "explain": "**STP**。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**冗長化** … 二重化", "**STP** … ループ防止", "**QoS** … 優先制御"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**冗長化** … 二重化",
+                "**STP** … ループ防止",
+                "**QoS** … 優先制御"
+              ]
+            }
           ]
         }
       ]

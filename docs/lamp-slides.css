@@ -18,10 +18,32 @@
 .slide { display:none; }
 .slide.active { display:block; }
 .slide.active.enter { animation: slideIn .32s ease both; }
+/* スライド送りでも直前の枚を薄く残し、消え方をわかりやすくする */
+.deck:not(.list) .slide.prev-peek {
+  display: block;
+  opacity: 0.42;
+  max-height: 88px;
+  overflow: hidden;
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #343a6b;
+  pointer-events: none;
+  filter: grayscale(0.15);
+  transform: scale(0.98);
+  transform-origin: top center;
+}
+.deck:not(.list) .slide.prev-peek::after {
+  content: "↑ 前のスライド（残してあります）";
+  display: block;
+  font-size: 12px;
+  color: var(--d-muted);
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
 .deck.list .slide { display:block; border-bottom:1px dashed #2a2f58; padding-bottom:28px; margin-bottom:28px; animation:none; }
 .deck.list .slide:last-child { border-bottom:0; margin-bottom:0; }
 .deck.list .deck-nav, .deck.list .deck-bar { display:none; }
-@keyframes slideIn { from { opacity:0; transform: translateX(12px); } to { opacity:1; transform:none; } }
+@keyframes slideIn { from { opacity:0; transform: translateX(18px); } to { opacity:1; transform:none; } }
 @keyframes pop { from { opacity:0; transform: translateY(8px) scale(.96); } to { opacity:1; transform:none; } }
 
 .slide h3 { font-size: 26px; margin: 0 0 20px; line-height:1.35; display:flex; align-items:center; gap:12px; font-weight:700; }
@@ -39,6 +61,10 @@
 }
 .slide code { background:#0b0e1f; border:1px solid #2a2f58; border-radius:6px; padding:2px 8px; font-family: Consolas,"Cascadia Mono",monospace; font-size:.9em; }
 .slide strong { color: var(--d-gold); font-weight: 800; }
+.slide .abbr-full {
+  display: inline; font-size: 0.72em; font-weight: 600; color: var(--d-muted);
+  margin-left: 2px; letter-spacing: 0;
+}
 
 .b-p { font-size: 20px; line-height: 1.75; margin: 12px 0; max-width: 36em; }
 .b-bullets { list-style:none; padding:0; margin:12px 0; }

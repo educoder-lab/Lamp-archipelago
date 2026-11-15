@@ -5,9 +5,56 @@
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
+  /** 試験で出る略語 → 正式名／覚えやすい総称（太字の直後に付ける） */
+  const ABBR_FULL = {
+    IaaS: 'Infrastructure as a Service／インフラ（基盤）を借りる',
+    PaaS: 'Platform as a Service／開発の土台を借りる',
+    SaaS: 'Software as a Service／ソフトそのものを借りる',
+    CPU: 'Central Processing Unit／中央処理装置',
+    GPU: 'Graphics Processing Unit／画像処理装置',
+    OS: 'Operating System／基本ソフト',
+    API: 'Application Programming Interface／ソフト同士のつなぎ口',
+    SQL: 'Structured Query Language／データベース問い合わせ言語',
+    DB: 'Database／データベース',
+    DNS: 'Domain Name System／名前と住所の対応表',
+    DHCP: 'Dynamic Host Configuration Protocol／住所の自動配布',
+    HTTP: 'HyperText Transfer Protocol／Web の通信手順',
+    HTTPS: 'HTTP Secure／暗号化した Web 通信',
+    TCP: 'Transmission Control Protocol／届くまで確認する通信',
+    UDP: 'User Datagram Protocol／確認なしの軽い通信',
+    IP: 'Internet Protocol／インターネットの住所ルール',
+    LAN: 'Local Area Network／構内ネットワーク',
+    WAN: 'Wide Area Network／広域ネットワーク',
+    VPN: 'Virtual Private Network／仮想の専用回線',
+    VLAN: 'Virtual LAN／論理的に分けた LAN',
+    OSS: 'Open Source Software／公開されたソースのソフト',
+    IoT: 'Internet of Things／モノのインターネット',
+    UI: 'User Interface／操作画面',
+    UX: 'User Experience／使い心地',
+    GUI: 'Graphical User Interface／絵で操作する画面',
+    CUI: 'Character User Interface／文字で操作する画面',
+    RAID: 'Redundant Array of Independent Disks／ディスクの多重化',
+    SSD: 'Solid State Drive／半導体メモリの補助記憶',
+    HDD: 'Hard Disk Drive／磁気ディスクの補助記憶',
+    RAM: 'Random Access Memory／主記憶（揮発）',
+    ROM: 'Read Only Memory／読み出し専用メモリ',
+    VM: 'Virtual Machine／仮想マシン',
+    ERP: 'Enterprise Resource Planning／基幹業務システム',
+    CRM: 'Customer Relationship Management／顧客管理',
+    BCP: 'Business Continuity Plan／事業継続計画',
+    SLA: 'Service Level Agreement／サービス水準合意',
+    ITIL: 'IT Infrastructure Library／IT サービス管理の枠組み'
+  };
+
   function fmt(s) {
     let t = esc(s);
-    t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    t = t.replace(/\*\*([^*]+)\*\*/g, (_, word) => {
+      const full = ABBR_FULL[word];
+      if (full) {
+        return '<strong>' + word + '</strong><span class="abbr-full">（' + esc(full) + '）</span>';
+      }
+      return '<strong>' + word + '</strong>';
+    });
     t = t.replace(/==([^=]+)==/g, '<mark>$1</mark>');
     t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
     t = t.replace(/\n/g, '<br>');
@@ -46,11 +93,12 @@
   };
 
   R.analogy = b => {
+    // 定義（用語）→ たとえ の順（何の例えか先に分かる）
     const wrap = h('div', 'b');
     const row = h('div', 'b-analogy');
-    row.appendChild(h('div', 'side real', '<span class="ico">' + esc(b.icon || '🏠') + '</span><span class="tag">身近なたとえ</span>' + fmt(b.real)));
+    row.appendChild(h('div', 'side tech', '<span class="tag">まず用語</span>' + fmt(b.tech)));
     row.appendChild(h('div', 'arrow', '⇨'));
-    row.appendChild(h('div', 'side tech', '<span class="tag">IT の言葉では</span>' + fmt(b.tech)));
+    row.appendChild(h('div', 'side real', '<span class="ico">' + esc(b.icon || '🏠') + '</span><span class="tag">たとえでつかむ</span>' + fmt(b.real)));
     wrap.appendChild(row);
     if (b.note) wrap.appendChild(h('div', 'b-analogy-note', fmt(b.note)));
     return wrap;
@@ -492,9 +540,12 @@
     function go(n) {
       i = Math.max(0, Math.min(slides.length - 1, n));
       seen.add(i);
+      const listMode = root.classList.contains('list');
       els.forEach((e, k) => {
         const on = k === i;
+        const peek = !listMode && k === i - 1;
         e.classList.toggle('active', on);
+        e.classList.toggle('prev-peek', peek);
         if (on) {
           e.classList.remove('enter');
           void e.offsetWidth;
@@ -515,7 +566,8 @@
     listB.onclick = () => {
       const on = root.classList.toggle('list');
       listB.textContent = on ? '🎞 スライドで見る' : '📄 一覧で読む';
-      if (!on) go(i);
+      if (on) els.forEach((e) => e.classList.remove('prev-peek'));
+      else go(i);
     };
     fsB.onclick = () => {
       const on = root.classList.toggle('full');

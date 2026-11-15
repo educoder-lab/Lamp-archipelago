@@ -4,113 +4,216 @@
     "68": {
       "slides": [
         {
-          "layout": "title", "emoji": "🎯", "title": "経営戦略",
+          "layout": "title",
+          "emoji": "🎯",
+          "title": "経営戦略",
           "subtitle": "勝ち残るための\n会社の方針を学ぼう。",
           "blocks": []
         },
         {
-          "emoji": "🏠", "title": "たとえ話から",
+          "emoji": "🏠",
+          "title": "経営戦略とは",
           "blocks": [
-            { "t": "analogy", "icon": "🗺️",
+            {
+              "t": "analogy",
+              "icon": "🗺️",
               "real": "遠足の計画。\n**どこへ行き、何を持つか**を決める。",
-              "tech": "会社の大きな方針が **経営戦略**。" }
+              "tech": "会社の大きな方針が **経営戦略**。"
+            }
           ]
         },
         {
-          "emoji": "🎯", "title": "経営戦略とは？",
+          "emoji": "🎯",
+          "title": "経営戦略とは？",
           "blocks": [
-            { "t": "big", "text": "**経営戦略** = 競争で勝つ方針", "sub": "方針と計画のセット" }
+            {
+              "t": "big",
+              "text": "**経営戦略** = 競争で勝つ方針",
+              "sub": "方針と計画のセット"
+            }
           ]
         },
         {
-          "emoji": "💎", "title": "コアコンピタンス",
+          "emoji": "💎",
+          "title": "コアコンピタンス",
           "blocks": [
-            { "t": "analogy", "icon": "💎",
+            {
+              "t": "analogy",
+              "icon": "💎",
               "real": "自分だけの特技。\n**マネされにくい強み**。",
-              "tech": "**コアコンピタンス**。企業独自の強み。" }
+              "tech": "**コアコンピタンス**。企業独自の強み。"
+            }
           ]
         },
         {
-          "emoji": "💎", "title": "おぼえる一言",
+          "emoji": "💎",
+          "title": "おぼえる一言",
           "blocks": [
-            { "t": "big", "text": "**コアコンピタンス** = 独自の強み", "sub": "競合に模倣されにくい" }
+            {
+              "t": "big",
+              "text": "**コアコンピタンス** = 独自の強み",
+              "sub": "競合に模倣されにくい"
+            }
           ]
         },
         {
-          "emoji": "🤝", "title": "M&A とは？",
+          "emoji": "🤝",
+          "title": "M&A とは？",
           "blocks": [
-            { "t": "big", "text": "**M&A** = 合併と買収", "sub": "会社どうしをつなぐ・買う" }
+            {
+              "t": "big",
+              "text": "**M&A** = 合併と買収",
+              "sub": "会社どうしをつなぐ・買う"
+            }
           ]
         },
         {
-          "emoji": "🔗", "title": "合併の流れ（イメージ）",
+          "emoji": "🔗",
+          "title": "合併の流れ（イメージ）",
           "blocks": [
-            { "t": "anim", "caption": "▶ を押して変化を見る",
+            {
+              "t": "anim",
+              "caption": "▶ を押して変化を見る",
               "frames": [
-                { "visual": "🏫 A 高校\n🏫 B 高校", "text": "別々の部活ネットがある" },
-                { "visual": "🤝 連携を決定", "text": "強みを合わせる（M&A のイメージ）" },
-                { "visual": "🏫 ひとつの運営", "text": "==ひとつにまとまる==（合併）" }
-              ] }
+                {
+                  "visual": "🏫 A 高校\n🏫 B 高校",
+                  "text": "別々の部活ネットがある"
+                },
+                {
+                  "visual": "🤝 連携を決定",
+                  "text": "強みを合わせる（M&A のイメージ）"
+                },
+                {
+                  "visual": "🏫 ひとつの運営",
+                  "text": "==ひとつにまとまる==（合併）"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🔗", "title": "アライアンスとは？",
+          "emoji": "🔗",
+          "title": "アライアンスとは？",
           "blocks": [
-            { "t": "big", "text": "**アライアンス** = 戦略的提携", "sub": "別会社のまま協力する" }
+            {
+              "t": "big",
+              "text": "**アライアンス** = 戦略的提携",
+              "sub": "別会社のまま協力する"
+            }
           ]
         },
         {
-          "emoji": "🔍", "title": "M&A とアライアンス",
+          "emoji": "🔍",
+          "title": "M&A とアライアンス",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🤝", "title": "M&A", "items": ["合併・買収", "==ひとつになる=="] },
-              "right": { "icon": "🔗", "title": "アライアンス", "items": ["提携", "別会社のまま"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🤝",
+                "title": "M&A",
+                "items": [
+                  "合併・買収",
+                  "==ひとつになる=="
+                ]
+              },
+              "right": {
+                "icon": "🔗",
+                "title": "アライアンス",
+                "items": [
+                  "提携",
+                  "別会社のまま"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📤", "title": "アウトソーシング",
+          "emoji": "📤",
+          "title": "アウトソーシング",
           "blocks": [
-            { "t": "big", "text": "**アウトソーシング** = 外に任せる", "sub": "業務を外部企業へ委託" }
+            {
+              "t": "big",
+              "text": "**アウトソーシング** = 外に任せる",
+              "sub": "業務を外部企業へ委託"
+            }
           ]
         },
         {
-          "emoji": "🧹", "title": "学校での例",
+          "emoji": "🧹",
+          "title": "学校での例",
           "blocks": [
-            { "t": "example", "label": "具体例", "title": "清掃を専門会社に",
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "清掃を専門会社に",
               "before": "生徒会が全部やる",
               "after": "清掃会社に委託",
               "afterLabel": "アウトソーシング",
-              "why": "得意な外の力を借りて、本業に集中する。" }
+              "why": "得意な外の力を借りて、本業に集中する。"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験ではここ",
+          "emoji": "📝",
+          "title": "試験ではここ",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "マネされにくい強み = **コアコンピタンス**。\nM&A = ==合併と買収==。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "マネされにくい強み = **コアコンピタンス**。\nM&A = ==合併と買収==。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "掃除を専門会社に任せるのは？",
-              "choices": ["M&A", "アウトソーシング", "特許権", "標本化"], "answer": 1,
-              "explain": "外部委託は **アウトソーシング**。", "hint": "外に出す。" }
+            {
+              "t": "check",
+              "q": "掃除を専門会社に任せるのは？",
+              "choices": [
+                "M&A",
+                "アウトソーシング",
+                "特許権",
+                "標本化"
+              ],
+              "answer": 1,
+              "explain": "外部委託は **アウトソーシング**。",
+              "hint": "外に出す。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "別会社のまま協力する関係は？",
-              "choices": ["M&A", "アライアンス", "B/S", "ラスタ"],
-              "answer": 1, "explain": "**アライアンス**は戦略的提携。" }
+            {
+              "t": "check",
+              "q": "別会社のまま協力する関係は？",
+              "choices": [
+                "M&A",
+                "アライアンス",
+                "B/S",
+                "ラスタ"
+              ],
+              "answer": 1,
+              "explain": "**アライアンス**は戦略的提携。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**コアコンピタンス** … 独自の強み", "**M&A** … 合併と買収", "**アウトソーシング** … 外注"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**コアコンピタンス** … 独自の強み",
+                "**M&A** … 合併と買収",
+                "**アウトソーシング** … 外注"
+              ]
+            }
           ]
         }
       ]
@@ -118,105 +221,219 @@
     "69": {
       "slides": [
         {
-          "layout": "title", "emoji": "📣", "title": "マーケティングと e-Biz",
+          "layout": "title",
+          "emoji": "📣",
+          "title": "マーケティングと e-Biz",
           "subtitle": "売れる仕組みと、\nネットでの取引を学ぼう。",
           "blocks": []
         },
         {
-          "emoji": "🏠", "title": "たとえ話から",
+          "emoji": "🏠",
+          "title": "4P（マーケティングミックス）とは",
           "blocks": [
-            { "t": "analogy", "icon": "🧁",
+            {
+              "t": "analogy",
+              "icon": "🧁",
               "real": "お菓子屋さん。\n**何を・いくらで・どこで・どう知らせるか**。",
-              "tech": "この 4 つが **4P（マーケティングミックス）**。" }
+              "tech": "この 4 つが **4P（マーケティングミックス）**。"
+            }
           ]
         },
         {
-          "emoji": "📦", "title": "4P とは？",
+          "emoji": "📦",
+          "title": "4P とは？",
           "blocks": [
-            { "t": "big", "text": "**4P** = 製品・価格・流通・販促", "sub": "Product / Price / Place / Promotion" }
+            {
+              "t": "big",
+              "text": "**4P** = 製品・価格・流通・販促",
+              "sub": "Product / Price / Place / Promotion"
+            }
           ]
         },
         {
-          "emoji": "📋", "title": "4P の一覧",
+          "emoji": "📋",
+          "title": "4P の一覧",
           "blocks": [
-            { "t": "table", "head": ["P", "意味"],
-              "rows": [["Product", "製品"], ["Price", "価格"], ["Place", "流通"], ["Promotion", "販促"]],
-              "caption": "==People は入らない==" }
-          ]
-        },
-        {
-          "emoji": "🤝", "title": "CRM とは？",
-          "blocks": [
-            { "t": "big", "text": "**CRM** = 顧客との関係管理", "sub": "顧客情報を管理して関係を強くする" }
-          ]
-        },
-        {
-          "emoji": "🚚", "title": "SCM とは？",
-          "blocks": [
-            { "t": "analogy", "icon": "🔗",
-              "real": "材料 → 工場 → 店。\n**つながりの流れ**をうまくする。",
-              "tech": "**SCM**。調達から販売までの供給連鎖を最適化。" }
-          ]
-        },
-        {
-          "emoji": "🔍", "title": "CRM と SCM のちがい",
-          "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🤝", "title": "CRM", "items": ["==顧客==との関係"] },
-              "right": { "icon": "🚚", "title": "SCM", "items": ["==供給==の流れ"] },
-              "vs": "VS" }
-          ]
-        },
-        {
-          "emoji": "🛒", "title": "EC とは？",
-          "blocks": [
-            { "t": "big", "text": "**EC** = ネットでの取引", "sub": "電子商取引" }
-          ]
-        },
-        {
-          "emoji": "🔎", "title": "SEO とは？",
-          "blocks": [
-            { "t": "big", "text": "**SEO** = 検索で上位をねらう", "sub": "検索エンジン最適化" }
-          ]
-        },
-        {
-          "emoji": "🔍", "title": "検索の具体例",
-          "blocks": [
-            { "t": "example", "label": "具体例", "title": "「文化祭 牛乳パン」",
-              "rows": [
-                { "label": "上位のサイト", "value": "見出し・本文にキーワード", "hl": true },
-                { "label": "下位のサイト", "value": "言葉がほとんどない" }
+            {
+              "t": "table",
+              "head": [
+                "P",
+                "意味"
               ],
-              "why": "検索サイトが「何のページか」を読み取って並べ替える。" }
+              "rows": [
+                [
+                  "Product",
+                  "製品"
+                ],
+                [
+                  "Price",
+                  "価格"
+                ],
+                [
+                  "Place",
+                  "流通"
+                ],
+                [
+                  "Promotion",
+                  "販促"
+                ]
+              ],
+              "caption": "==People は入らない=="
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験ではここ",
+          "emoji": "🤝",
+          "title": "CRM とは？",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "4P に **People は入らない**。\n顧客関係 = ==CRM==／供給連鎖 = **SCM**。" }
+            {
+              "t": "big",
+              "text": "**CRM** = 顧客との関係管理",
+              "sub": "顧客情報を管理して関係を強くする"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "🚚",
+          "title": "SCM とは？",
           "blocks": [
-            { "t": "check", "q": "お客さんの購入履歴を管理して関係を強くする仕組みは？",
-              "choices": ["SCM", "CRM", "EOQ", "SVG"], "answer": 1,
-              "explain": "顧客関係は **CRM**。", "hint": "Customer の C。" }
+            {
+              "t": "analogy",
+              "icon": "🔗",
+              "real": "材料 → 工場 → 店。\n**つながりの流れ**をうまくする。",
+              "tech": "**SCM**。調達から販売までの供給連鎖を最適化。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "🔍",
+          "title": "CRM と SCM のちがい",
           "blocks": [
-            { "t": "check", "q": "4P に含まれるのは？",
-              "choices": ["People", "Price", "Patent", "Pixel"],
-              "answer": 1, "explain": "**Price（価格）**は 4P のひとつ。" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🤝",
+                "title": "CRM",
+                "items": [
+                  "==顧客==との関係"
+                ]
+              },
+              "right": {
+                "icon": "🚚",
+                "title": "SCM",
+                "items": [
+                  "==供給==の流れ"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🛒",
+          "title": "EC とは？",
           "blocks": [
-            { "t": "bullets", "items": ["**4P** … 製品・価格・流通・販促", "**CRM** … 顧客", "**SCM** … 供給連鎖"] }
+            {
+              "t": "big",
+              "text": "**EC** = ネットでの取引",
+              "sub": "電子商取引"
+            }
+          ]
+        },
+        {
+          "emoji": "🔎",
+          "title": "SEO とは？",
+          "blocks": [
+            {
+              "t": "big",
+              "text": "**SEO** = 検索で上位をねらう",
+              "sub": "検索エンジン最適化"
+            }
+          ]
+        },
+        {
+          "emoji": "🔍",
+          "title": "検索の具体例",
+          "blocks": [
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "「文化祭 牛乳パン」",
+              "rows": [
+                {
+                  "label": "上位のサイト",
+                  "value": "見出し・本文にキーワード",
+                  "hl": true
+                },
+                {
+                  "label": "下位のサイト",
+                  "value": "言葉がほとんどない"
+                }
+              ],
+              "why": "検索サイトが「何のページか」を読み取って並べ替える。"
+            }
+          ]
+        },
+        {
+          "emoji": "📝",
+          "title": "試験ではここ",
+          "blocks": [
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "4P に **People は入らない**。\n顧客関係 = ==CRM==／供給連鎖 = **SCM**。"
+            }
+          ]
+        },
+        {
+          "emoji": "✅",
+          "title": "確認①",
+          "blocks": [
+            {
+              "t": "check",
+              "q": "お客さんの購入履歴を管理して関係を強くする仕組みは？",
+              "choices": [
+                "SCM",
+                "CRM",
+                "EOQ",
+                "SVG"
+              ],
+              "answer": 1,
+              "explain": "顧客関係は **CRM**。",
+              "hint": "Customer の C。"
+            }
+          ]
+        },
+        {
+          "emoji": "✅",
+          "title": "確認②",
+          "blocks": [
+            {
+              "t": "check",
+              "q": "4P に含まれるのは？",
+              "choices": [
+                "People",
+                "Price",
+                "Patent",
+                "Pixel"
+              ],
+              "answer": 1,
+              "explain": "**Price（価格）**は 4P のひとつ。"
+            }
+          ]
+        },
+        {
+          "emoji": "🏁",
+          "title": "まとめ",
+          "blocks": [
+            {
+              "t": "bullets",
+              "items": [
+                "**4P** … 製品・価格・流通・販促",
+                "**CRM** … 顧客",
+                "**SCM** … 供給連鎖"
+              ]
+            }
           ]
         }
       ]
@@ -224,96 +441,192 @@
     "70": {
       "slides": [
         {
-          "layout": "title", "emoji": "🏛️", "title": "IT 戦略とガバナンス",
+          "layout": "title",
+          "emoji": "🏛️",
+          "title": "IT 戦略とガバナンス",
           "subtitle": "IT を経営の味方にする\n仕組みを学ぼう。",
           "blocks": []
         },
         {
-          "emoji": "🏠", "title": "たとえ話から",
+          "emoji": "🏠",
+          "title": "IT ガバナンスとは",
           "blocks": [
-            { "t": "analogy", "icon": "🧭",
+            {
+              "t": "analogy",
+              "icon": "🧭",
               "real": "部活の方針と練習メニュー。\n**方針に合わせて道具を使う**。",
-              "tech": "経営方針に合わせて IT を使うのが\n**IT ガバナンス**。" }
+              "tech": "経営方針に合わせて IT を使うのが\n**IT ガバナンス**。"
+            }
           ]
         },
         {
-          "emoji": "🏛️", "title": "IT ガバナンスとは？",
+          "emoji": "🏛️",
+          "title": "IT ガバナンスとは？",
           "blocks": [
-            { "t": "big", "text": "**IT ガバナンス** = IT の統制", "sub": "経営戦略と IT をそろえる" }
+            {
+              "t": "big",
+              "text": "**IT ガバナンス** = IT の統制",
+              "sub": "経営戦略と IT をそろえる"
+            }
           ]
         },
         {
-          "emoji": "🔄", "title": "BPR のたとえ",
+          "emoji": "🔄",
+          "title": "BPR のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🏗️",
+            {
+              "t": "analogy",
+              "icon": "🏗️",
               "real": "部屋の模様替えではなく、\n**間取りから作り直す**。",
-              "tech": "**BPR**。業務プロセスを抜本的に再設計。" }
+              "tech": "**BPR**。業務プロセスを抜本的に再設計。"
+            }
           ]
         },
         {
-          "emoji": "🔄", "title": "BPR とは？",
+          "emoji": "🔄",
+          "title": "BPR とは？",
           "blocks": [
-            { "t": "big", "text": "**BPR** = 業務を根本から再設計", "sub": "小さな改善ではなく抜本的に" }
+            {
+              "t": "big",
+              "text": "**BPR** = 業務を根本から再設計",
+              "sub": "小さな改善ではなく抜本的に"
+            }
           ]
         },
         {
-          "emoji": "📋", "title": "小改善 vs 抜本",
+          "emoji": "📋",
+          "title": "小改善 vs 抜本",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🖊️", "title": "小改善", "items": ["用紙を 1 枚減らす", "手順はそのまま"] },
-              "right": { "icon": "🏗️", "title": "BPR", "items": ["申請を ==ペーパーレス==", "流れごと作り直す"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🖊️",
+                "title": "小改善",
+                "items": [
+                  "用紙を 1 枚減らす",
+                  "手順はそのまま"
+                ]
+              },
+              "right": {
+                "icon": "🏗️",
+                "title": "BPR",
+                "items": [
+                  "申請を ==ペーパーレス==",
+                  "流れごと作り直す"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "🏢", "title": "ERP とは？",
+          "emoji": "🏢",
+          "title": "ERP とは？",
           "blocks": [
-            { "t": "big", "text": "**ERP** = 基幹業務の統合システム", "sub": "会計・在庫などをまとめて管理" }
+            {
+              "t": "big",
+              "text": "**ERP** = 基幹業務の統合システム",
+              "sub": "会計・在庫などをまとめて管理"
+            }
           ]
         },
         {
-          "emoji": "⚖️", "title": "SoR と SoE",
+          "emoji": "⚖️",
+          "title": "SoR と SoE",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "📒", "title": "SoR", "items": ["記録のシステム", "==安定==重視"] },
-              "right": { "icon": "⚡", "title": "SoE", "items": ["関与のシステム", "==変化==対応"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "📒",
+                "title": "SoR",
+                "items": [
+                  "記録のシステム",
+                  "==安定==重視"
+                ]
+              },
+              "right": {
+                "icon": "⚡",
+                "title": "SoE",
+                "items": [
+                  "関与のシステム",
+                  "==変化==対応"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "まちがえやすい点",
+          "emoji": "⚠️",
+          "title": "まちがえやすい点",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "IT ガバナンスは「コスト削減だけ」ではない。\n目的は ==経営戦略と IT の整合==。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "IT ガバナンスは「コスト削減だけ」ではない。\n目的は ==経営戦略と IT の整合==。"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験ではここ",
+          "emoji": "📝",
+          "title": "試験ではここ",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "基幹統合 = **ERP**。\n抜本再設計 = ==BPR==。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "基幹統合 = **ERP**。\n抜本再設計 = ==BPR==。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "会計・在庫・人事などを一つの基幹でまとめるのは？",
-              "choices": ["CRM", "ERP", "SEO", "GUI"], "answer": 1,
-              "explain": "基幹統合は **ERP**。", "hint": "Enterprise の E。" }
+            {
+              "t": "check",
+              "q": "会計・在庫・人事などを一つの基幹でまとめるのは？",
+              "choices": [
+                "CRM",
+                "ERP",
+                "SEO",
+                "GUI"
+              ],
+              "answer": 1,
+              "explain": "基幹統合は **ERP**。",
+              "hint": "Enterprise の E。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "業務の流れを根本から作り直す手法は？",
-              "choices": ["BPR", "EOQ", "SVG", "4P"],
-              "answer": 0, "explain": "**BPR**は抜本的な再設計。" }
+            {
+              "t": "check",
+              "q": "業務の流れを根本から作り直す手法は？",
+              "choices": [
+                "BPR",
+                "EOQ",
+                "SVG",
+                "4P"
+              ],
+              "answer": 0,
+              "explain": "**BPR**は抜本的な再設計。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**IT ガバナンス** … 経営と IT をそろえる", "**BPR** … 抜本再設計", "**ERP** … 基幹統合"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**IT ガバナンス** … 経営と IT をそろえる",
+                "**BPR** … 抜本再設計",
+                "**ERP** … 基幹統合"
+              ]
+            }
           ]
         }
       ]
@@ -321,95 +634,191 @@
     "71": {
       "slides": [
         {
-          "layout": "title", "emoji": "📑", "title": "システム調達と契約",
+          "layout": "title",
+          "emoji": "📑",
+          "title": "システム調達と契約",
           "subtitle": "外注するときの\n文書と契約の型を学ぼう。",
           "blocks": []
         },
         {
-          "emoji": "🏠", "title": "たとえ話から",
+          "emoji": "🏠",
+          "title": "用語の定義とたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🏠",
+            {
+              "t": "analogy",
+              "icon": "🏠",
               "real": "リフォーム。\nまず情報を集め、次に**提案を頼む**。",
-              "tech": "システム調達も、文書の順番がある。" }
+              "tech": "システム調達も、文書の順番がある。"
+            }
           ]
         },
         {
-          "emoji": "📨", "title": "RFI とは？",
+          "emoji": "📨",
+          "title": "RFI とは？",
           "blocks": [
-            { "t": "big", "text": "**RFI** = 情報提供の依頼", "sub": "技術や実績をまず聞く" }
+            {
+              "t": "big",
+              "text": "**RFI** = 情報提供の依頼",
+              "sub": "技術や実績をまず聞く"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "RFP とは？",
+          "emoji": "📝",
+          "title": "RFP とは？",
           "blocks": [
-            { "t": "big", "text": "**RFP** = 提案依頼書", "sub": "要件・条件を書いて提案を頼む" }
+            {
+              "t": "big",
+              "text": "**RFP** = 提案依頼書",
+              "sub": "要件・条件を書いて提案を頼む"
+            }
           ]
         },
         {
-          "emoji": "🔍", "title": "RFI と RFP のちがい",
+          "emoji": "🔍",
+          "title": "RFI と RFP のちがい",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "📨", "title": "RFI", "items": ["情報を聞く", "まだ提案前"] },
-              "right": { "icon": "📝", "title": "RFP", "items": ["==提案を依頼==", "要件を記載"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "📨",
+                "title": "RFI",
+                "items": [
+                  "情報を聞く",
+                  "まだ提案前"
+                ]
+              },
+              "right": {
+                "icon": "📝",
+                "title": "RFP",
+                "items": [
+                  "==提案を依頼==",
+                  "要件を記載"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📏", "title": "SLA とは？",
+          "emoji": "📏",
+          "title": "SLA とは？",
           "blocks": [
-            { "t": "big", "text": "**SLA** = 品質の合意書", "sub": "サービス水準を文書で約束" }
+            {
+              "t": "big",
+              "text": "**SLA** = 品質の合意書",
+              "sub": "サービス水準を文書で約束"
+            }
           ]
         },
         {
-          "emoji": "🏗️", "title": "請負契約",
+          "emoji": "🏗️",
+          "title": "請負契約",
           "blocks": [
-            { "t": "analogy", "icon": "🏗️",
+            {
+              "t": "analogy",
+              "icon": "🏗️",
               "real": "「この家を完成させて」と頼む。\n**できあがりに責任**がある。",
-              "tech": "**請負契約**。成果物の完成義務あり。" }
+              "tech": "**請負契約**。成果物の完成義務あり。"
+            }
           ]
         },
         {
-          "emoji": "👷", "title": "準委任契約",
+          "emoji": "👷",
+          "title": "準委任契約",
           "blocks": [
-            { "t": "big", "text": "**準委任** = 作業を任せる契約", "sub": "成果物の完成義務はなし" }
+            {
+              "t": "big",
+              "text": "**準委任** = 作業を任せる契約",
+              "sub": "成果物の完成義務はなし"
+            }
           ]
         },
         {
-          "emoji": "🔍", "title": "請負と準委任",
+          "emoji": "🔍",
+          "title": "請負と準委任",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🏗️", "title": "請負", "items": ["==完成義務あり=="] },
-              "right": { "icon": "👷", "title": "準委任", "items": ["遂行を委託", "完成義務なし"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🏗️",
+                "title": "請負",
+                "items": [
+                  "==完成義務あり=="
+                ]
+              },
+              "right": {
+                "icon": "👷",
+                "title": "準委任",
+                "items": [
+                  "遂行を委託",
+                  "完成義務なし"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験ではここ",
+          "emoji": "📝",
+          "title": "試験ではここ",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "提案依頼 = **RFP**。\n完成義務あり = ==請負契約==。\n品質合意 = **SLA**。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "提案依頼 = **RFP**。\n完成義務あり = ==請負契約==。\n品質合意 = **SLA**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "「この条件で提案してください」と出す文書は？",
-              "choices": ["RFI", "RFP", "ROI", "B/S"], "answer": 1,
-              "explain": "提案依頼は **RFP**。", "hint": "Proposal の P。" }
+            {
+              "t": "check",
+              "q": "「この条件で提案してください」と出す文書は？",
+              "choices": [
+                "RFI",
+                "RFP",
+                "ROI",
+                "B/S"
+              ],
+              "answer": 1,
+              "explain": "提案依頼は **RFP**。",
+              "hint": "Proposal の P。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "「完成まで責任を持つ」契約は？",
-              "choices": ["準委任契約", "請負契約", "NDA", "SEO"],
-              "answer": 1, "explain": "**請負**は成果物の完成義務あり。" }
+            {
+              "t": "check",
+              "q": "「完成まで責任を持つ」契約は？",
+              "choices": [
+                "準委任契約",
+                "請負契約",
+                "NDA",
+                "SEO"
+              ],
+              "answer": 1,
+              "explain": "**請負**は成果物の完成義務あり。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**RFP** … 提案依頼", "**SLA** … 品質合意", "**請負** … 完成義務あり"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**RFP** … 提案依頼",
+                "**SLA** … 品質合意",
+                "**請負** … 完成義務あり"
+              ]
+            }
           ]
         }
       ]

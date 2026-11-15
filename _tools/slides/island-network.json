@@ -4,108 +4,220 @@
     "47": {
       "slides": [
         {
-          "layout": "title", "emoji": "🌐", "title": "OSI 参照モデル",
+          "layout": "title",
+          "emoji": "🌐",
+          "title": "OSI 参照モデル",
           "subtitle": "通信の仕事を、\n==7 つの階== に分ける。",
           "blocks": []
         },
         {
-          "emoji": "📮", "title": "たとえ話から",
+          "emoji": "📮",
+          "title": "用語のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "📮",
+            {
+              "t": "analogy",
+              "icon": "📮",
               "real": "手紙は\n**書く人 / 封筒 / 配達** で分業。",
-              "tech": "通信も同じ。\n仕事を ==階層== に分ける。" }
+              "tech": "通信も同じ。\n仕事を ==階層== に分ける。"
+            }
           ]
         },
         {
-          "emoji": "7️⃣", "title": "それが OSI",
+          "emoji": "7️⃣",
+          "title": "それが OSI",
           "blocks": [
-            { "t": "big", "text": "**OSI** = 通信を ==7 層== に分けた標準" }
+            {
+              "t": "big",
+              "text": "**OSI** = 通信を ==7 層== に分けた標準"
+            }
           ]
         },
         {
-          "emoji": "1️⃣", "title": "第 1 層・物理層",
+          "emoji": "1️⃣",
+          "title": "第 1 層・物理層",
           "blocks": [
-            { "t": "big", "text": "**物理層** = ケーブル・電波", "sub": "0 と 1 を電気や光で運ぶ" }
+            {
+              "t": "big",
+              "text": "**物理層** = ケーブル・電波",
+              "sub": "0 と 1 を電気や光で運ぶ"
+            }
           ]
         },
         {
-          "emoji": "2️⃣", "title": "第 2 層・データリンク層",
+          "emoji": "2️⃣",
+          "title": "第 2 層・データリンク層",
           "blocks": [
-            { "t": "big", "text": "**データリンク層** = 同じネット内", "sub": "==MAC アドレス== で隣へ渡す" }
+            {
+              "t": "big",
+              "text": "**データリンク層** = 同じネット内",
+              "sub": "==MAC アドレス== で隣へ渡す"
+            }
           ]
         },
         {
-          "emoji": "3️⃣", "title": "第 3 層・ネットワーク層",
+          "emoji": "3️⃣",
+          "title": "第 3 層・ネットワーク層",
           "blocks": [
-            { "t": "big", "text": "**ネットワーク層** = 別ネットへ", "sub": "==IP アドレス== で道順を決める" }
+            {
+              "t": "big",
+              "text": "**ネットワーク層** = 別ネットへ",
+              "sub": "==IP アドレス== で道順を決める"
+            }
           ]
         },
         {
-          "emoji": "4️⃣", "title": "第 4 層・トランスポート層",
+          "emoji": "4️⃣",
+          "title": "第 4 層・トランスポート層",
           "blocks": [
-            { "t": "big", "text": "**トランスポート層** = 端末どうし", "sub": "==TCP / UDP== とポート番号" }
+            {
+              "t": "big",
+              "text": "**トランスポート層** = 端末どうし",
+              "sub": "==TCP / UDP== とポート番号"
+            }
           ]
         },
         {
-          "emoji": "5️⃣", "title": "上の 3 層（5〜7）",
+          "emoji": "5️⃣",
+          "title": "上の 3 層（5〜7）",
           "blocks": [
-            { "t": "layers", "top": "利用者に近い", "bottom": "少し下",
+            {
+              "t": "layers",
+              "top": "利用者に近い",
+              "bottom": "少し下",
               "items": [
-                { "icon": "7️⃣", "label": "アプリ層", "sub": "HTTP・SMTP など" },
-                { "icon": "6️⃣", "label": "プレゼン層", "sub": "文字コード・暗号化" },
-                { "icon": "5️⃣", "label": "セッション層", "sub": "会話の開始〜終了" }
-              ] }
+                {
+                  "icon": "7️⃣",
+                  "label": "アプリ層",
+                  "sub": "HTTP・SMTP など"
+                },
+                {
+                  "icon": "6️⃣",
+                  "label": "プレゼン層",
+                  "sub": "文字コード・暗号化"
+                },
+                {
+                  "icon": "5️⃣",
+                  "label": "セッション層",
+                  "sub": "会話の開始〜終了"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🎬", "title": "封筒が下に降りる",
+          "emoji": "🎬",
+          "title": "封筒が下に降りる",
           "blocks": [
-            { "t": "anim", "caption": "▶ Web ページを送る",
+            {
+              "t": "anim",
+              "caption": "▶ Web ページを送る",
               "frames": [
-                { "visual": "⑦ HTTP", "text": "アプリ層のデータ" },
-                { "visual": "+④ TCP", "text": "トランスポートで包む" },
-                { "visual": "+③ IP", "text": "ネットワーク層で住所" },
-                { "visual": "① ケーブル", "text": "物理層で ==電気/光==" }
-              ] }
+                {
+                  "visual": "⑦ HTTP",
+                  "text": "アプリ層のデータ"
+                },
+                {
+                  "visual": "+④ TCP",
+                  "text": "トランスポートで包む"
+                },
+                {
+                  "visual": "+③ IP",
+                  "text": "ネットワーク層で住所"
+                },
+                {
+                  "visual": "① ケーブル",
+                  "text": "物理層で ==電気/光=="
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🏷️", "title": "MAC と IP のちがい",
+          "emoji": "🏷️",
+          "title": "MAC と IP のちがい",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🪪", "title": "MAC", "items": ["第 2 層", "機器の番号"] },
-              "right": { "icon": "🏠", "title": "IP", "items": ["第 3 層", "ネット上の住所"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🪪",
+                "title": "MAC",
+                "items": [
+                  "第 2 層",
+                  "機器の番号"
+                ]
+              },
+              "right": {
+                "icon": "🏠",
+                "title": "IP",
+                "items": [
+                  "第 3 層",
+                  "ネット上の住所"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "層は ==下から数える==。\n物理が **第 1 層**。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "層は ==下から数える==。\n物理が **第 1 層**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "TCP が属する層は？",
-              "choices": ["物理層", "データリンク層", "トランスポート層", "アプリ層"],
-              "answer": 2, "explain": "**トランスポート層**（第 4 層）。",
-              "hint": "ポート番号を使う層。" }
+            {
+              "t": "check",
+              "q": "TCP が属する層は？",
+              "choices": [
+                "物理層",
+                "データリンク層",
+                "トランスポート層",
+                "アプリ層"
+              ],
+              "answer": 2,
+              "explain": "**トランスポート層**（第 4 層）。",
+              "hint": "ポート番号を使う層。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "ルータが主に動く層は？",
-              "choices": ["物理層", "データリンク層", "ネットワーク層", "セッション層"],
-              "answer": 2, "explain": "**ネットワーク層**で IP を見る。" }
+            {
+              "t": "check",
+              "q": "ルータが主に動く層は？",
+              "choices": [
+                "物理層",
+                "データリンク層",
+                "ネットワーク層",
+                "セッション層"
+              ],
+              "answer": 2,
+              "explain": "**ネットワーク層**で IP を見る。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**OSI** … 7 層", "**MAC** … 第 2 層", "**IP** … 第 3 層"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**OSI** … 7 層",
+                "**MAC** … 第 2 層",
+                "**IP** … 第 3 層"
+              ]
+            }
           ]
         }
       ]
@@ -113,108 +225,220 @@
     "48": {
       "slides": [
         {
-          "layout": "title", "emoji": "🏠", "title": "IP アドレスとサブネット",
+          "layout": "title",
+          "emoji": "🏠",
+          "title": "IP アドレスとサブネット",
           "subtitle": "ネット上の住所と、\n==町と番地の境目==。",
           "blocks": []
         },
         {
-          "emoji": "📬", "title": "たとえ話から",
+          "emoji": "📬",
+          "title": "ホスト部とは",
           "blocks": [
-            { "t": "analogy", "icon": "🏠",
+            {
+              "t": "analogy",
+              "icon": "🏠",
               "real": "住所 = **町の名前** + **番地**。",
-              "tech": "IP も同じ。\n==ネットワーク部 + ホスト部==。" }
+              "tech": "IP も同じ。\n==ネットワーク部 + ホスト部==。"
+            }
           ]
         },
         {
-          "emoji": "4️⃣", "title": "IPv4 は 32 ビット",
+          "emoji": "4️⃣",
+          "title": "IPv4 は 32 ビット",
           "blocks": [
-            { "t": "big", "text": "**IPv4** = ==32 ビット==", "sub": "8 ビット × 4 をドットでつなぐ" }
+            {
+              "t": "big",
+              "text": "**IPv4** = ==32 ビット==",
+              "sub": "8 ビット × 4 をドットでつなぐ"
+            }
           ]
         },
         {
-          "emoji": "👀", "title": "見た目はこう",
+          "emoji": "👀",
+          "title": "見た目はこう",
           "blocks": [
-            { "t": "table", "head": ["2 進の一部", "10 進"],
-              "rows": [["11000000 …", "192.168.0.10"]],
-              "caption": "1 区切りは ==0〜255==" }
-          ]
-        },
-        {
-          "emoji": "6️⃣", "title": "IPv6 はもっと長い",
-          "blocks": [
-            { "t": "compare",
-              "left": { "icon": "4️⃣", "title": "IPv4", "items": ["==32 ビット=="] },
-              "right": { "icon": "6️⃣", "title": "IPv6", "items": ["==128 ビット=="] },
-              "vs": "VS" }
-          ]
-        },
-        {
-          "emoji": "🎭", "title": "サブネットマスクとは",
-          "blocks": [
-            { "t": "big", "text": "**マスク** = 町と番地の境目", "sub": "1 の並び＝ネットワーク部" }
-          ]
-        },
-        {
-          "emoji": "🔢", "title": "よく見る例",
-          "blocks": [
-            { "t": "table", "head": ["マスク", "ネットワーク部"],
-              "rows": [["255.255.255.0", "==24 ビット=="], ["255.255.0.0", "16 ビット"]],
-              "caption": "/24 とも書く（**CIDR**）" }
-          ]
-        },
-        {
-          "emoji": "✂️", "title": "CIDR とは",
-          "blocks": [
-            { "t": "big", "text": "**CIDR** = /数字 で境目を書く", "sub": "クラスにしばられない割当て" }
-          ]
-        },
-        {
-          "emoji": "🏢", "title": "NAT のたとえ",
-          "blocks": [
-            { "t": "analogy", "icon": "☎️",
-              "real": "会社は **内線** と **代表番号**。",
-              "tech": "**NAT** は\n==プライベート ↔ グローバル== 変換。" }
-          ]
-        },
-        {
-          "emoji": "📊", "title": "/24 で分ける",
-          "blocks": [
-            { "t": "example", "label": "具体例", "title": "192.168.0.10",
-              "rows": [
-                { "label": "ネット部", "value": "192.168.0.0（24 ビット）" },
-                { "label": "ホスト部", "value": "末尾 8 ビット → .10", "hl": true }
+            {
+              "t": "table",
+              "head": [
+                "2 進の一部",
+                "10 進"
               ],
-              "why": "マスクの 1 が ==町==、0 が ==番地==。" }
+              "rows": [
+                [
+                  "11000000 …",
+                  "192.168.0.10"
+                ]
+              ],
+              "caption": "1 区切りは ==0〜255=="
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "まちがえやすい点",
+          "emoji": "6️⃣",
+          "title": "IPv6 はもっと長い",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "IPv4 は **32**。\nIPv6 は ==128==。取りちがえ注意。" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "4️⃣",
+                "title": "IPv4",
+                "items": [
+                  "==32 ビット=="
+                ]
+              },
+              "right": {
+                "icon": "6️⃣",
+                "title": "IPv6",
+                "items": [
+                  "==128 ビット=="
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "🎭",
+          "title": "サブネットマスクとは",
           "blocks": [
-            { "t": "check", "q": "255.255.255.128 のネットワーク部は？",
-              "choices": ["24 ビット", "25 ビット", "26 ビット", "28 ビット"],
-              "answer": 1, "explain": "255×3 で 24。128 は 1 個 → ==25==。",
-              "hint": "128 は 10000000。" }
+            {
+              "t": "big",
+              "text": "**マスク** = 町と番地の境目",
+              "sub": "1 の並び＝ネットワーク部"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "🔢",
+          "title": "よく見る例",
           "blocks": [
-            { "t": "check", "q": "社内専用の住所を外の番号に変えるのは？",
-              "choices": ["DNS", "DHCP", "NAT", "ARP"],
-              "answer": 2, "explain": "**NAT** が変換する。" }
+            {
+              "t": "table",
+              "head": [
+                "マスク",
+                "ネットワーク部"
+              ],
+              "rows": [
+                [
+                  "255.255.255.0",
+                  "==24 ビット=="
+                ],
+                [
+                  "255.255.0.0",
+                  "16 ビット"
+                ]
+              ],
+              "caption": "/24 とも書く（**CIDR**）"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "✂️",
+          "title": "CIDR とは",
           "blocks": [
-            { "t": "bullets", "items": ["**IPv4** … 32 ビット", "**マスク** … 境目", "**NAT** … 内外の変換"] }
+            {
+              "t": "big",
+              "text": "**CIDR** = /数字 で境目を書く",
+              "sub": "クラスにしばられない割当て"
+            }
+          ]
+        },
+        {
+          "emoji": "🏢",
+          "title": "NAT のたとえ",
+          "blocks": [
+            {
+              "t": "analogy",
+              "icon": "☎️",
+              "real": "会社は **内線** と **代表番号**。",
+              "tech": "**NAT** は\n==プライベート ↔ グローバル== 変換。"
+            }
+          ]
+        },
+        {
+          "emoji": "📊",
+          "title": "/24 で分ける",
+          "blocks": [
+            {
+              "t": "example",
+              "label": "具体例",
+              "title": "192.168.0.10",
+              "rows": [
+                {
+                  "label": "ネット部",
+                  "value": "192.168.0.0（24 ビット）"
+                },
+                {
+                  "label": "ホスト部",
+                  "value": "末尾 8 ビット → .10",
+                  "hl": true
+                }
+              ],
+              "why": "マスクの 1 が ==町==、0 が ==番地==。"
+            }
+          ]
+        },
+        {
+          "emoji": "⚠️",
+          "title": "まちがえやすい点",
+          "blocks": [
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "IPv4 は **32**。\nIPv6 は ==128==。取りちがえ注意。"
+            }
+          ]
+        },
+        {
+          "emoji": "✅",
+          "title": "確認①",
+          "blocks": [
+            {
+              "t": "check",
+              "q": "255.255.255.128 のネットワーク部は？",
+              "choices": [
+                "24 ビット",
+                "25 ビット",
+                "26 ビット",
+                "28 ビット"
+              ],
+              "answer": 1,
+              "explain": "255×3 で 24。128 は 1 個 → ==25==。",
+              "hint": "128 は 10000000。"
+            }
+          ]
+        },
+        {
+          "emoji": "✅",
+          "title": "確認②",
+          "blocks": [
+            {
+              "t": "check",
+              "q": "社内専用の住所を外の番号に変えるのは？",
+              "choices": [
+                "DNS",
+                "DHCP",
+                "NAT",
+                "ARP"
+              ],
+              "answer": 2,
+              "explain": "**NAT** が変換する。"
+            }
+          ]
+        },
+        {
+          "emoji": "🏁",
+          "title": "まとめ",
+          "blocks": [
+            {
+              "t": "bullets",
+              "items": [
+                "**IPv4** … 32 ビット",
+                "**マスク** … 境目",
+                "**NAT** … 内外の変換"
+              ]
+            }
           ]
         }
       ]
@@ -222,111 +446,234 @@
     "49": {
       "slides": [
         {
-          "layout": "title", "emoji": "🚦", "title": "TCP / UDP とポート",
+          "layout": "title",
+          "emoji": "🚦",
+          "title": "TCP / UDP とポート",
           "subtitle": "確実に届けるか、\n==速く送るか==。",
           "blocks": []
         },
         {
-          "emoji": "📞", "title": "たとえ話から",
+          "emoji": "📞",
+          "title": "TCPとは",
           "blocks": [
-            { "t": "analogy", "icon": "📞",
+            {
+              "t": "analogy",
+              "icon": "📞",
               "real": "**電話**は確認して話す。\n**ハガキ**は出しっぱなし。",
-              "tech": "電話 ≈ **TCP**。\nハガキ ≈ ==UDP==。" }
+              "tech": "電話 ≈ **TCP**。\nハガキ ≈ ==UDP==。"
+            }
           ]
         },
         {
-          "emoji": "📞", "title": "TCP の特徴",
+          "emoji": "📞",
+          "title": "TCP の特徴",
           "blocks": [
-            { "t": "big", "text": "**TCP** = コネクション型", "sub": "届いたか確認し、欠けたら再送" }
+            {
+              "t": "big",
+              "text": "**TCP** = コネクション型",
+              "sub": "届いたか確認し、欠けたら再送"
+            }
           ]
         },
         {
-          "emoji": "📮", "title": "UDP の特徴",
+          "emoji": "📮",
+          "title": "UDP の特徴",
           "blocks": [
-            { "t": "big", "text": "**UDP** = コネクションレス", "sub": "速い。でも ==保証しない==" }
+            {
+              "t": "big",
+              "text": "**UDP** = コネクションレス",
+              "sub": "速い。でも ==保証しない=="
+            }
           ]
         },
         {
-          "emoji": "🤝", "title": "3 ウェイハンドシェイク",
+          "emoji": "🤝",
+          "title": "3 ウェイハンドシェイク",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "icon": "🙋", "label": "SYN", "sub": "つないでいい？" },
-              { "icon": "🙆", "label": "SYN+ACK", "sub": "いいよ" },
-              { "icon": "👍", "label": "ACK", "sub": "始めよう" }
-            ], "stepwise": true, "caption": "TCP が接続を始める手順" }
-          ]
-        },
-        {
-          "emoji": "🎬", "title": "3 回握手",
-          "blocks": [
-            { "t": "anim", "caption": "▶ 接続の始め方",
-              "frames": [
-                { "visual": "SYN", "text": "「つなげていい？」" },
-                { "visual": "SYN+ACK", "text": "「いいよ、君も？」" },
-                { "visual": "ACK", "text": "「始めよう」→ ==接続完了==" }
-              ] }
-          ]
-        },
-        {
-          "emoji": "📊", "title": "TCP と UDP",
-          "blocks": [
-            { "t": "example", "label": "具体例",
-              "rows": [
-                { "label": "Web", "value": "TCP（確実）" },
-                { "label": "ライブ配信", "value": "==UDP==（少し落ちても速さ）", "hl": true }
+            {
+              "t": "flow",
+              "steps": [
+                {
+                  "icon": "🙋",
+                  "label": "SYN",
+                  "sub": "つないでいい？"
+                },
+                {
+                  "icon": "🙆",
+                  "label": "SYN+ACK",
+                  "sub": "いいよ"
+                },
+                {
+                  "icon": "👍",
+                  "label": "ACK",
+                  "sub": "始めよう"
+                }
               ],
-              "why": "届けたいか／速さかで選ぶ。" }
+              "stepwise": true,
+              "caption": "TCP が接続を始める手順"
+            }
           ]
         },
         {
-          "emoji": "🚪", "title": "ポート番号とは",
+          "emoji": "🎬",
+          "title": "3 回握手",
           "blocks": [
-            { "t": "analogy", "icon": "🏢",
+            {
+              "t": "anim",
+              "caption": "▶ 接続の始め方",
+              "frames": [
+                {
+                  "visual": "SYN",
+                  "text": "「つなげていい？」"
+                },
+                {
+                  "visual": "SYN+ACK",
+                  "text": "「いいよ、君も？」"
+                },
+                {
+                  "visual": "ACK",
+                  "text": "「始めよう」→ ==接続完了=="
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "emoji": "📊",
+          "title": "TCP と UDP",
+          "blocks": [
+            {
+              "t": "example",
+              "label": "具体例",
+              "rows": [
+                {
+                  "label": "Web",
+                  "value": "TCP（確実）"
+                },
+                {
+                  "label": "ライブ配信",
+                  "value": "==UDP==（少し落ちても速さ）",
+                  "hl": true
+                }
+              ],
+              "why": "届けたいか／速さかで選ぶ。"
+            }
+          ]
+        },
+        {
+          "emoji": "🚪",
+          "title": "ポート番号とは",
+          "blocks": [
+            {
+              "t": "analogy",
+              "icon": "🏢",
               "real": "建物の住所 + **部屋番号**。",
-              "tech": "IP + **ポート** で\n==どのアプリか== を決める。" }
+              "tech": "IP + **ポート** で\n==どのアプリか== を決める。"
+            }
           ]
         },
         {
-          "emoji": "🔢", "title": "番号の範囲",
+          "emoji": "🔢",
+          "title": "番号の範囲",
           "blocks": [
-            { "t": "big", "text": "ポートは ==0〜65535==", "sub": "アプリを識別する番号" }
+            {
+              "t": "big",
+              "text": "ポートは ==0〜65535==",
+              "sub": "アプリを識別する番号"
+            }
           ]
         },
         {
-          "emoji": "📋", "title": "よく使う番号",
+          "emoji": "📋",
+          "title": "よく使う番号",
           "blocks": [
-            { "t": "table", "head": ["番号", "用途"],
-              "rows": [["80", "HTTP"], ["443", "HTTPS"], ["25", "SMTP"], ["53", "DNS"]],
-              "caption": "試験でよく出る番号" }
+            {
+              "t": "table",
+              "head": [
+                "番号",
+                "用途"
+              ],
+              "rows": [
+                [
+                  "80",
+                  "HTTP"
+                ],
+                [
+                  "443",
+                  "HTTPS"
+                ],
+                [
+                  "25",
+                  "SMTP"
+                ],
+                [
+                  "53",
+                  "DNS"
+                ]
+              ],
+              "caption": "試験でよく出る番号"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "順番は\n==SYN → SYN+ACK → ACK==。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "順番は\n==SYN → SYN+ACK → ACK==。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "遅れより速さが大切な配信向きは？",
-              "choices": ["TCP", "UDP", "どちらも同じ", "SMTP"],
-              "answer": 1, "explain": "**UDP** は軽い。" }
+            {
+              "t": "check",
+              "q": "遅れより速さが大切な配信向きは？",
+              "choices": [
+                "TCP",
+                "UDP",
+                "どちらも同じ",
+                "SMTP"
+              ],
+              "answer": 1,
+              "explain": "**UDP** は軽い。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "HTTPS の標準ポートは？",
-              "choices": ["25", "80", "110", "443"],
-              "answer": 3, "explain": "HTTPS は ==443==。HTTP は 80。" }
+            {
+              "t": "check",
+              "q": "HTTPS の標準ポートは？",
+              "choices": [
+                "25",
+                "80",
+                "110",
+                "443"
+              ],
+              "answer": 3,
+              "explain": "HTTPS は ==443==。HTTP は 80。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**TCP** … 確実", "**UDP** … 速い", "**ポート** … アプリの部屋番号"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**TCP** … 確実",
+                "**UDP** … 速い",
+                "**ポート** … アプリの部屋番号"
+              ]
+            }
           ]
         }
       ]
@@ -334,105 +681,221 @@
     "50": {
       "slides": [
         {
-          "layout": "title", "emoji": "📇", "title": "DNS・DHCP・メール",
+          "layout": "title",
+          "emoji": "📇",
+          "title": "DNS・DHCP・メール",
           "subtitle": "名前を調べる、番号を配る、\nメールを送る。",
           "blocks": []
         },
         {
-          "emoji": "📖", "title": "DNS のたとえ",
+          "emoji": "📖",
+          "title": "DNS のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "📖",
+            {
+              "t": "analogy",
+              "icon": "📖",
               "real": "電話帳で **名前 → 番号**。",
-              "tech": "**DNS** は\n==ドメイン名 → IP==。" }
+              "tech": "**DNS** は\n==ドメイン名 → IP==。"
+            }
           ]
         },
         {
-          "emoji": "🔎", "title": "DNS の流れ",
+          "emoji": "🔎",
+          "title": "DNS の流れ",
           "blocks": [
-            { "t": "flow", "stepwise": true, "steps": [
-              { "icon": "⌨️", "label": "名前を入力", "sub": "www.…" },
-              { "icon": "📖", "label": "DNS", "sub": "調べる" },
-              { "icon": "🔢", "label": "IP へ接続", "sub": "" }
-            ] }
+            {
+              "t": "flow",
+              "stepwise": true,
+              "steps": [
+                {
+                  "icon": "⌨️",
+                  "label": "名前を入力",
+                  "sub": "www.…"
+                },
+                {
+                  "icon": "📖",
+                  "label": "DNS",
+                  "sub": "調べる"
+                },
+                {
+                  "icon": "🔢",
+                  "label": "IP へ接続",
+                  "sub": ""
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🎬", "title": "DNS の具体例",
+          "emoji": "🎬",
+          "title": "DNS の具体例",
           "blocks": [
-            { "t": "anim", "caption": "▶ example.com",
+            {
+              "t": "anim",
+              "caption": "▶ example.com",
               "frames": [
-                { "visual": "example.com", "text": "名前を入力" },
-                { "visual": "DNS 問合せ", "text": "サーバが IP を返す" },
-                { "visual": "93.184.x.x", "text": "その IP へ接続" }
-              ] }
+                {
+                  "visual": "example.com",
+                  "text": "名前を入力"
+                },
+                {
+                  "visual": "DNS 問合せ",
+                  "text": "サーバが IP を返す"
+                },
+                {
+                  "visual": "93.184.x.x",
+                  "text": "その IP へ接続"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🏨", "title": "DHCP のたとえ",
+          "emoji": "🏨",
+          "title": "DHCP のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🏨",
+            {
+              "t": "analogy",
+              "icon": "🏨",
               "real": "ホテルのフロントが\n**部屋番号を自動で渡す**。",
-              "tech": "**DHCP** は\n==IP を自動割当て==。" }
+              "tech": "**DHCP** は\n==IP を自動割当て==。"
+            }
           ]
         },
         {
-          "emoji": "🎁", "title": "DHCP が渡すもの",
+          "emoji": "🎁",
+          "title": "DHCP が渡すもの",
           "blocks": [
-            { "t": "bullets", "items": ["**IP アドレス**", "サブネットマスク", "ゲートウェイ・DNS"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**IP アドレス**",
+                "サブネットマスク",
+                "ゲートウェイ・DNS"
+              ]
+            }
           ]
         },
         {
-          "emoji": "✉️", "title": "メール送信は SMTP",
+          "emoji": "✉️",
+          "title": "メール送信は SMTP",
           "blocks": [
-            { "t": "big", "text": "**SMTP** = メールを送る", "sub": "ポート ==25== が基本" }
+            {
+              "t": "big",
+              "text": "**SMTP** = メールを送る",
+              "sub": "ポート ==25== が基本"
+            }
           ]
         },
         {
-          "emoji": "📬", "title": "受信は 2 種類",
+          "emoji": "📬",
+          "title": "受信は 2 種類",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "📥", "title": "POP3", "items": ["端末へ持ち帰る"] },
-              "right": { "icon": "☁️", "title": "IMAP", "items": ["サーバに置いたまま"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "📥",
+                "title": "POP3",
+                "items": [
+                  "端末へ持ち帰る"
+                ]
+              },
+              "right": {
+                "icon": "☁️",
+                "title": "IMAP",
+                "items": [
+                  "サーバに置いたまま"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "🛤️", "title": "メールの道のり",
+          "emoji": "🛤️",
+          "title": "メールの道のり",
           "blocks": [
-            { "t": "flow", "steps": [
-              { "icon": "💻", "label": "送信", "sub": "SMTP" },
-              { "icon": "📥", "label": "保管", "sub": "メールサーバ" },
-              { "icon": "📱", "label": "受信", "sub": "POP3 / IMAP" }
-            ] }
+            {
+              "t": "flow",
+              "steps": [
+                {
+                  "icon": "💻",
+                  "label": "送信",
+                  "sub": "SMTP"
+                },
+                {
+                  "icon": "📥",
+                  "label": "保管",
+                  "sub": "メールサーバ"
+                },
+                {
+                  "icon": "📱",
+                  "label": "受信",
+                  "sub": "POP3 / IMAP"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "**名前調べ** = DNS。\n**番号配り** = DHCP。\n**送信** = SMTP。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "**名前調べ** = DNS。\n**番号配り** = DHCP。\n**送信** = SMTP。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "スマホと PC で同じ受信箱向きは？",
-              "choices": ["SMTP", "POP3", "IMAP", "DHCP"],
-              "answer": 2, "explain": "**IMAP** はサーバ上で管理。" }
+            {
+              "t": "check",
+              "q": "スマホと PC で同じ受信箱向きは？",
+              "choices": [
+                "SMTP",
+                "POP3",
+                "IMAP",
+                "DHCP"
+              ],
+              "answer": 2,
+              "explain": "**IMAP** はサーバ上で管理。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "ドメイン名を IP に変えるのは？",
-              "choices": ["DHCP", "NAT", "DNS", "ARP"],
-              "answer": 2, "explain": "**DNS**。" }
+            {
+              "t": "check",
+              "q": "ドメイン名を IP に変えるのは？",
+              "choices": [
+                "DHCP",
+                "NAT",
+                "DNS",
+                "ARP"
+              ],
+              "answer": 2,
+              "explain": "**DNS**。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**DNS** … 名前→IP", "**DHCP** … 自動割当て", "**SMTP** … 送信"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**DNS** … 名前→IP",
+                "**DHCP** … 自動割当て",
+                "**SMTP** … 送信"
+              ]
+            }
           ]
         }
       ]
@@ -440,101 +903,203 @@
     "51": {
       "slides": [
         {
-          "layout": "title", "emoji": "🔀", "title": "ルーティングとスイッチ",
+          "layout": "title",
+          "emoji": "🔀",
+          "title": "ルーティングとスイッチ",
           "subtitle": "同じ町の配達と、\n==町をまたぐ配達==。",
           "blocks": []
         },
         {
-          "emoji": "🏤", "title": "たとえ話から",
+          "emoji": "🏤",
+          "title": "L2 スイッチとは",
           "blocks": [
-            { "t": "analogy", "icon": "🏢",
+            {
+              "t": "analogy",
+              "icon": "🏢",
               "real": "マンション内は管理人。\n**別の町**は郵便局。",
-              "tech": "管理人 ≈ **L2 スイッチ**。\n郵便局 ≈ ==ルータ==。" }
+              "tech": "管理人 ≈ **L2 スイッチ**。\n郵便局 ≈ ==ルータ==。"
+            }
           ]
         },
         {
-          "emoji": "🔌", "title": "L2 スイッチ",
+          "emoji": "🔌",
+          "title": "L2 スイッチ",
           "blocks": [
-            { "t": "big", "text": "**L2 スイッチ** = 同じネット内", "sub": "==MAC アドレス== で転送" }
+            {
+              "t": "big",
+              "text": "**L2 スイッチ** = 同じネット内",
+              "sub": "==MAC アドレス== で転送"
+            }
           ]
         },
         {
-          "emoji": "🗺️", "title": "ルータ",
+          "emoji": "🗺️",
+          "title": "ルータ",
           "blocks": [
-            { "t": "big", "text": "**ルータ** = 別ネットへ", "sub": "==IP アドレス==（ネットワーク層）" }
+            {
+              "t": "big",
+              "text": "**ルータ** = 別ネットへ",
+              "sub": "==IP アドレス==（ネットワーク層）"
+            }
           ]
         },
         {
-          "emoji": "⚖️", "title": "いちばんのちがい",
+          "emoji": "⚖️",
+          "title": "いちばんのちがい",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "🔌", "title": "スイッチ", "items": ["第 2 層", "MAC"] },
-              "right": { "icon": "🔀", "title": "ルータ", "items": ["第 3 層", "IP"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "🔌",
+                "title": "スイッチ",
+                "items": [
+                  "第 2 層",
+                  "MAC"
+                ]
+              },
+              "right": {
+                "icon": "🔀",
+                "title": "ルータ",
+                "items": [
+                  "第 3 層",
+                  "IP"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "ルーティングテーブル",
+          "emoji": "📝",
+          "title": "ルーティングテーブル",
           "blocks": [
-            { "t": "big", "text": "**経路表** = 次の転送先のメモ", "sub": "宛先ネットごとに行き先を書く" }
+            {
+              "t": "big",
+              "text": "**経路表** = 次の転送先のメモ",
+              "sub": "宛先ネットごとに行き先を書く"
+            }
           ]
         },
         {
-          "emoji": "🚪", "title": "デフォルトゲートウェイ",
+          "emoji": "🚪",
+          "title": "デフォルトゲートウェイ",
           "blocks": [
-            { "t": "analogy", "icon": "🚪",
+            {
+              "t": "analogy",
+              "icon": "🚪",
               "real": "知らない宛先は\n**町の出口の郵便局**へ。",
-              "tech": "**デフォルトゲートウェイ** =\n==外への出口== のルータ IP。" }
+              "tech": "**デフォルトゲートウェイ** =\n==外への出口== のルータ IP。"
+            }
           ]
         },
         {
-          "emoji": "🎯", "title": "外へ出す流れ",
+          "emoji": "🎯",
+          "title": "外へ出す流れ",
           "blocks": [
-            { "t": "flow", "stepwise": true, "steps": [
-              { "icon": "💻", "label": "PC", "sub": "外の宛先" },
-              { "icon": "🚪", "label": "ゲートウェイ", "sub": "出口" },
-              { "icon": "🌍", "label": "外のネット", "sub": "" }
-            ] }
+            {
+              "t": "flow",
+              "stepwise": true,
+              "steps": [
+                {
+                  "icon": "💻",
+                  "label": "PC",
+                  "sub": "外の宛先"
+                },
+                {
+                  "icon": "🚪",
+                  "label": "ゲートウェイ",
+                  "sub": "出口"
+                },
+                {
+                  "icon": "🌍",
+                  "label": "外のネット",
+                  "sub": ""
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "📊", "title": "誰が転送する？",
+          "emoji": "📊",
+          "title": "誰が転送する？",
           "blocks": [
-            { "t": "example", "label": "具体例",
+            {
+              "t": "example",
+              "label": "具体例",
               "rows": [
-                { "label": "同じ LAN", "value": "L2 スイッチ（MAC）" },
-                { "label": "別ネット", "value": "==ルータ（IP）==", "hl": true }
+                {
+                  "label": "同じ LAN",
+                  "value": "L2 スイッチ（MAC）"
+                },
+                {
+                  "label": "別ネット",
+                  "value": "==ルータ（IP）==",
+                  "hl": true
+                }
               ],
-              "why": "届け先が同じ町かで装置が変わる。" }
+              "why": "届け先が同じ町かで装置が変わる。"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "装置・層・アドレスを\n==3 点セット== で覚える。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "装置・層・アドレスを\n==3 点セット== で覚える。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "宛先 MAC が未知のとき、スイッチは？",
-              "choices": ["捨てる", "全ポートへ送る", "送り返す", "暗号化"],
-              "answer": 1, "explain": "**フラッディング**（全ポートへ）。" }
+            {
+              "t": "check",
+              "q": "宛先 MAC が未知のとき、スイッチは？",
+              "choices": [
+                "捨てる",
+                "全ポートへ送る",
+                "送り返す",
+                "暗号化"
+              ],
+              "answer": 1,
+              "explain": "**フラッディング**（全ポートへ）。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "外へ出すときの出口の名前は？",
-              "choices": ["プロキシ", "デフォルトゲートウェイ", "ブロードキャスト", "ループバック"],
-              "answer": 1, "explain": "**デフォルトゲートウェイ**。" }
+            {
+              "t": "check",
+              "q": "外へ出すときの出口の名前は？",
+              "choices": [
+                "プロキシ",
+                "デフォルトゲートウェイ",
+                "ブロードキャスト",
+                "ループバック"
+              ],
+              "answer": 1,
+              "explain": "**デフォルトゲートウェイ**。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**スイッチ** … MAC", "**ルータ** … IP", "**ゲートウェイ** … 外への出口"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**スイッチ** … MAC",
+                "**ルータ** … IP",
+                "**ゲートウェイ** … 外への出口"
+              ]
+            }
           ]
         }
       ]
@@ -542,106 +1107,214 @@
     "52": {
       "slides": [
         {
-          "layout": "title", "emoji": "📶", "title": "無線 LAN と HTTP",
+          "layout": "title",
+          "emoji": "📶",
+          "title": "無線 LAN と HTTP",
           "subtitle": "電波でつなぐ LAN と、\nWeb の取り寄せルール。",
           "blocks": []
         },
         {
-          "emoji": "📻", "title": "無線 LAN のたとえ",
+          "emoji": "📻",
+          "title": "無線 LAN のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "📻",
+            {
+              "t": "analogy",
+              "icon": "📻",
               "real": "ラジオは近くなら\n**誰でも聞けてしまう**。",
-              "tech": "**無線 LAN** も電波。\nだから ==暗号化== が大切。" }
+              "tech": "**無線 LAN** も電波。\nだから ==暗号化== が大切。"
+            }
           ]
         },
         {
-          "emoji": "🪧", "title": "SSID とは",
+          "emoji": "🪧",
+          "title": "SSID とは",
           "blocks": [
-            { "t": "big", "text": "**SSID** = Wi-Fi の名前", "sub": "一覧から選んでつなぐ" }
+            {
+              "t": "big",
+              "text": "**SSID** = Wi-Fi の名前",
+              "sub": "一覧から選んでつなぐ"
+            }
           ]
         },
         {
-          "emoji": "🔐", "title": "暗号化の新しさ",
+          "emoji": "🔐",
+          "title": "暗号化の新しさ",
           "blocks": [
-            { "t": "layers", "top": "新しい（安全）", "bottom": "古い（危険）",
+            {
+              "t": "layers",
+              "top": "新しい（安全）",
+              "bottom": "古い（危険）",
               "items": [
-                { "icon": "🥇", "label": "WPA3" },
-                { "icon": "🥈", "label": "WPA2（推奨）" },
-                { "icon": "⛔", "label": "WEP（使わない）" }
-              ] }
+                {
+                  "icon": "🥇",
+                  "label": "WPA3"
+                },
+                {
+                  "icon": "🥈",
+                  "label": "WPA2（推奨）"
+                },
+                {
+                  "icon": "⛔",
+                  "label": "WEP（使わない）"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🍽️", "title": "HTTP のたとえ",
+          "emoji": "🍽️",
+          "title": "HTTP のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🍽️",
+            {
+              "t": "analogy",
+              "icon": "🍽️",
               "real": "店で **注文 → 料理**。",
-              "tech": "**HTTP** は\n==リクエスト → レスポンス==。" }
+              "tech": "**HTTP** は\n==リクエスト → レスポンス==。"
+            }
           ]
         },
         {
-          "emoji": "↔️", "title": "HTTP の流れ",
+          "emoji": "↔️",
+          "title": "HTTP の流れ",
           "blocks": [
-            { "t": "flow", "stepwise": true, "steps": [
-              { "icon": "🌐", "label": "ブラウザ", "sub": "ください" },
-              { "icon": "🖥️", "label": "Web サーバ", "sub": "返します" }
-            ] }
+            {
+              "t": "flow",
+              "stepwise": true,
+              "steps": [
+                {
+                  "icon": "🌐",
+                  "label": "ブラウザ",
+                  "sub": "ください"
+                },
+                {
+                  "icon": "🖥️",
+                  "label": "Web サーバ",
+                  "sub": "返します"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🎬", "title": "GET の一連",
+          "emoji": "🎬",
+          "title": "GET の一連",
           "blocks": [
-            { "t": "anim", "caption": "▶ ページ取得",
+            {
+              "t": "anim",
+              "caption": "▶ ページ取得",
               "frames": [
-                { "visual": "GET /index", "text": "ブラウザが **リクエスト**" },
-                { "visual": "200 OK", "text": "サーバが HTML を返す" },
-                { "visual": "画面表示", "text": "ブラウザが描画" }
-              ] }
+                {
+                  "visual": "GET /index",
+                  "text": "ブラウザが **リクエスト**"
+                },
+                {
+                  "visual": "200 OK",
+                  "text": "サーバが HTML を返す"
+                },
+                {
+                  "visual": "画面表示",
+                  "text": "ブラウザが描画"
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "🔒", "title": "HTTPS とは",
+          "emoji": "🔒",
+          "title": "HTTPS とは",
           "blocks": [
-            { "t": "compare",
-              "left": { "icon": "📭", "title": "HTTP", "items": ["暗号化なし", "ポート 80"] },
-              "right": { "icon": "📫", "title": "HTTPS", "items": ["==SSL/TLS==", "ポート 443"] },
-              "vs": "VS" }
+            {
+              "t": "compare",
+              "left": {
+                "icon": "📭",
+                "title": "HTTP",
+                "items": [
+                  "暗号化なし",
+                  "ポート 80"
+                ]
+              },
+              "right": {
+                "icon": "📫",
+                "title": "HTTPS",
+                "items": [
+                  "==SSL/TLS==",
+                  "ポート 443"
+                ]
+              },
+              "vs": "VS"
+            }
           ]
         },
         {
-          "emoji": "📝", "title": "試験の型",
+          "emoji": "📝",
+          "title": "試験の型",
           "blocks": [
-            { "t": "callout", "kind": "exam",
-              "text": "無線の暗号 = **WPA 系**。\nWeb の暗号 = ==SSL/TLS==。" }
+            {
+              "t": "callout",
+              "kind": "exam",
+              "text": "無線の暗号 = **WPA 系**。\nWeb の暗号 = ==SSL/TLS==。"
+            }
           ]
         },
         {
-          "emoji": "⚠️", "title": "注意",
+          "emoji": "⚠️",
+          "title": "注意",
           "blocks": [
-            { "t": "callout", "kind": "warn",
-              "text": "**WEP** は古い。\n今は ==WPA2 / WPA3==。" }
+            {
+              "t": "callout",
+              "kind": "warn",
+              "text": "**WEP** は古い。\n今は ==WPA2 / WPA3==。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "Wi-Fi のネットワーク名は？",
-              "choices": ["MAC", "IP", "SSID", "NAT"],
-              "answer": 2, "explain": "**SSID**。" }
+            {
+              "t": "check",
+              "q": "Wi-Fi のネットワーク名は？",
+              "choices": [
+                "MAC",
+                "IP",
+                "SSID",
+                "NAT"
+              ],
+              "answer": 2,
+              "explain": "**SSID**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "HTTPS の暗号化は？",
-              "choices": ["WEP", "WPA", "SSL/TLS", "DHCP"],
-              "answer": 2, "explain": "==SSL/TLS==。" }
+            {
+              "t": "check",
+              "q": "HTTPS の暗号化は？",
+              "choices": [
+                "WEP",
+                "WPA",
+                "SSL/TLS",
+                "DHCP"
+              ],
+              "answer": 2,
+              "explain": "==SSL/TLS==。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**SSID** … Wi-Fi 名", "**WPA2/3** … 無線の暗号", "**HTTPS** … SSL/TLS"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**SSID** … Wi-Fi 名",
+                "**WPA2/3** … 無線の暗号",
+                "**HTTPS** … SSL/TLS"
+              ]
+            }
           ]
         }
       ]
@@ -649,93 +1322,205 @@
     "53": {
       "slides": [
         {
-          "layout": "title", "emoji": "🧭", "title": "Web とプロトコル応用",
+          "layout": "title",
+          "emoji": "🧭",
+          "title": "Web とプロトコル応用",
           "subtitle": "URL・Cookie・REST・\nプロキシの基本。",
           "blocks": []
         },
         {
-          "emoji": "🏷️", "title": "URL のたとえ",
+          "emoji": "🏷️",
+          "title": "URL のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🏠",
+            {
+              "t": "analogy",
+              "icon": "🏠",
               "real": "手紙の **住所** みたい。",
-              "tech": "**URL** =\nWeb 上の ==場所を示す文字列==。" }
+              "tech": "**URL** =\nWeb 上の ==場所を示す文字列==。"
+            }
           ]
         },
         {
-          "emoji": "🔍", "title": "URL の部品",
+          "emoji": "🔍",
+          "title": "URL の部品",
           "blocks": [
-            { "t": "table", "head": ["部品", "例"],
-              "rows": [["方式", "https"], ["ホスト", "www.example.com"], ["パス", "/shop"]],
-              "caption": "場所を細かく書く" }
+            {
+              "t": "table",
+              "head": [
+                "部品",
+                "例"
+              ],
+              "rows": [
+                [
+                  "方式",
+                  "https"
+                ],
+                [
+                  "ホスト",
+                  "www.example.com"
+                ],
+                [
+                  "パス",
+                  "/shop"
+                ]
+              ],
+              "caption": "場所を細かく書く"
+            }
           ]
         },
         {
-          "emoji": "🎫", "title": "Cookie のたとえ",
+          "emoji": "🎫",
+          "title": "Cookie のたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🎫",
+            {
+              "t": "analogy",
+              "icon": "🎫",
               "real": "美容院の **会員カード**。",
-              "tech": "**Cookie** は\nサーバがブラウザに ==小さなデータ== を保存。" }
+              "tech": "**Cookie** は\nサーバがブラウザに ==小さなデータ== を保存。"
+            }
           ]
         },
         {
-          "emoji": "🍪", "title": "Cookie の流れ",
+          "emoji": "🍪",
+          "title": "Cookie の流れ",
           "blocks": [
-            { "t": "anim", "caption": "▶ ログインを覚える",
+            {
+              "t": "anim",
+              "caption": "▶ ログインを覚える",
               "frames": [
-                { "visual": "ログイン成功", "text": "サーバが Cookie を発行" },
-                { "visual": "ブラウザ保存", "text": "小さなデータを端末へ" },
-                { "visual": "次回アクセス", "text": "Cookie を付けて ==再ログイン省略==" }
-              ] }
+                {
+                  "visual": "ログイン成功",
+                  "text": "サーバが Cookie を発行"
+                },
+                {
+                  "visual": "ブラウザ保存",
+                  "text": "小さなデータを端末へ"
+                },
+                {
+                  "visual": "次回アクセス",
+                  "text": "Cookie を付けて ==再ログイン省略=="
+                }
+              ]
+            }
           ]
         },
         {
-          "emoji": "📚", "title": "REST とは",
+          "emoji": "📚",
+          "title": "REST とは",
           "blocks": [
-            { "t": "big", "text": "**REST** = HTTP で資源を操作", "sub": "URL が「何を」、メソッドが「どうする」" }
+            {
+              "t": "big",
+              "text": "**REST** = HTTP で資源を操作",
+              "sub": "URL が「何を」、メソッドが「どうする」"
+            }
           ]
         },
         {
-          "emoji": "🛠️", "title": "主なメソッド",
+          "emoji": "🛠️",
+          "title": "主なメソッド",
           "blocks": [
-            { "t": "table", "head": ["メソッド", "意味"],
-              "rows": [["GET", "取得"], ["POST", "作成"], ["PUT", "更新"], ["DELETE", "削除"]],
-              "caption": "試験でよく出る 4 つ" }
+            {
+              "t": "table",
+              "head": [
+                "メソッド",
+                "意味"
+              ],
+              "rows": [
+                [
+                  "GET",
+                  "取得"
+                ],
+                [
+                  "POST",
+                  "作成"
+                ],
+                [
+                  "PUT",
+                  "更新"
+                ],
+                [
+                  "DELETE",
+                  "削除"
+                ]
+              ],
+              "caption": "試験でよく出る 4 つ"
+            }
           ]
         },
         {
-          "emoji": "🕴️", "title": "プロキシのたとえ",
+          "emoji": "🕴️",
+          "title": "プロキシのたとえ",
           "blocks": [
-            { "t": "analogy", "icon": "🕴️",
+            {
+              "t": "analogy",
+              "icon": "🕴️",
               "real": "社長の代わりの **秘書**。",
-              "tech": "**プロキシ** =\nクライアントの ==代理で中継==。" }
+              "tech": "**プロキシ** =\nクライアントの ==代理で中継==。"
+            }
           ]
         },
         {
-          "emoji": "🎁", "title": "プロキシの利点",
+          "emoji": "🎁",
+          "title": "プロキシの利点",
           "blocks": [
-            { "t": "bullets", "items": ["**キャッシュ** で速く", "アクセス制限", "接続元を隠す"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**キャッシュ** で速く",
+                "アクセス制限",
+                "接続元を隠す"
+              ]
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認①",
+          "emoji": "✅",
+          "title": "確認①",
           "blocks": [
-            { "t": "check", "q": "ログイン状態を覚える小さなデータは？",
-              "choices": ["キャッシュ", "Cookie", "ログ", "パス"],
-              "answer": 1, "explain": "**Cookie**。" }
+            {
+              "t": "check",
+              "q": "ログイン状態を覚える小さなデータは？",
+              "choices": [
+                "キャッシュ",
+                "Cookie",
+                "ログ",
+                "パス"
+              ],
+              "answer": 1,
+              "explain": "**Cookie**。"
+            }
           ]
         },
         {
-          "emoji": "✅", "title": "確認②",
+          "emoji": "✅",
+          "title": "確認②",
           "blocks": [
-            { "t": "check", "q": "REST で資源を読むメソッドは？",
-              "choices": ["POST", "PUT", "GET", "DELETE"],
-              "answer": 2, "explain": "**GET** が取得。" }
+            {
+              "t": "check",
+              "q": "REST で資源を読むメソッドは？",
+              "choices": [
+                "POST",
+                "PUT",
+                "GET",
+                "DELETE"
+              ],
+              "answer": 2,
+              "explain": "**GET** が取得。"
+            }
           ]
         },
         {
-          "emoji": "🏁", "title": "まとめ",
+          "emoji": "🏁",
+          "title": "まとめ",
           "blocks": [
-            { "t": "bullets", "items": ["**URL** … 場所", "**Cookie** … 小さな記憶", "**プロキシ** … 代理"] }
+            {
+              "t": "bullets",
+              "items": [
+                "**URL** … 場所",
+                "**Cookie** … 小さな記憶",
+                "**プロキシ** … 代理"
+              ]
+            }
           ]
         }
       ]
