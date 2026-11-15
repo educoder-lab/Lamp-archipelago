@@ -8,7 +8,8 @@ alwaysApply: true
 ## 正本
 
 - パス: `docs/debug-notes.md`
-- ブラウザの修正メモUIもここに保存する（localStorage だけではない）
+- ブラウザの修正メモUI（`map.html` と `lesson.html` の「ノート」）もここに保存する（localStorage だけではない）
+- 共有実装: `docs/lamp-debug-notes.js`
 - `docs/debug-notes-data.js` は Show-Map が生成する注入用（gitignore）
 
 ## いつ動くか
