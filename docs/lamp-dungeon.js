@@ -77,7 +77,7 @@ function drawArt(ctx, img, x, y, w, h) {
  * 単位: 幅/高さ 100 基準、原点=胴体中心（画像の 50%, 48%）。
  */
 const HERO_EQUIP_ATTACH = {
-  // 背中のたすき上。プレート自体がたすき角度で傾いている
+  // 背中のたすき上。プレートに時計回り 90° 済み
   shield: {
     lx: 0,
     ly: -12,

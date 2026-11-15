@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v58';
+const CACHE = 'lamp-archipelago-v59';
 const PRECACHE = [
   './',
   './index.html',
@@ -27,7 +27,6 @@ const PRECACHE = [
   './data/refs.json',
   './data/hub-quest.json',
   './data/slides/hub.json',
-  './assets/common/_preview-back.png',
   './assets/common/equip/aura-01.png',
   './assets/common/equip/aura-02.png',
   './assets/common/equip/aura-03.png',
