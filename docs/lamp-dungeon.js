@@ -74,25 +74,30 @@ function drawArt(ctx, img, x, y, w, h) {
 
 /**
  * 構えた後ろ姿（hero-hold-bare）への着せ替えスロット。
- * 単位: 幅/高さ 100 基準、原点=胴体中心。facing で X・scaleX 連動。
- * 盾=左手・表が見える（体の前に描く）、剣=右手・先端下。
+ * 単位: 幅/高さ 100 基準、原点=胴体中心（画像の 50%, 48%）。facing で X・scaleX 連動。
+ * ax/ay: プレート内の持ち手アンカー（0–1）。盾=内側、剣=グリップ。
  */
 const HERO_EQUIP_ATTACH = {
+  // hero-hold-bare 実測: 左手≈(-19,-11) 右手≈(14,2)。盾は手に重ね、剣は握りを拳に
   shield: {
-    lx: -28,
-    ly: 8,
-    w: 42,
-    h: 48,
-    rot: -0.12,
+    lx: -19,
+    ly: -11,
+    w: 30,
+    h: 34,
+    rot: -0.02,
+    ax: 0.50,
+    ay: 0.48,
     z: 'front',
     flipWithFacing: true
   },
   sword: {
-    lx: 30,
-    ly: 18,
-    w: 22,
-    h: 52,
-    rot: 0.08,
+    lx: 14,
+    ly: 2,
+    w: 14,
+    h: 38,
+    rot: 0.03,
+    ax: 0.50,
+    ay: 0.30,
     z: 'front',
     flipWithFacing: true
   }
@@ -156,17 +161,19 @@ function drawChildSprite(ctx, img, parent, attach, facing) {
   const dh = (attach.h || 40) * uy;
   const rot = (attach.rot || 0) * face;
   const flipX = attach.flipWithFacing ? face : 1;
+  const ax = attach.ax == null ? 0.5 : attach.ax;
+  const ay = attach.ay == null ? 0.5 : attach.ay;
   const src = spriteHasAlpha(img) ? img : keyedCanvasFor(img, 26);
 
   ctx.save();
-  // 親原点（主人公中心）→ ローカルオフセット → 左右反転
+  // 親原点（主人公中心）→ 手の位置 → プレート内アンカーで持つ
   ctx.translate(parent.cx + localX, parent.cy + localY);
   ctx.rotate(rot);
   ctx.scale(flipX, 1);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   ctx.globalCompositeOperation = 'source-over';
-  ctx.drawImage(src, -dw / 2, -dh / 2, dw, dh);
+  ctx.drawImage(src, -dw * ax, -dh * ay, dw, dh);
   ctx.restore();
   return true;
 }
@@ -874,7 +881,7 @@ export function mountLampWorld(container, opts) {
     const shieldImg = hubArt['held_shield_' + shieldLv];
     const swordImg = hubArt['held_sword_' + swordLv];
 
-    // 描画順: オーラ → 体 → 盾（表が見える） → 剣（右手で見える）
+    // 描画順: オーラ → 体 → 盾（表・左手の上） → 剣（グリップを右手に）
     if (auraImg) drawAuraSprite(ctx, auraImg, parent, spiritLv);
 
     ctx.save();
