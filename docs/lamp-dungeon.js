@@ -284,6 +284,7 @@ export function mountLampWorld(container, opts) {
   let focusKey = null;
   let islandDomain = null;
   let stagePads = [];
+  let lessonPadFocus = 0;
   /** @type {'shield'|'sword'|'spirit'|null} */
   let roomPack = null;
   let roomDomainIdx = 0;
@@ -667,6 +668,10 @@ export function mountLampWorld(container, opts) {
       py = n._py;
     }
     focusKey = n && n.d ? n.d.id : null;
+    if (mode === 'island' && n && n.d) {
+      enterIsland(n.d, opts.lessonState);
+      if (opts.onSelectDomain) opts.onSelectDomain(n.d);
+    }
   }
 
   function interactHub() {
@@ -1039,19 +1044,22 @@ export function mountLampWorld(container, opts) {
     const domainId = domainNode && domainNode.d && domainNode.d.id;
     const domainCleared = !!(domainNode && domainNode.state === 'cleared');
     const bgImg = (domainId && hubArt.domainBgs[domainId]) || packBg;
+    // 解錠後は開いた扉画像ではなく空きニッチ（背景のくぼみ）のまま
     let doorImg = (domainId && hubArt.domainDoors[domainId]) || packDoor;
     if (domainCleared && !(doorAnim || clearDoorFlash > 0)) {
-      doorImg = hubArt.doorOpen2 || hubArt.doorAjar || doorImg;
+      doorImg = null;
     }
     if (doorAnim || clearDoorFlash > 0) {
       const phase = doorAnim
         ? Math.min(1, (performance.now() - doorAnim.t0) / Math.max(1, doorAnim.dur))
         : clearDoorFlash;
-      doorImg = phase < 0.35
-        ? (hubArt.doorOpen1 || hubArt.doorAjar || doorImg)
-        : phase < 0.7
-          ? (hubArt.doorAjar || hubArt.doorOpen1 || doorImg)
-          : (hubArt.doorOpen2 || hubArt.doorAjar || doorImg);
+      if (phase >= 0.85) {
+        doorImg = null;
+      } else {
+        doorImg = phase < 0.35
+          ? (hubArt.doorOpen1 || hubArt.doorAjar || doorImg)
+          : (hubArt.doorAjar || hubArt.doorOpen1 || doorImg);
+      }
     }
     const accent = pack === 'sword' ? '#d8c8ff' : pack === 'spirit' ? '#b8ffd0' : '#ffe08a';
     const clearAccent = '#ffe08a';
@@ -1070,14 +1078,16 @@ export function mountLampWorld(container, opts) {
     const doorH = niche.h;
     const doorX = niche.x;
     const doorY = niche.y;
-    if (!drawArt(ctx, doorImg, doorX, doorY, doorW, doorH)) {
-      ctx.fillStyle = '#2a1a10';
-      ctx.fillRect(doorX, doorY, doorW, doorH);
-      ctx.strokeStyle = accent;
-      ctx.strokeRect(doorX + 8, doorY + 8, doorW - 16, doorH - 16);
+    if (doorImg) {
+      if (!drawArt(ctx, doorImg, doorX, doorY, doorW, doorH)) {
+        ctx.fillStyle = '#2a1a10';
+        ctx.fillRect(doorX, doorY, doorW, doorH);
+        ctx.strokeStyle = accent;
+        ctx.strokeRect(doorX + 8, doorY + 8, doorW - 16, doorH - 16);
+      }
     }
     if (domainCleared) {
-      // 解錠済みの印（開いた扉＋金の光＋札）— ニッチ内の同じ矩形に合わせる
+      // 解錠済みの印（空きニッチ＋金の光＋札）
       ctx.save();
       const glow = ctx.createRadialGradient(
         doorX + doorW * 0.5, doorY + doorH * 0.45, doorW * 0.08,
@@ -1134,18 +1144,20 @@ export function mountLampWorld(container, opts) {
 
     // 講座番号はキャラ頭上（手前帯の上）に置き、被りを避ける
     if (mode === 'island' && stagePads.length) {
+      if (lessonPadFocus < 0 || lessonPadFocus >= stagePads.length) lessonPadFocus = 0;
       const y0 = H * 0.48;
       stagePads.forEach((pad, i) => {
         const x = W * 0.5 + (i - (stagePads.length - 1) / 2) * 52;
         const col = pad.state === 'cleared' ? STATE_COLOR.cleared
           : pad.state === 'next' ? STATE_COLOR.current
           : pad.state === 'skipped' ? '#c59bff' : '#3a4568';
+        const focused = i === lessonPadFocus;
         ctx.beginPath();
-        ctx.arc(x, y0, 18, 0, Math.PI * 2);
+        ctx.arc(x, y0, focused ? 20 : 18, 0, Math.PI * 2);
         ctx.fillStyle = col;
         ctx.fill();
-        ctx.strokeStyle = 'rgba(15,18,38,0.85)';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = focused ? '#ffe08a' : 'rgba(15,18,38,0.85)';
+        ctx.lineWidth = focused ? 3 : 2;
         ctx.stroke();
         ctx.fillStyle = '#0f1226';
         ctx.font = 'bold 12px sans-serif';
@@ -1163,7 +1175,7 @@ export function mountLampWorld(container, opts) {
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
     const hint = mode === 'island'
-      ? '講座を選ぶ　↓ 道へ戻る'
+      ? '←→ 講座　Enter 決定　[ ] 前後の扉　↓ 道へ戻る'
       : '[ ] 前後の扉　F 入る　↓ 拠点へ';
     ctx.fillText(hint, W / 2, H - 18);
 
@@ -1511,6 +1523,7 @@ export function mountLampWorld(container, opts) {
       py = node._py;
     }
     stagePads = [];
+    lessonPadFocus = 0;
     const lessons = (domain.lessons || []).slice().sort((a, b) => a.no - b.no);
     lessons.forEach((l) => {
       const st = lessonStateFn ? lessonStateFn(l) : 'todo';
@@ -1695,8 +1708,14 @@ export function mountLampWorld(container, opts) {
   }
 
   function onKeyDown(e) {
-    // 前／次の扉はショートカットのみ（矢印・Enter では動かさない）
-    if (scene === 'room' && doorNav.classList.contains('show') && mode !== 'island') {
+    if (typeof document !== 'undefined') {
+      const say = document.getElementById('say-box');
+      if (say && say.classList.contains('show')) {
+        if (e.key === 'Enter' || e.key === ' ') return;
+      }
+    }
+    // 扉ナビが出ているときは常に [ ] で前後（島の講座選択中も含む）
+    if (scene === 'room' && doorNav.classList.contains('show')) {
       if (e.key === '[' || e.key === 'q' || e.key === 'Q') {
         e.preventDefault();
         shiftRoomDomain(-1);
@@ -1715,12 +1734,32 @@ export function mountLampWorld(container, opts) {
         return;
       }
     }
-    if (e.key === 'Enter' || e.key === ' ') {
-      // セリフ操作中は map.html 側へ任せる
-      if (typeof document !== 'undefined') {
-        const say = document.getElementById('say-box');
-        if (say && say.classList.contains('show')) return;
+    // 島: ←→ で講座パッド、↓ で戻るフォーカス、Enter で決定／戻る
+    if (mode === 'island' && stagePads.length) {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        roomFocus = 'door';
+        lessonPadFocus = (lessonPadFocus - 1 + stagePads.length) % stagePads.length;
+        return;
       }
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        roomFocus = 'door';
+        lessonPadFocus = (lessonPadFocus + 1) % stagePads.length;
+        return;
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (roomFocus === 'back') {
+          returnToRoomPath();
+          return;
+        }
+        const pad = stagePads[lessonPadFocus];
+        if (pad && opts.onSelectLesson) opts.onSelectLesson(pad.lesson);
+        return;
+      }
+    }
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       interact();
       return;
@@ -1797,12 +1836,12 @@ export function mountLampWorld(container, opts) {
     const btn = e.target.closest('[data-door]');
     if (!btn || scene !== 'room') return;
     const act = btn.getAttribute('data-door');
-    if (act === 'prev' && mode !== 'island') {
+    if (act === 'prev') {
       shiftRoomDomain(-1);
       roomFocus = 'door';
       return;
     }
-    if (act === 'next' && mode !== 'island') {
+    if (act === 'next') {
       shiftRoomDomain(1);
       roomFocus = 'door';
       return;

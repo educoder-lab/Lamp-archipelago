@@ -23,6 +23,8 @@
     TCP: 'Transmission Control Protocol／届くまで確認する通信',
     UDP: 'User Datagram Protocol／確認なしの軽い通信',
     IP: 'Internet Protocol／インターネットの住所ルール',
+    IPv4: 'Internet Protocol version 4／32 ビットの IP',
+    IPv6: 'Internet Protocol version 6／128 ビットの IP',
     LAN: 'Local Area Network／構内ネットワーク',
     WAN: 'Wide Area Network／広域ネットワーク',
     VPN: 'Virtual Private Network／仮想の専用回線',
@@ -34,6 +36,7 @@
     GUI: 'Graphical User Interface／絵で操作する画面',
     CUI: 'Character User Interface／文字で操作する画面',
     RAID: 'Redundant Array of Independent Disks／ディスクの多重化',
+    RAID1: 'RAID level 1／ミラーリング',
     SSD: 'Solid State Drive／半導体メモリの補助記憶',
     HDD: 'Hard Disk Drive／磁気ディスクの補助記憶',
     RAM: 'Random Access Memory／主記憶（揮発）',
@@ -43,13 +46,43 @@
     CRM: 'Customer Relationship Management／顧客管理',
     BCP: 'Business Continuity Plan／事業継続計画',
     SLA: 'Service Level Agreement／サービス水準合意',
-    ITIL: 'IT Infrastructure Library／IT サービス管理の枠組み'
+    ITIL: 'IT Infrastructure Library／IT サービス管理の枠組み',
+    LRU: 'Least Recently Used／いちばん長く使っていないものから置換',
+    FIFO: 'First In First Out／先に入れたものから出す',
+    LIFO: 'Last In First Out／後に入れたものから出す',
+    LFU: 'Least Frequently Used／いちばん使っていない回数の少ないものから置換',
+    OSI: 'Open Systems Interconnection／通信を 7 層に分けた標準',
+    MAC: 'Media Access Control／機器固有の番地（第 2 層）',
+    CIDR: 'Classless Inter-Domain Routing／数字で網の境目を書く',
+    NAT: 'Network Address Translation／内外の住所変換',
+    SMTP: 'Simple Mail Transfer Protocol／メールを送る手順',
+    IMAP: 'Internet Message Access Protocol／サーバ上でメール管理',
+    DMA: 'Direct Memory Access／CPU を介さない転送',
+    VRAM: 'Video RAM／画面用メモリ',
+    RISC: 'Reduced Instruction Set Computer／命令を減らした CPU 設計',
+    ASCII: 'American Standard Code for Information Interchange／英数字・記号 128 種',
+    Unicode: '世界の文字の名簿',
+    'UTF-8': 'Unicode Transformation Format-8／可変長の Unicode 符号化',
+    USB: 'Universal Serial Bus／汎用のつなぎ口',
+    HDMI: 'High-Definition Multimedia Interface／映像＋音声のつなぎ口',
+    Bluetooth: '近距離無線通信の規格',
+    SSID: 'Service Set Identifier／Wi-Fi の名前',
+    URL: 'Uniform Resource Locator／Web 上の場所を示す文字列',
+    REST: 'Representational State Transfer／HTTP で資源を操作する流儀',
+    Cookie: 'サーバがブラウザに残す小さなデータ',
+    BNF: 'Backus–Naur Form／文法をルールで書く記法',
+    PC: 'Program Counter／次の命令の番地',
+    WEP: 'Wired Equivalent Privacy／古い Wi-Fi 暗号',
+    WPA2: 'Wi-Fi Protected Access 2／現行の Wi-Fi 保護',
+    WPA3: 'Wi-Fi Protected Access 3／より強い Wi-Fi 保護',
+    GET: 'HTTP の取得メソッド',
+    POST: 'HTTP の送信メソッド'
   };
 
   function fmt(s) {
     let t = esc(s);
     t = t.replace(/\*\*([^*]+)\*\*/g, (_, word) => {
-      const full = ABBR_FULL[word];
+      const full = ABBR_FULL[word] || ABBR_FULL[String(word).toUpperCase()];
       if (full) {
         return '<strong>' + word + '</strong><span class="abbr-full">（' + esc(full) + '）</span>';
       }

@@ -97,7 +97,11 @@ button { font: inherit; cursor: pointer; }
 .save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
 ul.lessons { list-style: none; padding: 0; margin: 0; }
 ul.lessons li { display: grid; grid-template-columns: 22px 1fr auto; gap: 6px; align-items: center; padding: 6px 4px; border-bottom: 1px solid #23284c; font-size: 14px; }
+ul.lessons li.is-focus { outline: 2px solid var(--gold); background: #1a2440; }
 ul.lessons li.next { background: #13283a; }
+.qm-actions button.is-focus, .qm-actions a.is-focus {
+  outline: 2px solid var(--gold); outline-offset: 2px;
+}
 .mark { text-align: center; font-weight: bold; }
 .mark.cleared { color: var(--gold); }
 .mark.skipped { color: var(--skip); }
@@ -794,6 +798,8 @@ async function openLessonModal(noOrLesson) {
     go.textContent = st === 'cleared' ? 'もう一度' : '挑戦する';
   }
   document.getElementById('quest-overlay').classList.add('show');
+  questActionFocus = 0;
+  syncQuestActionFocus();
 
   const quests = await loadQuests();
   const full = (quests.lessons || []).find(q => q.courseNo === l.no || q.no === l.no);
@@ -878,6 +884,46 @@ document.getElementById('domain-overlay').addEventListener('click', (ev) => {
 sayBox.addEventListener('click', () => {
   if (sayJob && sayJob.advance) sayJob.advance();
 });
+let domainLessonFocus = 0;
+let questActionFocus = 0;
+
+function syncDomainLessonFocus() {
+  const rows = Array.from(document.querySelectorAll('#dm-list ul.lessons li'));
+  if (!rows.length) return;
+  domainLessonFocus = Math.max(0, Math.min(rows.length - 1, domainLessonFocus));
+  rows.forEach((li, i) => li.classList.toggle('is-focus', i === domainLessonFocus));
+  const focused = rows[domainLessonFocus];
+  if (focused && focused.scrollIntoView) focused.scrollIntoView({ block: 'nearest' });
+}
+
+function activateDomainLessonFocus() {
+  const rows = Array.from(document.querySelectorAll('#dm-list ul.lessons li'));
+  const li = rows[domainLessonFocus];
+  if (!li) return;
+  const btn = li.querySelector('button.copy, a.lesson-link, a');
+  if (btn) btn.click();
+}
+
+function syncQuestActionFocus() {
+  const ov = document.getElementById('quest-overlay');
+  if (!ov || !ov.classList.contains('show')) return;
+  const btns = Array.from(ov.querySelectorAll('.qm-actions button, .qm-actions a'));
+  if (!btns.length) return;
+  questActionFocus = Math.max(0, Math.min(btns.length - 1, questActionFocus));
+  btns.forEach((b, i) => {
+    b.classList.toggle('is-focus', i === questActionFocus);
+    if (i === questActionFocus) b.focus();
+  });
+}
+
+function activateQuestActionFocus() {
+  const ov = document.getElementById('quest-overlay');
+  if (!ov || !ov.classList.contains('show')) return;
+  const btns = Array.from(ov.querySelectorAll('.qm-actions button, .qm-actions a'));
+  const b = btns[questActionFocus];
+  if (b) b.click();
+}
+
 document.addEventListener('keydown', (ev) => {
   if (ev.key === 'Escape') {
     closeLessonModal();
@@ -886,11 +932,57 @@ document.addEventListener('keydown', (ev) => {
     hideSay();
     return;
   }
-  if (!sayBox.classList.contains('show')) return;
-  if (document.getElementById('quest-overlay').classList.contains('show')) return;
-  if (document.getElementById('settings-overlay').classList.contains('show')) return;
   if (LampDebugNotes.isOpen()) return;
   if (document.getElementById('gallery-overlay') && document.getElementById('gallery-overlay').classList.contains('show')) return;
+
+  const domainOpen = document.getElementById('domain-overlay').classList.contains('show');
+  if (domainOpen) {
+    const rows = document.querySelectorAll('#dm-list ul.lessons li');
+    if (rows.length) {
+      if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+        ev.preventDefault();
+        domainLessonFocus -= 1;
+        syncDomainLessonFocus();
+        return;
+      }
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+        ev.preventDefault();
+        domainLessonFocus += 1;
+        syncDomainLessonFocus();
+        return;
+      }
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        activateDomainLessonFocus();
+        return;
+      }
+    }
+  }
+
+  const questOpen = document.getElementById('quest-overlay').classList.contains('show');
+  if (questOpen) {
+    if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+      ev.preventDefault();
+      questActionFocus -= 1;
+      syncQuestActionFocus();
+      return;
+    }
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+      ev.preventDefault();
+      questActionFocus += 1;
+      syncQuestActionFocus();
+      return;
+    }
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      activateQuestActionFocus();
+      return;
+    }
+    return;
+  }
+
+  if (document.getElementById('settings-overlay').classList.contains('show')) return;
+  if (!sayBox.classList.contains('show')) return;
 
   const actionsOpen = sayActions.classList.contains('show') && sayActions.children.length > 0;
   if (actionsOpen) {
@@ -1020,7 +1112,10 @@ function openDomainSheet(d) {
   const ul = el('ul', { class: 'lessons' });
   d.lessons.forEach(l => ul.appendChild(lessonRow(l, d)));
   list.appendChild(ul);
+  domainLessonFocus = Math.max(0, d.lessons.findIndex((l) => lessonState(l) === 'next'));
+  if (domainLessonFocus < 0) domainLessonFocus = 0;
   document.getElementById('domain-overlay').classList.add('show');
+  syncDomainLessonFocus();
 }
 
 function showDomain(d) {
