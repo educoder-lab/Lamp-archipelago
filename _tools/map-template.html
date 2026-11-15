@@ -69,7 +69,7 @@ main { overflow: hidden; position: relative; min-height: 0; }
 .say-cursor { display: inline-block; width: 0.55em; color: var(--open); animation: blink 0.9s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .say-hint { margin-top: 6px; font-size: 11px; color: var(--muted); text-align: right; }
-.say-actions { display: none; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.say-actions { display: none; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: min(36vh, 280px); overflow-y: auto; }
 .say-actions.show { display: flex; }
 .say-actions button, .say-actions a {
   font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 8px;
@@ -162,7 +162,7 @@ ul.lessons a:hover { color: var(--ink); }
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
 @media (max-width: 900px) {
   header h1 { font-size: 14px; }
-  .say-box { left: 8px; right: auto; bottom: 8px; width: min(360px, calc(100% - 16px)); max-height: min(32vh, 200px); }
+  .say-box { left: 8px; right: auto; bottom: 8px; width: min(360px, calc(100% - 16px)); max-height: min(48vh, 320px); overflow-y: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .say-cursor { animation: none; }
@@ -171,7 +171,7 @@ ul.lessons a:hover { color: var(--ink); }
 </head>
 <body>
 <header>
-  <h1>三つの扉</h1>
+  <h1>道分かれの間</h1>
   <span class="stat stat-lamp"><img src="assets/common/icon-lamp.png" alt="" width="16" height="16">灯 <b id="h-lamps"></b><span class="bar"><i id="h-bar"></i></span></span>
   <span class="stat" id="h-name" hidden></span>
   <span class="stat" id="h-titles" hidden></span>
@@ -191,7 +191,7 @@ ul.lessons a:hover { color: var(--ink); }
       <button type="button" class="world-nav-btn realm underground" data-nav="underground"><img src="assets/common/icon-sword.png" alt="">剣</button>
       <button type="button" class="world-nav-btn" data-nav="hub">間</button>
     </div>
-    <div class="world-hint" id="world-hint">[ ] 前後の扉　F この扉　セリフは↑↓とEnter</div>
+    <div class="world-hint" id="world-hint">←→ 通路　↑ 大扉　↓ 老人　Enter 決定　セリフは↑↓とEnter</div>
     <div class="say-box" id="say-box" role="dialog" aria-live="polite">
       <div class="say-speaker" id="say-speaker"></div>
       <div class="say-text" id="say-text"></div>
@@ -382,7 +382,7 @@ const allDone = lessons.length > 0 && lessons.every(l => cleared.has(l.no));
 const growth = LampProgress.growthRanks(domains, cleared);
 
 const nodes = [];
-nodes.push({ kind: 'hub', realm: 'land', label: '三つの扉の間', sub: '老人・手引き', state: 'cleared' });
+nodes.push({ kind: 'hub', realm: 'land', label: '道分かれの間', sub: '老人・手引き', state: 'cleared' });
 domains.forEach(d => nodes.push({ kind: 'domain', realm: d.realm, label: d.title, sub: d.done + '/' + d.total, state: d.state, d }));
 nodes.push({ kind: 'core', realm: 'land', label: '中枢の間', sub: allDone ? '再起動' : '最終目的地', state: allDone ? 'cleared' : 'fog' });
 
@@ -663,23 +663,36 @@ function openHubModal() {
   if (worldApi && worldApi.returnToHub) worldApi.returnToHub(0);
   const actions = [
     {
+      label: '盾の通路へ',
+      primary: true,
+      onClick: () => travelToRealmSafe('sky')
+    },
+    {
+      label: '剣の通路へ',
+      onClick: () => travelToRealmSafe('underground')
+    },
+    {
       label: cleared.has(0) ? '手引きを見返す' : '手引きを学ぶ',
-      href: 'lesson.html?hub=1',
-      primary: true
+      href: 'lesson.html?hub=1'
     }
   ];
   if (next) {
     actions.push({
       label: '次 #' + pad(next.no),
-      primary: true,
       onClick: () => openLessonModal(next)
     });
   }
-  actions.push({ label: 'とじる', onClick: () => {} });
+  actions.push({
+    label: 'とじる',
+    onClick: () => {
+      if (worldApi && worldApi.setHubFocus) worldApi.setHubFocus('left');
+    }
+  });
   runSay([
     '今の力を試したいなら、この扉の奥を目指しなさい。',
     '強靭な精神を身に付けられるだろう。ただし相手は強い。',
-    'その盾と剣では不十分だ。盾を鍛えるなら左へ、剣を鍛えるなら右へ進みなさい。'
+    'その盾と剣では不十分だ。盾を鍛えるなら左へ、剣を鍛えるなら右へ進みなさい。',
+    'とじたあとも ←→ で通路、↑ で大扉、↓ で私を選べる。'
   ], { speaker: '謎の老人', actions });
 }
 
@@ -1131,6 +1144,28 @@ function openDomainSheet(d) {
   syncDomainLessonFocus();
 }
 
+/** セリフ内で講座一覧を出し、↑↓＋Enter で選ぶ */
+function openDomainLessonSay(d) {
+  const actions = (d.lessons || []).map((l) => {
+    const st = lessonState(l);
+    const mark = st === 'cleared' ? '✓ ' : st === 'next' ? '▶ ' : st === 'skipped' ? '↷ ' : '';
+    return {
+      label: mark + pad(l.no) + '　' + l.title,
+      primary: st === 'next',
+      onClick: () => openLessonModal(l)
+    };
+  });
+  actions.push({ label: '詳細一覧…', onClick: () => openDomainSheet(d) });
+  actions.push({ label: 'とじる', onClick: () => {} });
+  runSay([
+    d.title + 'の講座一覧。',
+    '↑↓で選んで Enter。'
+  ], {
+    speaker: d.npc || '謎の老人',
+    actions
+  });
+}
+
 function showDomain(d) {
   backBtn.classList.add('visible');
   if (d.state === 'fog') {
@@ -1149,7 +1184,7 @@ function showDomain(d) {
   runSay(line, {
     speaker: d.npc || '謎の老人',
     actions: [
-      { label: '講座を選ぶ', primary: true, onClick: () => openDomainSheet(d) },
+      { label: '講座を選ぶ', primary: true, onClick: () => openDomainLessonSay(d) },
       { label: 'とじる', onClick: () => {} }
     ]
   });
@@ -1192,7 +1227,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=22';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=23';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
@@ -1287,9 +1322,33 @@ import(LAMP_MAP_MODULE).then(mod => {
   if (!SAVE.lastCourseNo && !arrive) {
     setTimeout(() => {
       if (!sayBox.classList.contains('show')) {
-        runSay(['ここは三つの扉の間。', '老人に話しかけてみよう。'], {
+        runSay([
+          'ここは道分かれの間。',
+          '左は盾の通路、右は剣の通路。正面が大扉だ。',
+          '行き先を選ぶか、老人に話しかけてみよう。'
+        ], {
           speaker: '案内',
-          actions: [{ label: 'わかった', onClick: () => {} }]
+          actions: [
+            {
+              label: '盾の通路へ',
+              primary: true,
+              onClick: () => travelToRealmSafe('sky')
+            },
+            {
+              label: '剣の通路へ',
+              onClick: () => travelToRealmSafe('underground')
+            },
+            {
+              label: '老人に話す',
+              onClick: () => openHubModal()
+            },
+            {
+              label: 'とじる',
+              onClick: () => {
+                if (worldApi && worldApi.setHubFocus) worldApi.setHubFocus('left');
+              }
+            }
+          ]
         });
       }
     }, 500);

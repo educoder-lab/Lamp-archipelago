@@ -3,13 +3,13 @@
     {
       "layout": "title",
       "emoji": "🚪",
-      "title": "三つの扉の間 — 旅の手引き",
+      "title": "道分かれの間 — 旅の手引き",
       "subtitle": "基本情報技術者試験（FE）の\n全体像を、まずここでつかもう。",
       "blocks": [
         {
           "t": "img",
           "src": "assets/slides/fe-overview.jpg",
-          "alt": "三つの扉の拠点イメージ",
+          "alt": "道分かれの間の拠点イメージ",
           "caption": "手前に後ろ姿、正面に大扉。左が盾、右が剣。"
         }
       ]

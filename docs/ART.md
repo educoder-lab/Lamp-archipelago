@@ -1,4 +1,4 @@
-# アート方針（三つの扉）
+# アート方針（道分かれの間）
 
 マップと拠点の見た目の正本です。物語は [WORLD.md](../WORLD.md)、置き場は [assets/README.md](./assets/README.md)。
 

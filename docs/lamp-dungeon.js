@@ -192,9 +192,17 @@ function heldEquipRel(kind, level) {
 /** 背景の空きニッチに扉をピッタリはめ込む矩形（拠点／部屋／剣は下延長） */
 function doorNicheRect(W, H, kind) {
   if (kind === 'hub') {
-    const w = W * 0.30;
-    const h = H * 0.76;
-    return { x: W * 0.5 - w / 2, y: H * 0.045, w, h };
+    // 大扉スプライトは 3:4。拠点背景の中央アーチに合わせて縦長のまま歪ませない
+    const aspect = 3 / 4;
+    const maxW = W * 0.22;
+    const maxH = H * 0.70;
+    let h = maxH;
+    let w = h * aspect;
+    if (w > maxW) {
+      w = maxW;
+      h = w / aspect;
+    }
+    return { x: W * 0.5 - w / 2, y: H * 0.06, w, h };
   }
   if (kind === 'sword') {
     const w = W * 0.32;
@@ -244,7 +252,7 @@ export function mountLampWorld(container, opts) {
 
   const canvas = document.createElement('canvas');
   canvas.className = 'lamp-dungeon-canvas';
-  canvas.setAttribute('aria-label', '三つの扉の間');
+  canvas.setAttribute('aria-label', '道分かれの間');
   container.insertBefore(canvas, container.firstChild);
 
   const growthHud = document.createElement('div');
@@ -862,7 +870,7 @@ export function mountLampWorld(container, opts) {
       || hubArt.heroBare
       || hubArt.hero;
 
-    const heroW = Math.min(W * 0.30, 220);
+    const heroW = Math.min(W * 0.45, 330);
     const heroH = heroW * 1.35;
     const bob = Math.sin(pulseT * 2) * 1.5;
     const footY = H * 0.955;
@@ -989,10 +997,10 @@ export function mountLampWorld(container, opts) {
 
     // 謎の老人（扉の右・床に足）
     const elderLit = hubFocus === 'elder';
-    const elderW = Math.min(W * 0.24, 180);
+    const elderW = Math.min(W * 0.36, 270);
     const elderH = elderW * 1.35;
-    const elderX = W * 0.62;
-    const elderFootY = H * 0.90;
+    const elderX = W * 0.58;
+    const elderFootY = H * 0.92;
     const elderY = elderFootY - elderH;
     const elderImg = elderLit
       ? (hubArt.elderTalk || hubArt.elder)
@@ -1985,6 +1993,12 @@ export function mountLampWorld(container, opts) {
     getGrowth: () => growth,
     playClearDoorThen,
     playGrowthLevelUpThen,
+    setHubFocus(focus) {
+      if (focus === 'left' || focus === 'right' || focus === 'door' || focus === 'elder') {
+        hubFocus = focus;
+      }
+    },
+    getHubFocus: () => hubFocus,
     spawnParticles() {},
     getMode: () => mode,
     getScene: () => scene,

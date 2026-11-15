@@ -1,9 +1,9 @@
 {
   "courseNo": 0,
   "lessonId": "hub-harbor/00-fe-overview",
-  "title": "三つの扉の間 — FE試験の手引き",
+  "title": "道分かれの間 — FE試験の手引き",
   "domain": "hub-harbor",
-  "domainTitle": "三つの扉の間",
+  "domainTitle": "道分かれの間",
   "path": "land/hub-harbor/00-fe-overview",
   "webReady": true,
   "titleAwards": ["間の灯守"],
@@ -58,3 +58,4 @@
     "nextCourseNo": 1
   }
 }
+

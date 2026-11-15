@@ -15,7 +15,7 @@
 | 3ウェイハンドシェイク | TCP 接続確立時の SYN→SYN+ACK→ACK のやり取り | [TCP/UDPとポート](sky/island-network/49-tcpudp/README.md) |
 | ACID 特性 | 原子性・一貫性・独立性・永続性 | [トランザクションと障害回復](sky/island-database/45-transaction/README.md) |
 | AND（論理積） | 両方 1 のとき結果が 1 | [論理演算](sky/island-foundation/04-logic/README.md) |
-| Apache License | 制約が緩く商用利用しやすい OSS ライセンス | [OSSとライセンス](sky/island-software/39-oss/README.md) |
+| Apache License | 約束がゆるい OSS ライセンス。会社の製品にも組み込みやすい | [OSSとライセンス](sky/island-software/39-oss/README.md) |
 | ARP | IP アドレスから MAC アドレスを取得するプロトコル | [パケット解析と通信制御](underground/fortress-network/104-packet/README.md) |
 | ASCII | 英数字・記号を 7 ビット（128 種）で表す文字コード | [文字コードと符号化](sky/island-foundation/07-char/README.md) |
 | B 木 | バランスの取れた多分岐木。データベースのインデックスに使用 | [障害回復と性能](underground/fortress-database/101-recovery/README.md) |
@@ -54,7 +54,7 @@
 | EVM（アーンドバリューマネジメント） | 出来高でコストとスケジュールの進捗を管理する手法 | [リスクと品質管理](sky/island-project/82-risk/README.md) |
 | EXISTS | 副問合せが結果を返すかどうかを判定する述語 | [科目B SQL問題演習](underground/fortress-database/99-sql-pm/README.md) |
 | GB（ギガバイト） | 約 10 億バイト | [情報量の単位](sky/island-foundation/03-unit/README.md) |
-| GPL | 改変物にも同じライセンスを要求するコピーレフト型ライセンス | [OSSとライセンス](sky/island-software/39-oss/README.md) |
+| GPL | 改変した版を公開するとき、同じ GPL を付けないといけない（条件を引き継ぐ）ライセンス | [OSSとライセンス](sky/island-software/39-oss/README.md) |
 | GROUP BY | 指定列でグループ化し集約関数を適用する | [SQL 結合と副問合せ](sky/island-database/43-sql-join/README.md) |
 | GUI | グラフィカルユーザインタフェース。マウスやアイコンで操作 | [ヒューマンインタフェース](sky/island-media/63-ux/README.md) |
 | HAVING | GROUP BY の結果をさらに絞り込む句 | [SQL 結合と副問合せ](sky/island-database/43-sql-join/README.md) |
@@ -78,7 +78,7 @@
 | KB（キロバイト） | 約 1,000 バイト（厳密には 1,024 バイト） | [情報量の単位](sky/island-foundation/03-unit/README.md) |
 | L2スイッチ（スイッチングハブ） | MAC アドレスを基にフレームを転送する装置 | [ルーティングとスイッチ](sky/island-network/51-routing/README.md) |
 | LIKE | パターンマッチングに使う演算子。% は任意文字列 | [SQL SELECT文](sky/island-database/42-sql-select/README.md) |
-| Linux | Unix 系の OSS カーネル | [OSSとライセンス](sky/island-software/39-oss/README.md) |
+| Linux | OSS の代表例。パソコンやサーバを動かす中核（カーネル）として広く使われる | [OSSとライセンス](sky/island-software/39-oss/README.md) |
 | LRU | 最も長く使われていないページを置き換える方式 | [仮想記憶](sky/island-software/36-vmem/README.md) |
 | M&A | 合併と買収による企業再編 | [経営戦略](sky/island-business/68-strategy/README.md) |
 | MB（メガバイト） | 約 100 万バイト | [情報量の単位](sky/island-foundation/03-unit/README.md) |
@@ -95,7 +95,7 @@
 | ORDER BY | 結果を指定列で並べ替える句 | [SQL SELECT文](sky/island-database/42-sql-select/README.md) |
 | OS（オペレーティングシステム） | ハードウェアを管理し、アプリに共通サービスを提供する基盤ソフト | [OSの役割とプロセス](sky/island-software/34-os/README.md) |
 | OSI 参照モデル | ネットワーク通信を 7 階層に分けた標準モデル | [OSI参照モデル](sky/island-network/47-osi/README.md) |
-| OSS（オープンソースソフトウェア） | ソースコードが公開され自由に利用・改変・再配布できるソフト | [OSSとライセンス](sky/island-software/39-oss/README.md) |
+| OSS（オープンソースソフトウェア） | 中身（ソースコード＝設計図）が公開され、見て・直して・配ってよいソフト（使い方はライセンスで決まる） | [OSSとライセンス](sky/island-software/39-oss/README.md) |
 | PaaS | 開発実行環境をクラウドで提供 | [仮想化とクラウド](sky/island-system/31-virtual/README.md) |
 | PERT | 作業の依存関係をネットワーク図で表し最短工期を求める手法 | [OR・在庫管理](sky/island-corporate/66-or/README.md) |
 | PKI（公開鍵基盤） | 認証局を核として公開鍵を管理する仕組み | [認証と証明書](sky/island-security/56-cert/README.md) |
