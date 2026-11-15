@@ -1552,15 +1552,22 @@ export function mountLampWorld(container, opts) {
         camZoom = anim.fromZ + (anim.toZ - anim.fromZ) * e;
         if (u >= 1) anim = null;
       }
-    } else if (scene === 'hub') {
-      if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) hubFocus = 'left';
-      if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) hubFocus = 'right';
-      if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) hubFocus = 'door';
-      if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) hubFocus = 'elder';
-    } else if (scene === 'room') {
-      // 矢印では扉移動しない（ボタン / [ ] / F のみ）
-      if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) roomFocus = 'back';
-      if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) roomFocus = 'door';
+    } else {
+      const sayOpen = typeof document !== 'undefined'
+        && document.getElementById('say-box')
+        && document.getElementById('say-box').classList.contains('show');
+      if (sayOpen) {
+        keys.clear();
+      } else if (scene === 'hub') {
+        if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) hubFocus = 'left';
+        if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) hubFocus = 'right';
+        if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) hubFocus = 'door';
+        if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) hubFocus = 'elder';
+      } else if (scene === 'room') {
+        // 矢印では扉移動しない（ボタン / [ ] / F のみ）
+        if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) roomFocus = 'back';
+        if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) roomFocus = 'door';
+      }
     }
 
     render();
@@ -1805,9 +1812,11 @@ export function mountLampWorld(container, opts) {
       if (tag === 'TEXTAREA' || tag === 'INPUT' || (e.target && e.target.isContentEditable)) {
         return;
       }
+      // セリフ表示中はマップ側（say）だけが Enter／矢印を扱う。扉・講座パッド・フォーカス移動は止める
       const say = document.getElementById('say-box');
       if (say && say.classList.contains('show')) {
-        if (e.key === 'Enter' || e.key === ' ') return;
+        keys.clear();
+        return;
       }
     }
     // 扉ナビが出ているときは常に [ ] で前後（島の講座選択中も含む）

@@ -945,6 +945,37 @@ document.addEventListener('keydown', (ev) => {
     return;
   }
   if (document.getElementById('gallery-overlay') && document.getElementById('gallery-overlay').classList.contains('show')) return;
+  if (document.getElementById('settings-overlay').classList.contains('show')) return;
+
+  // セリフ中は他UI（分野一覧・クエストモーダル・ワールド操作）へキーを渡さない
+  if (sayBox.classList.contains('show')) {
+    const actionsOpen = sayActions.classList.contains('show') && sayActions.children.length > 0;
+    if (actionsOpen) {
+      if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+        ev.preventDefault();
+        sayActionFocus -= 1;
+        syncSayActionFocus();
+        return;
+      }
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+        ev.preventDefault();
+        sayActionFocus += 1;
+        syncSayActionFocus();
+        return;
+      }
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        activateSayActionFocus();
+        return;
+      }
+      return;
+    }
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      if (sayJob && sayJob.advance) sayJob.advance();
+    }
+    return;
+  }
 
   const domainOpen = document.getElementById('domain-overlay').classList.contains('show');
   if (domainOpen) {
@@ -990,35 +1021,6 @@ document.addEventListener('keydown', (ev) => {
       return;
     }
     return;
-  }
-
-  if (document.getElementById('settings-overlay').classList.contains('show')) return;
-  if (!sayBox.classList.contains('show')) return;
-
-  const actionsOpen = sayActions.classList.contains('show') && sayActions.children.length > 0;
-  if (actionsOpen) {
-    if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
-      ev.preventDefault();
-      sayActionFocus -= 1;
-      syncSayActionFocus();
-      return;
-    }
-    if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
-      ev.preventDefault();
-      sayActionFocus += 1;
-      syncSayActionFocus();
-      return;
-    }
-    if (ev.key === 'Enter' || ev.key === ' ') {
-      ev.preventDefault();
-      activateSayActionFocus();
-      return;
-    }
-    return;
-  }
-  if (ev.key === 'Enter' || ev.key === ' ') {
-    ev.preventDefault();
-    if (sayJob && sayJob.advance) sayJob.advance();
   }
 });
 function appendTravelerPanel(panel) {
@@ -1190,7 +1192,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=21';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=22';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
