@@ -2,8 +2,8 @@
 param(
   [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path,
   [int]$Threshold = 22,
-  # たすき合わせ（-42）から時計回り 90° → +48
-  [double]$StrapAngleDeg = 48
+  # 素材盾を直立から時計回り 30°（描画側では回さない）
+  [double]$StrapAngleDeg = 30
 )
 
 Add-Type -AssemblyName System.Drawing

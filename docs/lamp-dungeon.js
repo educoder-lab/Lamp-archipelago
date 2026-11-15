@@ -77,13 +77,13 @@ function drawArt(ctx, img, x, y, w, h) {
  * 単位: 幅/高さ 100 基準、原点=胴体中心（画像の 50%, 48%）。
  */
 const HERO_EQUIP_ATTACH = {
-  // 背中のたすき上。表示を時計回り 90°（canvas の正回転）
+  // 背中のたすき上。傾きは back-shield 素材側（時計回り 30°）に焼込
   shield: {
     lx: 0,
     ly: -12,
     w: 30,
     h: 34,
-    rot: Math.PI / 2,
+    rot: 0,
     ax: 0.50,
     ay: 0.48,
     z: 'front',
