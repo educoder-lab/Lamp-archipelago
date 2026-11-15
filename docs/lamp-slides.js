@@ -455,7 +455,7 @@
     opts = opts || {};
     const slides = (deck && deck.slides) || [];
     root.innerHTML = '';
-    root.classList.add('deck');
+    root.classList.add('deck', 'list'); // 初期表示は一覧で読む
     root.tabIndex = 0;
     if (!slides.length) { root.textContent = '（スライドがありません）'; return null; }
 
@@ -464,7 +464,7 @@
     top.appendChild(count);
     top.appendChild(h('span', 'deck-badge' + (deck.authored === false ? ' lite' : ''), deck.authored === false ? 'かんたん版' : '図解スライド'));
     top.appendChild(h('span', 'spacer'));
-    const listB = h('button', null, '📄 一覧で読む'); listB.type = 'button';
+    const listB = h('button', null, '🎞 スライドで見る'); listB.type = 'button';
     const fsB = h('button', null, '⛶ 全画面'); fsB.type = 'button';
     top.append(listB, fsB);
 
