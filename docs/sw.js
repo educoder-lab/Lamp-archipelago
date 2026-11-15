@@ -1,5 +1,5 @@
 /* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v54';
+const CACHE = 'lamp-archipelago-v55';
 const PRECACHE = [
   './',
   './index.html',
@@ -57,6 +57,23 @@ const PRECACHE = [
   './assets/common/equip/held-sword-06.png',
   './assets/common/equip/held-sword-07.png',
   './assets/common/equip/slot-shield-01.png',
+  './assets/common/equip/slot-shield-02.png',
+  './assets/common/equip/slot-shield-03.png',
+  './assets/common/equip/slot-shield-04.png',
+  './assets/common/equip/slot-shield-05.png',
+  './assets/common/equip/slot-shield-06.png',
+  './assets/common/equip/slot-shield-07.png',
+  './assets/common/equip/slot-shield-08.png',
+  './assets/common/equip/slot-shield-09.png',
+  './assets/common/equip/slot-shield-10.png',
+  './assets/common/equip/slot-shield-11.png',
+  './assets/common/equip/slot-shield-12.png',
+  './assets/common/equip/slot-shield-13.png',
+  './assets/common/equip/slot-shield-14.png',
+  './assets/common/equip/slot-shield-15.png',
+  './assets/common/equip/slot-shield-16.png',
+  './assets/common/equip/slot-shield-17.png',
+  './assets/common/equip/slot-shield-18.png',
   './assets/common/equip/slot-sword-01.png',
   './assets/common/equip/slot-sword-02.png',
   './assets/common/equip/slot-sword-03.png',

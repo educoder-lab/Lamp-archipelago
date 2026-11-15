@@ -75,24 +75,24 @@ function drawArt(ctx, img, x, y, w, h) {
 /**
  * 構えた後ろ姿（hero-hold-bare）への着せ替えスロット。
  * 単位: 幅/高さ 100 基準、原点=胴体中心。facing で X・scaleX 連動。
- * 盾=左腕の外面、剣=右手で先端下（手なしプレートを手の位置に合わせる）。
+ * 盾=左手・表が見える（体の前に描く）、剣=右手・先端下。
  */
 const HERO_EQUIP_ATTACH = {
   shield: {
-    lx: -34,
-    ly: 4,
-    w: 44,
-    h: 50,
-    rot: -0.06,
-    z: 'back',
+    lx: -28,
+    ly: 8,
+    w: 42,
+    h: 48,
+    rot: -0.12,
+    z: 'front',
     flipWithFacing: true
   },
   sword: {
-    lx: 36,
-    ly: 20,
-    w: 26,
-    h: 56,
-    rot: 0.03,
+    lx: 30,
+    ly: 18,
+    w: 22,
+    h: 52,
+    rot: 0.08,
     z: 'front',
     flipWithFacing: true
   }
@@ -187,8 +187,8 @@ function drawAuraSprite(ctx, img, parent, spiritLv) {
 
 function heldEquipRel(kind, level) {
   const n = String(Math.max(1, level || 1)).padStart(2, '0');
-  // 着せ替えスロット: 盾は外面（growth）、剣は先端下の slot プレート
-  if (kind === 'shield') return 'common/growth/shield-' + n + '.jpg';
+  // on-character は slot のみ（growth は HUD、held-* は腕焼き付きで使わない）
+  if (kind === 'shield') return 'common/equip/slot-shield-' + n + '.png';
   if (kind === 'sword') return 'common/equip/slot-sword-' + n + '.png';
   if (kind === 'aura') return 'common/equip/aura-' + n + '.png';
   return growthIconRel(kind, level);
@@ -375,7 +375,8 @@ export function mountLampWorld(container, opts) {
   ];
   Promise.all([
     loadHubImage('common/hero-hold-bare.png').then((i) => { hubArt.heroHoldBare = i; }),
-    loadHubImage('common/hero-hold-rear.png').then((i) => { hubArt.heroHoldRear = i; }),
+    // hero-hold-rear は焼き付き装備ありのため読み込まない
+
     loadHubImage('common/hero-bare.png').then((i) => { hubArt.heroBare = i; }),
     loadHubImage('common/hero-bare-walk-1.png').then((i) => { hubArt.heroBareWalk1 = i; }),
     loadHubImage('common/hero-bare-walk-2.png').then((i) => { hubArt.heroBareWalk2 = i; }),
@@ -490,14 +491,11 @@ export function mountLampWorld(container, opts) {
     const shieldLv = growthLevelOf(growth.shield);
     const swordLv = growthLevelOf(growth.sword);
     const spiritLv = Math.max(1, Math.min(4, growthLevelOf(growth.spirit)));
-    const nSh = String(shieldLv).padStart(2, '0');
-    const nSw = String(swordLv).padStart(2, '0');
     const nSp = String(spiritLv).padStart(2, '0');
     const jobs = [
-      // 盾: 外面デザイン（growth）→ slot-shield → 旧 held
-      ['held_shield_' + shieldLv, heldEquipRel('shield', shieldLv), 'common/equip/slot-shield-' + nSh + '.png', 'common/equip/held-shield-' + nSh + '.png'],
-      // 剣: 先端下 slot → 旧 held
-      ['held_sword_' + swordLv, heldEquipRel('sword', swordLv), 'common/equip/held-sword-' + nSw + '.png', 'common/growth/sword-' + nSw + '.jpg'],
+      // on-character: slot のみ（held / growth は二重・浮きの原因なので使わない）
+      ['held_shield_' + shieldLv, heldEquipRel('shield', shieldLv)],
+      ['held_sword_' + swordLv, heldEquipRel('sword', swordLv)],
       ['held_aura_' + spiritLv, heldEquipRel('aura', spiritLv), 'common/equip/aura-' + nSp + '.jpg']
     ];
     jobs.forEach(([artKey, primary, ...fallbacks]) => {
@@ -876,14 +874,9 @@ export function mountLampWorld(container, opts) {
     const shieldImg = hubArt['held_shield_' + shieldLv];
     const swordImg = hubArt['held_sword_' + swordLv];
 
-    // 描画順: オーラ → 背面装備(盾) → 体（向きで反転） → 前面装備(剣)
+    // 描画順: オーラ → 体 → 盾（表が見える） → 剣（右手で見える）
     if (auraImg) drawAuraSprite(ctx, auraImg, parent, spiritLv);
 
-    if (shieldImg) {
-      drawChildSprite(ctx, shieldImg, parent, HERO_EQUIP_ATTACH.shield, heroFacing);
-    }
-
-    // 体は透過 PNG（なければ黒抜き）。不透明な黒四角で盾を隠さない
     ctx.save();
     ctx.translate(parent.cx, parent.cy);
     ctx.scale(heroFacing, 1);
@@ -894,7 +887,9 @@ export function mountLampWorld(container, opts) {
     }
     ctx.restore();
 
-    // 剣は右手前（体の後に描いて「持っている」）
+    if (shieldImg) {
+      drawChildSprite(ctx, shieldImg, parent, HERO_EQUIP_ATTACH.shield, heroFacing);
+    }
     if (swordImg) {
       drawChildSprite(ctx, swordImg, parent, HERO_EQUIP_ATTACH.sword, heroFacing);
     }
