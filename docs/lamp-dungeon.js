@@ -1135,31 +1135,52 @@ export function mountLampWorld(container, opts) {
 
     drawHeroSprite(ctx, W, H);
 
-    // 講座番号はキャラ頭上（手前帯の上）に置き、被りを避ける
+    // 講座番号は画面上部の帯に置き、主人公・扉ラベルと被らないようにする
     if (mode === 'island' && stagePads.length) {
       if (lessonPadFocus < 0 || lessonPadFocus >= stagePads.length) lessonPadFocus = 0;
-      const y0 = H * 0.48;
+      const n = stagePads.length;
+      const gap = Math.min(56, Math.max(36, (W * 0.72) / Math.max(1, n)));
+      const y0 = Math.max(36, Math.min(H * 0.16, labelY - 36));
+      const barH = 44;
+      ctx.fillStyle = 'rgba(10,14,28,0.82)';
+      ctx.fillRect(W * 0.5 - (n * gap) / 2 - 16, y0 - barH / 2, n * gap + 32, barH);
+      ctx.strokeStyle = 'rgba(255,224,138,0.35)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(W * 0.5 - (n * gap) / 2 - 16, y0 - barH / 2, n * gap + 32, barH);
       stagePads.forEach((pad, i) => {
-        const x = W * 0.5 + (i - (stagePads.length - 1) / 2) * 52;
+        const x = W * 0.5 + (i - (n - 1) / 2) * gap;
         const col = pad.state === 'cleared' ? STATE_COLOR.cleared
           : pad.state === 'next' ? STATE_COLOR.current
           : pad.state === 'skipped' ? '#c59bff' : '#3a4568';
         const focused = i === lessonPadFocus;
+        const r = focused ? 18 : 16;
         ctx.beginPath();
-        ctx.arc(x, y0, focused ? 20 : 18, 0, Math.PI * 2);
+        ctx.arc(x, y0, r, 0, Math.PI * 2);
         ctx.fillStyle = col;
         ctx.fill();
         ctx.strokeStyle = focused ? '#ffe08a' : 'rgba(15,18,38,0.85)';
         ctx.lineWidth = focused ? 3 : 2;
         ctx.stroke();
         ctx.fillStyle = '#0f1226';
-        ctx.font = 'bold 12px sans-serif';
+        ctx.font = 'bold 13px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(String(pad.lesson.no), x, y0);
+        const no = pad.lesson && pad.lesson.no != null ? pad.lesson.no : (i + 1);
+        ctx.fillText(String(no), x, y0);
         pad._sx = x;
         pad._sy = y0;
       });
+      const focused = stagePads[lessonPadFocus];
+      if (focused && focused.lesson) {
+        const t = '講座 ' + focused.lesson.no + '　' + (focused.lesson.title || '');
+        ctx.fillStyle = 'rgba(10,14,28,0.88)';
+        ctx.fillRect(W / 2 - 170, y0 + 28, 340, 24);
+        ctx.fillStyle = '#ffe08a';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(t.length > 28 ? t.slice(0, 27) + '…' : t, W / 2, y0 + 40);
+      }
     }
 
     ctx.fillStyle = 'rgba(10,14,28,0.75)';
@@ -1702,6 +1723,14 @@ export function mountLampWorld(container, opts) {
 
   function onKeyDown(e) {
     if (typeof document !== 'undefined') {
+      // デバッグノート／入力欄ではゲーム操作しない（Enter=改行など）
+      if (typeof LampDebugNotes !== 'undefined' && LampDebugNotes.isOpen && LampDebugNotes.isOpen()) {
+        return;
+      }
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || (e.target && e.target.isContentEditable)) {
+        return;
+      }
       const say = document.getElementById('say-box');
       if (say && say.classList.contains('show')) {
         if (e.key === 'Enter' || e.key === ' ') return;

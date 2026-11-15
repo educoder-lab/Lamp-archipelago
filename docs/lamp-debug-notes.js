@@ -333,11 +333,19 @@
       saveTimer = setTimeout(() => { persistNotes(ui.text.value || ''); }, 800);
     });
     document.addEventListener('keydown', (ev) => {
-      if (ev.key === 'Escape' && isOpen()) {
+      if (!isOpen()) return;
+      // ノート表示中はマップ／ダンジョンへキーを渡さない
+      if (ev.key === 'Escape') {
         ev.preventDefault();
+        ev.stopPropagation();
         closeNotes();
+        return;
       }
-    });
+      // Enter / 矢印 / [ ] / F などがゲーム進行に刺さらないよう、入力欄内はそのまま
+      if (ui && ui.text && (ev.target === ui.text || ui.text.contains(ev.target))) {
+        ev.stopPropagation();
+      }
+    }, true);
   }
 
   function mount(opts) {

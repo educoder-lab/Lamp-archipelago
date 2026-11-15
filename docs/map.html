@@ -925,6 +925,18 @@ function activateQuestActionFocus() {
 }
 
 document.addEventListener('keydown', (ev) => {
+  // ノート編集中はゲーム側のキーをすべて止める（Enter=改行専用）
+  if (LampDebugNotes.isOpen()) {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      LampDebugNotes.close();
+    }
+    return;
+  }
+  const tag = (ev.target && ev.target.tagName) || '';
+  if (tag === 'TEXTAREA' || tag === 'INPUT' || (ev.target && ev.target.isContentEditable)) {
+    return;
+  }
   if (ev.key === 'Escape') {
     closeLessonModal();
     closeSettings();
@@ -932,7 +944,6 @@ document.addEventListener('keydown', (ev) => {
     hideSay();
     return;
   }
-  if (LampDebugNotes.isOpen()) return;
   if (document.getElementById('gallery-overlay') && document.getElementById('gallery-overlay').classList.contains('show')) return;
 
   const domainOpen = document.getElementById('domain-overlay').classList.contains('show');
