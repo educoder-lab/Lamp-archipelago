@@ -78,26 +78,26 @@ function drawArt(ctx, img, x, y, w, h) {
  * ax/ay: プレート内の持ち手アンカー（0–1）。盾=内側、剣=グリップ。
  */
 const HERO_EQUIP_ATTACH = {
-  // hero-hold-bare 実測: 左手≈(-19,-11) 右手≈(14,2)。盾は手に重ね、剣は握りを拳に
+  // hero-hold-bare 実測: 左前腕〜手、右拳。盾は前腕に載せ、剣は握りを拳へ
   shield: {
-    lx: -19,
-    ly: -11,
-    w: 30,
-    h: 34,
+    lx: -16,
+    ly: -9,
+    w: 28,
+    h: 32,
     rot: -0.02,
-    ax: 0.50,
-    ay: 0.48,
+    ax: 0.48,
+    ay: 0.50,
     z: 'front',
     flipWithFacing: true
   },
   sword: {
     lx: 14,
-    ly: 2,
-    w: 14,
-    h: 38,
-    rot: 0.03,
+    ly: 5,
+    w: 13,
+    h: 36,
+    rot: 0.02,
     ax: 0.50,
-    ay: 0.30,
+    ay: 0.26,
     z: 'front',
     flipWithFacing: true
   }
