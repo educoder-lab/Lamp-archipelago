@@ -1,9 +1,9 @@
 # 剣付き後ろ姿ヒーロー PNG 化 + たすき角度の背中盾プレート生成
-# StrapAngleDeg: clockwise degrees from upright (draw code does not rotate)
+# StrapAngleDeg: clockwise degrees from upright (0 = no tilt; draw code does not rotate)
 param(
   [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path,
   [int]$Threshold = 22,
-  [double]$StrapAngleDeg = 20
+  [double]$StrapAngleDeg = 0
 )
 
 Add-Type -AssemblyName System.Drawing
