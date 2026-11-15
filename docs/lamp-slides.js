@@ -614,6 +614,7 @@
       }
     });
     root.addEventListener('keydown', ev => {
+      if (typeof LampDebugNotes !== 'undefined' && LampDebugNotes.isOpen && LampDebugNotes.isOpen()) return;
       if (/^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
       if (ev.key === 'ArrowRight') { ev.preventDefault(); nextB.click(); }
       else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(i - 1); }
