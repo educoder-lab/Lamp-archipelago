@@ -4,6 +4,7 @@
 
 $repoRoot = $PSScriptRoot
 . (Join-Path $repoRoot '_grading\Invoke-AdventureSave.ps1')
+. (Join-Path $repoRoot '_tools\Write-DebugNotesData.ps1')
 
 $map = Join-Path $repoRoot 'docs\map.html'
 if (-not (Test-Path -LiteralPath $map)) {
@@ -13,6 +14,14 @@ if (-not (Test-Path -LiteralPath $map)) {
 
 Write-AdventureMapData -Save (Get-AdventureSave)
 Write-Host "ワールドマップに冒険の記録を同期しました: docs\save-data.js" -ForegroundColor Green
+
+$notesMd = Get-LampDebugNotesPath -RepoRoot $repoRoot
+if (-not (Test-Path -LiteralPath $notesMd)) {
+  Set-LampDebugNotesOpenItems -RepoRoot $repoRoot -OpenItemsBody '（まだなし）'
+}
+Write-DebugNotesDataFile -RepoRoot $repoRoot | Out-Null
+Write-Host "デバッグノートを同期しました: docs\debug-notes.md → docs\debug-notes-data.js" -ForegroundColor Green
+
 Write-Host "ブラウザ公開: https://educoder-lab.github.io/Lamp-archipelago/map.html" -ForegroundColor DarkCyan
 Write-Host "（Pages は進捗を見られません。ローカルで Show-Map すると自分の灯が付きます）"
 

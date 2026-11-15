@@ -200,9 +200,11 @@ ul.lessons a:hover { color: var(--ink); }
 <div class="notes-overlay" id="notes-overlay" role="dialog" aria-modal="true" aria-labelledby="notes-title">
   <div class="notes-card">
     <h2 id="notes-title">修正メモ（デバッグノート）</h2>
-    <p class="notes-meta">いつでも追記できます。この端末の localStorage に自動保存されます。</p>
-    <textarea id="notes-text" placeholder="気づいた修正点・TODO を書いておく…"></textarea>
+    <p class="notes-meta" id="notes-meta">正本は <code>docs/debug-notes.md</code>。とじると MD 形式で保存を試みます。</p>
+    <textarea id="notes-text" placeholder="気づいた修正点・TODO を書いておく（1行1項目がおすすめ）…"></textarea>
     <div class="modal-actions">
+      <button type="button" class="panel-btn" id="notes-link-file" title="docs/debug-notes.md を選んで直接書き込む">MDに接続</button>
+      <button type="button" class="panel-btn" id="notes-download">MD保存</button>
       <button type="button" class="panel-btn" id="notes-clear">クリア</button>
       <button type="button" class="panel-btn" id="notes-close">とじる</button>
     </div>
@@ -279,6 +281,7 @@ ul.lessons a:hover { color: var(--ink); }
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="save-data.js"></script>
+<script src="debug-notes-data.js"></script>
 <script src="lamp-save.js"></script>
 <script src="lamp-progress.js"></script>
 <script src="lamp-cloud.js"></script>
@@ -833,26 +836,213 @@ document.getElementById('settings-overlay').addEventListener('click', (ev) => {
 });
 
 const NOTES_KEY = 'lamp-debug-notes';
+const NOTES_HANDLE_DB = 'lamp-debug-notes-fs';
+const NOTES_HANDLE_STORE = 'handles';
+const NOTES_HANDLE_KEY = 'debug-notes-md';
 const notesOv = document.getElementById('notes-overlay');
 const notesText = document.getElementById('notes-text');
-function openNotes() {
-  notesText.value = localStorage.getItem(NOTES_KEY) || '';
+const notesMeta = document.getElementById('notes-meta');
+
+function notesMdTemplate(openBody) {
+  const body = (openBody && String(openBody).trim())
+    ? String(openBody).replace(/\s+$/, '') + '\n'
+    : '（まだなし）\n';
+  return [
+    '# デバッグノート',
+    '',
+    'マップの修正メモ（正本）。ブラウザのノートUIと同期する。',
+    'エージェントへ「デバッグノートを見て修正して」と言ったら、ここを読んで直し、**直した項目はこのファイルから削除**する。',
+    '',
+    '## 未処理',
+    '',
+    body
+  ].join('\n');
+}
+function parseNotesOpenBody(md) {
+  const text = String(md || '');
+  const m = text.match(/^##\s*未処理\s*\r?\n([\s\S]*?)(?=\r?\n##\s|\s*$)/m);
+  if (m) return m[1].replace(/\s+$/, '');
+  return text.trim();
+}
+function notesOpenBodyIsEmpty(body) {
+  const t = String(body || '').trim();
+  return !t || t === '（まだなし）';
+}
+
+function notesIdb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(NOTES_HANDLE_DB, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(NOTES_HANDLE_STORE)) db.createObjectStore(NOTES_HANDLE_STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function loadNotesFileHandle() {
+  try {
+    const db = await notesIdb();
+    return await new Promise((resolve, reject) => {
+      const tx = db.transaction(NOTES_HANDLE_STORE, 'readonly');
+      const g = tx.objectStore(NOTES_HANDLE_STORE).get(NOTES_HANDLE_KEY);
+      g.onsuccess = () => resolve(g.result || null);
+      g.onerror = () => reject(g.error);
+    });
+  } catch (_) { return null; }
+}
+async function saveNotesFileHandle(handle) {
+  try {
+    const db = await notesIdb();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(NOTES_HANDLE_STORE, 'readwrite');
+      tx.objectStore(NOTES_HANDLE_STORE).put(handle, NOTES_HANDLE_KEY);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (_) { /* ignore */ }
+}
+async function writeNotesToHandle(handle, openBody) {
+  if (!handle || !handle.createWritable) return false;
+  const perm = handle.queryPermission ? await handle.queryPermission({ mode: 'readwrite' }) : 'granted';
+  if (perm !== 'granted') {
+    const req = handle.requestPermission ? await handle.requestPermission({ mode: 'readwrite' }) : 'denied';
+    if (req !== 'granted') return false;
+  }
+  const w = await handle.createWritable();
+  await w.write(notesMdTemplate(openBody));
+  await w.close();
+  return true;
+}
+function downloadNotesMd(openBody) {
+  const blob = new Blob([notesMdTemplate(openBody)], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'debug-notes.md';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+async function persistNotes(openBody, opts) {
+  opts = opts || {};
+  const body = openBody == null ? '' : String(openBody);
+  localStorage.setItem(NOTES_KEY, body);
+  let wrote = false;
+  const handle = await loadNotesFileHandle();
+  if (handle) wrote = await writeNotesToHandle(handle, body);
+  if (!wrote && opts.forceDownload) downloadNotesMd(body);
+  if (notesMeta) {
+    notesMeta.textContent = wrote
+      ? 'docs/debug-notes.md に書き込みました（接続済み）。'
+      : 'localStorage に保存。MD 正本へは「MDに接続」または「MD保存」を使ってください。';
+  }
+  return wrote;
+}
+async function loadNotesText() {
+  // 1) 接続済みファイル
+  try {
+    const handle = await loadNotesFileHandle();
+    if (handle) {
+      const perm = handle.queryPermission ? await handle.queryPermission({ mode: 'readwrite' }) : 'granted';
+      if (perm === 'granted' || (handle.requestPermission && (await handle.requestPermission({ mode: 'readwrite' })) === 'granted')) {
+        const file = await handle.getFile();
+        const md = await file.text();
+        const body = parseNotesOpenBody(md);
+        localStorage.setItem(NOTES_KEY, body);
+        return body;
+      }
+    }
+  } catch (_) { /* fall through */ }
+  // 2) Show-Map 注入
+  if (typeof window.LAMP_DEBUG_NOTES_MD === 'string' && window.LAMP_DEBUG_NOTES_MD.length) {
+    const body = parseNotesOpenBody(window.LAMP_DEBUG_NOTES_MD);
+    if (!notesOpenBodyIsEmpty(body) || !localStorage.getItem(NOTES_KEY)) {
+      localStorage.setItem(NOTES_KEY, body);
+      return body;
+    }
+  }
+  // 3) HTTP 上の debug-notes.md
+  try {
+    const res = await fetch('debug-notes.md', { cache: 'no-store' });
+    if (res.ok) {
+      const body = parseNotesOpenBody(await res.text());
+      localStorage.setItem(NOTES_KEY, body);
+      return body;
+    }
+  } catch (_) { /* fall through */ }
+  return localStorage.getItem(NOTES_KEY) || '';
+}
+
+async function openNotes() {
+  notesText.value = await loadNotesText();
+  if (notesOpenBodyIsEmpty(notesText.value)) notesText.value = '';
   notesOv.classList.add('show');
   notesText.focus();
 }
-function closeNotes() {
-  localStorage.setItem(NOTES_KEY, notesText.value || '');
+async function closeNotes() {
+  await persistNotes(notesText.value || '');
   notesOv.classList.remove('show');
 }
+let notesSaveTimer = 0;
 notesText.addEventListener('input', () => {
   localStorage.setItem(NOTES_KEY, notesText.value || '');
+  clearTimeout(notesSaveTimer);
+  notesSaveTimer = setTimeout(() => { persistNotes(notesText.value || ''); }, 800);
 });
 document.getElementById('notes-btn').onclick = openNotes;
-document.getElementById('notes-close').onclick = closeNotes;
-document.getElementById('notes-clear').onclick = () => {
-  if (!confirm('メモをすべて消しますか？')) return;
+document.getElementById('notes-close').onclick = () => { closeNotes(); };
+document.getElementById('notes-download').onclick = () => {
+  downloadNotesMd(notesText.value || '');
+  if (notesMeta) notesMeta.textContent = 'debug-notes.md をダウンロードしました。docs/ に上書き保存してください。';
+};
+document.getElementById('notes-link-file').onclick = async () => {
+  try {
+    if (!window.showSaveFilePicker && !window.showOpenFilePicker) {
+      downloadNotesMd(notesText.value || '');
+      if (notesMeta) notesMeta.textContent = 'このブラウザは直接接続非対応のため、MDをダウンロードしました。';
+      return;
+    }
+    let handle = null;
+    if (window.showOpenFilePicker) {
+      const picks = await window.showOpenFilePicker({
+        multiple: false,
+        types: [{ description: 'Markdown', accept: { 'text/markdown': ['.md'], 'text/plain': ['.md', '.txt'] } }]
+      });
+      handle = picks && picks[0];
+    } else {
+      handle = await window.showSaveFilePicker({
+        suggestedName: 'debug-notes.md',
+        types: [{ description: 'Markdown', accept: { 'text/markdown': ['.md'] } }]
+      });
+    }
+    if (!handle) return;
+    await saveNotesFileHandle(handle);
+    // 既存 MD を読み込み（空なら今のテキストを書く）
+    try {
+      const file = await handle.getFile();
+      const existing = parseNotesOpenBody(await file.text());
+      if (!notesOpenBodyIsEmpty(existing) && notesOpenBodyIsEmpty(notesText.value)) {
+        notesText.value = existing;
+      }
+    } catch (_) { /* ignore */ }
+    const ok = await writeNotesToHandle(handle, notesText.value || '');
+    localStorage.setItem(NOTES_KEY, notesText.value || '');
+    if (notesMeta) {
+      notesMeta.textContent = ok
+        ? '接続しました。以降の編集は docs/debug-notes.md に自動書き込みます。'
+        : '接続に失敗しました。MD保存を使ってください。';
+    }
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+    downloadNotesMd(notesText.value || '');
+  }
+};
+document.getElementById('notes-clear').onclick = async () => {
+  if (!confirm('メモをすべて消しますか？（debug-notes.md の未処理も空にします）')) return;
   notesText.value = '';
-  localStorage.removeItem(NOTES_KEY);
+  await persistNotes('', { forceDownload: false });
+  const handle = await loadNotesFileHandle();
+  if (handle) await writeNotesToHandle(handle, '');
 };
 notesOv.addEventListener('click', (ev) => { if (ev.target.id === 'notes-overlay') closeNotes(); });
 
