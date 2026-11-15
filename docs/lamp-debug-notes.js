@@ -71,9 +71,10 @@
   }
 
   function parseNotesOpenBody(md) {
-    const text = String(md || '');
-    const m = text.match(/^##\s*未処理\s*\r?\n([\s\S]*?)(?=\r?\n##\s|\s*$)/m);
-    if (m) return m[1].replace(/\s+$/, '');
+    // /m の $ は「行末」にマッチするため、非貪欲キャプチャが先頭行だけで止まっていた
+    const text = String(md || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const m = text.match(/(?:^|\n)##\s*未処理\s*\n([\s\S]*?)(?=\n##\s|$)/);
+    if (m) return m[1].replace(/^\n+/, '').replace(/\s+$/, '');
     return text.trim();
   }
 
