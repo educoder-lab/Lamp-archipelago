@@ -359,6 +359,8 @@ export function mountLampWorld(container, opts) {
   };
   let doorAnim = null;
   let clearDoorFlash = 0;
+  /** @type {{ keys: string[], t0: number, dur: number, onDone: Function|null }|null} */
+  let growthAnim = null;
   const DOMAIN_DOOR_IDS = [
     'island-foundation', 'island-algorithm', 'island-hardware', 'island-system',
     'island-software', 'island-database', 'island-network', 'island-security',
@@ -1194,6 +1196,40 @@ export function mountLampWorld(container, opts) {
     ctx.fillText(hint, W / 2, H - 18);
 
     drawGrowthHud(ctx);
+    drawGrowthLevelUpFx(ctx, W, H);
+  }
+
+  function drawGrowthLevelUpFx(ctx, W, H) {
+    if (!growthAnim) return;
+    const u = Math.min(1, (performance.now() - growthAnim.t0) / Math.max(1, growthAnim.dur));
+    const names = { shield: '盾', sword: '剣', spirit: '精神' };
+    const keys = growthAnim.keys || [];
+    const label = keys.map((k) => names[k] || k).join('・') + ' レベルアップ！';
+    const pulse = 0.55 + 0.45 * Math.sin(u * Math.PI);
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.sin(u * Math.PI));
+    ctx.fillStyle = 'rgba(10,14,28,0.82)';
+    ctx.fillRect(W / 2 - 150, H * 0.58, 300, 44);
+    ctx.strokeStyle = 'rgba(245,196,81,' + pulse + ')';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(W / 2 - 150, H * 0.58, 300, 44);
+    ctx.fillStyle = '#ffe08a';
+    ctx.font = 'bold 16px "Segoe UI", "Yu Gothic UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, W / 2, H * 0.58 + 22);
+    // 主人公付近の光
+    const gx = W * 0.5;
+    const gy = H * 0.78;
+    const rad = 40 + 50 * pulse;
+    const glow = ctx.createRadialGradient(gx, gy, 8, gx, gy, rad);
+    glow.addColorStop(0, 'rgba(255,224,138,' + (0.35 * pulse) + ')');
+    glow.addColorStop(1, 'rgba(255,224,138,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(gx, gy, rad, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
 
   function drawRealmBands(ctx) {
@@ -1478,6 +1514,19 @@ export function mountLampWorld(container, opts) {
         if (done) done();
       }
     }
+    if (growthAnim) {
+      const u = Math.min(1, (now - growthAnim.t0) / Math.max(1, growthAnim.dur));
+      if (u >= 1) {
+        const done = growthAnim.onDone;
+        const keys = growthAnim.keys || [];
+        keys.forEach((k) => {
+          const row = growthHud.querySelector('[data-key="' + k + '"]');
+          if (row) row.classList.remove('level-up');
+        });
+        growthAnim = null;
+        if (done) done();
+      }
+    }
 
     if (anim) {
       const u = Math.min(1, (now - anim.t0) / anim.dur);
@@ -1679,6 +1728,31 @@ export function mountLampWorld(container, opts) {
   function playClearDoorThen(onDone) {
     doorAnim = { t0: performance.now(), dur: 900, onDone: onDone || null };
     clearDoorFlash = 0.01;
+  }
+
+  /** 盾・剣・精神のレベルアップ演出（扉オープン後など） */
+  function playGrowthLevelUpThen(keys, onDone) {
+    const list = (Array.isArray(keys) ? keys : [keys]).filter(Boolean);
+    if (!list.length) {
+      if (onDone) onDone();
+      return;
+    }
+    growthAnim = {
+      keys: list,
+      t0: performance.now(),
+      dur: 1600,
+      onDone: onDone || null
+    };
+    refreshGrowthHud();
+    list.forEach((k) => {
+      const row = growthHud.querySelector('[data-key="' + k + '"]');
+      if (row) {
+        row.classList.remove('level-up');
+        // reflow して再アニメ
+        void row.offsetWidth;
+        row.classList.add('level-up');
+      }
+    });
   }
 
   function returnToHub(duration) {
@@ -1901,6 +1975,7 @@ export function mountLampWorld(container, opts) {
     setGrowth,
     getGrowth: () => growth,
     playClearDoorThen,
+    playGrowthLevelUpThen,
     spawnParticles() {},
     getMode: () => mode,
     getScene: () => scene,

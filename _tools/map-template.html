@@ -1190,7 +1190,7 @@ const doorFx = params.get('door') === '1';
 const levelUp = false; // XPレベルアップ演出は使わない
 const awardTitles = [];
 
-const LAMP_MAP_MODULE = './lamp-dungeon.js?v=19';
+const LAMP_MAP_MODULE = './lamp-dungeon.js?v=21';
 import(LAMP_MAP_MODULE).then(mod => {
   const mount = mod.mountLampWorld || mod.mountLampDungeon || (window.LampDungeon && window.LampDungeon.mountLampWorld);
   if (!mount) { console.error('LampDungeon mount failed'); return; }
@@ -1241,6 +1241,11 @@ import(LAMP_MAP_MODULE).then(mod => {
     const fromDom = domains.find(d => d.lessons && d.lessons.some(l => l.no === fromNo));
     const toDom = toNo ? domains.find(d => d.lessons && d.lessons.some(l => l.no === toNo)) : null;
     const playDom = toDom || fromDom;
+    const domainDone = !!(fromDom && LampProgress.domainFullyCleared(fromDom, cleared));
+    const growthKey = fromDom && fromDom.realm === 'sky' ? 'shield'
+      : fromDom && fromDom.realm === 'underground' ? 'sword'
+      : fromDom && fromDom.realm === 'land' ? 'spirit'
+      : null;
     const goNext = () => {
       if (toNo) {
         const L = lessons.find(l => l.no === toNo);
@@ -1254,12 +1259,21 @@ import(LAMP_MAP_MODULE).then(mod => {
       }
       history.replaceState({}, '', 'map.html');
     };
+    const afterDoor = () => {
+      if (domainDone && growthKey && worldApi.playGrowthLevelUpThen) {
+        worldApi.playGrowthLevelUpThen(growthKey, goNext);
+      } else {
+        goNext();
+      }
+    };
     if (playDom) {
       worldApi.placeAvatarForProgress(fromNo || toNo);
-      worldApi.enterIsland(playDom, lessonState);
-      if (doorFx && worldApi.playClearDoorThen) {
-        worldApi.playClearDoorThen(goNext);
+      // 扉演出は全講座クリア時のみ、クリアした扉の部屋で再生
+      if (doorFx && domainDone && fromDom && worldApi.playClearDoorThen) {
+        worldApi.enterIsland(fromDom, lessonState);
+        worldApi.playClearDoorThen(afterDoor);
       } else {
+        worldApi.enterIsland(playDom, lessonState);
         goNext();
       }
     } else {

@@ -65,6 +65,26 @@
 .lamp-growth-row[data-key="sword"] .g-lv { color: #c59bff; }
 .lamp-growth-row[data-key="spirit"] .g-lv { color: #7fd1a8; }
 .lamp-growth-row:hover { filter: brightness(1.15); }
+.lamp-growth-row.level-up {
+  animation: lamp-growth-pop 1.4s ease;
+  border-radius: 8px;
+  outline: 2px solid rgba(245, 196, 81, 0.85);
+  background: rgba(245, 196, 81, 0.12);
+}
+.lamp-growth-row.level-up img {
+  animation: lamp-growth-icon 1.4s ease;
+}
+@keyframes lamp-growth-pop {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.08); }
+  55% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes lamp-growth-icon {
+  0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+  35% { transform: scale(1.35) rotate(-8deg); filter: brightness(1.45); }
+  100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
 
 /* 扉ナビ（部屋シーン — Enterでフォーカス中を決定） */
 .lamp-door-nav {
