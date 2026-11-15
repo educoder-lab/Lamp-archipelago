@@ -77,7 +77,7 @@ function drawArt(ctx, img, x, y, w, h) {
  * 単位: 幅/高さ 100 基準、原点=胴体中心（画像の 50%, 48%）。
  */
 const HERO_EQUIP_ATTACH = {
-  // 背中のたすき上。傾きは back-shield 素材側（時計回り 30°）に焼込
+  // 背中のたすき上。傾きは back-shield 素材側（時計回り 20°）に焼込
   shield: {
     lx: 0,
     ly: -12,
@@ -626,8 +626,8 @@ export function mountLampWorld(container, opts) {
   function interactRoom() {
     if (mode === 'island') {
       returnToRoomPath();
-      return;
-    }
+        return;
+      }
     if (roomFocus === 'back') {
       returnToHub(0);
       return;
@@ -739,19 +739,19 @@ export function mountLampWorld(container, opts) {
       const pinSize = r * 2.1;
 
       if (!drawArt(ctx, pin, nx - pinSize / 2, ny - pinSize / 2, pinSize, pinSize)) {
-        ctx.beginPath();
-        ctx.arc(nx, ny, r + 6, 0, Math.PI * 2);
-        ctx.fillStyle = foggy ? 'rgba(58,63,98,0.55)' : 'rgba(15,18,38,0.65)';
-        ctx.fill();
-        ctx.strokeStyle = STATE_COLOR[st] || STATE_COLOR.open;
-        ctx.lineWidth = n.state === 'current' ? 4 : 2;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(nx, ny, r, 0, Math.PI * 2);
-        ctx.fillStyle = foggy ? '#2a3050' : accent;
-        ctx.globalAlpha = foggy ? 0.5 : 0.85;
-        ctx.fill();
-        ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.arc(nx, ny, r + 6, 0, Math.PI * 2);
+      ctx.fillStyle = foggy ? 'rgba(58,63,98,0.55)' : 'rgba(15,18,38,0.65)';
+      ctx.fill();
+      ctx.strokeStyle = STATE_COLOR[st] || STATE_COLOR.open;
+      ctx.lineWidth = n.state === 'current' ? 4 : 2;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(nx, ny, r, 0, Math.PI * 2);
+      ctx.fillStyle = foggy ? '#2a3050' : accent;
+      ctx.globalAlpha = foggy ? 0.5 : 0.85;
+      ctx.fill();
+      ctx.globalAlpha = 1;
       }
       if (st === 'cleared' && n.kind === 'domain') {
         ctx.beginPath();
@@ -1291,7 +1291,7 @@ export function mountLampWorld(container, opts) {
       ctx.strokeStyle = glow;
       ctx.globalAlpha = 0.5;
       ctx.strokeRect(4, 4, w - 8, h - 8);
-      ctx.globalAlpha = 1;
+    ctx.globalAlpha = 1;
     }
     ctx.restore();
   }
@@ -1691,8 +1691,8 @@ export function mountLampWorld(container, opts) {
     overview = false;
     hubFocus = 'elder';
     if (hubNode && hubNode._px != null) {
-      px = hubNode._px;
-      py = hubNode._py;
+    px = hubNode._px;
+    py = hubNode._py;
     }
     if (opts.onModeChange) opts.onModeChange('world', null);
     anim = null;
@@ -1704,7 +1704,7 @@ export function mountLampWorld(container, opts) {
   }
 
   function screenToWorld(sx, sy) {
-    return {
+      return {
       x: camX + (sx - canvas.width / 2) / camZoom,
       y: camY + (sy - canvas.height / 2) / camZoom
     };
@@ -1748,8 +1748,8 @@ export function mountLampWorld(container, opts) {
         e.preventDefault();
         shiftRoomDomain(1);
         roomFocus = 'door';
-        return;
-      }
+      return;
+    }
       if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
         enterCurrentDoor();
@@ -1836,7 +1836,7 @@ export function mountLampWorld(container, opts) {
       returnToHub(0);
       if (opts.onSelectHub) opts.onSelectHub();
     } else if (best.kind === 'domain' && best.d) {
-      if (best.state === 'fog') {
+        if (best.state === 'fog') {
         if (opts.onTravelBlocked) opts.onTravelBlocked(best.realm, best.d.lockReason || 'この分野はまだ霧の中です。');
       } else {
         travelToRealm(best.realm, 0, best);
@@ -1844,8 +1844,8 @@ export function mountLampWorld(container, opts) {
         if (opts.lessonState) enterIsland(best.d, opts.lessonState);
         else enterIsland(best.d, null);
       }
-    } else if (best.kind === 'core') {
-      if (best.state === 'fog') {
+      } else if (best.kind === 'core') {
+        if (best.state === 'fog') {
         if (opts.onTravelBlocked) opts.onTravelBlocked('land', '中枢はすべての灯が点いてから開きます。');
       } else {
         travelToRealm('land', 0);
