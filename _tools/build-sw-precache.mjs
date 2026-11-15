@@ -54,6 +54,8 @@ const plates = [
   './assets/common/hero-bare.jpg',
   './assets/common/hero-bare-walk-1.jpg',
   './assets/common/hero-bare-walk-2.jpg',
+  './assets/common/hero-hold-bare.png',
+  './assets/common/hero-hold-rear.png',
   './assets/map/bg.jpg',
   './assets/common/say-frame.jpg',
   './assets/common/app-icon.jpg',
@@ -98,7 +100,7 @@ const all = [...core, ...pngs, ...plates];
 const body = all.map((p) => `  '${p}'`).join(',\n');
 
 const out = `/* ランプ諸島 PWA — 静的アセットをキャッシュ（初回訪問後オフライン閲覧・学習用） */
-const CACHE = 'lamp-archipelago-v52';
+const CACHE = 'lamp-archipelago-v53';
 const PRECACHE = [
 ${body}
 ];

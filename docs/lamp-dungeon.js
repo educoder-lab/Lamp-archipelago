@@ -73,26 +73,26 @@ function drawArt(ctx, img, x, y, w, h) {
 }
 
 /**
- * 主人公ローカル座標の装備アタッチメント（単位: 幅/高さ 100 基準、原点=胴体中心）。
- * 後ろ姿基準: 剣=右手（画面右・腰〜手）、盾=左腕外側（画面左）。
- * facing で X と scaleX を連動反転。
+ * 構えた後ろ姿（hero-hold-bare）への着せ替えスロット。
+ * 単位: 幅/高さ 100 基準、原点=胴体中心。facing で X・scaleX 連動。
+ * 盾=左腕の外面、剣=右手で先端下（手なしプレートを手の位置に合わせる）。
  */
 const HERO_EQUIP_ATTACH = {
   shield: {
-    lx: -28,
-    ly: 6,
-    w: 38,
-    h: 42,
-    rot: -0.08,
+    lx: -34,
+    ly: 4,
+    w: 44,
+    h: 50,
+    rot: -0.06,
     z: 'back',
     flipWithFacing: true
   },
   sword: {
-    lx: 30,
-    ly: 14,
-    w: 34,
-    h: 52,
-    rot: 0.05,
+    lx: 36,
+    ly: 20,
+    w: 26,
+    h: 56,
+    rot: 0.03,
     z: 'front',
     flipWithFacing: true
   }
@@ -187,9 +187,9 @@ function drawAuraSprite(ctx, img, parent, spiritLv) {
 
 function heldEquipRel(kind, level) {
   const n = String(Math.max(1, level || 1)).padStart(2, '0');
-  // PNG（透過）優先。loadHubImage が .png → .jpg フォールバック
-  if (kind === 'shield') return 'common/equip/held-shield-' + n + '.png';
-  if (kind === 'sword') return 'common/equip/held-sword-' + n + '.png';
+  // 着せ替えスロット: 盾は外面（growth）、剣は先端下の slot プレート
+  if (kind === 'shield') return 'common/growth/shield-' + n + '.jpg';
+  if (kind === 'sword') return 'common/equip/slot-sword-' + n + '.png';
   if (kind === 'aura') return 'common/equip/aura-' + n + '.png';
   return growthIconRel(kind, level);
 }
@@ -306,6 +306,8 @@ export function mountLampWorld(container, opts) {
 
   /** 拠点・道・マップ用アート（失敗時は手描き／コード描画） */
   const hubArt = {
+    heroHoldBare: null,
+    heroHoldRear: null,
     heroBare: null,
     heroBareWalk1: null,
     heroBareWalk2: null,
@@ -372,6 +374,8 @@ export function mountLampWorld(container, opts) {
     'plateau-mock-am', 'plateau-mock-pm', 'plateau-final'
   ];
   Promise.all([
+    loadHubImage('common/hero-hold-bare.png').then((i) => { hubArt.heroHoldBare = i; }),
+    loadHubImage('common/hero-hold-rear.png').then((i) => { hubArt.heroHoldRear = i; }),
     loadHubImage('common/hero-bare.png').then((i) => { hubArt.heroBare = i; }),
     loadHubImage('common/hero-bare-walk-1.png').then((i) => { hubArt.heroBareWalk1 = i; }),
     loadHubImage('common/hero-bare-walk-2.png').then((i) => { hubArt.heroBareWalk2 = i; }),
@@ -481,29 +485,34 @@ export function mountLampWorld(container, opts) {
     return new URL(growthIconRel(key, level), HUB_ASSET_BASE).href;
   }
 
-  /** 現在レベルのテクスチャだけ差し替え（アタッチ位置・透過設定は維持） */
+  /** 現在レベルのテクスチャだけ差し替え（アタッチ位置・透過設定は維持＝着せ替え） */
   function ensureEquippedIcons() {
     const shieldLv = growthLevelOf(growth.shield);
     const swordLv = growthLevelOf(growth.sword);
     const spiritLv = Math.max(1, Math.min(4, growthLevelOf(growth.spirit)));
+    const nSh = String(shieldLv).padStart(2, '0');
+    const nSw = String(swordLv).padStart(2, '0');
+    const nSp = String(spiritLv).padStart(2, '0');
     const jobs = [
-      ['held_shield_' + shieldLv, heldEquipRel('shield', shieldLv), 'common/equip/held-shield-' + String(shieldLv).padStart(2, '0') + '.jpg'],
-      ['held_sword_' + swordLv, heldEquipRel('sword', swordLv), 'common/equip/held-sword-' + String(swordLv).padStart(2, '0') + '.jpg'],
-      ['held_aura_' + spiritLv, heldEquipRel('aura', spiritLv), 'common/equip/aura-' + String(spiritLv).padStart(2, '0') + '.jpg']
+      // 盾: 外面デザイン（growth）→ slot-shield → 旧 held
+      ['held_shield_' + shieldLv, heldEquipRel('shield', shieldLv), 'common/equip/slot-shield-' + nSh + '.png', 'common/equip/held-shield-' + nSh + '.png'],
+      // 剣: 先端下 slot → 旧 held
+      ['held_sword_' + swordLv, heldEquipRel('sword', swordLv), 'common/equip/held-sword-' + nSw + '.png', 'common/growth/sword-' + nSw + '.jpg'],
+      ['held_aura_' + spiritLv, heldEquipRel('aura', spiritLv), 'common/equip/aura-' + nSp + '.jpg']
     ];
-    jobs.forEach(([artKey, primary, fallbackJpg]) => {
-      const cur = hubArt[artKey];
-      // 既に PNG（または透過済み）が載っていれば維持。レベルキーが違えば別スロット
-      if (cur && cur.naturalWidth) return;
-      loadHubImage(primary).then((im) => {
-        if (im) {
-          hubArt[artKey] = im;
-          return null;
-        }
-        return loadHubImage(fallbackJpg);
-      }).then((im) => {
-        if (im) hubArt[artKey] = im;
+    jobs.forEach(([artKey, primary, ...fallbacks]) => {
+      if (hubArt[artKey] && hubArt[artKey].naturalWidth) return;
+      let chain = loadHubImage(primary);
+      fallbacks.forEach((fb) => {
+        chain = chain.then((im) => {
+          if (im) {
+            hubArt[artKey] = im;
+            return im;
+          }
+          return loadHubImage(fb);
+        });
       });
+      chain.then((im) => { if (im) hubArt[artKey] = im; });
     });
   }
 
@@ -840,13 +849,8 @@ export function mountLampWorld(container, opts) {
     const swordLv = growthLevelOf(growth.sword);
     const spiritLv = Math.max(1, Math.min(4, growthLevelOf(growth.spirit)));
 
-    // 武器なし体（焼き込みギアの mid/strong は使わない）
-    let heroImg = hubArt.heroBare || hubArt.hero;
-    const walkA = hubArt.heroBareWalk1 || hubArt.heroWalk1;
-    const walkB = hubArt.heroBareWalk2 || hubArt.heroWalk2;
-    if (walkA || walkB) {
-      heroImg = (Math.floor(pulseT * 2) % 2 === 0 ? walkA : walkB) || heroImg;
-    }
+    // 構えた後ろ姿（空手）＋スロット装備の着せ替え。歩行は構えポーズを優先
+    let heroImg = hubArt.heroHoldBare || hubArt.heroBare || hubArt.hero;
 
     const heroW = Math.min(W * 0.30, 220);
     const heroH = heroW * 1.35;
