@@ -72,51 +72,78 @@ function drawArt(ctx, img, x, y, w, h) {
   return true;
 }
 
-/** 黒背景プレートを透過して描く（装備オーバーレイ用）。結果は WeakMap でキャッシュ */
-const _keyedCanvasCache = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
-function keyedCanvasFor(img, threshold) {
-  const thr = threshold == null ? 26 : threshold;
-  if (_keyedCanvasCache) {
-    const hit = _keyedCanvasCache.get(img);
-    if (hit && hit.thr === thr) return hit.canvas;
+/**
+ * 主人公ローカル座標の装備アタッチメント（単位: 幅/高さ 100 基準）。
+ * 剣=右手周辺、盾=左腕・背中周辺。facing で X と scaleX を連動反転。
+ */
+const HERO_EQUIP_ATTACH = {
+  shield: {
+    lx: -15,
+    ly: 0,
+    w: 46,
+    h: 48,
+    rot: -0.10,
+    z: 'back',
+    flipWithFacing: true
+  },
+  sword: {
+    lx: 15,
+    ly: -5,
+    w: 42,
+    h: 55,
+    rot: 0.08,
+    z: 'front',
+    flipWithFacing: true
   }
-  const oc = document.createElement('canvas');
-  oc.width = img.naturalWidth;
-  oc.height = img.naturalHeight;
-  const octx = oc.getContext('2d');
-  octx.drawImage(img, 0, 0);
-  const data = octx.getImageData(0, 0, oc.width, oc.height);
-  const d = data.data;
-  for (let i = 0; i < d.length; i += 4) {
-    if (d[i] <= thr && d[i + 1] <= thr && d[i + 2] <= thr) d[i + 3] = 0;
-  }
-  octx.putImageData(data, 0, 0);
-  if (_keyedCanvasCache) _keyedCanvasCache.set(img, { thr, canvas: oc });
-  return oc;
-}
-function drawKeyedArt(ctx, img, x, y, w, h, opts) {
-  if (!img || !img.naturalWidth) return false;
-  opts = opts || {};
-  const src = keyedCanvasFor(img, opts.threshold);
+};
+
+/** PNG アルファをそのまま描く（アルファブレンド有効）。親子変換付き */
+function drawChildSprite(ctx, img, parent, attach, facing) {
+  if (!img || !img.naturalWidth || !parent || !attach) return false;
+  const face = facing < 0 ? -1 : 1;
+  const ux = parent.w / 100;
+  const uy = parent.h / 100;
+  const localX = (attach.lx || 0) * face * ux;
+  const localY = (attach.ly || 0) * uy;
+  const dw = (attach.w || 40) * ux;
+  const dh = (attach.h || 40) * uy;
+  const rot = (attach.rot || 0) * face;
+  const flipX = attach.flipWithFacing ? face : 1;
+
   ctx.save();
-  if (opts.alpha != null) ctx.globalAlpha = opts.alpha;
-  if (opts.composite) ctx.globalCompositeOperation = opts.composite;
-  if (opts.rotation) {
-    ctx.translate(x + w / 2, y + h / 2);
-    ctx.rotate(opts.rotation);
-    ctx.drawImage(src, -w / 2, -h / 2, w, h);
-  } else {
-    ctx.drawImage(src, x, y, w, h);
-  }
+  // 親原点（主人公中心）→ ローカルオフセット → 左右反転
+  ctx.translate(parent.cx + localX, parent.cy + localY);
+  ctx.rotate(rot);
+  ctx.scale(flipX, 1);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  // Canvas 2D はデフォルトで source-over アルファブレンド
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(img, -dw / 2, -dh / 2, dw, dh);
+  ctx.restore();
+  return true;
+}
+
+function drawAuraSprite(ctx, img, parent, spiritLv) {
+  if (!img || !img.naturalWidth || !parent) return false;
+  const scale = 1.15 + spiritLv * 0.12;
+  const aw = parent.w * scale;
+  const ah = parent.h * (1.05 + spiritLv * 0.08);
+  ctx.save();
+  ctx.globalCompositeOperation = spiritLv >= 3 ? 'lighter' : 'screen';
+  ctx.globalAlpha = 0.55 + spiritLv * 0.1;
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(img, parent.cx - aw / 2, parent.cy - ah * 0.42, aw, ah);
   ctx.restore();
   return true;
 }
 
 function heldEquipRel(kind, level) {
   const n = String(Math.max(1, level || 1)).padStart(2, '0');
-  if (kind === 'shield') return 'common/equip/held-shield-' + n + '.jpg';
-  if (kind === 'sword') return 'common/equip/held-sword-' + n + '.jpg';
-  if (kind === 'aura') return 'common/equip/aura-' + n + '.jpg';
+  // PNG（透過）優先。loadHubImage が .png → .jpg フォールバック
+  if (kind === 'shield') return 'common/equip/held-shield-' + n + '.png';
+  if (kind === 'sword') return 'common/equip/held-sword-' + n + '.png';
+  if (kind === 'aura') return 'common/equip/aura-' + n + '.png';
   return growthIconRel(kind, level);
 }
 
@@ -227,6 +254,8 @@ export function mountLampWorld(container, opts) {
   let pulseT = 0;
   let raf = 0;
   let hubFocus = 'elder'; // left | right | door | elder
+  /** 主人公の向き: 1=右寄り（既定） / -1=左。装備の X・scaleX と連動 */
+  let heroFacing = 1;
 
   /** 拠点・道・マップ用アート（失敗時は手描き／コード描画） */
   const hubArt = {
@@ -405,23 +434,26 @@ export function mountLampWorld(container, opts) {
     return new URL(growthIconRel(key, level), HUB_ASSET_BASE).href;
   }
 
+  /** 現在レベルのテクスチャだけ差し替え（アタッチ位置・透過設定は維持） */
   function ensureEquippedIcons() {
     const shieldLv = growthLevelOf(growth.shield);
     const swordLv = growthLevelOf(growth.sword);
     const spiritLv = Math.max(1, Math.min(4, growthLevelOf(growth.spirit)));
     const jobs = [
-      ['held_shield_' + shieldLv, heldEquipRel('shield', shieldLv), growthIconRel('shield', shieldLv)],
-      ['held_sword_' + swordLv, heldEquipRel('sword', swordLv), growthIconRel('sword', swordLv)],
-      ['held_aura_' + spiritLv, heldEquipRel('aura', spiritLv), null]
+      ['held_shield_' + shieldLv, heldEquipRel('shield', shieldLv), 'common/equip/held-shield-' + String(shieldLv).padStart(2, '0') + '.jpg'],
+      ['held_sword_' + swordLv, heldEquipRel('sword', swordLv), 'common/equip/held-sword-' + String(swordLv).padStart(2, '0') + '.jpg'],
+      ['held_aura_' + spiritLv, heldEquipRel('aura', spiritLv), 'common/equip/aura-' + String(spiritLv).padStart(2, '0') + '.jpg']
     ];
-    jobs.forEach(([artKey, primary, fallback]) => {
-      if (hubArt[artKey] && hubArt[artKey].naturalWidth) return;
+    jobs.forEach(([artKey, primary, fallbackJpg]) => {
+      const cur = hubArt[artKey];
+      // 既に PNG（または透過済み）が載っていれば維持。レベルキーが違えば別スロット
+      if (cur && cur.naturalWidth) return;
       loadHubImage(primary).then((im) => {
         if (im) {
           hubArt[artKey] = im;
           return null;
         }
-        return fallback ? loadHubImage(fallback) : null;
+        return loadHubImage(fallbackJpg);
       }).then((im) => {
         if (im) hubArt[artKey] = im;
       });
@@ -743,13 +775,25 @@ export function mountLampWorld(container, opts) {
     /* DOM の右下 HUD に移した */
   }
 
+  function syncHeroFacing() {
+    if (scene === 'hub') {
+      if (hubFocus === 'left') heroFacing = -1;
+      else if (hubFocus === 'right') heroFacing = 1;
+      // door / elder は直前の向きを維持
+      return;
+    }
+    if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) heroFacing = -1;
+    else if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) heroFacing = 1;
+  }
+
   function drawHeroSprite(ctx, W, H) {
     ensureEquippedIcons();
+    syncHeroFacing();
     const shieldLv = growthLevelOf(growth.shield);
     const swordLv = growthLevelOf(growth.sword);
     const spiritLv = Math.max(1, Math.min(4, growthLevelOf(growth.spirit)));
 
-    // 武器なし体＋手持ち装備（焼き込みギアの mid/strong は使わない）
+    // 武器なし体（焼き込みギアの mid/strong は使わない）
     let heroImg = hubArt.heroBare || hubArt.hero;
     const walkA = hubArt.heroBareWalk1 || hubArt.heroWalk1;
     const walkB = hubArt.heroBareWalk2 || hubArt.heroWalk2;
@@ -759,56 +803,47 @@ export function mountLampWorld(container, opts) {
 
     const heroW = Math.min(W * 0.30, 220);
     const heroH = heroW * 1.35;
-    const heroX = W * 0.5 - heroW / 2;
+    const bob = Math.sin(pulseT * 2) * 1.5;
     const footY = H * 0.955;
-    const heroY = footY - heroH + Math.sin(pulseT * 2) * 1.5;
+    const heroX = W * 0.5 - heroW / 2;
+    const heroY = footY - heroH + bob;
+    // 親（主人公）トランスフォーム — 子装備はこの中心に追従
+    const parent = {
+      x: heroX,
+      y: heroY,
+      w: heroW,
+      h: heroH,
+      cx: heroX + heroW / 2,
+      cy: heroY + heroH * 0.48,
+      facing: heroFacing,
+      bob
+    };
 
-    // 1) 精神オーラ（レベル毎）— 体の後ろ
     const auraImg = hubArt['held_aura_' + spiritLv]
       || hubArt['aura' + spiritLv]
       || hubArt.spiritAura;
-    if (auraImg && auraImg.naturalWidth) {
-      const aw = heroW * (1.15 + spiritLv * 0.12);
-      const ah = heroH * (1.05 + spiritLv * 0.08);
-      const ax = W * 0.5 - aw / 2;
-      const ay = heroY + heroH * 0.08 - ah * 0.15;
-      drawKeyedArt(ctx, auraImg, ax, ay, aw, ah, {
-        composite: spiritLv >= 3 ? 'lighter' : 'screen',
-        alpha: 0.55 + spiritLv * 0.1,
-        threshold: 22
-      });
-    }
-
-    // 2) 盾（左手＝画面左）— 体の少し後ろ〜側面
     const shieldImg = hubArt['held_shield_' + shieldLv];
-    const shieldW = heroW * (0.46 + Math.min(0.12, shieldLv * 0.006));
-    const shieldH = shieldW * 1.05;
-    const shieldX = heroX - shieldW * 0.28;
-    const shieldY = heroY + heroH * 0.30;
-    if (shieldImg && shieldImg.naturalWidth) {
-      drawKeyedArt(ctx, shieldImg, shieldX, shieldY, shieldW, shieldH, {
-        rotation: -0.12,
-        threshold: 24
-      });
+    const swordImg = hubArt['held_sword_' + swordLv];
+
+    // 描画順: オーラ → 背面装備(盾) → 体（向きで反転） → 前面装備(剣)
+    if (auraImg) drawAuraSprite(ctx, auraImg, parent, spiritLv);
+
+    if (shieldImg) {
+      drawChildSprite(ctx, shieldImg, parent, HERO_EQUIP_ATTACH.shield, heroFacing);
     }
 
-    // 3) 体
+    ctx.save();
+    ctx.translate(parent.cx, parent.cy);
+    ctx.scale(heroFacing, 1);
+    ctx.translate(-parent.cx, -parent.cy);
     if (!drawArt(ctx, heroImg, heroX, heroY, heroW, heroH)) {
       const s = Math.max(3, Math.floor(Math.min(W, H) / 120));
       drawHeroBack(ctx, W * 0.5, footY - H * 0.02, s * 1.05, pulseT);
     }
+    ctx.restore();
 
-    // 4) 剣（右手＝画面右）— 手に持つ（先端を下）
-    const swordImg = hubArt['held_sword_' + swordLv];
-    const swordW = heroW * (0.42 + Math.min(0.1, swordLv * 0.012));
-    const swordH = swordW * 1.35;
-    const swordX = heroX + heroW * 0.58;
-    const swordY = heroY + heroH * 0.34;
-    if (swordImg && swordImg.naturalWidth) {
-      drawKeyedArt(ctx, swordImg, swordX, swordY, swordW, swordH, {
-        rotation: 0.08,
-        threshold: 24
-      });
+    if (swordImg) {
+      drawChildSprite(ctx, swordImg, parent, HERO_EQUIP_ATTACH.sword, heroFacing);
     }
   }
 
